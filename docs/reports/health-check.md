@@ -1,12 +1,12 @@
 # Repository Health Check Report
 
-- Generated at: 2026-02-25T08:46:11.825Z
+- Generated at: 2026-02-25T09:11:09.031Z
 - Scope: `*.js` files under repository root
 
 ## 1) JS 文件统计
 
-- JS 文件总数: **155**
-- JS 总行数: **158763**
+- JS 文件总数: **144**
+- JS 总行数: **157575**
 
 ### TOP 10 大文件（按行数）
 
@@ -25,7 +25,7 @@
 
 ## 2) 重复文件名扫描
 
-发现 **16** 组重复文件名：
+发现 **14** 组重复文件名：
 
 ### ARNavigation.js (2 个)
 - app/navi_app/utils/AR/ARNavigation.js
@@ -67,10 +67,6 @@
 - app/navi_app/libs/OrbitControls.js
 - app/navi_app/utils/AR/OrbitControls.js
 
-### runtime-config.js (2 个)
-- app/navi_app/shouxihu/js/runtime-config.js
-- map-ui-container/config/runtime-config.js
-
 ### three.min.js (2 个)
 - app/navi_app/libs/three.min.js
 - app/navi_app/utils/AR/three.min.js
@@ -83,17 +79,13 @@
 - app/navi_app/libs/Tween.js
 - app/navi_app/utils/AR/Tween.js
 
-### uni.webview.1.5.6.js (2 个)
-- app/navi_app/libs/uni.webview.1.5.6.js
-- map-ui-container/lib/uni.webview.1.5.6.js
-
 ### zepto.min.js (2 个)
 - app/navi_app/libs/zepto.min.js
 - app/navi_app/shouxihu/voucher/libs/zepto.min.js
 
 ## 3) `window.* =` 全局写入点扫描
 
-共发现 **153** 个全局写入点：
+共发现 **136** 个全局写入点：
 
 | 文件 | 行号 | 命中片段 |
 | --- | ---: | --- |
@@ -134,12 +126,6 @@
 | app/navi_app/shouxihu/js/dxapi.app.js | 124 | `window.downloader =` |
 | app/navi_app/shouxihu/js/dxapi.app.js | 153 | `window.roadMatch =` |
 | app/navi_app/shouxihu/js/dxapi.app.js | 409 | `window.DxApp =` |
-| app/navi_app/shouxihu/js/runtime-config.js | 4 | `window.indoorLocalAlgorithms =` |
-| app/navi_app/shouxihu/js/runtime-config.js | 5 | `window.mapSDKPath =` |
-| app/navi_app/shouxihu/js/runtime-config.js | 22 | `window.dataPath =` |
-| app/navi_app/shouxihu/js/runtime-config.js | 23 | `window.projectUrl =` |
-| app/navi_app/shouxihu/js/runtime-config.js | 24 | `window.scenicUrl =` |
-| app/navi_app/shouxihu/js/runtime-config.js | 25 | `window.localFont =` |
 | app/navi_app/shouxihu/utils/environment.js | 87 | `window.DaxiApp =` |
 | app/navi_app/shouxihu/utils/getParam.js | 17 | `window.getParam =` |
 | app/navi_app/shouxihu/voucher/libs/signature.js | 79 | `window["audioToken"]=` |
@@ -239,14 +225,3 @@
 | map_sdk/map/sdk/engine.min.js | 378 | `window.URL=` |
 | map_sdk/map/sdk/engine.min.js | 1247 | `window.renderFrame=` |
 | map_sdk/map/sdk/engine.min.js | 1247 | `window.stopRenderFrame=` |
-| map-ui-container/assets/js/app-config.js | 95 | `window.appConfig =` |
-| map-ui-container/assets/js/page-switcher.js | 6 | `window.pageSwitcher =` |
-| map-ui-container/assets/js/page-switcher.js | 253 | `window.switchToPage =` |
-| map-ui-container/assets/js/page-switcher.js | 261 | `window.getCurrentPage =` |
-| map-ui-container/assets/js/socketUtils.js | 188 | `window.openPoiToH5 =` |
-| map-ui-container/assets/js/socketUtils.js | 189 | `window.openExhibitToH5 =` |
-| map-ui-container/assets/js/socketUtils.js | 190 | `window.openRouteToH5 =` |
-| map-ui-container/assets/js/socketUtils.js | 191 | `window.navigateToUni =` |
-| map-ui-container/assets/js/tabbar.js | 224 | `window.tabbarUtils =` |
-| map-ui-container/assets/js/utils.js | 319 | `window.commonUtils =` |
-| map-ui-container/lib/uni.webview.1.5.6.js | 1 | `window.UniAppJSBridge=` |
