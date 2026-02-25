@@ -48,3 +48,34 @@
 1. 每轮只做一类问题（可回滚、可验证）。
 2. 每轮必须记录“改动 + 风险 + 下一步”。
 3. 优先顺序：可用性 > 安全性 > 可维护性 > 性能微调。
+
+## 第 2 轮迭代（已完成）
+
+### 本轮改动
+
+1. **统一 URL 参数读取能力（容器层）**
+   - 文件：`map-ui-container/assets/js/utils.js`
+   - 新增：`getAllQueryParams`、`getQueryParamFromSelfOrParent`、`pickQueryParams`。
+   - 调整：`getQueryParam` 改为基于 `URLSearchParams`，`_getParam` 统一复用新方法。
+
+2. **增强 Socket 通信健壮性**
+   - 文件：`map-ui-container/assets/js/socketUtils.js`
+   - 调整：移除内部重复参数解析实现，统一复用 `commonUtils`。
+   - 调整：`sendToH5` 与 `navigateToUni` 增加父窗口 WebSocket 可用性守卫。
+   - 调整：`navigateToUni` 的 query 参数统一 `encodeURIComponent` 编码，降低特殊字符导致的协议解析风险。
+   - 调整：移除 `TOKEN/USER_ID/APP_ID/DEVICE` 的硬编码默认值，改为缺失时空字符串兜底。
+
+3. **限制 iframe 透传参数范围**
+   - 文件：`map-ui-container/assets/js/page-switcher.js`
+   - 调整：新增 `PASS_THROUGH_QUERY_KEYS` 白名单，仅透传业务必要参数，减少参数污染。
+
+### 本轮复盘
+
+- 本轮是“基础设施收敛”：减少重复实现，提升通信容错，控制参数边界。
+- 仍保持向后兼容（`commonUtils` 缺失时保留兜底逻辑）。
+
+### 下一轮候选任务（第 3 轮）
+
+1. 抽离 `socketUtils` 与 `tabbar` 的 message 构建逻辑，形成统一消息工厂。
+2. 为容器层增加基础单元测试（参数解析、消息编码、白名单过滤）。
+3. 进一步清理 `map-ui-container` 的全局导出，收敛到单一命名空间。

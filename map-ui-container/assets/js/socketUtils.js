@@ -5,22 +5,27 @@
  */
 
 /**
- * 获取 URL 参数的辅助函数
- * 优先使用公共工具函数，如果不存在则使用备用实现
+ * 获取 URL 参数（优先当前窗口，其次父窗口）
  * @param {string} name - 参数名
  * @returns {string|null} 参数值
  */
-function _getQueryParam(name) {
-  if (window.commonUtils && window.commonUtils.getQueryParam) {
+function getParam(name) {
+  if (window.commonUtils?.getQueryParamFromSelfOrParent) {
+    return window.commonUtils.getQueryParamFromSelfOrParent(name);
+  }
+  if (window.commonUtils?.getQueryParam) {
     return window.commonUtils.getQueryParam(name);
   }
-  // 备用实现
-  const url = window.location.href.split("#")[0];
-  const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-  const query = url.split("?")[1] || "";
-  const result = query.match(reg);
-  if (result != null) {
-    return decodeURIComponent(result[2]);
+  return null;
+}
+
+/**
+ * 获取父窗口 WebSocket
+ * @returns {WebSocket|null}
+ */
+function getParentWs() {
+  if (window.parent && window.parent !== window && window.parent.ws) {
+    return window.parent.ws;
   }
   return null;
 }
@@ -30,13 +35,13 @@ function _getQueryParam(name) {
  * 从 URL 参数动态获取配置信息
  */
 const MAP_CONFIG = {
-  TOKEN: _getQueryParam("token") || "806bc162812065750b3d3958f9056008",
+  TOKEN: getParam("token") || "",
   DEFAULT_SCENIC_ID: "B000A11DMZ",
-  USER_ID: _getQueryParam("userId") || "ot5qm6-uO9a_wfMf_fkRab5q3pgw",
-  APP_ID: _getQueryParam("appId") || "wxd0206a15115585c6",
-  DEVICE: _getQueryParam("device") || "SW_android_HUAWEI_NAM-AL00",
+  USER_ID: getParam("userId") || "",
+  APP_ID: getParam("appId") || "",
+  DEVICE: getParam("device") || "",
   ROLE_TYPE: "sender",
-  WS_INDEX: Number(_getQueryParam("wsIndex")) || 0,
+  WS_INDEX: Number(getParam("wsIndex")) || 0,
 };
 /**
  * POI 消息基础配置对象
@@ -59,7 +64,13 @@ const POI_MESSAGE = {
  * @param {Object} message - 消息对象
  */
 function sendToH5(message) {
-  window.parent.ws.send(JSON.stringify(message));
+  const ws = getParentWs();
+  if (!ws) {
+    console.error("[sendToH5] 父窗口 WebSocket 不可用");
+    return false;
+  }
+  ws.send(JSON.stringify(message));
+  return true;
 }
 
 /**
@@ -140,7 +151,7 @@ function navigateToUni(action, pagePath, params = {}, options = {}) {
       // 对象/数组需要JSON序列化后编码
       const encodedValue = typeof value == "object" ? JSON.stringify(value) : String(value);
 
-      queryPairs.push(`${key}=${encodedValue}`);
+      queryPairs.push(`${encodeURIComponent(key)}=${encodeURIComponent(encodedValue)}`);
     }
 
     if (queryPairs.length > 0) {
@@ -151,14 +162,15 @@ function navigateToUni(action, pagePath, params = {}, options = {}) {
   // 构建消息对象
   const message = {
     type: "postEventToMiniProgram",
-    id: options.userId || window.parent.commonUtils.getQueryParam("userId"),
+    id: options.userId || getParam("userId") || "",
     methodToMiniProgram: method,
     roleType: "receiver",
   };
 
   // 发送WebSocket消息
-  if (window.parent && window.parent.ws) {
-    window.parent.ws.send(JSON.stringify(message));
+  const ws = getParentWs();
+  if (ws) {
+    ws.send(JSON.stringify(message));
     console.log("[navigateToUni] 发送消息:", method);
   } else {
     console.error("[navigateToUni] WebSocket未连接");
