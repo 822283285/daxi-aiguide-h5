@@ -1,0 +1,23 @@
+/**
+ * 热门项目区域样式
+ */
+
+.hot-items-container {
+  width: 100%;
+}
+
+.hot-item {
+  width: 100%;
+  margin-bottom: 8px;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.hot-item:hover {
+  opacity: 0.8;
+}
+
+.hot-item-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}

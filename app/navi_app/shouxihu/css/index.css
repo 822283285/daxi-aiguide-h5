@@ -1,0 +1,144 @@
+
+*{
+    margin:0px;
+    padding: 0px;
+}
+:root{
+    --bgColor:#fcf9f2;
+    --whiteColor:#fff;
+    --bgColor_opacity_light:rgba(252,249,242,0.9);/* rgba(249, 250, 251, 0.90); */
+    --fontSize:14px;
+    --fontColor:rgb(72, 71, 71);
+    --fontColor_dark:rgb(72, 71, 71);
+    --fontColor_light:rgb(255, 255, 255);/*#fffffb*/
+    --btnRadius1:0.4rem;
+    --btnRadius2:6px;
+    /* --btnColor:#3b99fc; */
+    --themeColor:#1089f3;
+    --themeColorlight:#3b99fc;
+    --iconFontSize:1.2rem;
+    --borderColor_dark:#a1a3a6;
+    --borderColor_light:#f6f5ec;
+    --headerHeight:3rem;
+    --headerPadding:1.5vw;
+    --headerTopMargin:0.5rem;
+    --footerMargin:0.5rem;
+
+    --single-btn-padding:0.3rem 1rem;
+    
+    /* --bigBtn */
+    --dxbtn-small-padding:4px;
+    --dxbtn-def-radius:0.4rem;
+    /* --themeBtnBgColor:#fff; */
+    --themeBtnTextColor:#1089f3;
+
+
+}
+.red-theme{
+    --themeColor:#aa2116;
+    --lightThemeColor:#bf0e09;
+    --btnRadius1:0.8rem;
+    /* --themeBtnBgColor:#9e180f; */
+    --themeBtnTextColor:#9e180f;
+    
+}
+html{
+    touch-action:none;
+    touch-action:pan-y;
+}
+html,
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bgColor);
+}
+.dx_full_frame_container,
+.mainpoi_page_container,
+.search_page_container,
+.select_dest_page_container,
+.select_mappoint_page_container,
+.voice_search_container,
+.main_map_container,
+.map_state_container,
+.map_page_container,
+.map_container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+}
+.map_page_container {
+    opacity: 0;
+    background-color:var(--bgColor);
+}
+.loadingBg {
+    background: url(../images/loading2.gif) no-repeat 50% 34%;
+    background-size: 24%;
+}
+/*组件 position*/
+
+.map_header_wrapper,
+.nav_bar_wapper,
+.zoom_wrapper,
+.main_location_btn,
+.main_floor_scroll,
+.main_panorama_btn,
+.outdoor-btn,
+.search-list-widget,
+.routing-selector,
+.routing-bottom,
+.roadcross_container,
+.change_floor_container,
+.navi-top-container,
+.navi_bottom_container,
+.park-btn {
+    position: absolute;
+}
+/* ------------------browsePage style -----------------------------------*/
+.map_page_container .map_header_wrapper ,.map_page_container .nav_bar_wapper{
+     height: var(--headerHeight);
+     left: var(--headerPadding);
+     right: var(--headerPadding);
+     z-index: 10;
+     box-sizing: border-box;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+}
+.map_page_container .map_header_wrapper .station_name {
+    display: inline-block;
+    background: var(--bgColor_opacity_light);
+    padding: var(--single-btn-padding);
+    border-radius: var(--btnRadius2);
+    margin-top: 12px;
+    font-size: 1.5rem;
+    color: var(--fontColor_dark);
+}
+.map_page_container .map_header_wrapper {
+    top: var(--headerTopMargin);
+}
+.map_header_wrapper .dx_header {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background: var(--whiteColor);
+    border-radius: var(--btnRadius1);
+}
+.map_header_wrapper .dx_header li {
+    /* font-size: 1.2rem; */
+    /* line-height: 100%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.map_header_wrapper .dx_header .goback {
+    color: var(--fontColor_dark);
+}
+
+
+

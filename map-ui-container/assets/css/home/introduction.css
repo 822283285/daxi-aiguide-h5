@@ -1,0 +1,33 @@
+/**
+ * 推荐列表区域样式
+ */
+
+.introduction-container {
+  width: 100%;
+}
+
+.introduction-title {
+  margin-bottom: 16px;
+}
+
+.introduction-title h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.introduction-item {
+  width: 100%;
+  margin-bottom: 8px;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.introduction-item:hover {
+  opacity: 0.8;
+}
+
+.introduction-item-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}

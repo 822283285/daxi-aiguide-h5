@@ -1,0 +1,12 @@
+.map-list-item-icon {
+    align-items: center;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 20px;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    position: relative;
+    width: 40px;
+}

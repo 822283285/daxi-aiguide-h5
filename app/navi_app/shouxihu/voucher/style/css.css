@@ -1,0 +1,33 @@
+html,body{
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+}
+ul,li{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.contents{
+    background: url("../images/bg2.png") no-repeat center top #d6332a;
+    background-size: 100%;
+    padding-bottom: 20px;
+    margin-top: -1px;
+}
+.contents ul{
+    text-align: center;
+}
+.contents ul::after{
+    display: block;
+    clear: both;
+    content:""
+}
+.contents li{
+    width: 33.33%;
+    float: left;
+    margin-bottom:10px;
+    display: block;
+}
+.contents li img{
+    width: 100%;
+}

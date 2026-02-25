@@ -1,0 +1,24 @@
+/**
+ * Service 页面专用样式
+ * 只包含 Service 页面特有的样式
+ * 公共样式已提取到 assets/css/common.css
+ */
+
+/**
+ * 页面容器
+ */
+.service-page-container {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/**
+ * 页面标题
+ */
+.service-page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  padding: 16px 8px;
+  text-align: center;
+}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智能导览</title>
+    <!-- 基础样式表 -->
+    <link rel="stylesheet" href="./assets/css/base.css" />
+    <!-- 底部导航栏样式表 -->
+    <link rel="stylesheet" href="./assets/css/tabbar.css" />
+    <!-- 页面切换样式表 -->
+    <link rel="stylesheet" href="./assets/css/page-switcher.css" />
+    <!-- CryptoJS 加密库 -->
+    <script src="./lib/crypto-js.min.js"></script>
+  </head>
+
+  <body>
+    <!-- 主容器 -->
+    <div id="main-container" class="main-container">
+      <!-- 地图页 iframe (主应用，其他页面已迁移至 app/navi_app 内部) -->
+      <iframe
+        id="iframe-map"
+        class="page-iframe page-iframe-active"
+        src="../app/navi_app/shouxihu/index_src.html"
+        frameborder="0"
+        style="opacity: 1; pointer-events: auto"
+      ></iframe>
+    </div>
+  </body>
+
+  <!-- 添加 uni-app 的 webview 库，用于在 H5 中使用 uni-app 的 webview 功能 -->
+  <script type="text/javascript" src="./lib/uni.webview.1.5.6.js"></script>
+
+  <!-- 公共工具函数库（必须首先加载） -->
+  <script src="./assets/js/utils.js"></script>
+  <!-- 应用统一配置 -->
+  <script src="./assets/js/app-config.js"></script>
+  <!-- Socket 通信工具 -->
+  <script src="./assets/js/socketUtils.js"></script>
+  <!-- Tabbar 模块 -->
+  <script src="./assets/js/tabbar.js"></script>
+  <!-- 页面切换控制脚本 -->
+  <script src="./assets/js/page-switcher.js"></script>
+
+  <script>
+    // 等待DOM加载完成
+    document.addEventListener("DOMContentLoaded", function () {
+      // 初始化页面切换器
+      if (window.pageSwitcher) {
+        window.pageSwitcher.init();
+      }
+    });
+  </script>
+  <script src="../xxxxx.js"></script>
+</html>

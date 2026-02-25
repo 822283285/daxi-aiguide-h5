@@ -1,0 +1,94 @@
+/**
+ * 服务分类列表样式
+ */
+
+.poi-list-container {
+  width: 100%;
+  background: #fff;
+}
+
+/**
+ * 分类项容器
+ */
+.poi-category-item {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 0;
+}
+
+.poi-category-item:last-child {
+  border-bottom: none;
+}
+
+/**
+ * 分类标题
+ */
+.poi-category-header {
+  padding: 0px 12px;
+  /* background: #fafafa; */
+}
+
+.poi-category-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+/**
+ * 分类内容
+ */
+.poi-category-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  align-content: flex-start;
+}
+
+/**
+ * 空状态
+ */
+.poi-empty {
+  width: 100%;
+  text-align: center;
+  padding: 20px 12px;
+  color: #999;
+  font-size: 14px;
+}
+
+/**
+ * 服务项
+ */
+.poi-item {
+  display: inline-block;
+  padding: 8px 12px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+.poi-item:hover {
+  background-color: #efefef;
+  /* transform: translateY(-2px); */
+}
+
+.poi-item-name {
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+/**
+ * 响应式布局
+ */
+@media (min-width: 768px) {
+  .poi-item {
+    padding: 10px 14px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .poi-item {
+    padding: 10px 16px;
+  }
+}

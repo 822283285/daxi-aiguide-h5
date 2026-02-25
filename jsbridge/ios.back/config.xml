@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.daxi.lbs" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <preference name="AllowInlineMediaPlayback" value="false" />
+    <preference name="BackupWebStorage" value="local" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="EnableViewportScale" value="false" />
+    <preference name="KeyboardDisplayRequiresUserAction" value="true" />
+    <preference name="MediaPlaybackRequiresUserAction" value="false" />
+    <preference name="SuppressesIncrementalRendering" value="false" />
+    <preference name="GapBetweenPages" value="0" />
+    <preference name="PageLength" value="0" />
+    <preference name="PaginationBreakingMode" value="page" />
+    <preference name="PaginationMode" value="unpaginated" />
+    <preference name="CordovaWebViewEngine" value="DXCDVWKWebViewEngine" />
+    <feature name="DXCDVWKWebViewEngine">
+        <param name="ios-package" value="DXCDVWKWebViewEngine" />
+    </feature>
+    <feature name="LocalStorage">
+        <param name="ios-package" value="DXCDVLocalStorage" />
+    </feature>
+    <feature name="DXJSBridge">
+        <param name="ios-package" value="DXPJSBridge" />
+    </feature>
+    <feature name="Console">
+        <param name="ios-package" value="DXCDVLogger" />
+    </feature>
+    <feature name="IndoorLocation">
+        <param name="ios-package" value="DXPIndoorLocation" />
+    </feature>
+    <feature name="SpeakNative">
+        <param name="ios-package" value="DXPSpeakNative" />
+    </feature>
+    <feature name="PowerManagement">
+        <param name="ios-package" value="DXPPowerManagement" />
+    </feature>
+    <feature name="VolumeControl">
+        <param name="ios-package" value="DXPVolumeControl" />
+    </feature>
+    <feature name="IntentAndNavigationFilter">
+        <param name="ios-package" value="DXCDVIntentAndNavigationFilter" />
+        <param name="onload" value="true" />
+    </feature>
+    <allow-intent href="itms:*" />
+    <allow-intent href="itms-apps:*" />
+    <name>LocationSDK</name>
+    <description>
+        A sample Apache Cordova application that responds to the deviceready event.
+    </description>
+    <author email="dev@cordova.apache.org" href="http://cordova.io">
+        Apache Cordova Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <allow-navigation href="*" />
+</widget>

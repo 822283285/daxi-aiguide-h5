@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.indoor.hospital3d" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <preference name="loglevel" value="DEBUG" />
+	<feature name="Whitelist">
+        <param name="android-package" value="com.indoor.wktinterface.whitelist.WhitelistPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="DXJSBridge">
+        <param name="android-package" value="com.indoor.wktinterface.plugins.api.JSBridge" />
+        <param name="onload" value="true" />
+    </feature>
+<!--    <feature name="IndoorLocation">-->
+<!--        <param name="android-package" value="com.indoor.navigation.plugins.location.IndoorLocation" />-->
+<!--    </feature>-->
+<!--    <feature name="SpeakNative">-->
+<!--        <param name="android-package" value="com.indoor.navigation.plugins.system.SpeakNative" />-->
+<!--    </feature>-->
+<!--    <feature name="SystemVolume">-->
+<!--        <param name="android-package" value="com.indoor.navigation.plugins.system.SystemVolume" />-->
+<!--    </feature>-->
+<!--    <feature name="PowerManagement">-->
+<!--        <param name="android-package" value="com.indoor.navigation.plugins.system.PowerManagement" />-->
+<!--    </feature>-->
+    <allow-intent href="market:*" />
+    <icon density="ldpi" src="logo.png" />
+    <icon density="mdpi" src="logo.png" />
+    <icon density="hdpi" src="logo.png" />
+    <icon density="xhdpi" src="logo.png" />
+    <name>院内导航</name>
+    <description>
+        A sample Apache Cordova application that responds to the deviceready event.
+    </description>
+    <author email="dev@cordova.apache.org" href="http://cordova.io">
+        Apache Cordova Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+     <allow-intent href="DXAppDocument://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <allow-navigation href="http://*/*" />
+    <allow-navigation href="DXAppDocument://*/*" />
+    <allow-navigation href="https://*/*" />
+    <allow-navigation href="data:*" />
+    <preference name="SplashScreenDelay" value="10000" />
+    <preference name="SplashMaintainAspectRatio" value="true" />
+    <preference name="android-windowSoftInputMode" value="adjustResize|stateHidden" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="loadUrlTimeoutValue" value="60000000"/>
+</widget>
+<!-- From: file:/E:/Work/cordova_hospital/platforms/android/res/xml/config.xml -->

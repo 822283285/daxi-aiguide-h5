@@ -1,0 +1,44 @@
+/**
+ * 常见服务区域样式
+ */
+
+.common-pois-container {
+  width: 100%;
+  display: grid;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.common-poi-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 8px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.common-poi-item:hover {
+  background-color: #f5f5f5;
+}
+
+.common-poi-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.common-poi-icon {
+  display: block;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.common-poi-text {
+  font-size: 12px;
+  color: #333;
+  text-align: center;
+  word-break: break-word;
+  max-width: 100%;
+}

@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+#main-container {
+  /* height: calc(100vh - 44px); */
+  height: 100vh;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(to bottom, #b6ceda, #eafaee);
+}
+:root {
+  --rounded-base: 8px;
+  --space-base: 8px;
+}

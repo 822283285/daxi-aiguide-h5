@@ -1,0 +1,195 @@
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" charset="UTF-8" />
+    <title>地图</title>
+    <style type="text/css"></style>
+    <script src="./utils/getParam.js"></script>
+    <script>
+      window.indoorLocalAlgorithms = "fusion";
+      window.mapSDKPath = "../../../map_sdk/";
+
+      // 优先从父容器读取配置，否则使用默认值
+      let dataPath;
+      try {
+        dataPath = window.parent?.commonUtils?.getBaseUrl?.();
+        if (dataPath) {
+          console.log("从父容器读取配置：dataPath =", dataPath);
+        } else {
+          console.warn("无法访问父容器配置，使用默认值");
+        }
+      } catch (e) {
+        console.warn("读取父容器配置失败，使用默认值：", e);
+      }
+
+      const token = getParam("token");
+      const buildingId = getParam("buildingId");
+      window.dataPath = dataPath || "https://cloud.daxicn.com/publicData/";
+      window.projectUrl = `${window.dataPath}/${token}/`;
+      window.scenicUrl = `${window.dataPath}/${token}/${buildingId}/`;
+      window.localFont = true;
+    </script>
+    <!-- 样式导入 -->
+    <link type="text/css" rel="stylesheet" href="../components/css/component.css" />
+    <link rel="stylesheet" href="../components/css/spot-popup.css" />
+    <link type="text/css" rel="stylesheet" href="../libs/swiper/swiper-bundle.min.css" />
+    <link type="text/css" rel="stylesheet" href="./css/main_12306.css" />
+    <link type="text/css" rel="stylesheet" href="./css/main.css" />
+    <link type="text/css" rel="stylesheet" href="./css/blue.css" />
+    <link type="text/css" rel="stylesheet" href="./css/font.css" />
+    <link rel="stylesheet" href="./css/ui-page.css" />
+
+    <!-- 轮播插件依赖 -->
+    <script src="../libs/swiper/swiper-bundle.min.js"></script>
+    <!-- 微信 JS-SDK -->
+    <script src="../libs/jweixin-1.6.js"></script>
+    <!-- zepto插件依赖 -->
+    <script type="text/javascript" src="../libs/zepto.min.js"></script>
+    <script type="text/javascript" src="../libs/zepto.ext.js"></script>
+    <!-- 编译助手工具 -->
+    <script type="text/javascript" src="../libs/handlebars-v3.0.3.min.js"></script>
+    <!-- 加解密依赖 -->
+    <script type="text/javascript" src="../libs/crypto-js.js"></script>
+    <script type="text/javascript" src="../libs/AES.js"></script>
+    <!-- three.js 3D库依赖 -->
+    <script type="text/javascript" src="../libs/three.min.js"></script>
+    <!-- 语音可视化插件 -->
+    <script type="text/javascript" src="../libs/voicePlugin.js"></script>
+    <!-- 加密依赖 -->
+    <script type="text/javascript" src="../libs/md5.js"></script>
+    <script type="text/javascript" src="../libs/signMd5Utils.js"></script>
+    <!-- QRCode 生成库 -->
+    <script src="../libs/qrcode.min.js"></script>
+
+    <!-- 地图SDK依赖 -->
+    <script src="../../../map_sdk/map/daximap.utils.js"></script>
+    <script src="../../../map_sdk/map/scene/daximap.visitor.js"></script>
+    <script src="../../../map_sdk/map/scene/daximap.core.js"></script>
+    <script src="../../../map_sdk/map/scene/daximap.indoor.js"></script>
+    <script src="../../../map_sdk/map/scene/daximap.outdoor.js"></script>
+    <script src="../../../map_sdk/map/scene/daximap.layers.js"></script>
+    <script src="../../../map_sdk/map/daximap.scene.js"></script>
+    <script src="../../../map_sdk/map/daximap.api.js"></script>
+    <script src="../../../map_sdk/map/daximap.control.js"></script>
+    <script src="../../../map_sdk/map/daximap.location.js"></script>
+    <script src="../../../map_sdk/map/daximap.speak.js"></script>
+    <script src="../../../map_sdk/map/daximap.navi.js"></script>
+    <script src="../../../map_sdk/map/daximap.routes.js"></script>
+    <script src="../../../map_sdk/map/daximap.naviManager.js"></script>
+    <!-- 添加环境判断工具函数 -->
+    <script src="./utils/environment.js"></script>
+  </head>
+
+  <body>
+    <!-- 首屏加载中容器 -->
+    <div id="first_page"></div>
+
+    <!-- 地图容器 -->
+    <div id="app" class="map_page_container"></div>
+
+    <!-- 状态UI容器 -->
+    <div id="container" class="ui_page_container"></div>
+
+    <script src="../utils/ARNavigation.js"></script>
+    <script src="../../../jsbridge/daxiapp.jsbridge.js"></script>
+    <script src="../utils/daxiapp.cache.js"></script>
+    <script src="../utils/daxiapp.dom.js"></script>
+    <script src="../utils/daxiapp.utils.js"></script>
+    <script src="./js/daxiapp.api.js"></script>
+    <script src="../utils/daxiapp.stateMgr.js"></script>
+    <script src="../components/daxiapp.component.js"></script>
+    <script src="../components/daxiapp.basecomponent.js"></script>
+    <script src="./js/daxiapp.mapView.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.mapStateBrowse.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.mapStatePoiDetail.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.exhibitionRoute.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.mapStateAutoPlayExhibit.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.poiDetail.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.index.js"></script>
+    <script src="../../../app/components/daxi-guide-ui.component.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.home.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.service.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.profile.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.aboutPage.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.payPage.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.payResultPage.js"></script>
+    <script src="./extend_guobo/js/daxiapp.page.visitNavi.js"></script>
+    <script src="./js/daxiapp.page.mapStatePoi.js"></script>
+    <script src="./js/daxiapp.page.mapStateRoute_new.js"></script>
+    <script src="./js/daxiapp.page.mapStateMainPoiPage.js"></script>
+    <script src="./js/daxiapp.page.mapStateSearchPage.js"></script>
+    <script src="./js/daxiapp.page.mapStateChangeStartEndPoint.js"></script>
+    <script src="./js/daxiapp.page.mapStateSelectPoint.js"></script>
+    <script src="./js/daxiapp.page.mapStateSimulateNavi.js"></script>
+    <script src="./js/daxiapp.page.mapStateNavi.js"></script>
+    <script src="./js/daxiapp.page.mapStateBulldingList.js"></script>
+    <script src="./js/daxiapp.page.mapStateCreateShareGroup.js"></script>
+    <script src="./js/daxiapp.page.mapStateGroupShare.js"></script>
+    <script src="./js/daxiapp.page.mapStateSharePos.js"></script>
+    <script src="./js/daxiapp.page.voiceListener.js"></script>
+    <script src="./js/daxiapp.page.command.js"></script>
+    <script src="./js/dxapi.app.js"></script>
+
+    <script type="text/javascript">
+      const daxiapp = window.DaxiApp;
+      const firstPage = $("#first_page");
+      const command = daxiapp.utils.getCommand();
+      const bdid = command.buildingId;
+
+      // 根据建筑ID选择加载动画
+      const loadingImage = bdid == "B000A11DEA" ? "images/shouxihu/loading3.gif" : "images/hygz/loading3.gif";
+      firstPage.addClass(bdid).append(
+        $(`
+        <div class="loading">
+          <span class="loadimg"><img src="${loadingImage}" alt=""></span>
+          <span class="loadtext">服务加载中</span>
+          <span class="tips">开启定位开关，体验智能导游</span>
+        </div>
+      `),
+      );
+
+      /** 生成页面状态配置（当 stateName 与 stateClassName 相同时） */
+      const pageState = (name) => ({ stateName: name, stateClassName: name });
+
+      DxApp.init({
+        container: "app",
+        pages: [
+          pageState("HomePage"),
+          pageState("ServicePage"),
+          pageState("ProfilePage"),
+          pageState("MapStateBrowse"),
+          pageState("MapStateMainPoiPage"),
+          pageState("MapStatePoi"),
+          pageState("MapStatePoiDetail"),
+          pageState("MapStateRoute"),
+          pageState("MapStateSimulateNavi"),
+          pageState("MapStateNavi"),
+          pageState("MapStateSelectPoint"),
+          pageState("MapStateSearchPage"),
+          pageState("MapStateBuildingList"),
+          pageState("MapStateChangeStartEndPoint"),
+          pageState("MapStateExhibitionRoute"),
+          pageState("PoiDetailPage"),
+          pageState("MapStateVisitNavi"),
+          pageState("VoiceListenerPage"),
+          pageState("MapStateSharePos"),
+          pageState("MapStateCreateGroup"),
+          pageState("MapStateShareGroup"),
+        ],
+        onCreate: function (api) {
+          const params = api.getParams();
+          const { method } = params;
+
+          // 非初始化方法时，先执行 initPage 以兼容特殊入口
+          if (!["MapStateBrowse", "init", "initPage"].includes(method)) {
+            const initPageParams = { ...params, method: "initPage" };
+            api.processCommand(initPageParams);
+          }
+          api.processCommand(params);
+        },
+      });
+    </script>
+  </body>
+
+  <!-- 添加 uni-app 的 webview 库，用于在 H5 中使用 uni-app 的 webview 功能 -->
+  <script type="text/javascript" src="../libs/uni.webview.1.5.6.js"></script>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" charset="UTF-8">
+    <title>希希智能导游-代金券领取</title>
+    <link rel="stylesheet" href="./style/css.css">
+</head>
+<body>
+    <div class="voucherPage">
+        <div><img src="./images/bg1.png" alt="" width="100%"></div>
+        <div class="contents">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <script src="libs/zepto.min.js"></script>
+    <script src="libs/jweixin-1.6.js"></script>
+    <script src="libs/signature.js"></script>
+    <script>
+        var width = document.body.clientWidth;
+        var wd = Math.floor(width / 3);
+        var url = "https://map1a.daxicn.com/payApi/merchantApi/api/pay/getWeiXinDiscount";
+        $.ajax({
+            url:url,
+            type:"POST",
+            success:function (res){
+                if(res.code == 0){
+                    var str = "";
+                    res.data.forEach(city=>{
+                        city.list.forEach(info=>{
+                            str += `<li>
+                                <wx-open-launch-weapp style="width:${wd}px;height:${wd}px;display: block" id="launch-btn" username="gh_e30e48d61e93" path="/pages/pay/pay?token=${info.token}&bdid=${info.bdid}&merchantCode=${info.merchantCode}&payCode=${info.payCode}&travelAgency=0&method=getDiscount">
+                                    <template>
+                                        <div class="img2" style="width:${wd}px;height:${wd}px;background-image:url('https://map1a.daxicn.com/DXOneMap/voucher/images/${info.bdid}.png');background-size: 100% 100%; background-repeat: no-repeat; margin:0 auto;text-align: center;"></div>
+                                    </template>
+                                </wx-open-launch-weapp>
+                            </li>`
+                        })
+                    });
+                    $(".contents ul").append($(str))
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>
