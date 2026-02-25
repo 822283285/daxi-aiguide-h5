@@ -111,7 +111,7 @@
                 var d = {
                   type: "postEventToMiniProgram",
                   id: params["userId"],
-                  methodToMiniProgram: "exhibitId=" + (data["id2"] || data["id"]) + "&bdi小怪物od=" + params.bdid + "&token=" + params.token,
+                  methodToMiniProgram: "exhibitId=" + (data["id2"] || data["id"]) + "&bdid=" + params.bdid + "&token=" + params.token,
                   roleType: "receiver",
                 };
                 window["locWebSocketPostMessage"] && window["locWebSocketPostMessage"](d);
