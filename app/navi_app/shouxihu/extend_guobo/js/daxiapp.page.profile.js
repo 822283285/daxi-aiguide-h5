@@ -287,8 +287,8 @@
     },
 
     _generateAESData: function (openid, username) {
-      if (window.parent?.commonUtils?.generateAESData) {
-        return window.parent.commonUtils.generateAESData(openid, username);
+      if (window.commonUtils?.generateAESData) {
+        return window.commonUtils.generateAESData(openid, username);
       }
 
       try {
