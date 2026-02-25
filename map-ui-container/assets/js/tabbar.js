@@ -104,24 +104,18 @@ function handleTabbarItemClick(tabItem, index) {
 
   if (pageName == "听导游") {
     // 听导游页面特殊处理
-    const getUserId = () => {
-      if (window.commonUtils && window.commonUtils.getQueryParam) {
-        return window.commonUtils.getQueryParam("userId");
-      }
-      if (window.parent && window.parent.commonUtils && window.parent.commonUtils.getQueryParam) {
-        return window.parent.commonUtils.getQueryParam("userId");
-      }
-      return "";
-    };
+    const message = window.messageFactory?.buildMiniProgramMessage
+      ? window.messageFactory.buildMiniProgramMessage("changeTab=/pages/media/player-2")
+      : {
+          type: "postEventToMiniProgram",
+          id: window.commonUtils?.getQueryParamFromSelfOrParent?.("userId") || "",
+          methodToMiniProgram: "changeTab=/pages/media/player-2",
+          roleType: "receiver",
+        };
 
-    const message = {
-      type: "postEventToMiniProgram",
-      id: getUserId(),
-      methodToMiniProgram: "changeTab=/pages/media/player-2",
-      roleType: "receiver",
-    };
-    if (window.parent && window.parent.ws) {
-      window.parent.ws.send(JSON.stringify(message));
+    const sent = window.messageFactory?.sendToParentWs?.(message, "tabbar") || false;
+    if (!sent) {
+      console.warn("tabbar: 无法发送听导游跳转消息，父窗口 WebSocket 不可用");
     }
   } else if (targetPage) {
     // 如果是容器模式页面，使用页面切换API

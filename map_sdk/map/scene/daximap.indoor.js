@@ -293,13 +293,24 @@
         const poiLayersJson = item.poilayer;
         if (poiLayersJson) {
           poiLayersJson.forEach((poiLayerJson, j) => {
+            const poiLink = poiLayerJson.link || "";
+            const disableLegacyPoiJsonRequest = global.disableLegacyPoiJsonRequest !== false;
+            const isLegacyPoiJson = /^poi\.json(\?.*)?$/i.test(poiLink);
+
+            // 历史兼容：poi.json 常常不存在且会在初始化阶段触发多次 404
+            // 默认跳过该类请求；如确需启用，可设置 window.disableLegacyPoiJsonRequest = false
+            if (isLegacyPoiJson && disableLegacyPoiJsonRequest) {
+              console.warn("[DXIndoorMap] 已跳过 legacy POI 请求:", poiLink, "floor:", floorId);
+              return;
+            }
+
             let poiDataUrl = "";
             if (baseUrl.indexOf("/getFile") != -1) {
-              poiDataUrl = baseUrl + encodeURIComponent(poiLayerJson.link);
-            } else if (poiLayerJson.link.indexOf("http") == 0) {
-              poiDataUrl = poiLayerJson.link;
+              poiDataUrl = baseUrl + encodeURIComponent(poiLink);
+            } else if (poiLink.indexOf("http") == 0) {
+              poiDataUrl = poiLink;
             } else {
-              poiDataUrl = baseUrl + poiLayerJson.link;
+              poiDataUrl = baseUrl + poiLink;
             }
 
             const version = this.bdInfo.poiVersion || global.version;
