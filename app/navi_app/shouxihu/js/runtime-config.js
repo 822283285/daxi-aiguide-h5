@@ -141,36 +141,43 @@
     return `${pagePath}${pagePath.includes("?") ? "&" : "?"}${queryString}`;
   }
 
+  /**
+   * 向 uni-app 小程序发送导航消息（通过 WebSocket）
+   * @param {string} action - 操作类型 ('changeTab' | 'navigateTo' | 'redirectTo' | 'reLaunch')
+   * @param {string} pagePath - 页面路径，如 '/pages/media/player-2'
+   * @param {Object} [params={}] - 页面参数对象
+   */
   function navigateToUni(action, pagePath, params = {}) {
-    const miniProgram = global.wx?.miniProgram;
-    const url = buildMiniProgramUrl(pagePath, params);
-
-    if (!miniProgram || !url) {
-      console.warn("navigateToUni 调用失败：miniProgram 环境不可用或 url 为空", {
-        action,
-        pagePath,
-      });
+    if (!pagePath) {
+      console.warn("[navigateToUni] pagePath 为空");
       return false;
     }
 
-    const actionMapping = {
-      changeTab: "switchTab",
-      navigateTo: "navigateTo",
-      redirectTo: "redirectTo",
-      reLaunch: "reLaunch",
-      switchTab: "switchTab",
+    if (!global.ws) {
+      console.error("[navigateToUni] WebSocket 不可用");
+      return false;
+    }
+
+    // 构建 method 字符串：action=pagePath?key=value&key2=value2
+    let method = `${action}=${pagePath}`;
+    const queryPairs = [];
+    for (const [key, value] of Object.entries(params || {})) {
+      if (value == null || value == undefined) continue;
+      queryPairs.push(`${key}=${typeof value == "object" ? JSON.stringify(value) : String(value)}`);
+    }
+    if (queryPairs.length > 0) {
+      method += `?${queryPairs.join("&")}`;
+    }
+
+    const message = {
+      type: "postEventToMiniProgram",
+      id: getParam("userId") || "",
+      methodToMiniProgram: method,
+      roleType: "receiver",
     };
 
-    const invokeAction = actionMapping[action] || "navigateTo";
-    if (typeof miniProgram[invokeAction] !== "function") {
-      console.warn("navigateToUni 调用失败：miniProgram API 不存在", {
-        action,
-        invokeAction,
-      });
-      return false;
-    }
-
-    miniProgram[invokeAction]({ url });
+    global.ws.send(JSON.stringify(message));
+    console.log("[navigateToUni] 发送消息:", method);
     return true;
   }
 
