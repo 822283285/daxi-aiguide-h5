@@ -19,17 +19,36 @@ window.pageSwitcher = (function () {
   // 当前页面标识
   let currentPage = "map"; // 默认显示地图页
 
+  // iframe 参数透传白名单（避免将无关参数扩散到子页面）
+  const PASS_THROUGH_QUERY_KEYS = [
+    "token",
+    "buildingId",
+    "userId",
+    "appId",
+    "device",
+    "testLocWs",
+    "disabledH5Location",
+    "wsIndex",
+    "sendLocType",
+    "method",
+    "platform",
+    "lang",
+    "scenic",
+  ];
+
   /**
    * 获取URL参数
    * @returns {Object} URL参数对象
    */
   function getUrlParams() {
-    const params = {};
-    const searchParams = new URLSearchParams(window.location.search);
-    for (const [key, value] of searchParams.entries()) {
-      params[key] = value;
+    const allParams = window.commonUtils?.getAllQueryParams ? window.commonUtils.getAllQueryParams() : {};
+
+    if (window.commonUtils?.pickQueryParams) {
+      return window.commonUtils.pickQueryParams(PASS_THROUGH_QUERY_KEYS, allParams);
     }
-    return params;
+
+    // commonUtils 不可用时兜底：透传全部参数（保持兼容）
+    return allParams;
   }
 
   /**
