@@ -1,26 +1,166 @@
-(function () {
+(function (global) {
   "use strict";
 
-  window.indoorLocalAlgorithms = "fusion";
-  window.mapSDKPath = "../../../map_sdk/";
+  global.indoorLocalAlgorithms = "fusion";
+  global.mapSDKPath = "../../../map_sdk/";
 
-  let dataPath;
-  try {
-    dataPath = window.parent?.commonUtils?.getBaseUrl?.();
-    if (dataPath) {
-      console.log("从父容器读取配置：dataPath =", dataPath);
-    } else {
-      console.warn("无法访问父容器配置，使用默认值");
+  const ALLOWED_QUERY_PARAMS = [
+    "env",
+    "token",
+    "buildingId",
+    "userId",
+    "appId",
+    "device",
+    "testLocWs",
+    "disabledH5Location",
+    "wsIndex",
+    "sendLocType",
+    "method",
+    "platform",
+    "lang",
+    "scenic",
+  ];
+
+  const ENV_MATRIX = {
+    dev: {
+      apiBaseUrl: "https://cloud.daxicn.com/publicData",
+      staticBaseUrl: "https://cloud.daxicn.com/publicData",
+      wsBaseUrl: "wss://map.daxicn.com/ws/loc",
+      mapDataBaseUrl: "https://cloud.daxicn.com/publicData",
+    },
+    uat: {
+      apiBaseUrl: "https://cloud.daxicn.com/publicData",
+      staticBaseUrl: "https://cloud.daxicn.com/publicData",
+      wsBaseUrl: "wss://map.daxicn.com/ws/loc",
+      mapDataBaseUrl: "https://cloud.daxicn.com/publicData",
+    },
+    prod: {
+      apiBaseUrl: "https://cloud.daxicn.com/scenic",
+      staticBaseUrl: "https://cloud.daxicn.com/scenic",
+      wsBaseUrl: "wss://map.daxicn.com/ws/loc",
+      mapDataBaseUrl: "https://cloud.daxicn.com/scenic",
+    },
+  };
+
+  function getAllQueryParams(search = global.location.search) {
+    const params = {};
+    const searchParams = new URLSearchParams(search || "");
+    for (const [key, value] of searchParams.entries()) {
+      params[key] = value;
     }
-  } catch (error) {
-    console.warn("读取父容器配置失败，使用默认值：", error);
+    return params;
   }
 
-  const token = window.getParam ? getParam("token") : "";
-  const buildingId = window.getParam ? getParam("buildingId") : "";
+  function pickAllowedQuery(search = global.location.search) {
+    const source = getAllQueryParams(search);
+    const result = {};
+    ALLOWED_QUERY_PARAMS.forEach((key) => {
+      if (source[key] !== undefined) {
+        result[key] = source[key];
+      }
+    });
+    return result;
+  }
 
-  window.dataPath = dataPath || "https://cloud.daxicn.com/publicData/";
-  window.projectUrl = `${window.dataPath}/${token}/`;
-  window.scenicUrl = `${window.dataPath}/${token}/${buildingId}/`;
-  window.localFont = true;
-})();
+  const queryParams = pickAllowedQuery();
+  const currentEnv = queryParams.env || "dev";
+  const envConfig = ENV_MATRIX[currentEnv] || ENV_MATRIX.dev;
+
+  function getParam(name) {
+    if (!name) return null;
+    if (queryParams[name] !== undefined) {
+      return queryParams[name];
+    }
+    return getAllQueryParams()[name] ?? null;
+  }
+
+  function normalizeBaseUrl(baseUrl) {
+    if (typeof baseUrl !== "string") {
+      return "";
+    }
+    return baseUrl.replace(/\/+$/, "");
+  }
+
+  function getEnvConfig() {
+    return {
+      env: currentEnv,
+      ...envConfig,
+    };
+  }
+
+  function getScenicUrls() {
+    const token = getParam("token") || "";
+    const buildingId = getParam("buildingId") || "";
+    const base = normalizeBaseUrl(getEnvConfig().mapDataBaseUrl);
+
+    return {
+      baseUrl: `${base}/`,
+      projectUrl: token ? `${base}/${token}/` : `${base}/`,
+      scenicUrl: token && buildingId ? `${base}/${token}/${buildingId}/` : `${base}/`,
+    };
+  }
+
+  function generateAESData(openid, nickname) {
+    if (typeof CryptoJS === "undefined") {
+      console.warn("CryptoJS 未加载，AES 加密降级为明文 JSON");
+      return JSON.stringify({ openid, nickname });
+    }
+
+    const data = {
+      openid,
+      nickname,
+    };
+
+    const key = CryptoJS.enc.Utf8.parse("Y5jtoFVaMismiJ2y");
+    const srcs = CryptoJS.enc.Utf8.parse(JSON.stringify(data));
+    const encrypted = CryptoJS.AES.encrypt(srcs, key, {
+      mode: CryptoJS.mode.ECB,
+      padding: CryptoJS.pad.Pkcs7,
+    });
+
+    return encrypted.toString();
+  }
+
+  global.runtimeConfig = {
+    ALLOWED_QUERY_PARAMS,
+    ENV_MATRIX,
+    getAllQueryParams,
+    pickAllowedQuery,
+    getParam,
+    getEnvConfig,
+    getScenicUrls,
+  };
+
+  global.commonUtils = {
+    ...(global.commonUtils || {}),
+    getAllQueryParams,
+    getQueryParam: getParam,
+    getRuntimeParam: getParam,
+    getQueryParamFromSelfOrParent: getParam,
+    getBaseUrl: function () {
+      return getScenicUrls().baseUrl;
+    },
+    getProjectUrl: function () {
+      return getScenicUrls().projectUrl;
+    },
+    getScenicUrl: function () {
+      return getScenicUrls().scenicUrl;
+    },
+    getUserInfoUrl: function () {
+      const apiBaseUrl = getEnvConfig().apiBaseUrl || "";
+      return `${apiBaseUrl}/payApi/merchantApi/api/wxuser/info`;
+    },
+    generateAESData,
+  };
+
+  const scenicUrls = getScenicUrls();
+  global.dataPath = scenicUrls.baseUrl;
+  global.projectUrl = scenicUrls.projectUrl;
+  global.scenicUrl = scenicUrls.scenicUrl;
+  global.localFont = true;
+
+  console.log("运行在直连模式，已使用 URL 参数完成运行时配置初始化", {
+    env: currentEnv,
+    dataPath: global.dataPath,
+  });
+})(window);

@@ -7,7 +7,6 @@ const vm = require('vm');
 const repoRoot = process.cwd();
 
 const defaultSyntaxDirs = [
-  'map-ui-container/assets/js',
   'app/components',
   'app/navi_app/shouxihu/js',
   'app/navi_app/utils',
@@ -15,7 +14,6 @@ const defaultSyntaxDirs = [
 ];
 
 const defaultSmokeHtmlFiles = [
-  'map-ui-container/index.html',
   'app/navi_app/shouxihu/index_src.html'
 ];
 
