@@ -19,8 +19,8 @@ window.pageSwitcher = (function () {
   // 当前页面标识
   let currentPage = "map"; // 默认显示地图页
 
-  // iframe 参数透传白名单（避免将无关参数扩散到子页面）
-  const PASS_THROUGH_QUERY_KEYS = [
+  // iframe 参数透传白名单（由 runtime-config 统一管理）
+  const PASS_THROUGH_QUERY_KEYS = window.runtimeConfig?.ALLOWED_QUERY_PARAMS || [
     "token",
     "buildingId",
     "userId",

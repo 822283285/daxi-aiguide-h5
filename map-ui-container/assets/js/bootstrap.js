@@ -8,6 +8,7 @@
   const scripts = [
     "./lib/crypto-js.min.js",
     "./lib/uni.webview.1.5.6.js",
+    "./config/runtime-config.js",
     "./assets/js/utils.js",
     "./assets/js/app-config.js",
     "./assets/js/message-factory.js",
