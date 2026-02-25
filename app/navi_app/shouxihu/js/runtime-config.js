@@ -121,6 +121,59 @@
     return encrypted.toString();
   }
 
+  function buildMiniProgramUrl(pagePath, params = {}) {
+    if (!pagePath) {
+      return "";
+    }
+
+    const query = new URLSearchParams();
+    Object.entries(params || {}).forEach(([key, value]) => {
+      if (value === undefined || value === null || value === "") {
+        return;
+      }
+      query.append(key, typeof value === "object" ? JSON.stringify(value) : String(value));
+    });
+
+    const queryString = query.toString();
+    if (!queryString) {
+      return pagePath;
+    }
+    return `${pagePath}${pagePath.includes("?") ? "&" : "?"}${queryString}`;
+  }
+
+  function navigateToUni(action, pagePath, params = {}) {
+    const miniProgram = global.wx?.miniProgram;
+    const url = buildMiniProgramUrl(pagePath, params);
+
+    if (!miniProgram || !url) {
+      console.warn("navigateToUni 调用失败：miniProgram 环境不可用或 url 为空", {
+        action,
+        pagePath,
+      });
+      return false;
+    }
+
+    const actionMapping = {
+      changeTab: "switchTab",
+      navigateTo: "navigateTo",
+      redirectTo: "redirectTo",
+      reLaunch: "reLaunch",
+      switchTab: "switchTab",
+    };
+
+    const invokeAction = actionMapping[action] || "navigateTo";
+    if (typeof miniProgram[invokeAction] !== "function") {
+      console.warn("navigateToUni 调用失败：miniProgram API 不存在", {
+        action,
+        invokeAction,
+      });
+      return false;
+    }
+
+    miniProgram[invokeAction]({ url });
+    return true;
+  }
+
   global.runtimeConfig = {
     ALLOWED_QUERY_PARAMS,
     ENV_MATRIX,
@@ -151,7 +204,10 @@
       return `${apiBaseUrl}/payApi/merchantApi/api/wxuser/info`;
     },
     generateAESData,
+    navigateToUni,
   };
+
+  global.navigateToUni = navigateToUni;
 
   const scenicUrls = getScenicUrls();
   global.dataPath = scenicUrls.baseUrl;
