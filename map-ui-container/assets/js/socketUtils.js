@@ -8,6 +8,26 @@ function getParam(name) {
   return window.messageFactory?.getParam?.(name) || null;
 }
 
+function buildMethod(action, value, params = {}) {
+  if (window.messageFactory?.buildMethodString) {
+    return window.messageFactory.buildMethodString(action, value, params);
+  }
+
+  let method = `${action}=${value}`;
+  const query = new URLSearchParams();
+  Object.entries(params || {}).forEach(([key, val]) => {
+    if (val != null && val != undefined) {
+      const nextVal = typeof val == "object" ? JSON.stringify(val) : String(val);
+      query.append(key, nextVal);
+    }
+  });
+  const queryString = query.toString();
+  if (queryString) {
+    method += `?${queryString}`;
+  }
+  return method;
+}
+
 /**
  * 向 H5 地图页面发送消息
  * @param {Object} message - 消息对象
@@ -23,7 +43,11 @@ function sendToH5(message) {
  * @param {string} poiIds - POI ID（可选）
  */
 function openPoiToH5(keyword, poiIds) {
-  const methodToH5 = `method=showPois&keyword=${keyword}${poiIds ? `&poiIds=${poiIds}` : ""}`;
+  const methodToH5 = buildMethod("method", "showPois", {
+    keyword: keyword || "",
+    poiIds: poiIds || undefined,
+  });
+
   const message = window.messageFactory?.buildH5Message
     ? window.messageFactory.buildH5Message(methodToH5)
     : {
@@ -41,7 +65,8 @@ function openPoiToH5(keyword, poiIds) {
  * @param {string} exhibitId - 展品 ID
  */
 function openExhibitToH5(exhibitId) {
-  const methodToH5 = `method=showExhibit&id=${exhibitId}`;
+  const methodToH5 = buildMethod("method", "showExhibit", { id: exhibitId });
+
   const message = window.messageFactory?.buildH5Message
     ? window.messageFactory.buildH5Message(methodToH5)
     : {
@@ -58,7 +83,8 @@ function openExhibitToH5(exhibitId) {
  * 在地图页面显示游览路线
  */
 function openRouteToH5() {
-  const methodToH5 = "method=exhibitionRoute";
+  const methodToH5 = buildMethod("method", "exhibitionRoute");
+
   const message = window.messageFactory?.buildH5Message
     ? window.messageFactory.buildH5Message(methodToH5)
     : {
@@ -80,23 +106,7 @@ function openRouteToH5() {
  * @param {string} [options.userId] - 用户ID，默认从URL获取
  */
 function navigateToUni(action, pagePath, params = {}, options = {}) {
-  let method = `${action}=${pagePath}`;
-
-  if (params && Object.keys(params).length > 0) {
-    const queryPairs = [];
-
-    for (const [key, value] of Object.entries(params)) {
-      if (value == null || value == undefined) {
-        continue;
-      }
-      const encodedValue = typeof value == "object" ? JSON.stringify(value) : String(value);
-      queryPairs.push(`${encodeURIComponent(key)}=${encodeURIComponent(encodedValue)}`);
-    }
-
-    if (queryPairs.length > 0) {
-      method += `?${queryPairs.join("&")}`;
-    }
-  }
+  const method = buildMethod(action, pagePath, params);
 
   const message = window.messageFactory?.buildMiniProgramMessage
     ? window.messageFactory.buildMiniProgramMessage(method, { userId: options.userId })

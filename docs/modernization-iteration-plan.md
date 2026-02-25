@@ -117,3 +117,32 @@
 1. 在 `map-ui-container` 增加最小化的浏览器端单元测试（参数解析、消息工厂、白名单透传）。
 2. 将 `tabbar` 的页面名称映射外置到配置层，减少字符串分支硬编码。
 3. 为 `messageFactory` 增加消息 schema 校验（开发环境告警）。
+
+---
+
+## 第 4 轮迭代（已完成）
+
+### 本轮改动
+
+1. **消息工厂新增方法构建与 schema 校验能力**
+   - 文件：`map-ui-container/assets/js/message-factory.js`
+   - 新增：`buildMethodString`，统一 `action=value?query` 拼接逻辑。
+   - 新增：`validateMessage`，对 `postEventToMiniProgram` / `postEventToH5` 的关键字段做校验并输出错误日志。
+   - 调整：`sendToParentWs` 在发送前执行校验，避免脏消息下发。
+
+2. **socketUtils 统一复用 method 构建逻辑**
+   - 文件：`map-ui-container/assets/js/socketUtils.js`
+   - 新增：`buildMethod`（优先复用 `messageFactory.buildMethodString`，否则走兼容兜底）。
+   - 调整：`openPoiToH5/openExhibitToH5/openRouteToH5/navigateToUni` 全部改为通过 `buildMethod` 构建 method 字段。
+   - 效果：减少拼接分支，降低参数拼接错误概率。
+
+### 本轮复盘
+
+- 本轮重点是“消息协议字段标准化 + 发送前防御式校验”。
+- 下一步可以把 `map-ui-container` 的消息常量和事件名彻底配置化，继续降低硬编码比例。
+
+### 下一轮候选任务（第 5 轮）
+
+1. 引入 `map-ui-container` 级别轻量单元测试（messageFactory 与 page-switcher 白名单逻辑）。
+2. 提炼 tabbar 页面映射（`PAGE_NAME_MAP`）到配置层，避免中文文案直接控制流程分支。
+3. 收敛容器层全局导出 API 到单入口对象，减少 `window.*` 分散导出。
