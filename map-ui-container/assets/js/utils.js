@@ -29,19 +29,44 @@ function getQueryParam(name) {
 }
 
 /**
+ * 从运行时配置读取白名单参数
+ * @param {string} name - 参数名称
+ * @returns {string|null} 参数值
+ */
+function getRuntimeParam(name) {
+  if (window.runtimeConfig?.getParam) {
+    return window.runtimeConfig.getParam(name);
+  }
+  return getQueryParam(name);
+}
+
+/**
  * 获取查询参数（优先当前窗口，其次父窗口）
  * @param {string} name - 参数名称
  * @returns {string|null} 参数值
  */
 function getQueryParamFromSelfOrParent(name) {
-  const currentVal = getQueryParam(name);
-  if (currentVal != null) {
-    return currentVal;
+  return getRuntimeParam(name);
+}
+
+/**
+ * 根据白名单提取查询参数
+ * @param {string[]} allowKeys - 允许透传的参数列表
+ * @param {Object<string,string>} [sourceParams] - 参数源，默认使用当前URL参数
+ * @returns {Object<string,string>} 过滤后的参数
+ */
+function pickQueryParams(allowKeys, sourceParams = getAllQueryParams()) {
+  if (!Array.isArray(allowKeys) || allowKeys.length === 0) {
+    return {};
   }
-  if (window.parent && window.parent !== window && window.parent.commonUtils?.getQueryParam) {
-    return window.parent.commonUtils.getQueryParam(name);
-  }
-  return null;
+
+  const next = {};
+  allowKeys.forEach((key) => {
+    if (sourceParams[key] !== undefined) {
+      next[key] = sourceParams[key];
+    }
+  });
+  return next;
 }
 
 /**
@@ -244,24 +269,13 @@ function generateAESData(openid, nickname) {
   return AES.encrypt(JSON.stringify(data));
 }
 
-/** @type {string} 景区云服务基础地址 */
-// const SCENIC_BASE_URL = "https://cloud.daxicn.com/scenic/"; // 80生产服务器地址
-const SCENIC_BASE_URL = "https://cloud.daxicn.com/publicData/"; // 22测试服务器地址
-/**
- * 获取查询参数（兼容iframe和当前窗口）
- * @param {string} name - 参数名称
- * @returns {string|null} 参数值
- */
-function _getParam(name) {
-  return getQueryParamFromSelfOrParent(name);
-}
 
 /**
  * 获取景区云服务基础URL
  * @returns {string} 基础URL
  */
 function getBaseUrl() {
-  return SCENIC_BASE_URL;
+  return window.runtimeConfig?.getScenicUrls?.().baseUrl || "";
 }
 
 /**
@@ -269,8 +283,7 @@ function getBaseUrl() {
  * @returns {string} 项目URL
  */
 function getProjectUrl() {
-  const token = _getParam("token") || "";
-  return `${SCENIC_BASE_URL}${token}`;
+  return window.runtimeConfig?.getScenicUrls?.().projectUrl || "";
 }
 
 /**
@@ -278,9 +291,7 @@ function getProjectUrl() {
  * @returns {string} 景区完整URL
  */
 function getScenicUrl() {
-  const token = _getParam("token") || "";
-  const buildingId = _getParam("buildingId") || "";
-  return `${SCENIC_BASE_URL}${token}/${buildingId}`;
+  return window.runtimeConfig?.getScenicUrls?.().scenicUrl || "";
 }
 
 /**
@@ -300,13 +311,15 @@ function buildScenicImageUrl(imagePath, folder = "pages/images") {
  * @returns {string} 用户信息API URL
  */
 function getUserInfoUrl() {
-  return "https://map1a.daxicn.com/payApi/merchantApi/api/wxuser/info";
+  const apiBaseUrl = window.runtimeConfig?.getEnvConfig?.().apiBaseUrl || "";
+  return `${apiBaseUrl}/payApi/merchantApi/api/wxuser/info`;
 }
 
 // 导出到全局，供其他脚本使用
 window.commonUtils = {
   getAllQueryParams,
   getQueryParam,
+  getRuntimeParam,
   getQueryParamFromSelfOrParent,
   pickQueryParams,
   isValidArray,

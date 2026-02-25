@@ -3,6 +3,10 @@
  * 统一管理页面和导航栏配置，避免重复维护
  */
 
+function getStaticAssetBaseUrl() {
+  return window.runtimeConfig?.getEnvConfig?.().staticBaseUrl || "https://ar-video.daxicn.com/publicData";
+}
+
 /**
  * @type {Array<Object>} 页面和导航栏配置数组
  * 包含所有页面的统一配置信息
@@ -13,8 +17,8 @@ const APP_CONFIG = [
     id: 2,
     key: "map",
     name: "地图",
-    activeIcon: "https://ar-video.daxicn.com/publicData/download/route-active.png",
-    inactiveIcon: "https://ar-video.daxicn.com/publicData/download/route-inactive.png",
+    activeIcon: `${getStaticAssetBaseUrl()}/download/route-active.png`,
+    inactiveIcon: `${getStaticAssetBaseUrl()}/download/route-inactive.png`,
     isContainerMode: true,
     href: "../app/navi_app/shouxihu/index_src.html",
     iframeId: "iframe-map",
@@ -25,8 +29,8 @@ const APP_CONFIG = [
     id: 3,
     key: "lecture",
     name: "讲解",
-    activeIcon: "https://ar-video.daxicn.com/publicData/download/media-active.png",
-    inactiveIcon: "https://ar-video.daxicn.com/publicData/download/media-inactive.png",
+    activeIcon: `${getStaticAssetBaseUrl()}/download/media-active.png`,
+    inactiveIcon: `${getStaticAssetBaseUrl()}/download/media-inactive.png`,
     isContainerMode: false,
     href: "/pages/media/player-2",
     iframeId: null,
