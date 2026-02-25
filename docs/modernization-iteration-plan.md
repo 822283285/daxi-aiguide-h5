@@ -49,6 +49,8 @@
 2. 每轮必须记录“改动 + 风险 + 下一步”。
 3. 优先顺序：可用性 > 安全性 > 可维护性 > 性能微调。
 
+---
+
 ## 第 2 轮迭代（已完成）
 
 ### 本轮改动
@@ -79,3 +81,39 @@
 1. 抽离 `socketUtils` 与 `tabbar` 的 message 构建逻辑，形成统一消息工厂。
 2. 为容器层增加基础单元测试（参数解析、消息编码、白名单过滤）。
 3. 进一步清理 `map-ui-container` 的全局导出，收敛到单一命名空间。
+
+---
+
+## 第 3 轮迭代（已完成）
+
+### 本轮改动
+
+1. **新增统一消息工厂模块**
+   - 文件：`map-ui-container/assets/js/message-factory.js`
+   - 新增：`buildMiniProgramMessage`、`buildH5Message`、`sendToParentWs`、`getParentWs`。
+   - 作用：统一父子通信协议构建与发送，减少各处重复拼装消息。
+
+2. **Socket 通信与消息工厂对齐**
+   - 文件：`map-ui-container/assets/js/socketUtils.js`
+   - 调整：`openPoiToH5/openExhibitToH5/openRouteToH5/navigateToUni` 改为优先使用 `messageFactory`。
+   - 调整：保留无 messageFactory 场景的兜底逻辑，保证向后兼容。
+
+3. **Tabbar 跳转消息复用统一工厂**
+   - 文件：`map-ui-container/assets/js/tabbar.js`
+   - 调整：`听导游` 分支改为复用 `messageFactory` 构建并发送消息。
+   - 调整：在父窗口 ws 不可用时输出明确 warning，提升可观测性。
+
+4. **入口加载顺序补齐**
+   - 文件：`map-ui-container/index.html`
+   - 调整：新增 `message-factory.js` 引入，并置于 `socketUtils/tabbar` 前，确保依赖顺序正确。
+
+### 本轮复盘
+
+- 本轮重点是“通信层去重与标准化”，已经形成统一消息出口。
+- 后续可继续将散落在 navi_app 内的消息拼装逻辑逐步纳入同一契约。
+
+### 下一轮候选任务（第 4 轮）
+
+1. 在 `map-ui-container` 增加最小化的浏览器端单元测试（参数解析、消息工厂、白名单透传）。
+2. 将 `tabbar` 的页面名称映射外置到配置层，减少字符串分支硬编码。
+3. 为 `messageFactory` 增加消息 schema 校验（开发环境告警）。
