@@ -22,6 +22,7 @@ flowchart TD
 1. **容器启动**
    - `map-ui-container/index.html` 只保留 iframe 和统一引导脚本入口。
    - `map-ui-container/assets/js/bootstrap.js` 负责容器脚本顺序加载、重试与超时兜底。
+   - `map-ui-container/config/runtime-config.js` 在容器阶段注入环境矩阵与参数契约。
 
 2. **地图页引导**
    - `app/navi_app/shouxihu/index_src.html` 通过 `bootstrap-loader.js` 统一管理所有脚本依赖。
@@ -42,3 +43,9 @@ flowchart TD
 - **单脚本加载失败**：最多重试 2 次，仍失败则上报原因并展示兜底页。
 - **全局超时保护**：超过 bootstrap 超时时间直接展示兜底页，避免白屏长时间无反馈。
 - **可观测性**：所有关键依赖状态挂载在 `window.__daxiBootstrapStatus`，并通过 `CustomEvent` 广播。
+
+
+## 4. 参数契约
+
+- 详见 `map-ui-container/docs/parameter-contract.md`。
+- 父子 iframe 统一复用 runtime-config 提供的白名单参数读取，不再重复实现 `_getParam`。

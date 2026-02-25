@@ -6,11 +6,11 @@
   "use strict";
 
   function getParam(name) {
-    if (global.commonUtils?.getQueryParamFromSelfOrParent) {
-      return global.commonUtils.getQueryParamFromSelfOrParent(name);
+    if (global.runtimeConfig?.getParam) {
+      return global.runtimeConfig.getParam(name);
     }
-    if (global.commonUtils?.getQueryParam) {
-      return global.commonUtils.getQueryParam(name);
+    if (global.commonUtils?.getRuntimeParam) {
+      return global.commonUtils.getRuntimeParam(name);
     }
     return null;
   }
@@ -97,18 +97,18 @@
   function buildMiniProgramMessage(methodToMiniProgram, options = {}) {
     return {
       type: "postEventToMiniProgram",
-      id: options.userId || getParam("userId") || "",
+      id: options.userId || getParam("userId"),
       methodToMiniProgram,
       roleType: options.roleType || "receiver",
     };
   }
 
   function buildH5Message(methodToH5, options = {}) {
-    const userId = options.userId || getParam("userId") || "";
+    const userId = options.userId || getParam("userId");
     return {
       id: userId,
       userId,
-      appId: options.appId || getParam("appId") || "",
+      appId: options.appId || getParam("appId"),
       appType: options.appType || "wechat",
       type: options.type || "postEventToH5",
       roleType: options.roleType || "sender",

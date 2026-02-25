@@ -25,8 +25,14 @@ const PAGE_NAME_MAP = {
  */
 async function fetchTabbarConfig(token, bdid) {
   try {
-    if (!token || !bdid) {
-      console.warn("fetchTabbarConfig: token或bdid为空", { token, bdid });
+    const validation = window.runtimeConfig?.requireParams?.(["token", "buildingId", "userId"], "tabbar:fetchTabbarConfig");
+    if (!validation?.valid) {
+      console.warn("fetchTabbarConfig: 参数校验失败", {
+        missing: validation?.missing || [],
+        token: window.runtimeConfig?.maskValue?.(token),
+        buildingId: window.runtimeConfig?.maskValue?.(bdid),
+        userId: window.runtimeConfig?.maskValue?.(validation?.values?.userId),
+      });
       return [];
     }
     // 使用 commonUtils 工具函数获取 URL
@@ -104,11 +110,19 @@ function handleTabbarItemClick(tabItem, index) {
 
   if (pageName == "听导游") {
     // 听导游页面特殊处理
+    const validation = window.runtimeConfig?.requireParams?.(["userId"], "tabbar:handleLectureClick");
+    if (!validation?.valid) {
+      console.warn("tabbar: userId 缺失，无法发送听导游跳转");
+      return;
+    }
+
     const message = window.messageFactory?.buildMiniProgramMessage
-      ? window.messageFactory.buildMiniProgramMessage("changeTab=/pages/media/player-2")
+      ? window.messageFactory.buildMiniProgramMessage("changeTab=/pages/media/player-2", {
+          userId: validation.values.userId,
+        })
       : {
           type: "postEventToMiniProgram",
-          id: window.commonUtils?.getQueryParamFromSelfOrParent?.("userId") || "",
+          id: validation.values.userId,
           methodToMiniProgram: "changeTab=/pages/media/player-2",
           roleType: "receiver",
         };
