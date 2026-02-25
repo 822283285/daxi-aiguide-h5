@@ -20,21 +20,21 @@
 
   const ENV_MATRIX = {
     dev: {
-      apiBaseUrl: "http://192.168.50.83:9300",
-      staticBaseUrl: "http://192.168.50.83:9300",
-      wsBaseUrl: "ws://192.168.50.83:9300/ws",
-      mapDataBaseUrl: "http://192.168.50.83:9300",
+      apiBaseUrl: "https://cloud.daxicn.com/publicData",
+      staticBaseUrl: "https://cloud.daxicn.com/publicData",
+      wsBaseUrl: "wss://map.daxicn.com/ws/loc",
+      mapDataBaseUrl: "https://cloud.daxicn.com/publicData",
     },
     uat: {
       apiBaseUrl: "https://cloud.daxicn.com/publicData",
       staticBaseUrl: "https://cloud.daxicn.com/publicData",
-      wsBaseUrl: "wss://cloud.daxicn.com/publicData/ws",
+      wsBaseUrl: "wss://map.daxicn.com/ws/loc",
       mapDataBaseUrl: "https://cloud.daxicn.com/publicData",
     },
     prod: {
       apiBaseUrl: "https://cloud.daxicn.com/scenic",
       staticBaseUrl: "https://cloud.daxicn.com/scenic",
-      wsBaseUrl: "wss://cloud.daxicn.com/scenic/ws",
+      wsBaseUrl: "wss://map.daxicn.com/ws/loc",
       mapDataBaseUrl: "https://cloud.daxicn.com/scenic",
     },
   };
@@ -84,7 +84,7 @@
     global.dispatchEvent(
       new CustomEvent("daxi:observable-error", {
         detail: payload,
-      })
+      }),
     );
 
     return payload;
@@ -129,7 +129,6 @@
       ...envInjection,
     };
   }
-
 
   function normalizeBaseUrl(baseUrl) {
     if (typeof baseUrl != "string") {
