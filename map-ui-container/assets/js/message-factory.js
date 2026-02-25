@@ -16,7 +16,7 @@
   }
 
   function getParentWs() {
-    if (global.parent && global.parent !== global && global.parent.ws) {
+    if (global.parent && global.parent.ws) {
       return global.parent.ws;
     }
     return null;
@@ -36,7 +36,7 @@
     for (const [key, value] of Object.entries(params || {})) {
       if (value == null || value == undefined) continue;
       const encodedValue = typeof value == "object" ? JSON.stringify(value) : String(value);
-      queryPairs.push(`${encodeURIComponent(key)}=${encodeURIComponent(encodedValue)}`);
+      queryPairs.push(`${key}=${encodedValue}`);
     }
 
     if (queryPairs.length > 0) {
