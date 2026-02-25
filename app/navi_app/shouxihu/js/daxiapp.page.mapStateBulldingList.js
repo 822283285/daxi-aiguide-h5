@@ -76,8 +76,8 @@
     setData: function (data, bdid, token) {
       var title = data["title"] || "建筑列表";
       // data buildingsData
-      thisObject._headerView.updateTitle(title);
-      thisObject._buildingListView.updateData(data, bdid, token);
+      this._headerView.updateTitle(title);
+      this._buildingListView.updateData(data, bdid, token);
     },
     changeStateChange: function (state) {
       var thisObject = this;
