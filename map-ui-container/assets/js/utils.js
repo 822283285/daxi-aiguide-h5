@@ -70,6 +70,26 @@ function pickQueryParams(allowKeys, sourceParams = getAllQueryParams()) {
 }
 
 /**
+ * 根据白名单提取查询参数
+ * @param {string[]} allowKeys - 允许透传的参数列表
+ * @param {Object<string,string>} [sourceParams] - 参数源，默认使用当前URL参数
+ * @returns {Object<string,string>} 过滤后的参数
+ */
+function pickQueryParams(allowKeys, sourceParams = getAllQueryParams()) {
+  if (!Array.isArray(allowKeys) || allowKeys.length === 0) {
+    return {};
+  }
+
+  const next = {};
+  allowKeys.forEach((key) => {
+    if (sourceParams[key] !== undefined) {
+      next[key] = sourceParams[key];
+    }
+  });
+  return next;
+}
+
+/**
  * 判断是否为有效数组
  * @param {*} data - 待检查的数据
  * @returns {boolean} 是否为非空数组

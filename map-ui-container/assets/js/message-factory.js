@@ -6,17 +6,17 @@
   "use strict";
 
   function getParam(name) {
-    if (global.runtimeConfig?.getParam) {
-      return global.runtimeConfig.getParam(name);
+    if (global.commonUtils?.getQueryParamFromSelfOrParent) {
+      return global.commonUtils.getQueryParamFromSelfOrParent(name);
     }
-    if (global.commonUtils?.getRuntimeParam) {
-      return global.commonUtils.getRuntimeParam(name);
+    if (global.commonUtils?.getQueryParam) {
+      return global.commonUtils.getQueryParam(name);
     }
     return null;
   }
 
   function getParentWs() {
-    if (global.parent && global.parent.ws) {
+    if (global.parent && global.parent !== global && global.parent.ws) {
       return global.parent.ws;
     }
     return null;
@@ -36,7 +36,7 @@
     for (const [key, value] of Object.entries(params || {})) {
       if (value == null || value == undefined) continue;
       const encodedValue = typeof value == "object" ? JSON.stringify(value) : String(value);
-      queryPairs.push(`${key}=${encodedValue}`);
+      queryPairs.push(`${encodeURIComponent(key)}=${encodeURIComponent(encodedValue)}`);
     }
 
     if (queryPairs.length > 0) {
@@ -97,18 +97,18 @@
   function buildMiniProgramMessage(methodToMiniProgram, options = {}) {
     return {
       type: "postEventToMiniProgram",
-      id: options.userId || getParam("userId"),
+      id: options.userId || getParam("userId") || "",
       methodToMiniProgram,
       roleType: options.roleType || "receiver",
     };
   }
 
   function buildH5Message(methodToH5, options = {}) {
-    const userId = options.userId || getParam("userId");
+    const userId = options.userId || getParam("userId") || "";
     return {
       id: userId,
       userId,
-      appId: options.appId || getParam("appId"),
+      appId: options.appId || getParam("appId") || "",
       appType: options.appType || "wechat",
       type: options.type || "postEventToH5",
       roleType: options.roleType || "sender",

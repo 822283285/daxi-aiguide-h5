@@ -146,3 +146,34 @@
 1. 引入 `map-ui-container` 级别轻量单元测试（messageFactory 与 page-switcher 白名单逻辑）。
 2. 提炼 tabbar 页面映射（`PAGE_NAME_MAP`）到配置层，避免中文文案直接控制流程分支。
 3. 收敛容器层全局导出 API 到单入口对象，减少 `window.*` 分散导出。
+
+---
+
+## 第 5 轮迭代（已完成）
+
+### 本轮问题分析（针对 404）
+
+现象：初始化阶段出现 `.../app/navi_app/shouxihu/poi.json?name=...` 的 404 请求（同类请求多次触发）。
+
+原因：
+1. 室内地图在 `_parseFloorInfo` 中会遍历 `poilayer` 并为每层创建 `DXMapBoxPoiLayer`。
+2. 当 `poilayer.link` 为历史写法 `poi.json` 时，引擎会继续发起按 `name` 查询的子请求。
+3. 当前项目部署里并未提供该 legacy `poi.json` 资源，因此触发重复 404；该数据链路在现网业务中并非必需。
+
+### 本轮改动
+
+1. **默认跳过 legacy POI 请求**
+   - 文件：`map_sdk/map/scene/daximap.indoor.js`
+   - 调整：当 `poilayer.link` 命中 `poi.json` 时，默认跳过该图层初始化并输出 warning。
+   - 可配置：如业务需要恢复该链路，可设置 `window.disableLegacyPoiJsonRequest = false` 显式开启。
+
+### 本轮复盘
+
+- 该改动能直接消除启动阶段无效 `poi.json` 404 噪音，并减少无意义网络开销。
+- 保留了可配置开关，避免硬删除历史能力。
+
+### 下一轮候选任务（第 6 轮）
+
+1. 将 legacy 开关沉淀到统一配置层（避免直接读 `window`）。
+2. 给室内图层初始化增加埋点（加载成功率、跳过原因、耗时）。
+3. 继续清理 `navi_app` 中高频字符串拼接 URL 逻辑。
