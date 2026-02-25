@@ -2,32 +2,15 @@
   var daxiapp = (global["DaxiApp"] = global["DaxiApp"] || {});
   var domUtils = daxiapp["dom"];
   var dxUtils = daxiapp["utils"];
+  var _componentModuleAdapter = (daxiapp.ComponentModules && daxiapp.ComponentModules.adapter) || {};
 
   /**
    * 从DOM元素获取POI基础数据（公共方法）
    * @param {HTMLElement} ele - DOM元素
    * @returns {Object} POI基础数据对象
    */
-  const _getPoiData = (ele) => {
-    const $ele = $(ele);
-    const getBdid = global.DxApp._mapView._mapSDK._getCurrentBuilding;
-    const poiId = String($ele.data("poiid") || $ele.data("poi") || $ele.attr("data-id") || "");
-    const id = String($ele.attr("data-id") || poiId || "");
-    return {
-      id: id,
-      poiId: poiId,
-      name: String($ele.data("name") || $ele.attr("data-name") || ""),
-      address: String($ele.data("address") || $ele.attr("data-address") || ""),
-      floorId: String($ele.data("floorid") || $ele.attr("data-floorid") || ""),
-      lon: parseFloat($ele.data("lon") || $ele.attr("data-lon") || 0),
-      lat: parseFloat($ele.data("lat") || $ele.attr("data-lat") || 0),
-      bdid: String($ele.data("bdid") || getBdid() || ""),
-      code: String($ele.data("code") || ""),
-      barcode: String($ele.data("barcode") || ""),
-      category: $ele.data("category"),
-      detailed: $ele.data("detailed") || 0,
-    };
-  };
+  // DEPRECATED: POI 基础数据读取已迁移到 app/navi_app/components/domain + adapter。
+  const _getPoiData = (ele) => (_componentModuleAdapter.getPoiData ? _componentModuleAdapter.getPoiData(ele) : {});
 
   /**
    * 创建列表项 DOM（公共方法）
@@ -37,23 +20,11 @@
    * @param {string} [id] - 元素 ID
    * @returns {HTMLLIElement} 创建的 li 元素
    */
+  // DEPRECATED: 列表项创建逻辑已迁移到 app/navi_app/components/ui + adapter。
   const _createListItem = function (childDom, events, className, id) {
-    const itemDom = document.createElement("li");
-    itemDom.setAttribute("class", className ? `item ${className}` : "item");
-    id && itemDom.setAttribute("id", id);
-    if (events) {
-      for (const eName in events) {
-        itemDom.addEventListener(eName, events[eName]);
-      }
-    }
-    if (typeof childDom == "string") {
-      itemDom.innerHTML = childDom;
-    } else if (Array.isArray(childDom)) {
-      childDom.forEach((item) => itemDom.appendChild(item));
-    } else {
-      itemDom.appendChild(childDom);
-    }
-    return itemDom;
+    return _componentModuleAdapter.createListItem
+      ? _componentModuleAdapter.createListItem(childDom, events, className, id)
+      : null;
   };
 
   /**
@@ -62,19 +33,15 @@
    * @param {string} defaultVal - 默认值
    * @returns {string} 多语言文本
    */
-  const _getLang = (key, defaultVal) => window.langData?.[key] || defaultVal;
+  const _getLang = (key, defaultVal) => (_componentModuleAdapter.getLang ? _componentModuleAdapter.getLang(key, defaultVal) : defaultVal);
 
   /**
    * 更新最后一个可见项的样式标记（公共方法）
    * @param {HTMLCollection|NodeList} childrens - 子元素集合
    */
   const _updateLastShowClass = function (childrens) {
-    for (let i = childrens.length - 1; i >= 0; i--) {
-      const display = childrens[i].style.display;
-      if (display == "" || display == "block") {
-        $(childrens[i]).addClass("last_show").siblings().removeClass("last_show");
-        return;
-      }
+    if (_componentModuleAdapter.updateLastShowClass) {
+      _componentModuleAdapter.updateLastShowClass(childrens);
     }
   };
 
@@ -84,23 +51,8 @@
    * @param {string} [selector] - 输入框选择器，默认尝试 .input_text 和 .dx_input
    * @returns {string} 输入的关键字
    */
-  const _getKeyword = (container, selector) => {
-    let input_text;
-    if (selector) {
-      input_text = domUtils.find(container, selector);
-    } else {
-      // 兼容多种常见的输入框选择器
-      input_text = domUtils.find(container, ".input_text");
-      if (!input_text || !input_text.length) {
-        input_text = domUtils.find(container, ".dx_input");
-      }
-      if (!input_text || !input_text.length) {
-        input_text = domUtils.find(container, "input");
-      }
-    }
-    const val = domUtils.val(input_text, "");
-    return typeof val === "string" ? val.trim() : "";
-  };
+  const _getKeyword = (container, selector) =>
+    _componentModuleAdapter.getKeyword ? _componentModuleAdapter.getKeyword(domUtils, container, selector) : "";
 
   /**
    * 更新路线起终点UI（公共方法）
@@ -109,18 +61,8 @@
    * @param {Object} info - 位置信息对象 { lon, lat, name, text, address, floorName }
    */
   const _updateRoutePosUI = ($container, posType, info) => {
-    const selector = `.${posType}-info`;
-    const hasValidPos = info && (info.lon || info.lat);
-
-    domUtils.find($container, `${selector} .empty_pos`)[hasValidPos ? "hide" : "show"]();
-    domUtils.find($container, `${selector} .posInfo`)[hasValidPos ? "show" : "hide"]();
-
-    if (hasValidPos) {
-      domUtils.find($container, `${selector} .name`).text(info.name || info.text || "");
-      domUtils.find($container, `${selector} .address`).text(info.address || "");
-      if (posType == "startpos") {
-        domUtils.find($container, `${selector} .floor-name`).text(info.floorName || "");
-      }
+    if (_componentModuleAdapter.updateRoutePosUI) {
+      _componentModuleAdapter.updateRoutePosUI(domUtils, $container, posType, info);
     }
   };
 

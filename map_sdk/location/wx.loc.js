@@ -1,14 +1,20 @@
-var lastOrientation = [0, 0, 0, false];
-var globalValues = {
-  orientationHistory: [],
-  gameOrientation: [],
-  debugInfo: {},
-  headingDelta: 0.0,
-  headingWX: 0.0,
-  headingH5: 0.0,
-  stepCount: 0,
-  stepOrient: 0.0,
-};
+// DEPRECATED: 定位状态初始化已迁移到 map_sdk/location/{domain,adapter}/ 下。
+var _locationModuleAdapter = (window.DaxiLocationModules && window.DaxiLocationModules.adapter) || {};
+var lastOrientation = _locationModuleAdapter.createLastOrientation
+  ? _locationModuleAdapter.createLastOrientation()
+  : [0, 0, 0, false];
+var globalValues = _locationModuleAdapter.createGlobalValues
+  ? _locationModuleAdapter.createGlobalValues()
+  : {
+      orientationHistory: [],
+      gameOrientation: [],
+      debugInfo: {},
+      headingDelta: 0.0,
+      headingWX: 0.0,
+      headingH5: 0.0,
+      stepCount: 0,
+      stepOrient: 0.0,
+    };
 var RoadMapMatcher = (function getRoadMapMatcher() {
   //region block: polyfills
   (function () {
@@ -26153,7 +26159,7 @@ var WXLocationEntity = (function () {
         locT: posUpdateArgs.locType,
       };
       // posUpdateArgs.heading = ~~realPos.heading;
-      locationLogManager.addData(locRes);
+      _locationModuleAdapter.addLocationLog ? _locationModuleAdapter.addLocationLog(locationLogManager, locRes) : locationLogManager.addData(locRes);
       if (isFirst || updateForce) {
         thisObject.sendLocation();
       }

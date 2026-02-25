@@ -12,6 +12,7 @@
   // 引用图层工具模块
   const DXLayerUtils = daximap["DXLayerUtils"];
   const DXLayerConstants = daximap["DXLayerConstants"];
+  var _sceneModuleAdapter = (daximap.SceneModules && daximap.SceneModules.adapter) || {};
 
   //////////////////////////////////////////////////////////////
   // DXSceneFloorObject
@@ -105,62 +106,12 @@
   daximap["DXSceneFloorObject"] = DXSceneFloorObject;
   // 目前source支持vector，raster， geojson， image，video。geojson的支持比较巧妙，有了这个就可以处理各种矢量类型，包括集合。而前面的vector主要解决的是矢量瓦片，raster解决的是目前常用的栅格化的瓦片。video的加入使得功能更加的现代化。 mapbox在style里面，为source定义了一个type属性，来说明这些类型
   //Layer 我只能说mapbox开启了新的一种layer样式方式。目前分为：background,fill, line, symbol, raster, circle。除了background类型的layer不需要绑定source之外。其他的都需要有source。fill类型的layer只负责填充；line类型的layer只负责线条；symbol类型的layer会处理sprite，文字等；raster类型的layer就只负责图片， circle类型的layer是更高一层的业务处理需要。
+  // DEPRECATED: 图层默认 paint 配置迁移至 map_sdk/map/{domain,adapter}/。
   function getDefPaintByType(type) {
-    var result = {};
-    switch (type) {
-      case "background":
-        result = {
-          "background-color": ["any", ["get", "background-color"], "#25adff"],
-          "background-opacity": ["any", ["get", "background-opacity"], 1],
-          visibility: ["!=", ["get", "visible"], false, "visible", "none"],
-        };
-        break;
-      case "fill":
-        result = {
-          "fill-color": ["any", ["get", "fill-color"], "#25adff"],
-          "fill-opacity": ["any", ["get", "opacity"], 1],
-          "fill-outline-color": ["any", ["get", "outline-color"], "#909091"],
-          visibility: ["!=", ["get", "visible"], false, "visible", "none"],
-          // fill-sort-key  Sorts features in ascending order based on this value
-        };
-        break;
-      case "line":
-        reault = {
-          "line-bur": ["any", ["get", "line-blur"], 0],
-          "line-cap": ["any", ["get", "line-cap"], "round"],
-          "line-color": ["any", ["get", "line-color"], "#25adff"],
-          "line-opacity": ["any", ["get", "line-opacity"], 1],
-          "line-dasharray": ["any", ["get", "line-dasharray"], [0, 0]],
-          "line-gradient": ["get", "line-gradient"],
-          "line-join": ["any", ["get", "line-join"], "round"],
-          "line-sort-key": ["any", ["get", "line-key"], 1],
-          "line-width": ["any", ["get", "line-width"], 6],
-          visibility: ["!=", ["get", "visible"], false, "visible", "none"],
-        };
-        break;
-      case "symbol":
-        result = {
-          "icon-allow-overlap": ["!=", ["get", "allow-overlap"], true, false, true],
-          "icon-anchor": ["any", ["get", "line-anchor"], "center"],
-          "icon-image": ["get", "line-image"], //Name of image in sprite to use for drawing an image background.
-          // SDF icons.  Requires icon-image : icon-color  icon-halo-blur  icon-halo-color  icon-halo-width
-          "icon-opacity": ["any", ["get", "line-opacity"], 1],
-          "icon-padding": ["number", ["get", "icon-padding"], 0],
-          "icon-rotation": ["get", "rotation"],
-          "icon-size": ["any", ["get", "icon-size"], 1],
-          "icon-text-fit-padding": ["any", ["get", "icon-text-fit-padding"], [0, 0, 0, 0]],
-          //"icon-rotation-alignment": "auto", // 地图旋转时图标的对齐方式（可选，可选值为 map、viewport、auto，默认值为 auto）
-          //"icon-pitch-alignment": "auto", // 地图倾斜时图标的对齐方式（可选，可选值为 map、viewport、auto，默认值为 auto）
-          "text-rotation-alignment": "viewport", // 与 icon-rotation-alignment 类似
-          //"text-pitch-alignment": "auto", // 与 icon-pitch-alignment 类似
-          "text-field": ["string", ["get", "text"], ""],
-          "text-size": ["number", ["get", "text-size"], 14],
-          "text-padding": ["number", ["get", "text-padding"], 2],
-          "text-halo-color": ["get", "bgcolor"], //"#fff",
-          "text-halo-width": 10,
-          // "text-allow-overlap": false, // 是否允许文本重叠
-        };
+    if (_sceneModuleAdapter.getDefPaintByType) {
+      return _sceneModuleAdapter.getDefPaintByType(type);
     }
+    return {};
   }
   //////////////////////////////////////////////////////////////
   // DXModelLayer
