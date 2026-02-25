@@ -4,19 +4,64 @@
  */
 
 /**
+ * 获取当前 URL 的全部查询参数
+ * @param {string} [search=window.location.search] - 查询串（可选）
+ * @returns {Object<string,string>} 参数对象
+ */
+function getAllQueryParams(search = window.location.search) {
+  const params = {};
+  const searchParams = new URLSearchParams(search || "");
+  for (const [key, value] of searchParams.entries()) {
+    params[key] = value;
+  }
+  return params;
+}
+
+/**
  * 获取URL参数
  * @param {string} name - 参数名称
  * @returns {string|null} 参数值或null
  */
 function getQueryParam(name) {
-  const url = window.location.href.split("#")[0];
-  const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-  const query = url.split("?")[1] || "";
-  const result = query.match(reg);
-  if (result != null) {
-    return decodeURIComponent(result[2]);
+  if (!name) return null;
+  const params = getAllQueryParams();
+  return params[name] ?? null;
+}
+
+/**
+ * 获取查询参数（优先当前窗口，其次父窗口）
+ * @param {string} name - 参数名称
+ * @returns {string|null} 参数值
+ */
+function getQueryParamFromSelfOrParent(name) {
+  const currentVal = getQueryParam(name);
+  if (currentVal != null) {
+    return currentVal;
+  }
+  if (window.parent && window.parent !== window && window.parent.commonUtils?.getQueryParam) {
+    return window.parent.commonUtils.getQueryParam(name);
   }
   return null;
+}
+
+/**
+ * 根据白名单提取查询参数
+ * @param {string[]} allowKeys - 允许透传的参数列表
+ * @param {Object<string,string>} [sourceParams] - 参数源，默认使用当前URL参数
+ * @returns {Object<string,string>} 过滤后的参数
+ */
+function pickQueryParams(allowKeys, sourceParams = getAllQueryParams()) {
+  if (!Array.isArray(allowKeys) || allowKeys.length === 0) {
+    return {};
+  }
+
+  const next = {};
+  allowKeys.forEach((key) => {
+    if (sourceParams[key] !== undefined) {
+      next[key] = sourceParams[key];
+    }
+  });
+  return next;
 }
 
 /**
@@ -208,15 +253,7 @@ const SCENIC_BASE_URL = "https://cloud.daxicn.com/publicData/"; // 22测试服�
  * @returns {string|null} 参数值
  */
 function _getParam(name) {
-  // 优先从当前窗口获取
-  if (window.commonUtils?.getQueryParam) {
-    return window.commonUtils.getQueryParam(name);
-  }
-  // 尝试从父窗口获取
-  if (window.parent?.commonUtils?.getQueryParam) {
-    return window.parent.commonUtils.getQueryParam(name);
-  }
-  return null;
+  return getQueryParamFromSelfOrParent(name);
 }
 
 /**
@@ -268,7 +305,10 @@ function getUserInfoUrl() {
 
 // 导出到全局，供其他脚本使用
 window.commonUtils = {
+  getAllQueryParams,
   getQueryParam,
+  getQueryParamFromSelfOrParent,
+  pickQueryParams,
   isValidArray,
   getNestedValue,
   createElement,
