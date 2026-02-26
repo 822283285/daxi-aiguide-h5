@@ -2,11 +2,13 @@
  * 大希地图应用主入口模块
  * 负责初始化地图应用、处理命令、管理状态
  */
-const DxApp = (function () {
+function createDxApp(factoryOptions = {}) {
+  const globalRef = factoryOptions.globalRef || globalThis;
+  const window = globalRef;
   const thisObject = {};
-  const daxiapp = window.DaxiApp || {};
-  const daximap = window.DaxiMap || {};
-  const dxUtils = daxiapp.utils;
+  const daxiapp = factoryOptions.daxiapp || window.DaxiApp || {};
+  const daximap = factoryOptions.daximap || window.DaxiMap || {};
+  const dxUtils = factoryOptions.dxUtils || daxiapp.utils;
 
   // 数据路径配置
   let dataPath = window.dataPath || "../../../data/";
@@ -29,12 +31,195 @@ const DxApp = (function () {
   const isNativePlatform = (platform) => ["ios_web", "android_web", "android", "ios"].includes(platform);
 
   /** 创建下载器实例 */
-  const createDownloader = (platform, jsBridge) => {
-    if (isNativePlatform(platform)) {
-      return new DXNativeDownloader(jsBridge);
-    }
-    return new daxiapp.DXDownloader();
+  const createDownloaderFactory = (options = {}) => {
+    const appRef = options.daxiapp || daxiapp;
+    const nativeDownloaderCtor = options.nativeDownloaderCtor || DXNativeDownloader;
+
+    return {
+      create(platform, jsBridge) {
+        if (isNativePlatform(platform)) {
+          return new nativeDownloaderCtor(jsBridge);
+        }
+        return new appRef.DXDownloader();
+      },
+    };
   };
+
+  const mountLegacyDownloaderCompat = (globalRef, getter) => {
+    if (!globalRef || typeof getter !== "function") {
+      return;
+    }
+
+    try {
+      Object.defineProperty(globalRef, "downloader", {
+        configurable: true,
+        enumerable: false,
+        get() {
+          return getter();
+        },
+        set(value) {
+          thisObject._legacyDownloaderOverride = value;
+        },
+      });
+    } catch (_error) {
+      // ignore compatibility fallback errors
+    }
+  };
+
+  thisObject.downloaderFactory = factoryOptions.downloaderFactory || createDownloaderFactory(factoryOptions);
+  thisObject._legacyDownloaderOverride = null;
+  mountLegacyDownloaderCompat(window, function getLegacyDownloader() {
+    return thisObject._legacyDownloaderOverride || thisObject.downloader;
+  });
+
+  /** 创建命令总线 */
+  const createCommandBus = (options = {}) => {
+    const handlers = new Set();
+    const middlewares = [];
+    const logger = options.logger || console;
+
+    const removeHandler = (setRef, target) => {
+      if (!setRef.has(target)) {
+        return false;
+      }
+      setRef.delete(target);
+      return true;
+    };
+
+    return {
+      subscribe(handler) {
+        if (typeof handler !== "function") {
+          return function noop() {
+            return false;
+          };
+        }
+        handlers.add(handler);
+        return function unsubscribe() {
+          return removeHandler(handlers, handler);
+        };
+      },
+      use(middleware) {
+        if (typeof middleware !== "function") {
+          return function noop() {
+            return false;
+          };
+        }
+        middlewares.push(middleware);
+        return function removeMiddleware() {
+          const index = middlewares.indexOf(middleware);
+          if (index < 0) {
+            return false;
+          }
+          middlewares.splice(index, 1);
+          return true;
+        };
+      },
+      dispatch(command, context = {}) {
+        let index = -1;
+        const invoke = (nextCommand) => {
+          index += 1;
+          if (index < middlewares.length) {
+            return middlewares[index](nextCommand, context, invoke);
+          }
+
+          let lastResult;
+          handlers.forEach((handler) => {
+            try {
+              lastResult = handler(nextCommand, context);
+            } catch (error) {
+              logger.error?.("[DxApp command bus] handler error", error);
+            }
+          });
+          return lastResult;
+        };
+        return invoke(command);
+      },
+      getSubscriberCount() {
+        return handlers.size;
+      },
+    };
+  };
+
+  thisObject.commandBus = factoryOptions.commandBus || createCommandBus({ logger: factoryOptions.logger });
+  thisObject.unsubscribeCommandHandler = thisObject.commandBus.subscribe(function defaultCommandHandler(command) {
+    return thisObject.pageCommand?.runCommand(command);
+  });
+
+  /** 地图创建事件桥（event hook + legacy API） */
+  const createMapCreatedBridge = () => {
+    const listeners = new Set();
+
+    const removeListener = (target) => {
+      if (!listeners.has(target)) {
+        return false;
+      }
+      listeners.delete(target);
+      return true;
+    };
+
+    const notifyListeners = (app, mapSDK, detail) => {
+      listeners.forEach((handler) => {
+        try {
+          handler(app, mapSDK, detail);
+        } catch (error) {
+          console.error?.("[DxApp map-created] listener error", error);
+        }
+      });
+    };
+
+    const dispatchDomEvent = (detail) => {
+      if (typeof globalRef.dispatchEvent !== "function") {
+        return;
+      }
+
+      try {
+        if (typeof globalRef.CustomEvent === "function") {
+          globalRef.dispatchEvent(new globalRef.CustomEvent("daxi:map-created", { detail }));
+          return;
+        }
+      } catch (_error) {
+        // ignore and fallback
+      }
+
+      if (globalRef.document && typeof globalRef.document.createEvent === "function") {
+        const event = globalRef.document.createEvent("CustomEvent");
+        event.initCustomEvent("daxi:map-created", false, false, detail);
+        globalRef.dispatchEvent(event);
+      }
+    };
+
+    return {
+      on(handler) {
+        if (typeof handler !== "function") {
+          return function noop() {
+            return false;
+          };
+        }
+
+        listeners.add(handler);
+        return function off() {
+          return removeListener(handler);
+        };
+      },
+      off(handler) {
+        return removeListener(handler);
+      },
+      emit(app, mapSDK, detail = {}) {
+        notifyListeners(app, mapSDK, detail);
+        dispatchDomEvent({
+          app,
+          mapSDK,
+          ...detail,
+        });
+
+        if (typeof globalRef.OnDXMapCreated === "function") {
+          globalRef.OnDXMapCreated(app, mapSDK);
+        }
+      },
+    };
+  };
+
+  thisObject.mapCreatedBridge = factoryOptions.mapCreatedBridge || createMapCreatedBridge();
 
   /** 发送WebSocket消息 */
   const postWebSocketMessage = (type, userId, extra = {}) => {
@@ -91,8 +276,40 @@ const DxApp = (function () {
    * @param {Object} command - 命令对象
    */
   thisObject.processCommand = function (command) {
-    return thisObject.pageCommand?.runCommand(command);
+    return thisObject.commandBus.dispatch(command, { source: "processCommand", app: thisObject });
   };
+
+  thisObject.subscribeCommand = function (handler) {
+    return thisObject.commandBus.subscribe(handler);
+  };
+
+  thisObject.useCommandMiddleware = function (middleware) {
+    return thisObject.commandBus.use(middleware);
+  };
+
+  thisObject.onMapCreated = function (handler) {
+    return thisObject.mapCreatedBridge.on(handler);
+  };
+
+  thisObject.offMapCreated = function (handler) {
+    return thisObject.mapCreatedBridge.off(handler);
+  };
+
+  const mountLegacyMapCreatedCompat = () => {
+    const compat = globalRef.DxAppCompat || {};
+    compat.onMapCreated = function onMapCreated(handler) {
+      return thisObject.onMapCreated(handler);
+    };
+    compat.offMapCreated = function offMapCreated(handler) {
+      return thisObject.offMapCreated(handler);
+    };
+    compat.getApp = function getApp() {
+      return thisObject;
+    };
+    globalRef.DxAppCompat = compat;
+  };
+
+  mountLegacyMapCreatedCompat();
 
   /**
    * 初始化应用
@@ -120,8 +337,7 @@ const DxApp = (function () {
       }
 
       // 创建下载器
-      thisObject.downloader = createDownloader(initParam.platform, jsBridge);
-      window.downloader = thisObject.downloader;
+      thisObject.downloader = thisObject.downloaderFactory.create(initParam.platform, jsBridge);
 
       // 加载配置文件
       loadConfigs(initParam, options);
@@ -201,7 +417,9 @@ const DxApp = (function () {
     thisObject._stateManager = new daxiapp.DXMapStateManager(thisObject, pageOptions.container);
     thisObject.pageCommand = initDaxiCommand(thisObject, pageOptions);
     pageOptions.onCreate?.(thisObject);
-    window.OnDXMapCreated?.(thisObject, mapSDK);
+    thisObject.mapCreatedBridge.emit(thisObject, mapSDK, {
+      source: "dxapi.onMapViewCreated",
+    });
     thisObject.mapInitFinished = true;
 
     // 处理JSBridge命令队列
@@ -404,6 +622,8 @@ const DxApp = (function () {
   };
 
   return thisObject;
-})();
+}
+
+const DxApp = createDxApp();
 
 window.DxApp = DxApp;

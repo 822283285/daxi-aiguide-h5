@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const globalsChecker = require('../quality/check-globals');
+const depsChecker = require('../quality/check-deps');
 
 const repoRoot = process.cwd();
 
@@ -20,6 +22,8 @@ const defaultSmokeHtmlFiles = [
 function parseArgs(argv) {
   const syntaxDirs = [];
   const smokeHtmlFiles = [];
+  let skipGlobals = false;
+  let skipDeps = false;
 
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -44,7 +48,17 @@ function parseArgs(argv) {
     }
 
     if (arg === '--help' || arg === '-h') {
-      return { help: true, syntaxDirs: [], smokeHtmlFiles: [] };
+      return { help: true, syntaxDirs: [], smokeHtmlFiles: [], skipGlobals: false, skipDeps: false };
+    }
+
+    if (arg === '--skip-globals') {
+      skipGlobals = true;
+      continue;
+    }
+
+    if (arg === '--skip-deps') {
+      skipDeps = true;
+      continue;
     }
 
     throw new Error(`Unknown argument: ${arg}`);
@@ -53,16 +67,20 @@ function parseArgs(argv) {
   return {
     help: false,
     syntaxDirs: syntaxDirs.length ? syntaxDirs : defaultSyntaxDirs,
-    smokeHtmlFiles: smokeHtmlFiles.length ? smokeHtmlFiles : defaultSmokeHtmlFiles
+    smokeHtmlFiles: smokeHtmlFiles.length ? smokeHtmlFiles : defaultSmokeHtmlFiles,
+    skipGlobals,
+    skipDeps
   };
 }
 
 function printHelp() {
   console.log('Minimal CI for script repository');
-  console.log('Usage: node scripts/ci/minimal-ci.js [--syntax-dir <dir>]... [--smoke-html <file>]...');
+  console.log('Usage: node scripts/ci/minimal-ci.js [--syntax-dir <dir>]... [--smoke-html <file>]... [--skip-globals] [--skip-deps]');
   console.log('Defaults:');
   defaultSyntaxDirs.forEach((dir) => console.log(`  syntax dir: ${dir}`));
   defaultSmokeHtmlFiles.forEach((file) => console.log(`  smoke html: ${file}`));
+  console.log('  globals check: enabled');
+  console.log('  deps check: enabled');
 }
 
 function rel(filePath) {
@@ -187,6 +205,60 @@ function smokeCheck(smokeHtmlFiles) {
   return { passCount, failCount };
 }
 
+function globalsCheck(skipGlobals) {
+  if (skipGlobals) {
+    log('PASS', 'globals', null, 'skipped by flag --skip-globals');
+    return { passCount: 1, failCount: 0 };
+  }
+
+  const scriptAbsPath = path.resolve(repoRoot, 'scripts/quality/check-globals.js');
+  if (!fs.existsSync(scriptAbsPath) || !fs.statSync(scriptAbsPath).isFile()) {
+    log('FAIL', 'globals', scriptAbsPath, 'script not found');
+    return { passCount: 0, failCount: 1 };
+  }
+
+  const result = globalsChecker.execute({
+    mode: 'check',
+    includeDirs: globalsChecker.defaultIncludeDirs,
+    baselinePath: globalsChecker.defaultBaselinePath,
+    outputPath: ''
+  }, console);
+
+  if (result.exitCode === 0) {
+    log('PASS', 'globals', scriptAbsPath, 'window usage baseline check');
+    return { passCount: 1, failCount: 0 };
+  }
+
+  log('FAIL', 'globals', scriptAbsPath, `window usage baseline check failed (exit=${result.exitCode})`);
+  return { passCount: 0, failCount: 1 };
+}
+
+function depsCheck(skipDeps) {
+  if (skipDeps) {
+    log('PASS', 'deps', null, 'skipped by flag --skip-deps');
+    return { passCount: 1, failCount: 0 };
+  }
+
+  const scriptAbsPath = path.resolve(repoRoot, 'scripts/quality/check-deps.js');
+  if (!fs.existsSync(scriptAbsPath) || !fs.statSync(scriptAbsPath).isFile()) {
+    log('FAIL', 'deps', scriptAbsPath, 'script not found');
+    return { passCount: 0, failCount: 1 };
+  }
+
+  const result = depsChecker.execute({
+    mode: 'check',
+    srcRoot: depsChecker.defaultSrcRoot
+  }, console);
+
+  if (result.exitCode === 0) {
+    log('PASS', 'deps', scriptAbsPath, 'layer dependency check');
+    return { passCount: 1, failCount: 0 };
+  }
+
+  log('FAIL', 'deps', scriptAbsPath, `layer dependency check failed (exit=${result.exitCode})`);
+  return { passCount: 0, failCount: 1 };
+}
+
 function main() {
   let args;
 
@@ -204,9 +276,11 @@ function main() {
 
   const syntax = syntaxCheck(args.syntaxDirs);
   const smoke = smokeCheck(args.smokeHtmlFiles);
+  const globals = globalsCheck(args.skipGlobals);
+  const deps = depsCheck(args.skipDeps);
 
-  const totalPass = syntax.passCount + smoke.passCount;
-  const totalFail = syntax.failCount + smoke.failCount;
+  const totalPass = syntax.passCount + smoke.passCount + globals.passCount + deps.passCount;
+  const totalFail = syntax.failCount + smoke.failCount + globals.failCount + deps.failCount;
 
   console.log(`SUMMARY pass=${totalPass} fail=${totalFail} syntax_checked=${syntax.checkedCount}`);
 

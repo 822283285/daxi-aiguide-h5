@@ -35,6 +35,8 @@ node scripts/ci/minimal-ci.js
 
 - **语法检查**：递归扫描关键目录中的 `.js`（默认跳过 `.min.js`），用 Node 内置 `vm.Script` 做 parse 检查；
 - **Smoke 检查**：校验 `app/navi_app/shouxihu/index_src.html` 中本地 `<script src="...">` 引用文件是否存在；
+- **全局基线检查**：扫描首方代码中的 `window` 读写，若相对基线出现新增则直接失败；
+- **分层依赖检查**：校验 `app/navi_app/shouxihu/src` 的分层依赖方向（`ui -> application -> domain -> platform`，`core` 只允许被依赖）；
 - **标准化日志**：输出 `[PASS|FAIL] [syntax|smoke] <文件路径> <附加信息>`；
 - **失败返回码**：只要存在任意 FAIL，进程退出码为 `1`。
 
@@ -46,6 +48,23 @@ node scripts/ci/minimal-ci.js --syntax-dir <目录> --smoke-html <HTML文件>
 
 - `--syntax-dir`：可重复传入，覆盖默认关键目录；
 - `--smoke-html`：可重复传入，覆盖默认 smoke 目标文件。
+- `--skip-globals`：跳过 `window` 基线检查（仅在定位问题时临时使用）。
+- `--skip-deps`：跳过分层依赖检查（仅在定位问题时临时使用）。
+
+### `window` 扫描与基线维护
+
+```bash
+# 校验是否有新增 window 使用（CI 默认会执行）
+node scripts/quality/check-globals.js --mode check
+
+# 更新基线（仅在确认变更合理后执行）
+node scripts/quality/check-globals.js --mode update-baseline
+
+# 依赖方向检查（CI 默认会执行）
+node scripts/quality/check-deps.js --mode check
+```
+
+默认基线文件：`docs/reports/global-usage-baseline.json`。
 
 ### 样例输出（成功）
 

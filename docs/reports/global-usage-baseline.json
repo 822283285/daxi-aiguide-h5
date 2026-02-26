@@ -1,0 +1,2426 @@
+{
+  "generatedAt": "2026-02-25T10:33:03.014Z",
+  "includeDirs": [
+    "app/components",
+    "app/navi_app/shouxihu/js",
+    "app/navi_app/shouxihu/extend_guobo/js",
+    "app/navi_app/utils",
+    "jsbridge",
+    "map_sdk/map"
+  ],
+  "ignoredPathFragments": [
+    "/libs/",
+    "/mapbox/",
+    "/sdk/"
+  ],
+  "totals": {
+    "filesScanned": 90,
+    "filesWithWindowUsage": 66,
+    "windowReadHits": 833,
+    "windowWriteHits": 67
+  },
+  "byFile": [
+    {
+      "file": "jsbridge/ios.back/cordova.js",
+      "reads": 43,
+      "writes": 7,
+      "samples": [
+        {
+          "line": 103,
+          "kind": "read",
+          "snippet": "window.cordova"
+        },
+        {
+          "line": 103,
+          "kind": "read",
+          "snippet": "window.cordova"
+        },
+        {
+          "line": 117,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        },
+        {
+          "line": 118,
+          "kind": "read",
+          "snippet": "window.removeEventListener"
+        },
+        {
+          "line": 135,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        },
+        {
+          "line": 135,
+          "kind": "write",
+          "snippet": "window.addEventListener ="
+        },
+        {
+          "line": 154,
+          "kind": "read",
+          "snippet": "window.removeEventListener"
+        },
+        {
+          "line": 154,
+          "kind": "write",
+          "snippet": "window.removeEventListener ="
+        }
+      ]
+    },
+    {
+      "file": "jsbridge/android.back/cordova.js",
+      "reads": 35,
+      "writes": 7,
+      "samples": [
+        {
+          "line": 99,
+          "kind": "read",
+          "snippet": "window.cordova"
+        },
+        {
+          "line": 99,
+          "kind": "read",
+          "snippet": "window.cordova"
+        },
+        {
+          "line": 113,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        },
+        {
+          "line": 114,
+          "kind": "read",
+          "snippet": "window.removeEventListener"
+        },
+        {
+          "line": 131,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        },
+        {
+          "line": 131,
+          "kind": "write",
+          "snippet": "window.addEventListener ="
+        },
+        {
+          "line": 150,
+          "kind": "read",
+          "snippet": "window.removeEventListener"
+        },
+        {
+          "line": 150,
+          "kind": "write",
+          "snippet": "window.removeEventListener ="
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/dxapi.app.js",
+      "reads": 16,
+      "writes": 6,
+      "samples": [
+        {
+          "line": 7,
+          "kind": "read",
+          "snippet": "window.DaxiApp"
+        },
+        {
+          "line": 8,
+          "kind": "read",
+          "snippet": "window.DaxiMap"
+        },
+        {
+          "line": 12,
+          "kind": "read",
+          "snippet": "window.dataPath"
+        },
+        {
+          "line": 13,
+          "kind": "read",
+          "snippet": "window.dxDataPath"
+        },
+        {
+          "line": 13,
+          "kind": "read",
+          "snippet": "window.dxDataPath"
+        },
+        {
+          "line": 14,
+          "kind": "read",
+          "snippet": "window.rootPath"
+        },
+        {
+          "line": 14,
+          "kind": "write",
+          "snippet": "window.rootPath ="
+        },
+        {
+          "line": 42,
+          "kind": "read",
+          "snippet": "window.locWebSocketPostMessage"
+        }
+      ]
+    },
+    {
+      "file": "map_sdk/map/daximap.api.js",
+      "reads": 14,
+      "writes": 4,
+      "samples": [
+        {
+          "line": 7,
+          "kind": "read",
+          "snippet": "window.daxiMapSDKProjPath"
+        },
+        {
+          "line": 7,
+          "kind": "write",
+          "snippet": "window.daxiMapSDKProjPath ="
+        },
+        {
+          "line": 8,
+          "kind": "read",
+          "snippet": "window.langData"
+        },
+        {
+          "line": 8,
+          "kind": "write",
+          "snippet": "window.langData ="
+        },
+        {
+          "line": 65,
+          "kind": "read",
+          "snippet": "window.version"
+        },
+        {
+          "line": 69,
+          "kind": "read",
+          "snippet": "window.command"
+        },
+        {
+          "line": 195,
+          "kind": "read",
+          "snippet": "window.daxiMapSDKProjPath"
+        },
+        {
+          "line": 410,
+          "kind": "read",
+          "snippet": "window.devicePixelRatio"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/sign.js",
+      "reads": 6,
+      "writes": 4,
+      "samples": [
+        {
+          "line": 5,
+          "kind": "read",
+          "snippet": "window[\"OnDXMapCreated\"]"
+        },
+        {
+          "line": 5,
+          "kind": "write",
+          "snippet": "window[\"OnDXMapCreated\"]="
+        },
+        {
+          "line": 6,
+          "kind": "read",
+          "snippet": "window[\"OnDXMapCreated\"]"
+        },
+        {
+          "line": 6,
+          "kind": "write",
+          "snippet": "window[\"OnDXMapCreated\"]="
+        },
+        {
+          "line": 169,
+          "kind": "read",
+          "snippet": "window.extrusion"
+        },
+        {
+          "line": 170,
+          "kind": "read",
+          "snippet": "window.extrusion"
+        },
+        {
+          "line": 170,
+          "kind": "write",
+          "snippet": "window.extrusion ="
+        },
+        {
+          "line": 172,
+          "kind": "read",
+          "snippet": "window.extrusion"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/locationInActivityInAR.js",
+      "reads": 7,
+      "writes": 3,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window[\"OnDXMapCreated\"]"
+        },
+        {
+          "line": 4,
+          "kind": "write",
+          "snippet": "window[\"OnDXMapCreated\"]="
+        },
+        {
+          "line": 23,
+          "kind": "read",
+          "snippet": "window[\"projDataPath\"]"
+        },
+        {
+          "line": 169,
+          "kind": "read",
+          "snippet": "window.extrusion"
+        },
+        {
+          "line": 170,
+          "kind": "read",
+          "snippet": "window.extrusion"
+        },
+        {
+          "line": 170,
+          "kind": "write",
+          "snippet": "window.extrusion ="
+        },
+        {
+          "line": 172,
+          "kind": "read",
+          "snippet": "window.extrusion"
+        },
+        {
+          "line": 194,
+          "kind": "read",
+          "snippet": "window.startARNavi"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/locationInActivity.js",
+      "reads": 6,
+      "writes": 3,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window[\"OnDXMapCreated\"]"
+        },
+        {
+          "line": 4,
+          "kind": "write",
+          "snippet": "window[\"OnDXMapCreated\"]="
+        },
+        {
+          "line": 12,
+          "kind": "read",
+          "snippet": "window[\"projDataPath\"]"
+        },
+        {
+          "line": 158,
+          "kind": "read",
+          "snippet": "window.extrusion"
+        },
+        {
+          "line": 159,
+          "kind": "read",
+          "snippet": "window.extrusion"
+        },
+        {
+          "line": 159,
+          "kind": "write",
+          "snippet": "window.extrusion ="
+        },
+        {
+          "line": 161,
+          "kind": "read",
+          "snippet": "window.extrusion"
+        },
+        {
+          "line": 191,
+          "kind": "read",
+          "snippet": "window.main"
+        }
+      ]
+    },
+    {
+      "file": "map_sdk/map/daximap.scene.js",
+      "reads": 48,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 425,
+          "kind": "read",
+          "snippet": "window[\"poiFontColor\"]"
+        },
+        {
+          "line": 515,
+          "kind": "read",
+          "snippet": "window[\"poiTextSize\"]"
+        },
+        {
+          "line": 535,
+          "kind": "read",
+          "snippet": "window[\"hidePoiHaloColor\"]"
+        },
+        {
+          "line": 581,
+          "kind": "read",
+          "snippet": "window[\"dataPath\"]"
+        },
+        {
+          "line": 582,
+          "kind": "read",
+          "snippet": "window[\"dataPath\"]"
+        },
+        {
+          "line": 5313,
+          "kind": "read",
+          "snippet": "window[\"naviArrowHeadSize\"]"
+        },
+        {
+          "line": 5709,
+          "kind": "read",
+          "snippet": "window[\"routeLineColor\"]"
+        },
+        {
+          "line": 5710,
+          "kind": "read",
+          "snippet": "window[\"routeOutLineColor\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/ARNavigation_gzn.js",
+      "reads": 24,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 147,
+          "kind": "read",
+          "snippet": "window.innerWidth"
+        },
+        {
+          "line": 148,
+          "kind": "read",
+          "snippet": "window.innerHeight"
+        },
+        {
+          "line": 188,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        },
+        {
+          "line": 188,
+          "kind": "write",
+          "snippet": "window.userMedia ="
+        },
+        {
+          "line": 189,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 192,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 196,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 196,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/ARNavigation_hg.js",
+      "reads": 24,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 144,
+          "kind": "read",
+          "snippet": "window.innerWidth"
+        },
+        {
+          "line": 145,
+          "kind": "read",
+          "snippet": "window.innerHeight"
+        },
+        {
+          "line": 245,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        },
+        {
+          "line": 245,
+          "kind": "write",
+          "snippet": "window.userMedia ="
+        },
+        {
+          "line": 246,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 249,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 253,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 253,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/ARNavigation.js",
+      "reads": 23,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 125,
+          "kind": "read",
+          "snippet": "window.innerWidth"
+        },
+        {
+          "line": 126,
+          "kind": "read",
+          "snippet": "window.innerHeight"
+        },
+        {
+          "line": 231,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        },
+        {
+          "line": 231,
+          "kind": "write",
+          "snippet": "window.userMedia ="
+        },
+        {
+          "line": 232,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 235,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 239,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 239,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/AR/ARNavigation_bak.js",
+      "reads": 12,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 78,
+          "kind": "read",
+          "snippet": "window.URL"
+        },
+        {
+          "line": 84,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        },
+        {
+          "line": 84,
+          "kind": "write",
+          "snippet": "window.userMedia ="
+        },
+        {
+          "line": 85,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 88,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 92,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 92,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 307,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/AR/ARNavigation-newAR.js",
+      "reads": 12,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 11,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        },
+        {
+          "line": 11,
+          "kind": "write",
+          "snippet": "window.userMedia ="
+        },
+        {
+          "line": 12,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 15,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 19,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 19,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 58,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        },
+        {
+          "line": 58,
+          "kind": "write",
+          "snippet": "window.userMedia ="
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/AR/ARNavigation.js",
+      "reads": 12,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 78,
+          "kind": "read",
+          "snippet": "window.URL"
+        },
+        {
+          "line": 84,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        },
+        {
+          "line": 84,
+          "kind": "write",
+          "snippet": "window.userMedia ="
+        },
+        {
+          "line": 85,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 88,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 92,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 92,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 307,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/ARNavigation-new.js",
+      "reads": 12,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 78,
+          "kind": "read",
+          "snippet": "window.URL"
+        },
+        {
+          "line": 84,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        },
+        {
+          "line": 84,
+          "kind": "write",
+          "snippet": "window.userMedia ="
+        },
+        {
+          "line": 85,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 88,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 92,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 92,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 307,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/AR/ARNavigationAPI_12306.js",
+      "reads": 11,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 9,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        },
+        {
+          "line": 9,
+          "kind": "write",
+          "snippet": "window.userMedia ="
+        },
+        {
+          "line": 10,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 13,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 17,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 17,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 59,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        },
+        {
+          "line": 59,
+          "kind": "write",
+          "snippet": "window.userMedia ="
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/AR/ARNavigationAPI.js",
+      "reads": 11,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 12,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        },
+        {
+          "line": 12,
+          "kind": "write",
+          "snippet": "window.userMedia ="
+        },
+        {
+          "line": 13,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 16,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 20,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 20,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 60,
+          "kind": "read",
+          "snippet": "window.userMedia"
+        },
+        {
+          "line": 60,
+          "kind": "write",
+          "snippet": "window.userMedia ="
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/checkEnv.js",
+      "reads": 11,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 28,
+          "kind": "read",
+          "snippet": "window[\"launcher\"]"
+        },
+        {
+          "line": 114,
+          "kind": "read",
+          "snippet": "window[\"audioToken\"]"
+        },
+        {
+          "line": 114,
+          "kind": "write",
+          "snippet": "window[\"audioToken\"] ="
+        },
+        {
+          "line": 115,
+          "kind": "read",
+          "snippet": "window[\"version\"]"
+        },
+        {
+          "line": 115,
+          "kind": "write",
+          "snippet": "window[\"version\"] ="
+        },
+        {
+          "line": 116,
+          "kind": "read",
+          "snippet": "window[\"wx\"]"
+        },
+        {
+          "line": 126,
+          "kind": "read",
+          "snippet": "window[\"wx\"]"
+        },
+        {
+          "line": 127,
+          "kind": "read",
+          "snippet": "window[\"wx\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/sign_B000A11DQE.js",
+      "reads": 4,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 6,
+          "kind": "read",
+          "snippet": "window[\"OnDXMapCreated\"]"
+        },
+        {
+          "line": 6,
+          "kind": "write",
+          "snippet": "window[\"OnDXMapCreated\"] ="
+        },
+        {
+          "line": 59,
+          "kind": "read",
+          "snippet": "window.location"
+        },
+        {
+          "line": 172,
+          "kind": "read",
+          "snippet": "window.location"
+        },
+        {
+          "line": 183,
+          "kind": "read",
+          "snippet": "window.main"
+        },
+        {
+          "line": 183,
+          "kind": "write",
+          "snippet": "window.main ="
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/dxDomUtill.js",
+      "reads": 2,
+      "writes": 2,
+      "samples": [
+        {
+          "line": 495,
+          "kind": "read",
+          "snippet": "window.DXDomUtil"
+        },
+        {
+          "line": 495,
+          "kind": "read",
+          "snippet": "window.Zepto"
+        },
+        {
+          "line": 495,
+          "kind": "write",
+          "snippet": "window.DXDomUtil ="
+        },
+        {
+          "line": 495,
+          "kind": "write",
+          "snippet": "window.Zepto ="
+        }
+      ]
+    },
+    {
+      "file": "map_sdk/map/daximap.utils.js",
+      "reads": 27,
+      "writes": 1,
+      "samples": [
+        {
+          "line": 148,
+          "kind": "read",
+          "snippet": "window.navigator"
+        },
+        {
+          "line": 150,
+          "kind": "read",
+          "snippet": "window.navigator"
+        },
+        {
+          "line": 448,
+          "kind": "read",
+          "snippet": "window.navigator"
+        },
+        {
+          "line": 454,
+          "kind": "read",
+          "snippet": "window.navigator"
+        },
+        {
+          "line": 458,
+          "kind": "read",
+          "snippet": "window.navigator"
+        },
+        {
+          "line": 652,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 653,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 655,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        }
+      ]
+    },
+    {
+      "file": "map_sdk/map/daximap.location.js",
+      "reads": 22,
+      "writes": 1,
+      "samples": [
+        {
+          "line": 10,
+          "kind": "read",
+          "snippet": "window[\"cordova\"]"
+        },
+        {
+          "line": 107,
+          "kind": "read",
+          "snippet": "window[\"indoorLocalAlgorithms\"]"
+        },
+        {
+          "line": 109,
+          "kind": "read",
+          "snippet": "window[\"version\"]"
+        },
+        {
+          "line": 110,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 110,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 111,
+          "kind": "read",
+          "snippet": "window[\"version\"]"
+        },
+        {
+          "line": 114,
+          "kind": "read",
+          "snippet": "window.location"
+        },
+        {
+          "line": 115,
+          "kind": "read",
+          "snippet": "window[\"version\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.mapView.js",
+      "reads": 21,
+      "writes": 1,
+      "samples": [
+        {
+          "line": 2,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        },
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window[\"DaxiApp\"]"
+        },
+        {
+          "line": 37,
+          "kind": "read",
+          "snippet": "window[\"mapSDKPath\"]"
+        },
+        {
+          "line": 38,
+          "kind": "read",
+          "snippet": "window[\"mapSDKPath\"]"
+        },
+        {
+          "line": 38,
+          "kind": "read",
+          "snippet": "window[\"mapSDKPath\"]"
+        },
+        {
+          "line": 93,
+          "kind": "read",
+          "snippet": "window.location"
+        },
+        {
+          "line": 95,
+          "kind": "read",
+          "snippet": "window.lastHashCount"
+        },
+        {
+          "line": 95,
+          "kind": "read",
+          "snippet": "window.history"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/daxiapp.utils.js",
+      "reads": 13,
+      "writes": 1,
+      "samples": [
+        {
+          "line": 150,
+          "kind": "read",
+          "snippet": "window.rawParams"
+        },
+        {
+          "line": 150,
+          "kind": "write",
+          "snippet": "window.rawParams ="
+        },
+        {
+          "line": 312,
+          "kind": "read",
+          "snippet": "window.langData"
+        },
+        {
+          "line": 961,
+          "kind": "read",
+          "snippet": "window.XMLHttpRequest"
+        },
+        {
+          "line": 965,
+          "kind": "read",
+          "snippet": "window.ActiveXObject"
+        },
+        {
+          "line": 1040,
+          "kind": "read",
+          "snippet": "window.currentEnv"
+        },
+        {
+          "line": 1051,
+          "kind": "read",
+          "snippet": "window.HWH5"
+        },
+        {
+          "line": 1052,
+          "kind": "read",
+          "snippet": "window.currentEnv"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/bootstrap-loader.js",
+      "reads": 8,
+      "writes": 1,
+      "samples": [
+        {
+          "line": 99,
+          "kind": "read",
+          "snippet": "window.__daxiBootstrapStatus"
+        },
+        {
+          "line": 99,
+          "kind": "write",
+          "snippet": "window.__daxiBootstrapStatus ="
+        },
+        {
+          "line": 117,
+          "kind": "read",
+          "snippet": "window.dispatchEvent"
+        },
+        {
+          "line": 134,
+          "kind": "read",
+          "snippet": "window.setTimeout"
+        },
+        {
+          "line": 148,
+          "kind": "read",
+          "snippet": "window.clearTimeout"
+        },
+        {
+          "line": 156,
+          "kind": "read",
+          "snippet": "window.clearTimeout"
+        },
+        {
+          "line": 180,
+          "kind": "read",
+          "snippet": "window.setTimeout"
+        },
+        {
+          "line": 189,
+          "kind": "read",
+          "snippet": "window.clearTimeout"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.page.command.js",
+      "reads": 4,
+      "writes": 1,
+      "samples": [
+        {
+          "line": 24,
+          "kind": "read",
+          "snippet": "window.locWebSocketOnGetEvent"
+        },
+        {
+          "line": 24,
+          "kind": "write",
+          "snippet": "window.locWebSocketOnGetEvent ="
+        },
+        {
+          "line": 104,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 104,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 847,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        }
+      ]
+    },
+    {
+      "file": "map_sdk/map/scene/daximap.indoor.js",
+      "reads": 1,
+      "writes": 1,
+      "samples": [
+        {
+          "line": 301,
+          "kind": "read",
+          "snippet": "window.disableLegacyPoiJsonRequest"
+        },
+        {
+          "line": 301,
+          "kind": "write",
+          "snippet": "window.disableLegacyPoiJsonRequest ="
+        }
+      ]
+    },
+    {
+      "file": "map_sdk/map/daximap.navi.js",
+      "reads": 106,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 20,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        },
+        {
+          "line": 1382,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 1400,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 1457,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 1458,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 1551,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        },
+        {
+          "line": 1556,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 1567,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        }
+      ]
+    },
+    {
+      "file": "jsbridge/daxiapp.jsbridge.js",
+      "reads": 45,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 151,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 151,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 179,
+          "kind": "read",
+          "snippet": "window.location"
+        },
+        {
+          "line": 179,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 179,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 1248,
+          "kind": "read",
+          "snippet": "window[\"my\"]"
+        },
+        {
+          "line": 1249,
+          "kind": "read",
+          "snippet": "window[\"my\"]"
+        },
+        {
+          "line": 1250,
+          "kind": "read",
+          "snippet": "window[\"my\"]"
+        }
+      ]
+    },
+    {
+      "file": "map_sdk/map/daximap.navi.ok.js",
+      "reads": 29,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 14,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        },
+        {
+          "line": 1471,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        },
+        {
+          "line": 1537,
+          "kind": "read",
+          "snippet": "window[\"devicePixelRatio\"]"
+        },
+        {
+          "line": 2728,
+          "kind": "read",
+          "snippet": "window[\"devicePixelRatio\"]"
+        },
+        {
+          "line": 2792,
+          "kind": "read",
+          "snippet": "window[\"routeMarkerScale\"]"
+        },
+        {
+          "line": 2810,
+          "kind": "read",
+          "snippet": "window[\"routeEndMarker\"]"
+        },
+        {
+          "line": 2862,
+          "kind": "read",
+          "snippet": "window.devicePixelRatio"
+        },
+        {
+          "line": 2863,
+          "kind": "read",
+          "snippet": "window.devicePixelRatio"
+        }
+      ]
+    },
+    {
+      "file": "map_sdk/map/daximap.routes.js",
+      "reads": 22,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 1,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        },
+        {
+          "line": 393,
+          "kind": "read",
+          "snippet": "window[\"wx\"]"
+        },
+        {
+          "line": 396,
+          "kind": "read",
+          "snippet": "window[\"wx\"]"
+        },
+        {
+          "line": 403,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 416,
+          "kind": "read",
+          "snippet": "window[\"my\"]"
+        },
+        {
+          "line": 419,
+          "kind": "read",
+          "snippet": "window[\"my\"]"
+        },
+        {
+          "line": 426,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 483,
+          "kind": "read",
+          "snippet": "window[\"wx\"]"
+        }
+      ]
+    },
+    {
+      "file": "map_sdk/map/daximap.downloader.js",
+      "reads": 21,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 20,
+          "kind": "read",
+          "snippet": "window[\"HWH5\"]"
+        },
+        {
+          "line": 44,
+          "kind": "read",
+          "snippet": "window[\"HWH5\"]"
+        },
+        {
+          "line": 54,
+          "kind": "read",
+          "snippet": "window[\"HWH5\"]"
+        },
+        {
+          "line": 71,
+          "kind": "read",
+          "snippet": "window[\"HWH5\"]"
+        },
+        {
+          "line": 99,
+          "kind": "read",
+          "snippet": "window[\"HWH5\"]"
+        },
+        {
+          "line": 99,
+          "kind": "read",
+          "snippet": "window[\"HWH5\"]"
+        },
+        {
+          "line": 222,
+          "kind": "read",
+          "snippet": "window[\"HWH5\"]"
+        },
+        {
+          "line": 222,
+          "kind": "read",
+          "snippet": "window[\"HWH5\"]"
+        }
+      ]
+    },
+    {
+      "file": "map_sdk/map/daximap.naviManager.js",
+      "reads": 19,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 57,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 58,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 59,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 144,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 148,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 153,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 158,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 516,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/ARNavigation-fbxModel.js",
+      "reads": 14,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 161,
+          "kind": "read",
+          "snippet": "window.innerWidth"
+        },
+        {
+          "line": 162,
+          "kind": "read",
+          "snippet": "window.innerHeight"
+        },
+        {
+          "line": 357,
+          "kind": "read",
+          "snippet": "window.devicePixelRatio"
+        },
+        {
+          "line": 567,
+          "kind": "read",
+          "snippet": "window.DeviceOrientationEvent"
+        },
+        {
+          "line": 568,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        },
+        {
+          "line": 569,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        },
+        {
+          "line": 570,
+          "kind": "read",
+          "snippet": "window.removeEventListener"
+        },
+        {
+          "line": 572,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/ARNavigation.bak.js",
+      "reads": 14,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 125,
+          "kind": "read",
+          "snippet": "window.innerWidth"
+        },
+        {
+          "line": 126,
+          "kind": "read",
+          "snippet": "window.innerHeight"
+        },
+        {
+          "line": 217,
+          "kind": "read",
+          "snippet": "window.URL"
+        },
+        {
+          "line": 509,
+          "kind": "read",
+          "snippet": "window.DeviceOrientationEvent"
+        },
+        {
+          "line": 510,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        },
+        {
+          "line": 511,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        },
+        {
+          "line": 512,
+          "kind": "read",
+          "snippet": "window.removeEventListener"
+        },
+        {
+          "line": 514,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/daxiapp.dom.js",
+      "reads": 12,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 19,
+          "kind": "read",
+          "snippet": "window[\"Handlebars\"]"
+        },
+        {
+          "line": 199,
+          "kind": "read",
+          "snippet": "window[\"dxMapPath\"]"
+        },
+        {
+          "line": 200,
+          "kind": "read",
+          "snippet": "window[\"dxMapPath\"]"
+        },
+        {
+          "line": 269,
+          "kind": "read",
+          "snippet": "window[\"dxMapPath\"]"
+        },
+        {
+          "line": 270,
+          "kind": "read",
+          "snippet": "window[\"dxMapPath\"]"
+        },
+        {
+          "line": 838,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 838,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 843,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateRoute_new.js",
+      "reads": 11,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 61,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 64,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 69,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 100,
+          "kind": "read",
+          "snippet": "window.innerHeight"
+        },
+        {
+          "line": 204,
+          "kind": "read",
+          "snippet": "window[\"setWXLocationResult\"]"
+        },
+        {
+          "line": 365,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 545,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 551,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/extend_guobo/js/daxiapp.page.mapStateBrowse.js",
+      "reads": 10,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window.DaxiMap"
+        },
+        {
+          "line": 63,
+          "kind": "read",
+          "snippet": "window.parent"
+        },
+        {
+          "line": 150,
+          "kind": "read",
+          "snippet": "window.parent"
+        },
+        {
+          "line": 269,
+          "kind": "read",
+          "snippet": "window.location"
+        },
+        {
+          "line": 269,
+          "kind": "read",
+          "snippet": "window.location"
+        },
+        {
+          "line": 270,
+          "kind": "read",
+          "snippet": "window.panoPath"
+        },
+        {
+          "line": 717,
+          "kind": "read",
+          "snippet": "window.version"
+        },
+        {
+          "line": 1048,
+          "kind": "read",
+          "snippet": "window.cordova"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/AR/DeviceOrientationControls.js",
+      "reads": 10,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 29,
+          "kind": "read",
+          "snippet": "window.orientation"
+        },
+        {
+          "line": 65,
+          "kind": "read",
+          "snippet": "window.DeviceOrientationEvent"
+        },
+        {
+          "line": 65,
+          "kind": "read",
+          "snippet": "window.DeviceOrientationEvent"
+        },
+        {
+          "line": 67,
+          "kind": "read",
+          "snippet": "window.DeviceOrientationEvent"
+        },
+        {
+          "line": 71,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        },
+        {
+          "line": 72,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        },
+        {
+          "line": 84,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        },
+        {
+          "line": 85,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        }
+      ]
+    },
+    {
+      "file": "map_sdk/map/daximap.speak.js",
+      "reads": 8,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 115,
+          "kind": "read",
+          "snippet": "window[\"audioToken\"]"
+        },
+        {
+          "line": 321,
+          "kind": "read",
+          "snippet": "window[\"cordova\"]"
+        },
+        {
+          "line": 321,
+          "kind": "read",
+          "snippet": "window[\"cordova\"]"
+        },
+        {
+          "line": 347,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 348,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 414,
+          "kind": "read",
+          "snippet": "window['cordova']"
+        },
+        {
+          "line": 501,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        },
+        {
+          "line": 671,
+          "kind": "read",
+          "snippet": "window[\"langData\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateNavi.js",
+      "reads": 7,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        },
+        {
+          "line": 182,
+          "kind": "read",
+          "snippet": "window.innerHeight"
+        },
+        {
+          "line": 209,
+          "kind": "read",
+          "snippet": "window.innerHeight"
+        },
+        {
+          "line": 227,
+          "kind": "read",
+          "snippet": "window.innerHeight"
+        },
+        {
+          "line": 592,
+          "kind": "read",
+          "snippet": "window.location"
+        },
+        {
+          "line": 594,
+          "kind": "read",
+          "snippet": "window[\"panoPath\"]"
+        },
+        {
+          "line": 618,
+          "kind": "read",
+          "snippet": "window.innerHeight"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/extend_guobo/js/daxiapp.page.mapStatePoiDetail.js",
+      "reads": 6,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        },
+        {
+          "line": 91,
+          "kind": "read",
+          "snippet": "window[\"cordova\"]"
+        },
+        {
+          "line": 205,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 205,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 223,
+          "kind": "read",
+          "snippet": "window.parent"
+        },
+        {
+          "line": 232,
+          "kind": "read",
+          "snippet": "window.parent"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/extend_guobo/js/daxiapp.page.profile.js",
+      "reads": 5,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 172,
+          "kind": "read",
+          "snippet": "window.parent"
+        },
+        {
+          "line": 186,
+          "kind": "read",
+          "snippet": "window.parent"
+        },
+        {
+          "line": 189,
+          "kind": "read",
+          "snippet": "window.parent"
+        },
+        {
+          "line": 290,
+          "kind": "read",
+          "snippet": "window.commonUtils"
+        },
+        {
+          "line": 291,
+          "kind": "read",
+          "snippet": "window.commonUtils"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/AR/Tween.js",
+      "reads": 5,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 94,
+          "kind": "read",
+          "snippet": "window.performance"
+        },
+        {
+          "line": 96,
+          "kind": "read",
+          "snippet": "window.performance"
+        },
+        {
+          "line": 97,
+          "kind": "read",
+          "snippet": "window.performance"
+        },
+        {
+          "line": 100,
+          "kind": "read",
+          "snippet": "window.performance"
+        },
+        {
+          "line": 100,
+          "kind": "read",
+          "snippet": "window.performance"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/daxiapp.cache.js",
+      "reads": 5,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 20,
+          "kind": "read",
+          "snippet": "window.btoa"
+        },
+        {
+          "line": 30,
+          "kind": "read",
+          "snippet": "window.atob"
+        },
+        {
+          "line": 37,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 37,
+          "kind": "read",
+          "snippet": "window[\"command\"]"
+        },
+        {
+          "line": 38,
+          "kind": "read",
+          "snippet": "window.localStorage"
+        }
+      ]
+    },
+    {
+      "file": "jsbridge/android.back/cordova_plugins.js",
+      "reads": 5,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 8,
+          "kind": "read",
+          "snippet": "window.DXJSBridge"
+        },
+        {
+          "line": 15,
+          "kind": "read",
+          "snippet": "window.IndoorLocation"
+        },
+        {
+          "line": 22,
+          "kind": "read",
+          "snippet": "window.SpeakNative"
+        },
+        {
+          "line": 29,
+          "kind": "read",
+          "snippet": "window.systemVolume"
+        },
+        {
+          "line": 36,
+          "kind": "read",
+          "snippet": "window.powerManagement"
+        }
+      ]
+    },
+    {
+      "file": "jsbridge/ios.back/cordova_plugins.js",
+      "reads": 5,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 12,
+          "kind": "read",
+          "snippet": "window.DXJSBridge"
+        },
+        {
+          "line": 19,
+          "kind": "read",
+          "snippet": "window.IndoorLocation"
+        },
+        {
+          "line": 26,
+          "kind": "read",
+          "snippet": "window.SpeakNative"
+        },
+        {
+          "line": 33,
+          "kind": "read",
+          "snippet": "window.system"
+        },
+        {
+          "line": 41,
+          "kind": "read",
+          "snippet": "window.powerManagement"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/app-init.js",
+      "reads": 4,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window.DaxiApp"
+        },
+        {
+          "line": 5,
+          "kind": "read",
+          "snippet": "window.$"
+        },
+        {
+          "line": 11,
+          "kind": "read",
+          "snippet": "window.$"
+        },
+        {
+          "line": 59,
+          "kind": "read",
+          "snippet": "window.dispatchEvent"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStatePoi.js",
+      "reads": 4,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        },
+        {
+          "line": 103,
+          "kind": "read",
+          "snippet": "window[\"cordova\"]"
+        },
+        {
+          "line": 235,
+          "kind": "read",
+          "snippet": "window.AlipayJSBridge"
+        },
+        {
+          "line": 236,
+          "kind": "read",
+          "snippet": "window.AlipayJSBridge"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateSimulateNavi.js",
+      "reads": 4,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        },
+        {
+          "line": 462,
+          "kind": "read",
+          "snippet": "window.location"
+        },
+        {
+          "line": 464,
+          "kind": "read",
+          "snippet": "window[\"panoPath\"]"
+        },
+        {
+          "line": 488,
+          "kind": "read",
+          "snippet": "window.innerHeight"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/extend_guobo/js/daxiapp.page.visitNavi.js",
+      "reads": 3,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 105,
+          "kind": "read",
+          "snippet": "window[\"wx\"]"
+        },
+        {
+          "line": 117,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        },
+        {
+          "line": 117,
+          "kind": "read",
+          "snippet": "window[\"locWebSocketPostMessage\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStatePoiDetail.js",
+      "reads": 3,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        },
+        {
+          "line": 136,
+          "kind": "read",
+          "snippet": "window.AlipayJSBridge"
+        },
+        {
+          "line": 137,
+          "kind": "read",
+          "snippet": "window.AlipayJSBridge"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateSharePos.js",
+      "reads": 3,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        },
+        {
+          "line": 276,
+          "kind": "read",
+          "snippet": "window.parent"
+        },
+        {
+          "line": 282,
+          "kind": "read",
+          "snippet": "window[\"rawParams\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/AR/FBXLoader.js",
+      "reads": 3,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 275,
+          "kind": "read",
+          "snippet": "window.URL"
+        },
+        {
+          "line": 959,
+          "kind": "read",
+          "snippet": "window.innerWidth"
+        },
+        {
+          "line": 960,
+          "kind": "read",
+          "snippet": "window.innerHeight"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/daxiapp.stateMgr.js",
+      "reads": 3,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 153,
+          "kind": "read",
+          "snippet": "window.addEventListener"
+        },
+        {
+          "line": 167,
+          "kind": "read",
+          "snippet": "window.uni"
+        },
+        {
+          "line": 167,
+          "kind": "read",
+          "snippet": "window.parent"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/extend_guobo/js/daxiapp.page.exhibitionRoute.js",
+      "reads": 2,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 438,
+          "kind": "read",
+          "snippet": "window.locWebSocketPostMessage"
+        },
+        {
+          "line": 980,
+          "kind": "read",
+          "snippet": "window.dataPath"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/extend_guobo/js/daxiapp.page.home.js",
+      "reads": 2,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 399,
+          "kind": "read",
+          "snippet": "window.parent"
+        },
+        {
+          "line": 417,
+          "kind": "read",
+          "snippet": "window.dataPath"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/extend_guobo/js/daxiapp.page.service.js",
+      "reads": 2,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 277,
+          "kind": "read",
+          "snippet": "window.parent"
+        },
+        {
+          "line": 295,
+          "kind": "read",
+          "snippet": "window.dataPath"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.page.favorite.js",
+      "reads": 2,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 82,
+          "kind": "read",
+          "snippet": "window.AlipayJSBridge"
+        },
+        {
+          "line": 83,
+          "kind": "read",
+          "snippet": "window.AlipayJSBridge"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateMainPoiPage.js",
+      "reads": 2,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 125,
+          "kind": "read",
+          "snippet": "window[\"version\"]"
+        },
+        {
+          "line": 128,
+          "kind": "read",
+          "snippet": "window[\"version\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateSearchPage.js",
+      "reads": 2,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window.DaxiMap"
+        },
+        {
+          "line": 182,
+          "kind": "read",
+          "snippet": "window.AlipayJSBridge"
+        }
+      ]
+    },
+    {
+      "file": "map_sdk/map/daximap.control.js",
+      "reads": 2,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 109,
+          "kind": "read",
+          "snippet": "window.langData"
+        },
+        {
+          "line": 509,
+          "kind": "read",
+          "snippet": "window.Cross"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/extend_guobo/js/daxiapp.page.mapStateAutoPlayExhibit.js",
+      "reads": 1,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateGroupShare.js",
+      "reads": 1,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateSelectPoint.js",
+      "reads": 1,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 4,
+          "kind": "read",
+          "snippet": "window[\"DaxiMap\"]"
+        }
+      ]
+    },
+    {
+      "file": "app/navi_app/utils/widget.js",
+      "reads": 1,
+      "writes": 0,
+      "samples": [
+        {
+          "line": 82,
+          "kind": "read",
+          "snippet": "window.XMLHttpRequest"
+        }
+      ]
+    }
+  ]
+}
