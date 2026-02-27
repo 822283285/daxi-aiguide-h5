@@ -1000,7 +1000,7 @@
 
             const isFirst = daxiapp.cache.storage.getItem("isFirst");
             if (!isFirst) {
-              thisObject._courseCtrl?.updateData(bdid, building.bdInfo.cn_name);
+              thisObject._courseCtrl?.updateData(bdid, building?.bdInfo?.cn_name);
             }
 
             let extendOpt;

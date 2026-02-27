@@ -1,12 +1,12 @@
 # Repository Health Check Report
 
-- Generated at: 2026-02-25T09:11:09.031Z
+- Generated at: 2026-02-26T03:53:01.035Z
 - Scope: `*.js` files under repository root
 
 ## 1) JS 文件统计
 
-- JS 文件总数: **144**
-- JS 总行数: **157575**
+- JS 文件总数: **194**
+- JS 总行数: **161972**
 
 ### TOP 10 大文件（按行数）
 
@@ -25,7 +25,25 @@
 
 ## 2) 重复文件名扫描
 
-发现 **14** 组重复文件名：
+发现 **15** 组重复文件名：
+
+### index.js (16 个)
+- app/navi_app/shouxihu/src/application/commands/index.js
+- app/navi_app/shouxihu/src/application/index.js
+- app/navi_app/shouxihu/src/application/state/index.js
+- app/navi_app/shouxihu/src/application/usecases/index.js
+- app/navi_app/shouxihu/src/core/config/index.js
+- app/navi_app/shouxihu/src/core/index.js
+- app/navi_app/shouxihu/src/domain/index.js
+- app/navi_app/shouxihu/src/domain/navigation/index.js
+- app/navi_app/shouxihu/src/domain/poi/index.js
+- app/navi_app/shouxihu/src/domain/route/index.js
+- app/navi_app/shouxihu/src/legacy/index.js
+- app/navi_app/shouxihu/src/platform/audio/index.js
+- app/navi_app/shouxihu/src/platform/bridge/index.js
+- app/navi_app/shouxihu/src/platform/index.js
+- app/navi_app/shouxihu/src/platform/location/index.js
+- app/navi_app/shouxihu/src/ui/index.js
 
 ### ARNavigation.js (2 个)
 - app/navi_app/utils/AR/ARNavigation.js
@@ -85,7 +103,7 @@
 
 ## 3) `window.* =` 全局写入点扫描
 
-共发现 **136** 个全局写入点：
+共发现 **135** 个全局写入点：
 
 | 文件 | 行号 | 命中片段 |
 | --- | ---: | --- |
@@ -120,12 +138,11 @@
 | app/navi_app/shouxihu/js/daxiapp.mapView.js | 95 | `window.lastHashCount =` |
 | app/navi_app/shouxihu/js/daxiapp.mapView.js | 490 | `window["dx_createMapFinished"] =` |
 | app/navi_app/shouxihu/js/daxiapp.page.command.js | 24 | `window.locWebSocketOnGetEvent =` |
-| app/navi_app/shouxihu/js/dxapi.app.js | 14 | `window.rootPath =` |
-| app/navi_app/shouxihu/js/dxapi.app.js | 52 | `window.command =` |
-| app/navi_app/shouxihu/js/dxapi.app.js | 75 | `window.projDataPath =` |
-| app/navi_app/shouxihu/js/dxapi.app.js | 124 | `window.downloader =` |
-| app/navi_app/shouxihu/js/dxapi.app.js | 153 | `window.roadMatch =` |
-| app/navi_app/shouxihu/js/dxapi.app.js | 409 | `window.DxApp =` |
+| app/navi_app/shouxihu/js/dxapi.app.js | 16 | `window.rootPath =` |
+| app/navi_app/shouxihu/js/dxapi.app.js | 237 | `window.command =` |
+| app/navi_app/shouxihu/js/dxapi.app.js | 260 | `window.projDataPath =` |
+| app/navi_app/shouxihu/js/dxapi.app.js | 369 | `window.roadMatch =` |
+| app/navi_app/shouxihu/js/dxapi.app.js | 629 | `window.DxApp =` |
 | app/navi_app/shouxihu/utils/environment.js | 87 | `window.DaxiApp =` |
 | app/navi_app/shouxihu/utils/getParam.js | 17 | `window.getParam =` |
 | app/navi_app/shouxihu/voucher/libs/signature.js | 79 | `window["audioToken"]=` |
