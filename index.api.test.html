@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大希 API - 测试页面</title>
+</head>
+
+<body>
+    <!-- 1. 引入 crypto-js（MD5 加密库） -->
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+
+    <!-- 2. 引入 axios（HTTP 请求库） -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- 3. 引入签名工具（必须在 API 之前） -->
+    <script type="module" src="./src/utils/signMd5Utils.js"></script>
+
+    <!-- 4. 引入 API 模块 -->
+    <script type="module" src="./src/api/index.js"></script>
+
+    <!-- 测试脚本 -->
+    <script type="module">
+        // 等待签名工具加载完成
+        setTimeout(() => {
+            console.log('=== API 环境检查 ===');
+            console.log('CryptoJS:', typeof CryptoJS !== 'undefined' ? '已加载' : '未加载');
+            console.log('axios:', typeof axios !== 'undefined' ? '已加载' : '未加载');
+            console.log('signMd5Utils:', typeof window.signMd5Utils !== 'undefined' ? '已加载' : '未加载');
+
+            if (window.signMd5Utils) {
+                const testSign = window.signMd5Utils.getSign('https://test.com/api', { key: 'value' });
+                console.log('签名测试:', testSign);
+            }
+
+            console.log('=== 使用方法 ===');
+            console.log('import { api } from "./src/api/index.js"');
+            console.log('const config = await api.scenic.getScenicConfig({})');
+        }, 1000);
+    </script>
+</body>
+
+</html>

@@ -1,44 +1,97 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>大希 API - 测试页面</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  
+  <title>大希智能导游</title>
+  
+  <!-- SEO -->
+  <meta name="description" content="大希智能导游 - 智能室内导航系统">
+  <meta name="keywords" content="导航，室内导航，导游，智能导游">
+  
+  <!-- 禁用缓存 (开发环境) -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  
+  <!-- 样式文件 -->
+  <link rel="stylesheet" href="./app/navi_app/shouxihu/css/main.css">
+  <link rel="stylesheet" href="./app/navi_app/shouxihu/css/blue.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
+  
+  <style>
+    /* 基础样式重置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    /* 加载中容器 */
+    #first_page {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #007AFF;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    
+    #first_page .loading-text {
+      color: white;
+      font-size: 20px;
+      font-weight: 500;
+    }
+    
+    /* 地图容器 */
+    #app.map_page_container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+    }
+    
+    /* 页面容器 (路由挂载点) */
+    #container.ui_page_container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  </style>
 </head>
-
 <body>
-    <!-- 1. 引入 crypto-js（MD5 加密库） -->
-    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
-
-    <!-- 2. 引入 axios（HTTP 请求库） -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-    <!-- 3. 引入签名工具（必须在 API 之前） -->
-    <script type="module" src="./src/utils/signMd5Utils.js"></script>
-
-    <!-- 4. 引入 API 模块 -->
-    <script type="module" src="./src/api/index.js"></script>
-
-    <!-- 测试脚本 -->
-    <script type="module">
-        // 等待签名工具加载完成
-        setTimeout(() => {
-            console.log('=== API 环境检查 ===');
-            console.log('CryptoJS:', typeof CryptoJS !== 'undefined' ? '已加载' : '未加载');
-            console.log('axios:', typeof axios !== 'undefined' ? '已加载' : '未加载');
-            console.log('signMd5Utils:', typeof window.signMd5Utils !== 'undefined' ? '已加载' : '未加载');
-
-            if (window.signMd5Utils) {
-                const testSign = window.signMd5Utils.getSign('https://test.com/api', { key: 'value' });
-                console.log('签名测试:', testSign);
-            }
-
-            console.log('=== 使用方法 ===');
-            console.log('import { api } from "./src/api/index.js"');
-            console.log('const config = await api.scenic.getScenicConfig({})');
-        }, 1000);
-    </script>
+  <!-- 加载中容器 -->
+  <div id="first_page">
+    <div class="loading-text">大希智能导游 加载中...</div>
+  </div>
+  
+  <!-- 地图容器 -->
+  <div id="app" class="map_page_container"></div>
+  
+  <!-- 页面容器 (路由挂载点) -->
+  <div id="container" class="ui_page_container"></div>
+  
+  <!-- 应用入口 (ES Module) -->
+  <script type="module" src="./src/main.js"></script>
 </body>
-
 </html>

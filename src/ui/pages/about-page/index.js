@@ -1,0 +1,1 @@
+export{AboutPageController,createAbout,registerAbout}from"./about-page.controller.js"

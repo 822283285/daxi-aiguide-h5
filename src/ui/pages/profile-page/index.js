@@ -1,0 +1,1 @@
+export{ProfilePageController,createProfile,registerProfile}from"./profile-page.controller.js"
