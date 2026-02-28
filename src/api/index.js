@@ -8,7 +8,7 @@
  */
 
 // 导入请求封装（自动初始化）
-import { get, post, getAppParams } from "./request.js";
+import { get as _get, post as _post, getAppParams as _getAppParams } from "./request.js";
 import { windowAdapter } from "@/legacy/window-adapter.js";
 
 // 导入各模块 API

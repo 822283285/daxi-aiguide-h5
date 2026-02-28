@@ -48,7 +48,7 @@ function normalizeBaseUrl(baseUrl) {
 function safeDecode(value) {
   try {
     return decodeURIComponent(value);
-  } catch (_error) {
+  } catch {
     return value;
   }
 }

@@ -116,16 +116,16 @@ export class ServicePageController extends BasePageController {
           
           <div class="service-list">
             ${this.serviceItems
-    .map(
-      (item) => `
+              .map(
+                (item) => `
               <div class="service-item" data-action="${item.action}">
                 <div class="service-icon">${item.icon}</div>
                 <div class="service-name">${item.name}</div>
                 <div class="service-arrow">›</div>
               </div>
             `
-    )
-    .join("")}
+              )
+              .join("")}
           </div>
           
           <div class="service-hotlines">
@@ -175,24 +175,24 @@ export class ServicePageController extends BasePageController {
    */
   handleServiceAction(action) {
     switch (action) {
-    case "chat":
-      this.openChat();
-      break;
-    case "call":
-      this.makeCall();
-      break;
-    case "faq":
-      this.navigateTo("FAQPage");
-      break;
-    case "feedback":
-      this.navigateTo("FeedbackPage");
-      break;
-    case "complaint":
-      this.navigateTo("ComplaintPage");
-      break;
-    case "about":
-      this.navigateTo("AboutPage");
-      break;
+      case "chat":
+        this.openChat();
+        break;
+      case "call":
+        this.makeCall();
+        break;
+      case "faq":
+        this.navigateTo("FAQPage");
+        break;
+      case "feedback":
+        this.navigateTo("FeedbackPage");
+        break;
+      case "complaint":
+        this.navigateTo("ComplaintPage");
+        break;
+      case "about":
+        this.navigateTo("AboutPage");
+        break;
     }
   }
 
@@ -202,7 +202,7 @@ export class ServicePageController extends BasePageController {
   openChat() {
     console.log("[ServicePage] Opening chat...");
     // TODO: 实现客服聊天功能
-    alert("在线客服功能开发中...");
+    console.warn("在线客服功能开发中...");
   }
 
   /**
