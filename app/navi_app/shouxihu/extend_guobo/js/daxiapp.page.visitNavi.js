@@ -1,15 +1,15 @@
 (function (global) {
   "use strict";
-  var daxiapp = global["DaxiApp"] || {};
-  var daximap = global["DaxiMap"] || {};
-  var domUtils = daxiapp["dom"];
-  var dxUtils = daxiapp["utils"];
-  var dxUtil = daxiapp["utils"];
-  var MapStateClass = daxiapp["MapStateClass"];
-  var STATE_init = 0,
+  const daxiapp = global["DaxiApp"] || {};
+  const daximap = global["DaxiMap"] || {};
+  const domUtils = daxiapp["dom"];
+  const dxUtils = daxiapp["utils"];
+  const dxUtil = daxiapp["utils"];
+  const MapStateClass = daxiapp["MapStateClass"];
+  const STATE_init = 0,;
     STATE_unReaded = 1,
     STATE_Played = 2;
-  var MapStateVisitNavi = MapStateClass.extend({
+  const MapStateVisitNavi = MapStateClass.extend({;
     __init__: function () {
       this._super();
       this._rtti = "MapStateVisitNavi";
@@ -20,9 +20,9 @@
 
     initialize: function (app, container) {
       this._super(app, container);
-      var thisObject = this;
+      const thisObject = this;
       thisObject.name = thisObject.pageName = "visit_navi_view_page";
-      var basicMap_html = '<div id="' + thisObject.pageName + '" class="navi_page"></div>';
+      const basicMap_html = '<div id="' + thisObject.pageName + '" class="navi_page"></div>';
       domUtils.append(thisObject._container, basicMap_html);
       thisObject._dom = domUtils.find(thisObject._container, "#" + thisObject.pageName);
       thisObject._bdid = "";
@@ -30,7 +30,7 @@
       thisObject._currentRoute = null;
       thisObject._startPoint = { lon: 0, lat: 0, bdid: "", floorId: "", name: "", address: "", floorName: "" };
       thisObject._endPoint = { lon: 0, lat: 0, bdid: "", floorId: "", name: "", address: "", floorName: "" };
-      var naviManager = thisObject._app._mapView._naviManager;
+      const naviManager = thisObject._app._mapView._naviManager;
       thisObject.naviManager = naviManager;
       thisObject._naviEndInfoView = new daxiapp["DXNaviEndInfoView"](app, thisObject._dom);
       thisObject._naviEndInfoView.init({
@@ -67,7 +67,7 @@
         onNaviToNextScnic: function () {
           thisObject.targetExhibitRect = null;
           thisObject._app._mapView._locationManager["off"]("onLocationChanged", thisObject.listenPosToNextScenic);
-          var toNext = true;
+          const toNext = true;
           thisObject.startNaviToNextRoute(toNext);
         },
       });
@@ -88,13 +88,13 @@
             thisObject._dxCardWithAudioCtrl.hide();
           },
           onImgLoaded: function () {
-            var height = thisObject._dom.find(".detailInfo-component ").height();
+            const height = thisObject._dom.find(".detailInfo-component ").height();
             if (height) {
               thisObject._app._mapView.setBottomViewHeight(height + 26);
             }
           },
           onListenBtnClicked: function (sender, data) {
-            var params = {
+            const params = {;
               token: thisObject._app._params["token"],
               bdid: data["bdid"],
               getPayStatusUrl: thisObject._app._config["getPayStatusUrl"],
@@ -108,7 +108,7 @@
                   });
               } else {
                 // 已支付未到期
-                var d = {
+                const d = {;
                   type: "postEventToMiniProgram",
                   id: params["userId"],
                   methodToMiniProgram: "exhibitId=" + (data["id2"] || data["id"]) + "&bdid=" + params.bdid + "&token=" + params.token,
@@ -128,11 +128,11 @@
             });
           },
           moreClick: function (sender, data) {
-            var alertBox = thisObject._dom.find(".alertBox");
+            const alertBox = thisObject._dom.find(".alertBox");
             if (alertBox.length) {
               alertBox.remove();
             }
-            var dom = '<div class="alertBox"><div class="close icon-close2"></div>';
+            const dom = '<div class="alertBox"><div class="close icon-close2"></div>';
             if (data.introImage) {
               dom += '<div><img style="width: 100%" src="' + data.introImage + '"></div>';
             }
@@ -142,8 +142,8 @@
             domUtils.showMask();
             thisObject._dom.append($(dom));
             alertBox = thisObject._dom.find(".alertBox");
-            var closeBtn = alertBox.find(".close");
-            var maskDom = $("#__mask_info_1");
+            const closeBtn = alertBox.find(".close");
+            const maskDom = $("#__mask_info_1");
             closeBtn.on("click", function () {
               alertBox.hide();
               domUtils.hideMask();
@@ -159,11 +159,11 @@
     },
     findNearestExhibit: function (startPoint, toNext) {
       var routeLayer = this.params.visitRoute; //this.routeManager.getCurentRoute();
-      var nearestMarker = null,
+      const nearestMarker = null,;
         markerIndex;
-      var playedExhibitCount = 0;
-      var minDis = Number.MAX_VALUE;
-      var thisObject = this;
+      const playedExhibitCount = 0;
+      const minDis = Number.MAX_VALUE;
+      const thisObject = this;
       routeLayer["markersInfo"].forEach(function (marker, index) {
         if (toNext && index < routeLayer["markersInfo"].length - 1 && index <= thisObject.currTargetIndex) {
           return;
@@ -172,7 +172,7 @@
           playedExhibitCount++;
         }
         if (marker["floorId"] == startPoint["floorId"] && marker["sate"] != STATE_Played) {
-          var dis = daxiapp["naviMath"].getGeodeticCircleDistance({ x: marker["lon"], y: marker["lat"] }, { x: startPoint["lon"], y: startPoint["lat"] });
+          const dis = daxiapp["naviMath"].getGeodeticCircleDistance({ x: marker["lon"], y: marker["lat"] }, { x: startPoint["lon"], y: startPoint["lat"] });
           if (minDis > dis) {
             nearestMarker = marker;
             markerIndex = index;
@@ -181,7 +181,7 @@
         }
       });
 
-      var nearLine = null;
+      const nearLine = null;
       routeLayer.routesInfo.forEach(function (item, index) {
         if (toNext && index < routeLayer.routesInfo.length - 1 && index <= thisObject.naviRouteIndex) {
           return;
@@ -189,11 +189,11 @@
         if (!item.exhibition) {
           return;
         }
-        var polyline = item["segments"][0]["polyline"];
+        const polyline = item["segments"][0]["polyline"];
         for (var i = 0, maxIndex = polyline.length - 1; i < maxIndex; i++) {
-          var p1 = polyline[i],
+          const p1 = polyline[i],;
             p2 = polyline[i + 1];
-          var res = [];
+          const res = [];
           daxiapp["naviMath"].pointToLineInVector([startPoint["lon"], startPoint["lat"]], p1, p2, res, 2000);
           if (item["exhibition"]["sate"] == STATE_Played) {
             return;
@@ -221,15 +221,15 @@
     onStateBeginWithParam: function (args) {
       this._super(args);
       if (!args) return;
-      var thisObject = this;
+      const thisObject = this;
       thisObject.params = dxUtils.copyData(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.setTopViewHeight(94);
       mapView.setBottomViewHeight(114);
       if (!thisObject.params["startPoint"] || !thisObject.params["startPoint"]["lon"] || !thisObject.params["startPoint"]["lat"]) {
         //没有起点定位成功的时候用定位点即我的位置 posMode myPosition
         thisObject.params["startPoint"] = {};
-        var posInfo = mapView._locationManager["getMyPositionInfo"]();
+        const posInfo = mapView._locationManager["getMyPositionInfo"]();
         if (posInfo["position"][0] && posInfo["position"][1]) {
           thisObject.params["startPoint"]["lon"] = posInfo["position"][0];
           thisObject.params["startPoint"]["lat"] = posInfo["position"][1];
@@ -240,8 +240,8 @@
         }
       }
       if (thisObject.params["startPoint"]) {
-        var target = thisObject._startPoint;
-        var pointInfo = thisObject.params["startPoint"];
+        const target = thisObject._startPoint;
+        const pointInfo = thisObject.params["startPoint"];
         target["lon"] = pointInfo["lon"] || 0;
         target["lat"] = pointInfo["lat"] || 0;
         target["bdid"] = pointInfo["bdid"] || "";
@@ -252,8 +252,8 @@
         target["poiId"] = pointInfo["poiId"] || pointInfo["id"];
       }
       this.visitRoute = thisObject.params["visitRoute"];
-      var next = this.visitRoute.routesInfo[this.visitRoute.routesInfo.length - 1];
-      var endPoint = next["segments"][0]["endPoint"];
+      const next = this.visitRoute.routesInfo[this.visitRoute.routesInfo.length - 1];
+      const endPoint = next["segments"][0]["endPoint"];
       endPoint.name = next.name;
       thisObject.endPoint = endPoint;
       endPoint["imageUrl"] = "end";
@@ -263,7 +263,7 @@
 
     onHideByPushStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       // mapView._mapSDK["off"]("poiClick",this.onPoiClick,this);
       mapView.pushState(true);
       this.exhitRectLayer && (this.exhitRectLayer.visible = true);
@@ -272,12 +272,12 @@
 
     onShowByPopStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       // mapView._mapSDK["off"]("poiClick",this.onPoiClick,this);
       mapView.popState();
 
       if (this._app.exhibitsLayer) {
-        var exhibitsLayer = this._app.exhibitsLayer;
+        const exhibitsLayer = this._app.exhibitsLayer;
         for (var key in exhibitsLayer) {
           exhibitsLayer[key].visible = false;
         }
@@ -287,7 +287,7 @@
     },
     onStateEnd: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       // mapView._mapSDK["off"]("poiClick",this.onPoiClick,this);
       if (this.dxRouteManager) {
         this.dxRouteManager["removeFromMap"]();
@@ -298,13 +298,13 @@
     },
     searchRoute: function (isStart, toNext) {
       this.clearAllRenderObject();
-      var thisObject = this;
-      var mapView = this._app._mapView;
-      var naviManager = mapView._naviManager;
+      const thisObject = this;
+      const mapView = this._app._mapView;
+      const naviManager = mapView._naviManager;
 
-      var startPoint = thisObject.params["startPoint"];
-      var bdid = startPoint["bdid"] || "";
-      var data = this.findNearestExhibit(startPoint, toNext);
+      const startPoint = thisObject.params["startPoint"];
+      const bdid = startPoint["bdid"] || "";
+      const data = this.findNearestExhibit(startPoint, toNext);
       thisObject.currTargetIndex = data["index"];
       thisObject.currTargetMarker = data["maker"];
       if (!data["marker"]) {
@@ -313,21 +313,21 @@
       }
       this.getExhibitPolygon(data["marker"]);
 
-      var params = { startPoint: startPoint, token: thisObject._token, bdid: bdid, segments: [] };
-      var routeInfo = this.visitRoute;
-      var segments = routeInfo["routesInfo"].slice(data["index"] + 1);
-      var segments2 = routeInfo["routesInfo"].slice(data["index"]);
+      const params = { startPoint: startPoint, token: thisObject._token, bdid: bdid, segments: [] };
+      const routeInfo = this.visitRoute;
+      const segments = routeInfo["routesInfo"].slice(data["index"] + 1);
+      const segments2 = routeInfo["routesInfo"].slice(data["index"]);
       this._resetSegments = segments2;
       if (startPoint["floorId"] && startPoint["bdid"]) {
         startPoint["idtype"] = 3;
       } else {
         startPoint["idtype"] = 2; //2;
       }
-      var bdid = startPoint["bdid"] | "";
-      var params;
+      const bdid = startPoint["bdid"] | "";
+      const params;
       if (segments.length == 0) {
-        var _startPos = segments2[0]["segments"][0]["startPoint"];
-        var _endPos = segments2[0]["segments"][0]["endPoint"];
+        const _startPos = segments2[0]["segments"][0]["startPoint"];
+        const _endPos = segments2[0]["segments"][0]["endPoint"];
         _endPos["name"] = segments2["name"];
         // var dis1 = daxiapp["naviMath"].getGeodeticCircleDistance({ x: _startPos["lon"], y: _startPos["lat"] }, {x:startPoint["lon"],y:startPoint["lat"]});
         // var dis2 = daxiapp["naviMath"].getGeodeticCircleDistance({ x: _endPos["lon"], y: _endPos["lat"] }, {x:startPoint["lon"],y:startPoint["lat"]});
@@ -365,7 +365,7 @@
             thisObject.currTargetMarker && (thisObject.currTargetMarker.state = STATE_Played);
             thisObject.dxRouteManager.removeFromMap();
             thisObject._naviTipView.setNaviState("finishedNotLast");
-            var _nextExhibitInfo = thisObject.visitRoute["markersInfo"][thisObject.currTargetIndex + 1];
+            const _nextExhibitInfo = thisObject.visitRoute["markersInfo"][thisObject.currTargetIndex + 1];
             thisObject._naviTipView.setTargetInfo(_nextExhibitInfo);
             if (thisObject.targetExhibitRect) {
               thisObject._app._mapView._locationManager["on"]("onLocationChanged", thisObject.listenPosToNextScenic);
@@ -454,8 +454,8 @@
           //     thisObject._naviBottomView.updateData(naviInfo);
           // }
           if (naviInfo.remainDistance) {
-            var date = new Date(Date.now() + naviInfo.remainDistance * 1000);
-            var str = date.getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
+            const date = new Date(Date.now() + naviInfo.remainDistance * 1000);
+            const str = date.getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
             thisObject._naviTipView.setArringTime(str);
           }
           if (naviInfo["grayT"]) {
@@ -465,19 +465,19 @@
         },
         onReCalculateRouteForYaw: function (params) {
           //开始偏航重算路径
-          var config = thisObject._app._config;
-          var transittype = config.transittype == undefined ? 0 : config.transittype;
+          const config = thisObject._app._config;
+          const transittype = config.transittype == undefined ? 0 : config.transittype;
           params["transittype"] = transittype;
-          var mapView = thisObject._app._mapView;
+          const mapView = thisObject._app._mapView;
           mapView._naviManager["exitNavi"]();
 
-          var posInfo = mapView._locationManager.getMyPositionInfo();
-          var real_pos = posInfo["real_pos"];
+          const posInfo = mapView._locationManager.getMyPositionInfo();
+          const real_pos = posInfo["real_pos"];
           if (thisObject.targetExhibitRect && real_pos && daxiapp["naviMath"].pointInPolygon([real_pos["x"], real_pos["y"]], thisObject.targetExhibitRect)) {
             thisObject.currTargetMarker && (thisObject.currTargetMarker.state = STATE_Played);
             if (thisObject.naviRouteIndex < thisObject.naviRoutes.length - 1) {
               thisObject._naviTipView.setNaviState("finishedNotLast");
-              var _nextExhibitInfo = thisObject.visitRoute["markersInfo"][thisObject.currTargetIndex + 1];
+              const _nextExhibitInfo = thisObject.visitRoute["markersInfo"][thisObject.currTargetIndex + 1];
               thisObject._naviTipView.setTargetInfo(_nextExhibitInfo);
             }
 
@@ -488,8 +488,8 @@
           daxiapp["domUtil"].tipNotice("您已偏离导航,正在为您重新规划路线", 3000);
           // naviManager["queryRoutePath"](params);
 
-          var startPoint = thisObject.params["startPoint"];
-          var pos = posInfo["real_pos"];
+          const startPoint = thisObject.params["startPoint"];
+          const pos = posInfo["real_pos"];
           if (pos) {
             startPoint["lon"] = pos["x"];
             startPoint["lat"] = pos["y"];
@@ -528,13 +528,13 @@
       naviManager["queryRoutePath"](params);
     },
     getExhibitPolygon: function (marker) {
-      var thisObject = this;
+      const thisObject = this;
       thisObject.exhitRectLayer && thisObject.exhitRectLayer["removeFromMap"]();
       if (marker && marker["id2"]) {
         // var toExhitDis = daxiapp["naviMath"].getGeodeticCircleDistance({ x: data["marker"]["lon"], y: data["marker"]["lat"] }, {x:startPoint["lon"],y:startPoint["lat"]});
-        var id = marker["id2"];
+        const id = marker["id2"];
         // 获取景点围栏
-        var url =
+        const url =;
           (thisObject._app._config["getExhibitFenceUrl"] || "https://map1a.daxicn.com/server39/daxi-manager/api/museum/exhibitExplain") +
           "?token=" +
           thisObject._app._params["token"] +
@@ -544,14 +544,14 @@
           id;
         dxUtil.getData(url, {}, "json", function (data) {
           if (data.success) {
-            var res = data.result;
-            var rect = res["extent"].split(",").map(function (item) {
-              var arr = item.split(" ");
+            const res = data.result;
+            const rect = res["extent"].split(",").map(function (item) {;
+              const arr = item.split(" ");
               return [parseFloat(arr[0]), parseFloat(arr[1])];
             });
             thisObject.targetExhibitRect = rect;
             if (thisObject._app._params["postLocRes"]) {
-              var mapSDK = thisObject._app._mapView._mapSDK;
+              const mapSDK = thisObject._app._mapView._mapSDK;
               thisObject.exhitRectLayer = mapSDK.createPolygon({
                 bdid: marker["bdid"],
                 floorId: marker["floorId"],
@@ -579,16 +579,16 @@
     },
     exitNavigation: function () {
       this.navigating = false;
-      var naviManager = this._app._mapView._naviManager;
+      const naviManager = this._app._mapView._naviManager;
       naviManager.exitNavi();
       this._naviTipView.setNaviState("exit");
       this._naviTipView.hide();
-      var locationManager = this._app._mapView._locationManager;
+      const locationManager = this._app._mapView._locationManager;
       locationManager["stopMatchRoute"]();
       thisObject.exhitRectLayer && thisObject.exhitRectLayer["removeFromMap"]();
     },
     onNavigationFinished: function () {
-      var thisObject = this;
+      const thisObject = this;
 
       if (thisObject._naviTipView) {
         thisObject._naviTipView.hide();
@@ -597,7 +597,7 @@
       //     thisObject._naviBottomView.hide();
       // }
 
-      var endPoint = thisObject.params.endPoint;
+      const endPoint = thisObject.params.endPoint;
       dxUtils.modal.show({
         img: "./images/icon_position.png",
         text: "您已到达目的地",
@@ -612,20 +612,20 @@
       thisObject.navigationState = "finished";
     },
     listenPosToNextScenic: function (sender, e) {
-      var thisObject = DxApp._stateManager.getState("MapStateVisitNavi");
+      const thisObject = DxApp._stateManager.getState("MapStateVisitNavi");
       if (thisObject.targetExhibitRect) {
         if (!daxiapp["naviMath"].pointInPolygon(e["position"], thisObject.targetExhibitRect)) {
           thisObject.targetExhibitRect = null;
-          var locationManager = thisObject._app._mapView._locationManager;
+          const locationManager = thisObject._app._mapView._locationManager;
           locationManager["off"]("onLocationChanged", thisObject.listenPosToNextScenic);
           thisObject.startNaviToNextRoute(true);
         }
       }
     },
     startNaviToNextRoute: function (toNext) {
-      var thisObject = this;
-      var locationManager = thisObject._app._mapView._locationManager;
-      var posInfo = locationManager.getMyPositionInfo();
+      const thisObject = this;
+      const locationManager = thisObject._app._mapView._locationManager;
+      const posInfo = locationManager.getMyPositionInfo();
       if (posInfo["position"][0] && posInfo["position"][1]) {
         thisObject.params["startPoint"]["lon"] = posInfo["position"][0];
         thisObject.params["startPoint"]["lat"] = posInfo["position"][1];
@@ -664,7 +664,7 @@
 
     onRouteReviced: function (data, segments, isStart) {
       //domUtils.showInfo("路线规划完成");
-      var thisObject = this;
+      const thisObject = this;
       if (!thisObject.visible) {
         return;
       }
@@ -685,35 +685,35 @@
         });
         return;
       }
-      var mapSDK = this._app._mapView._mapSDK;
-      var thisObject = this;
-      var routes = [data];
+      const mapSDK = this._app._mapView._mapSDK;
+      const thisObject = this;
+      const routes = [data];
       this.naviRoutes = routes;
       this.naviRouteIndex = 0;
-      var markerMap = {};
-      var bdid = thisObject.params["startPoint"]["bdid"];
-      var flid = thisObject.params["startPoint"]["floorId"];
+      const markerMap = {};
+      const bdid = thisObject.params["startPoint"]["bdid"];
+      const flid = thisObject.params["startPoint"]["floorId"];
       markerMap[flid] = [thisObject.params["startPoint"]];
       thisObject.params["startPoint"]["imageUrl"] = "start";
-      var endPoint = thisObject.endPoint;
+      const endPoint = thisObject.endPoint;
       if (endPoint["floorId"] != flid) {
         markerMap[endPoint["floorId"]] = [endPoint];
       } else {
         markerMap[flid].push(endPoint);
       }
       segments.forEach(function (item, routeindex) {
-        var exhibition = item["exhibition"];
-        var segs = item["segments"];
-        var bdid = segs[0]["bdid"];
-        var segStartPos = segs[0]["startPoint"];
-        var segEndPos = segs[segs.length - 1]["endPoint"];
+        const exhibition = item["exhibition"];
+        const segs = item["segments"];
+        const bdid = segs[0]["bdid"];
+        const segStartPos = segs[0]["startPoint"];
+        const segEndPos = segs[segs.length - 1]["endPoint"];
         if (routeindex == 0) {
           data["transits"][0]["segments"][0]["exhibition"] = exhibition || (segEndPos["name"] = item["name"] && segEndPos);
         }
-        var naviInfoList = [];
-        var steps = [];
+        const naviInfoList = [];
+        const steps = [];
         if (routeindex > 0) {
-          var routeInfo = {
+          const routeInfo = {;
             code: 0,
             transits: [
               {
@@ -759,13 +759,13 @@
         }
 
         segs.forEach(function (seg, m) {
-          var routeMarkerOption = [];
-          var floorId = seg["floorId"];
-          var bdid = seg["bdid"];
+          const routeMarkerOption = [];
+          const floorId = seg["floorId"];
+          const bdid = seg["bdid"];
           var polylineArrs = seg["polyline"]; //.slice(1);
-          var floorInfo = bdid ? mapSDK.getFloorInfo(bdid, seg["floorId"]) : {};
-          var startPos = seg["startPoint"];
-          var endPos = seg["endPoint"];
+          const floorInfo = bdid ? mapSDK.getFloorInfo(bdid, seg["floorId"]) : {};
+          const startPos = seg["startPoint"];
+          const endPos = seg["endPoint"];
           if (segs.length > 1) {
             if (m == 0) {
               //第一段结尾
@@ -790,7 +790,7 @@
             }
           }
           if (routeMarkerOption.length) {
-            var markerLayer = new daximap["DXSceneMarkerLayer"]();
+            const markerLayer = new daximap["DXSceneMarkerLayer"]();
             markerLayer.initialize(mapSDK, {
               markers: routeMarkerOption,
               bdid: bdid,
@@ -802,9 +802,9 @@
             markerLayer.addToMap();
             thisObject._renderObjects.push(markerLayer);
           }
-          var auxiliaryLine = seg["auxiliaryLine"];
+          const auxiliaryLine = seg["auxiliaryLine"];
           if (auxiliaryLine) {
-            var polylineOptions = {
+            const polylineOptions = {;
               data: [{ coordinates: [auxiliaryLine] }],
               id: dxUtils.createUUID(),
               bdid: bdid,
@@ -814,15 +814,15 @@
               "line-width": 4,
             };
 
-            var polylineLayer = new daximap["DXMapPolylineLayer"]();
+            const polylineLayer = new daximap["DXMapPolylineLayer"]();
             polylineLayer["initialize"](mapSDK, polylineOptions, floorId);
             polylineLayer["addToMap"]();
             // segmentPolylines.push(polylineLayer);
             thisObject._renderObjects.push(polylineLayer);
           }
           if (routeindex > 0) {
-            var geometry = [];
-            var step = {
+            const geometry = [];
+            const step = {;
               destination: endPos["lon"] + "," + endPos["lat"],
               floorId: startPos["floorId"],
               origin: startPos["lon"] + "," + startPos["lat"],
@@ -838,7 +838,7 @@
               step["polyline"] += pos.join(",");
             });
             naviInfoList.push({ action: "0x06", floor: floorId, fn: floorInfo["flname"], fnum: floorInfo["flnum"], geometry: geometry });
-            var polylineOptions = {
+            const polylineOptions = {;
               lineData: polylineArrs,
               id: dxUtils.createUUID(),
               bdid: bdid,
@@ -849,7 +849,7 @@
                 // "lineWidth":12
               },
             };
-            var polylineLayer = new daximap["DXScenePolyline"]();
+            const polylineLayer = new daximap["DXScenePolyline"]();
             polylineLayer["initialize"](mapSDK, polylineOptions, floorId);
             polylineLayer["addToMap"]();
             // segmentPolylines.push(polylineLayer);
@@ -859,7 +859,7 @@
           }
         });
         if (exhibition) {
-          var exhibitId = exhibition["exhibitId"];
+          const exhibitId = exhibition["exhibitId"];
           exhibition["width"] = 40;
           exhibition["height"] = 40;
           exhibition["highlightWidth"] = 64;
@@ -867,7 +867,7 @@
           exhibition["showText"] = true;
           exhibition["id"] = exhibitId;
           // 加展品图层
-          var flid = exhibition["floorId"];
+          const flid = exhibition["floorId"];
           if (!markerMap[flid]) {
             markerMap[flid] = [];
           }
@@ -875,7 +875,7 @@
         }
       });
       for (var flid in markerMap) {
-        var markerLayer = new daximap["DXSceneMarkerLayer"]();
+        const markerLayer = new daximap["DXSceneMarkerLayer"]();
         markerLayer.initialize(mapSDK, {
           markers: markerMap[flid],
           bdid: bdid,
@@ -897,19 +897,19 @@
       thisObject.startNavigation(isStart);
     },
     startNavigation: function (isStart) {
-      var thisObject = this;
+      const thisObject = this;
       thisObject.navigationState = "navigating";
-      var data = this.naviRoutes[this.naviRouteIndex];
+      const data = this.naviRoutes[this.naviRouteIndex];
       if (thisObject.dxRouteManager) {
         thisObject.dxRouteManager["removeFromMap"]();
       }
-      var mapView = this._app._mapView;
-      var naviManager = mapView._naviManager;
+      const mapView = this._app._mapView;
+      const naviManager = mapView._naviManager;
       for (var i = 0; i < this.naviRouteIndex - 1; i++) {
         thisObject._visitorRouterLayers[i].setGrayPoints(1);
       }
-      var mapSDK = mapView._mapSDK;
-      var dxRouteManager = new daximap["DXRouteManager"]();
+      const mapSDK = mapView._mapSDK;
+      const dxRouteManager = new daximap["DXRouteManager"]();
       dxRouteManager["initialize"](mapSDK);
       if (data["route"]) {
         thisObject._currentRouteSegments = { segments: data.route };
@@ -918,20 +918,20 @@
       } else if (data["transits"]) {
         thisObject._currentRouteSegments = data["transits"][0];
         thisObject._currentRouteSegments["wrapperColor"] = "#fff";
-        var options = { startPoint: false, endPoint: false };
+        const options = { startPoint: false, endPoint: false };
         dxRouteManager["setRouteDatas"](data["transits"], 0, options);
         naviManager.setRoute(data["transits"]);
       }
       thisObject.dxRouteManager = dxRouteManager;
       naviManager.selectRouteId(0);
-      var routeData = naviManager.getSelectedRouteData();
-      var duration = routeData["segments"][0]["detail"]["duration"];
+      const routeData = naviManager.getSelectedRouteData();
+      const duration = routeData["segments"][0]["detail"]["duration"];
       if (duration) {
-        var date = new Date(Date.now() + duration * 1000);
-        var str = date.getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
+        const date = new Date(Date.now() + duration * 1000);
+        const str = date.getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
         thisObject._naviTipView.setArringTime(str);
       }
-      var endPoint = thisObject._currentRouteSegments["segments"][0]["exhibition"] || thisObject.endPoint;
+      const endPoint = thisObject._currentRouteSegments["segments"][0]["exhibition"] || thisObject.endPoint;
       thisObject._naviTipView.setTargetInfo(endPoint);
 
       naviManager.startNavigation(null, { routeSegType: 4 });
@@ -941,20 +941,20 @@
       thisObject._naviTipView.setNaviState("navigating");
     },
     boundBoxByRoute: function (isFullView) {
-      var mapSDK = this._app._mapView._mapSDK;
+      const mapSDK = this._app._mapView._mapSDK;
       if (isFullView) {
-        var bdid = "",
+        const bdid = "",;
           floorId = "";
       } else {
-        var bdid = mapSDK["getCurrentBDID"](),
+        const bdid = mapSDK["getCurrentBDID"](),;
           floorId = mapSDK["getCurrentFloorId"]();
       }
-      var ret = DXGetPolyLineBoundaryRecursiveVisitor(mapSDK["getRootScene"](), bdid, floorId).visit();
+      const ret = DXGetPolyLineBoundaryRecursiveVisitor(mapSDK["getRootScene"](), bdid, floorId).visit();
       var diffLon = 0; //e["lon"] - (bbox._min[0] + bbox._max[0]) * 0.5;
       var diffLat = 0; //e["lat"] - (bbox._min[1] + bbox._max[1]) * 0.5;
       if (ret.isSuccess) {
-        var bbox = ret.aabb;
-        var bounds = [bbox._min[0] + diffLon, bbox._min[1] + diffLat, bbox._max[0] + diffLon, bbox._max[1] + diffLat];
+        const bbox = ret.aabb;
+        const bounds = [bbox._min[0] + diffLon, bbox._min[1] + diffLat, bbox._max[0] + diffLon, bbox._max[1] + diffLat];
         mapSDK["fitBounds"]({
           bounds: bounds,
           duration: 300,
@@ -965,13 +965,13 @@
     hideCross: function () {
       //隐藏路口放大图
       this._app.crossPano && this._app.crossPano.hide();
-      var mapSDK = this._app._mapView._mapSDK;
+      const mapSDK = this._app._mapView._mapSDK;
       mapSDK["setPadding"]({ top: 50 });
     },
     exitNavi: function () {
-      var app = this._app;
+      const app = this._app;
       if (this.navigationState == "finished") {
-        var naviManager = app._mapView._naviManager;
+        const naviManager = app._mapView._naviManager;
         naviManager.exitNavi();
         app._stateManager.goBack();
       } else {
@@ -988,20 +988,20 @@
         this._backComboxBtn.triggerEvent("click");
       }
       if (command["method"] == "showExhibit") {
-        var app = this._app;
-        var thisObject = this;
-        var bdid = command["bdid"] || app._mapView._mapSDK.getCurrentBDID();
-        var exhibitId = command["id"] || command["poiId"] || command["poiIds"];
-        var exhibitUrl = app._config["exhibitDetailUrl"];
-        var baseURL = app._config.baseURL;
+        const app = this._app;
+        const thisObject = this;
+        const bdid = command["bdid"] || app._mapView._mapSDK.getCurrentBDID();
+        const exhibitId = command["id"] || command["poiId"] || command["poiIds"];
+        const exhibitUrl = app._config["exhibitDetailUrl"];
+        const baseURL = app._config.baseURL;
         baseURL = baseURL.replace(/\$token/g, thisObject._app._params["token"]);
         baseURL = baseURL.replace(/\$bdid/g, thisObject._bdid || thisObject._app._params["bdid"]);
         if (exhibitUrl && exhibitId) {
           app.downloader.getServiceData(exhibitUrl + "/" + exhibitId, "get", "json", { token: app._params["token"], bdid: bdid }, function (data) {
-            var params = data["result"];
+            const params = data["result"];
             if (params) {
-              var introImage = params["introImage"] == "null" ? "" : params["introImage"];
-              var info = {
+              const introImage = params["introImage"] == "null" ? "" : params["introImage"];
+              const info = {;
                 id: exhibitId,
                 id2: params["id2"],
                 name: params["name"] || params["exhibit_name"],
@@ -1038,14 +1038,14 @@
       }
     },
     openPoiDetailPage: function (markerInfo, markerLayer) {
-      var thisObject = this;
+      const thisObject = this;
       if (!markerInfo.exhibitId) {
         return;
       }
-      var baseURL = thisObject._app._config.baseURL;
+      const baseURL = thisObject._app._config.baseURL;
       baseURL = baseURL.replace(/\$token/g, thisObject._app._params["token"]);
       baseURL = baseURL.replace(/\$bdid/g, thisObject._bdid || thisObject._app._params["bdid"]);
-      var floorId = markerInfo["floorId"];
+      const floorId = markerInfo["floorId"];
       if (!floorId || !(markerInfo["highlightImageUrl"] || markerInfo["imageUrl"])) {
         return;
       }
@@ -1104,20 +1104,20 @@
       markerInfo["text-anchor"] = "top";
       markerInfo["bdid"] = markerInfo["bdid"] || bdid;
       // markerInfo["type"] = "Exhibit";
-      var key = markerInfo["bdid"] + markerInfo["floorId"];
+      const key = markerInfo["bdid"] + markerInfo["floorId"];
       key += "_" + markerInfo["period"];
       thisObject._dxCardWithAudioCtrl.updateData(markerInfo);
       thisObject._dxCardWithAudioCtrl._dom.show();
     },
     openRoute: function (poinInfo) {
-      var locationManager = this._app._mapView._locationManager;
-      var startPoint = {};
+      const locationManager = this._app._mapView._locationManager;
+      const startPoint = {};
       if (locationManager) {
-        var myPositionInfo = locationManager["getMyPositionInfo"]();
-        var lon = myPositionInfo["position"][0];
-        var lat = myPositionInfo["position"][1];
-        var bdid = myPositionInfo["bdid"] || "";
-        var floorId = myPositionInfo["floorId"] || "";
+        const myPositionInfo = locationManager["getMyPositionInfo"]();
+        const lon = myPositionInfo["position"][0];
+        const lat = myPositionInfo["position"][1];
+        const bdid = myPositionInfo["bdid"] || "";
+        const floorId = myPositionInfo["floorId"] || "";
         startPoint["lon"] = lon;
         startPoint["lat"] = lat;
         startPoint["bdid"] = bdid;
@@ -1126,7 +1126,7 @@
         startPoint["posMode"] = "myPosition";
       }
 
-      var args = {
+      const args = {;
         method: "takeToThere",
         endPoint: poinInfo,
         startPoint: startPoint, //定位起点信息
@@ -1139,8 +1139,8 @@
      * @param {Function} failedCB 失败回调
      */
     getPayStatus: function (successCB, failedCB) {
-      var thisObject = this;
-      var command = thisObject._app._params;
+      const thisObject = this;
+      const command = thisObject._app._params;
       daxiapp.utils.getPayStatus(
         {
           getPayStatusUrl: thisObject._app._config.getPayStatusUrl,
@@ -1158,28 +1158,28 @@
       }, 0);
     },
     openPoi: function (poiInfo, markerLayer) {
-      var thisObject = this;
-      var bdid = thisObject._app._mapView._mapSDK["getCurrentBDID"]();
-      var token = thisObject._app._params.token;
-      var arealType = "outdoor";
+      const thisObject = this;
+      const bdid = thisObject._app._mapView._mapSDK["getCurrentBDID"]();
+      const token = thisObject._app._params.token;
+      const arealType = "outdoor";
       if (bdid) {
         arealType = "indoor";
       }
-      var floorId = poiInfo["floorId"];
-      var floorName = "",
+      const floorId = poiInfo["floorId"];
+      const floorName = "",;
         floorCnName = "";
       if (floorId && false) {
-        var floorInfo = thisObject._app._mapView.currBuilding["getFloorInfo"](floorId);
+        const floorInfo = thisObject._app._mapView.currBuilding["getFloorInfo"](floorId);
         floorName = floorInfo["flname"];
         floorCnName = floorInfo["flcnname"];
       }
-      var poiData = daxiapp.utils.copyData(poiInfo);
+      const poiData = daxiapp.utils.copyData(poiInfo);
       poiData["featureId"] = poiData["featureId"] || poiData["id"];
       poiData["bdid"] = poiData["bdid"] || bdid;
       poiData["floorName"] = poiData["floorName"] || floorName;
       poiData["address"] = poiData["address"] || floorCnName || floorName;
       poiData["exhibitId"] = poiData["exhibitId"] || "";
-      var args = {
+      const args = {;
         method: "openPoiDetailPage",
         data: {
           bdid: bdid,
@@ -1191,17 +1191,17 @@
       // if(thisObject.buildingInfo && thisObject.buildingInfo.brsSearchByDef &&  thisObject.buildingInfo.defStartPoint){
       if (thisObject.buildingInfo && thisObject.buildingInfo.defStartPoint) {
         thisObject.buildingInfo.defStartPoint.bdid = thisObject.buildingInfo.bdid;
-        var locationManager = thisObject._app._mapView._locationManager;
+        const locationManager = thisObject._app._mapView._locationManager;
         // 定位点
-        var myPositionInfo = locationManager["getMyPositionInfo"]();
+        const myPositionInfo = locationManager["getMyPositionInfo"]();
         if (!myPositionInfo.floorId || myPositionInfo.bdid != thisObject.buildingInfo.bdid) {
-          var defStartPoint = thisObject.buildingInfo.defStartPoint;
+          const defStartPoint = thisObject.buildingInfo.defStartPoint;
           args["data"]["defStartPoint"] = defStartPoint;
         }
       }
-      var stateManager = thisObject._app._stateManager;
-      var mapStatePoiDetail = stateManager.getMapState("MapStatePoiDetail");
-      var MapStateExhibitionRoute = stateManager.getMapState("MapStateExhibitionRoute");
+      const stateManager = thisObject._app._stateManager;
+      const mapStatePoiDetail = stateManager.getMapState("MapStatePoiDetail");
+      const MapStateExhibitionRoute = stateManager.getMapState("MapStateExhibitionRoute");
       if (thisObject == stateManager.getCurrentState()) {
         // markerLayer && markerLayer["highlightMarker"](poiInfo["id"]);
         thisObject._app._stateManager.pushState("MapStatePoiDetail", args);

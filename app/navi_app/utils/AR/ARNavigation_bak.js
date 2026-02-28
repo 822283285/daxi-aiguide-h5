@@ -1,7 +1,7 @@
 
- var ARNavigation = function(parentDom,params){
+ const ARNavigation = function(parentDom,params){;
    
-  var html = '<video id="cameraVideo" style="display: none" autoplay playsinline webkit-playsinline="true" x5-playsinline="true"></video>' +
+  const html = '<video id="cameraVideo" style="display: none" autoplay playsinline webkit-playsinline="true" x5-playsinline="true"></video>' +;
       '<div style="position: absolute;top: 0px;bottom: 0px;left:0px;width:100%;height:60vh;margin-top:0px" id="ARModuleCameraVideo"></div>' +
       '<div id="compassLine" style="display: none;position:absolute;"></div>'+
       '<div id="ARMask" style="position: absolute;top: 0px;bottom: 0px;left:0px;width: 100%;height: 100vh;background: rgba(45, 45, 45, 0.73);z-index: 11;">' +
@@ -16,21 +16,21 @@
 
   var camera, scene, renderer, controls, videoTexture, arWidth, arHeight;
   var dhLine, navigationPathPointList, navigationPathGeometry, navigationPathGeometryMaterial;
-  var isAndroid = /Android/i.test(navigator.userAgent);
-  var isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  var clock = new THREE.Clock();
-  var model3D = null;
-  var model3DLastRotate;
-  var model3DShowLength = 5;
-  var model3DIsShow = false;
-  var mixer;
-  var turnReminderTexture;
-  var turnReminder;
-  var referencePoint = {};
-  var showCompassLine = false;
-  var directionValue = ["东", "东南", "南", "西南", "西", "西北", "北", "东北", "东", "东南", "南", "西南", "西"];
-  var pathPointList = [];
-  var isInited
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const clock = new THREE.Clock();
+  const model3D = null;
+  const model3DLastRotate;
+  const model3DShowLength = 5;
+  const model3DIsShow = false;
+  const mixer;
+  const turnReminderTexture;
+  const turnReminder;
+  const referencePoint = {};
+  const showCompassLine = false;
+  const directionValue = ["东", "东南", "南", "西南", "西", "西北", "北", "东北", "东", "东南", "南", "西南", "西"];
+  const pathPointList = [];
+  const isInited;
   function isMobile() {
       return isAndroid || isiOS;
   }
@@ -43,9 +43,9 @@
   }
 
   function openCamera(width, height) {
-      var self = this;
+      const self = this;
       video = document.getElementById("cameraVideo");
-      var constrains = {
+      const constrains = {;
           // 关闭音频
           audio: false,
           video: {
@@ -60,7 +60,7 @@
       };
       if (navigator.mediaDevices.getUserMedia === undefined) {
           navigator.mediaDevices.getUserMedia = function (constraints) {
-              var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+              const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
               if (!getUserMedia) {
                   return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
               }
@@ -83,7 +83,7 @@
           video.height = height;
           window.userMedia = "opened";
           if(window["command"]["eventByWSS"]){
-              var data = {
+              const data = {;
                   "type": "postEventToMiniProgram",
                   "id": window["command"]["userId"],
                   "methodToMiniProgram": "event=opened",
@@ -117,20 +117,20 @@
 
   this.showTurnReminder = function (points) {
       if(points && points.length === 2){
-          var angle = calculateAngle(points);
-          var loader = new THREE.TextureLoader();
+          const angle = calculateAngle(points);
+          const loader = new THREE.TextureLoader();
           turnReminderTexture = loader.load('img/left.png');
           turnReminderTexture.wrapS = THREE.RepeatWrapping;
           turnReminderTexture.wrapT = THREE.RepeatWrapping;
           turnReminderTexture.repeat.set(10, 1);
-          var geometry = new THREE.PlaneGeometry(10, 1);
-          var material = new THREE.MeshBasicMaterial({
+          const geometry = new THREE.PlaneGeometry(10, 1);
+          const material = new THREE.MeshBasicMaterial({;
               map: turnReminderTexture,
               side: THREE.DoubleSide,
               transparent: true, // 允许透明
           });
           turnReminder = new THREE.Mesh(geometry, material);
-          var point = getMercator(points[0]);
+          const point = getMercator(points[0]);
           turnReminder.position.set(point[0], point[1], 1);
           turnReminder.rotateX(90 * Math.PI / 180)
           turnReminder.rotateY(angle)
@@ -140,7 +140,7 @@
 
   this.setLocation = function(points,time){
       if(points){
-        var location = getMercator(points);
+        const location = getMercator(points);
           moveToByTween(location,time);
           //更新3D小人位置
           if(model3DIsShow && model3D){
@@ -151,7 +151,7 @@
 
   //平滑移动当前位置
   function moveToByTween(points,time) {
-      var tween = new TWEEN.Tween(camera.position);
+      const tween = new TWEEN.Tween(camera.position);
       tween.to({
           x: points[0],
           y: 3,
@@ -161,16 +161,16 @@
   }
   //计算2个点和X轴弧度
   function calculateAngle(points) {
-      var points1 = getMercator(points[0]);
-      var points2 = getMercator(points[1]);
-      var x1 = points1[0];
-      var y1 = points1[1];
-      var x2 = points2[0];
-      var y2 = points2[1];
+      const points1 = getMercator(points[0]);
+      const points2 = getMercator(points[1]);
+      const x1 = points1[0];
+      const y1 = points1[1];
+      const x2 = points2[0];
+      const y2 = points2[1];
       // 计算斜率
-      var k = (y2 - y1) / (x2 - x1);
+      const k = (y2 - y1) / (x2 - x1);
       // 使用Math.atan2得到弧度值
-      var angleInRadians = Math.atan2(k, 1);
+      const angleInRadians = Math.atan2(k, 1);
       // 如果x2 < x1，则需要调整角度，因为atan2返回的是-π to π范围的角度
       if (x2 < x1 && y2 >= y1 || x2 >= x1 && y2 < y1) {
           angleInRadians += Math.PI;
@@ -180,17 +180,17 @@
 
 
   this.createNavigationLine = function(points,showLength,width,imgUrl) {
-      var route = [];
-      var test = [];
+      const route = [];
+      const test = [];
       for(var i = 0; i < points.length; i++){
-          var mktPoint =getMercator(points[i]);
+          const mktPoint =getMercator(points[i]);
           test.push({x:mktPoint[0],y:mktPoint[1]});
           route.push(new THREE.Vector3(mktPoint[0], mktPoint[1], 0));
       }
       if(showLength){
-          var showPoints = clipSegmentByLength(test,showLength);
+          const showPoints = clipSegmentByLength(test,showLength);
           if(showPoints.point){
-              var clipRoute = removeElementsAfterIndex(route,showPoints.index);
+              const clipRoute = removeElementsAfterIndex(route,showPoints.index);
               clipRoute.push(new THREE.Vector3(showPoints.point.x, showPoints.point.y, 0));
               route = clipRoute;
           }
@@ -205,7 +205,7 @@
           progress: 10,
       });
       imgUrl = imgUrl?imgUrl:'img/go.png';
-      var img = new THREE.TextureLoader().load(imgUrl);
+      const img = new THREE.TextureLoader().load(imgUrl);
       img.wrapS = img.wrapT = THREE.RepeatWrapping;
       img.anisotropy = renderer.capabilities.getMaxAnisotropy();
       navigationPathGeometryMaterial = new THREE.MeshBasicMaterial({
@@ -229,13 +229,13 @@
 
   //获取路线上的点1米间隔
   function getNavigationLinePoints(point1,point2){
-      var totalLength = Math.sqrt(
+      const totalLength = Math.sqrt(;
           Math.pow(point2.x - point1.x, 2) +
           Math.pow(point2.y - point1.y, 2)
       );
-      var points = [];
+      const points = [];
       for(var i = 0; i < totalLength; i++){
-          var t = i / totalLength;
+          const t = i / totalLength;
           points.push(point1.clone().lerp(point2, t));
       }
       return points;
@@ -243,12 +243,12 @@
 
   //获取最近的坐标点
   function findNearestPoint(points) {
-      var nearestPoint = null;
-      var minDistance = Infinity;
+      const nearestPoint = null;
+      const minDistance = Infinity;
 
       for (var i = 0; i < pathPointList.length; i++) {
-          var currentPoint = pathPointList[i];
-          var distance = currentPoint.distanceTo(points);
+          const currentPoint = pathPointList[i];
+          const distance = currentPoint.distanceTo(points);
           if (distance < minDistance) {
               minDistance = distance;
               nearestPoint = i;
@@ -258,16 +258,16 @@
   }
 
   function clipSegmentByLength(points,lengthToClip) {
-      var startIndex = 0;
-      var totalLength = 0;
-      var clippedPointIndex = startIndex;
-      var clippedPoint;
+      const startIndex = 0;
+      const totalLength = 0;
+      const clippedPointIndex = startIndex;
+      const clippedPoint;
       for (var i = startIndex + 1; i < points.length; i++) {
           clippedPointIndex = i-1;
-          var currentPoint = points[i - 1];
-          var nextPoint = points[i];
+          const currentPoint = points[i - 1];
+          const nextPoint = points[i];
           // 计算两点之间的距离
-          var segmentLength = Math.sqrt(
+          const segmentLength = Math.sqrt(;
               Math.pow(nextPoint.x - currentPoint.x, 2) +
               Math.pow(nextPoint.y - currentPoint.y, 2)
           );
@@ -275,8 +275,8 @@
           totalLength += segmentLength;
           if (totalLength >= lengthToClip) {
               // 计算超出部分的比例
-              var excessLength = totalLength - lengthToClip;
-              var ratio = (segmentLength-excessLength) / segmentLength;
+              const excessLength = totalLength - lengthToClip;
+              const ratio = (segmentLength-excessLength) / segmentLength;
               // 插值找到截取点的坐标
               clippedPoint = {
                   x: currentPoint.x + (nextPoint.x - currentPoint.x) * ratio,
@@ -306,7 +306,7 @@
       }
       window.userMedia = "beforeOpen";
       if(window["command"]["eventByWSS"]){
-          var data = {
+          const data = {;
               "type": "postEventToMiniProgram",
               "id": window["command"]["userId"],
               "methodToMiniProgram": "event=beforeOpen",
@@ -314,13 +314,13 @@
           }
           window["locWebSocketPostMessage"] && window["locWebSocketPostMessage"](data);
       }
-      var container = document.getElementById('ARModuleCameraVideo');
+      const container = document.getElementById('ARModuleCameraVideo');
       arWidth = container.offsetWidth
       arHeight = container.offsetHeight
 
       camera = new THREE.PerspectiveCamera(45, arWidth / arHeight, 1, 2000);
 
-      var mktLocation = getMercator(location);
+      const mktLocation = getMercator(location);
       camera.position.set(mktLocation[0], 3, 0-mktLocation[1]);
 
       scene = new THREE.Scene();
@@ -330,11 +330,11 @@
       var light = new THREE.AmbientLight( 0xffffff ,1); // 柔和的白光
       scene.add( light );
 
-      var light2 = new THREE.PointLight(0xffffff);
+      const light2 = new THREE.PointLight(0xffffff);
       light2.position.set( 0, 10, 0 );
       scene.add( light2 );
 
-      var axesHelper = new THREE.AxesHelper(200);
+      const axesHelper = new THREE.AxesHelper(200);
       scene.add(axesHelper);
 
 
@@ -361,12 +361,12 @@
       if(length){
           model3DShowLength = length;
       }
-      var loader = new THREE.FBXLoader();
+      const loader = new THREE.FBXLoader();
       loader.load(modelUrl, function (object) {
           object.rotateX(Math.PI / 2);
           object.scale.set(0.03, 0.03, 0.03);
           mixer = new THREE.AnimationMixer(object);
-          var action = mixer.clipAction(object.animations[0]);
+          const action = mixer.clipAction(object.animations[0]);
           action.play();
           model3D = object;
           model3DIsShow = true
@@ -378,14 +378,14 @@
 
   function updateModel3DPostion(location){
       location = location?location:camera.position;
-      var nowIndex = findNearestPoint(location);
+      const nowIndex = findNearestPoint(location);
       if(nowIndex < pathPointList.length-model3DShowLength){
-          var x1 = pathPointList[nowIndex+model3DShowLength-1].x;
-          var y1 = pathPointList[nowIndex+model3DShowLength-1].y;
-          var x2 = pathPointList[nowIndex+model3DShowLength].x;
-          var y2 = pathPointList[nowIndex+model3DShowLength].y;
-          var k = (y2 - y1) / (x2 - x1);
-          var angleInRadians = Math.atan2(k, 1);
+          const x1 = pathPointList[nowIndex+model3DShowLength-1].x;
+          const y1 = pathPointList[nowIndex+model3DShowLength-1].y;
+          const x2 = pathPointList[nowIndex+model3DShowLength].x;
+          const y2 = pathPointList[nowIndex+model3DShowLength].y;
+          const k = (y2 - y1) / (x2 - x1);
+          const angleInRadians = Math.atan2(k, 1);
           if (x2 < x1 && y2 >= y1 || x2 >= x1 && y2 < y1) {
               angleInRadians += Math.PI;
           }
@@ -396,12 +396,12 @@
           model3D.rotateY((angleInRadians + 2 * Math.PI) % (2 * Math.PI) + Math.PI / 2);
           model3D.position.copy(pathPointList[nowIndex+model3DShowLength]);
       }else {
-          var x1 = pathPointList[nowIndex.length-1].x;
-          var y1 = pathPointList[nowIndex.length-1].y;
-          var x2 = pathPointList[nowIndex.length].x;
-          var y2 = pathPointList[nowIndex.length].y;
-          var k = (y2 - y1) / (x2 - x1);
-          var angleInRadians = Math.atan2(k, 1);
+          const x1 = pathPointList[nowIndex.length-1].x;
+          const y1 = pathPointList[nowIndex.length-1].y;
+          const x2 = pathPointList[nowIndex.length].x;
+          const y2 = pathPointList[nowIndex.length].y;
+          const k = (y2 - y1) / (x2 - x1);
+          const angleInRadians = Math.atan2(k, 1);
           if (x2 < x1 && y2 >= y1 || x2 >= x1 && y2 < y1) {
               angleInRadians += Math.PI;
           }
@@ -422,7 +422,7 @@
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
 
-      var delta = clock.getDelta();
+      const delta = clock.getDelta();
       if (mixer) mixer.update(delta);
 
       /*导航线跑马灯*/
@@ -436,14 +436,14 @@
       }
       //更新罗盘
       if(showCompassLine){
-          var compass = document.getElementById("direction")
-          var compassAngle = controls.deviceOrientation.alpha
+          const compass = document.getElementById("direction");
+          const compassAngle = controls.deviceOrientation.alpha;
           if(compassAngle){
               compassAngle = compassAngle * Math.PI / 180;
               if (compassAngle > Math.PI) {
                   compassAngle = compassAngle - Math.PI * 2;
               }
-              var compassDis = compassAngle * (document.body.offsetWidth / 5) / (Math.PI / 4);
+              const compassDis = compassAngle * (document.body.offsetWidth / 5) / (Math.PI / 4);
               compass.style.transform = `translateX(${compassDis}px)`;
           }
       }
@@ -453,20 +453,20 @@
 
 
   this.getViodeNowImg = function() {
-    var video = document.getElementById('cameraVideo');
-      var canvas = document.createElement('canvas');
+    const video = document.getElementById('cameraVideo');
+      const canvas = document.createElement('canvas');
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      var ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext('2d');
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       return canvas.toDataURL('image/png', 0.5);
   }
 
   function getMercator(poi) {
-      var mercator = {};
-      var earthRad = 6378137.0;
+      const mercator = {};
+      const earthRad = 6378137.0;
       mercator.x = poi[0] * Math.PI / 180 * earthRad;
-      var a = poi[1] * Math.PI / 180;
+      const a = poi[1] * Math.PI / 180;
       mercator.y = earthRad / 2 * Math.log((1.0 + Math.sin(a)) / (1.0 - Math.sin(a)));
       //将第一个坐标设为中心点缩小其他坐标
       if(!referencePoint || !referencePoint.x || !referencePoint.y){
@@ -492,17 +492,17 @@
 
   //创建罗盘线
   function createCompassLine(){
-      var compassDiv = document.getElementById("compassLine")
+      const compassDiv = document.getElementById("compassLine");
       compassDiv.innerHTML = ""
       compassDiv.appendChild(createIcon())
       compassDiv.appendChild(createDirection())
   }
   function createIcon() {
-      var canvas = document.createElement("canvas")
-      var ctx = canvas.getContext("2d")
-      var width = document.body.offsetWidth
-      var iconSizeX = 7
-      var iconSizeY = 5
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      const width = document.body.offsetWidth;
+      const iconSizeX = 7;
+      const iconSizeY = 5;
       ctx.canvas.width = width
       ctx.canvas.height = iconSizeY * 2
       //绘制图标
@@ -519,12 +519,12 @@
       return canvas
   }
   function createDirection() {
-      var canvas = document.createElement("canvas")
-      var ctx = canvas.getContext("2d")
-      var width = document.body.offsetWidth * 13 / 5
-      var height = 25
-      var iconSize = 5
-      var scale = document.body.offsetWidth / 5
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      const width = document.body.offsetWidth * 13 / 5;
+      const height = 25;
+      const iconSize = 5;
+      const scale = document.body.offsetWidth / 5;
       ctx.canvas.width = width
       ctx.canvas.height = height
 
@@ -548,7 +548,7 @@
           ctx.fillText(item, scale / 2 + index * scale, (height - iconSize) / 2 )
       })
       canvas.style.display = "block"
-      var offset = -scale * 4
+      const offset = -scale * 4;
       canvas.style.marginLeft = `${offset}px`
       canvas.id = "direction"
       return canvas

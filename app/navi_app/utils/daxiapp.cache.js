@@ -5,17 +5,17 @@
  * @created 2018-12-12
  */
 (function (global) {
-  var daxiapp = (global["DaxiApp"] = global["DaxiApp"] || {});
+  const daxiapp = (global["DaxiApp"] = global["DaxiApp"] || {});
 
   /** 默认最大记录数 */
-  var DEFAULT_MAX_RECORD = 20;
+  const DEFAULT_MAX_RECORD = 20;
 
   /**
    * 编码值（用于存储）
    * @param {string} value - 原始值
    * @returns {string}
    */
-  var encodeValue = (value) => {
+  const encodeValue = (value) => {;
     if (!value) return value;
     return window.btoa(encodeURIComponent(value.replace(/\s+/g, "")));
   };
@@ -25,7 +25,7 @@
    * @param {string} value - 编码值
    * @returns {string}
    */
-  var decodeValue = (value) => {
+  const decodeValue = (value) => {;
     if (!value) return value;
     return decodeURIComponent(window.atob(value));
   };
@@ -33,9 +33,9 @@
   /**
    * 本地存储控制类
    */
-  var DXLocalstorage = function () {
-    var isIOS = window["command"] && window["command"]["platform"].indexOf("ios") != -1;
-    var storage = isIOS ? {} : window.localStorage || {};
+  const DXLocalstorage = function () {;
+    const isIOS = window["command"] && window["command"]["platform"].indexOf("ios") != -1;
+    const storage = isIOS ? {} : window.localStorage || {};
 
     this.setValue = (key, value) => {
       storage[key] = value || "0";
@@ -45,7 +45,7 @@
       if (storage[key] === undefined) {
         storage[key] = "0";
       } else {
-        var val = this.getValue(key);
+        const val = this.getValue(key);
         if (!isNaN(val)) {
           val = parseInt(val) + 1;
           this.setValue(key, val);
@@ -61,13 +61,13 @@
   /**
    * 缓存管理对象
    */
-  var DXCache = (function () {
-    var _endPos = null;
-    var _endfloor = null;
-    var _endInfo = null;
-    var _options = null;
+  const DXCache = (function () {;
+    const _endPos = null;
+    const _endfloor = null;
+    const _endInfo = null;
+    const _options = null;
 
-    var thisObject = {
+    const thisObject = {;
       status: { currPage: -1 },
     };
 
@@ -115,7 +115,7 @@
 
       /** 添加历史记录 */
       add: function (data, dataKey) {
-        var loc = this.ensureLoc();
+        const loc = this.ensureLoc();
         if (!data) return;
 
         // 深拷贝并编码敏感字段
@@ -127,23 +127,23 @@
           data["text"] = encodeValue(data["text"]);
         }
 
-        var length = this.getMaxLength(dataKey);
-        var count = 0;
-        var historyNewVal = "";
-        var replaceIndex;
-        var timestamp = Date.now();
-        var historyValArr = [];
+        const length = this.getMaxLength(dataKey);
+        const count = 0;
+        const historyNewVal = "";
+        const replaceIndex;
+        const timestamp = Date.now();
+        const historyValArr = [];
 
         // 查找已存在的记录
         for (var i = 0; i < length; i++) {
-          var key = `${dataKey}_${i}`;
-          var value = loc.getValue(key);
+          const key = `${dataKey}_${i}`;
+          const value = loc.getValue(key);
 
           if (!value) {
-            var dataStr = typeof data === "object" ? JSON.stringify(data) : data;
+            const dataStr = typeof data === "object" ? JSON.stringify(data) : data;
             historyNewVal = `${timestamp}|${dataStr}`;
           } else {
-            var isEqual = this._checkEqual(data, value);
+            const isEqual = this._checkEqual(data, value);
             if (isEqual.equal) {
               replaceIndex = i;
               loc.removeItem(key);
@@ -158,7 +158,7 @@
         // 移动记录位置
         if (historyNewVal && replaceIndex !== undefined) {
           for (var j = replaceIndex; j < historyValArr.length; j++) {
-            var item = historyValArr[j];
+            const item = historyValArr[j];
             loc.removeItem(item.key);
             loc.setValue(`${dataKey}_${j}`, item.val);
           }
@@ -166,7 +166,7 @@
 
         // 保存新记录
         if (!historyNewVal) {
-          var dataStr = typeof data === "object" ? JSON.stringify(data) : data;
+          const dataStr = typeof data === "object" ? JSON.stringify(data) : data;
           historyNewVal = `${timestamp}|${dataStr}`;
         }
         if (historyNewVal) {
@@ -177,24 +177,24 @@
         // 超出最大记录数时移除最旧的
         if (count > length) {
           for (var i = 1; i < length; i++) {
-            var prevKey = `${dataKey}_${i - 1}`;
-            var currKey = `${dataKey}_${i}`;
-            var value = loc.getValue(currKey);
+            const prevKey = `${dataKey}_${i - 1}`;
+            const currKey = `${dataKey}_${i}`;
+            const value = loc.getValue(currKey);
             loc.setValue(prevKey, value);
           }
-          var dataStr = typeof data === "object" ? JSON.stringify(data) : data;
+          const dataStr = typeof data === "object" ? JSON.stringify(data) : data;
           loc.setValue(`${dataKey}_${length - 1}`, `${timestamp}|${dataStr}`);
         }
       },
 
       /** 检查数据是否相等 */
       _checkEqual: function (data, storedValue) {
-        var result = { equal: false, dataStr: "" };
+        const result = { equal: false, dataStr: "" };
 
         if (typeof data === "object" && (storedValue.indexOf("{") !== -1 || storedValue.indexOf("[") !== -1)) {
           try {
-            var oriInfo = storedValue.split("|")[1];
-            var cachedData = JSON.parse(oriInfo);
+            const oriInfo = storedValue.split("|")[1];
+            const cachedData = JSON.parse(oriInfo);
             result.equal = true;
             for (var key in data) {
               if (data[key] !== cachedData[key]) {
@@ -218,14 +218,14 @@
 
       /** 获取所有历史记录 */
       getAll: function (dataKey) {
-        var loc = this.ensureLoc();
-        var length = this.getMaxLength(dataKey);
-        var histories = [];
-        var results = [];
+        const loc = this.ensureLoc();
+        const length = this.getMaxLength(dataKey);
+        const histories = [];
+        const results = [];
 
         for (var i = 0; i < length; i++) {
-          var key = `${dataKey}_${i}`;
-          var value = loc.getValue(key);
+          const key = `${dataKey}_${i}`;
+          const value = loc.getValue(key);
           if (value !== undefined) {
             histories.unshift({ key: key, value: value });
           }
@@ -233,8 +233,8 @@
 
         histories.forEach((historyItem) => {
           try {
-            var parts = historyItem.value.split("|");
-            var item = JSON.parse(parts[1]);
+            const parts = historyItem.value.split("|");
+            const item = JSON.parse(parts[1]);
             if (item["keyword"]) {
               item["keyword"] = decodeValue(item["keyword"]);
             }
@@ -252,10 +252,10 @@
 
       /** 清除指定类型的历史记录 */
       clear: function (dataKey) {
-        var loc = this.ensureLoc();
-        var length = this.data[dataKey] || DEFAULT_MAX_RECORD;
+        const loc = this.ensureLoc();
+        const length = this.data[dataKey] || DEFAULT_MAX_RECORD;
         for (var i = 0; i < length; i++) {
-          var key = `${dataKey}_${i}`;
+          const key = `${dataKey}_${i}`;
           loc.removeItem(key);
         }
       },

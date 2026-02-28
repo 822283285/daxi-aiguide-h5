@@ -1,26 +1,26 @@
 (function (global) {
   "use strict";
-  var daxiapp = global["DaxiApp"] || {};
-  var daximap = window["DaxiMap"] || {};
-  var domUtils = daxiapp["dom"];
-  var dxUtil = daxiapp["utils"];
-  var MapStateClass = daxiapp["MapStateClass"];
-  var MapStatePoiDetail = MapStateClass.extend({
+  const daxiapp = global["DaxiApp"] || {};
+  const daximap = window["DaxiMap"] || {};
+  const domUtils = daxiapp["dom"];
+  const dxUtil = daxiapp["utils"];
+  const MapStateClass = daxiapp["MapStateClass"];
+  const MapStatePoiDetail = MapStateClass.extend({;
     __init__: function () {
       this._super();
       this._rtti = "MapStatePoiDetail";
     },
     initialize: function (app, container) {
       this._super(app, container);
-      var thisObject = this;
+      const thisObject = this;
       this._app = app;
-      var lastOpenVoiceTime = 0;
+      const lastOpenVoiceTime = 0;
       // var app  = thisObject._app;
-      var basicMap_html = '<div id="poi_detail_page" class=""></div>';
+      const basicMap_html = '<div id="poi_detail_page" class=""></div>';
       domUtils.append(thisObject._container, basicMap_html);
       thisObject._dom = domUtils.find(thisObject._container, "#poi_detail_page");
       thisObject._bdid = "";
-      var backBtn = thisObject._dom.find(".hospital-back");
+      const backBtn = thisObject._dom.find(".hospital-back");
       if (backBtn.length == 0) {
         backBtn = "<div class='hospital-back' style='top:88px; left:10px'></div>";
         thisObject._dom.append(backBtn);
@@ -30,7 +30,7 @@
         thisObject._app._stateManager.goBack();
       });
 
-      var mapView = app._mapView;
+      const mapView = app._mapView;
       thisObject.bottomViewHeight = 70;
       if (app._config["bigFont"]) {
         thisObject._searchView = new daxiapp["DXSearchViewComponent5"](app, thisObject._dom);
@@ -45,11 +45,11 @@
           } else {
             if (args.method == "showPois") {
               if (args.arealType == "indoor") {
-                var mapSDK = mapView._mapSDK;
-                var bdid = mapSDK.getCurrentBDID();
-                var floorId = mapSDK.getCurrentFloorId();
+                const mapSDK = mapView._mapSDK;
+                const bdid = mapSDK.getCurrentBDID();
+                const floorId = mapSDK.getCurrentFloorId();
                 if (!floorId) {
-                  var bdInfo = mapView.getCurrIndoorBuilding()["bdInfo"];
+                  const bdInfo = mapView.getCurrIndoorBuilding()["bdInfo"];
                   bdid = bdInfo["bdid"];
                   floorId = bdInfo["floorId"];
                 }
@@ -83,21 +83,21 @@
           thisObject.openSearchPage(e);
         },
         onSearchViewMicBtnClicked: function (sender, e) {
-          var curT = new Date().getTime();
+          const curT = new Date().getTime();
           if (curT - lastOpenVoiceTime < 900) {
             return;
           }
           lastOpenVoiceTime = curT;
           if (window["cordova"]) {
             //deviceName.indexOf("ios")!=-1 || deviceName.indexOf("iphone")!=-1||
-            var bdid = app._mapView._mapSDK["getCurrentBDID"]();
+            const bdid = app._mapView._mapSDK["getCurrentBDID"]();
             if (app.nativeSDKAPI && app.nativeSDKAPI.openVoicePage) {
               app.nativeSDKAPI.openVoicePage(
                 { token: app._params["token"], bdid: bdid },
                 function (data) {
-                  var keyword = decodeURIComponent(data["keyword"]);
+                  const keyword = decodeURIComponent(data["keyword"]);
                   if (keyword) {
-                    var data = {
+                    const data = {;
                       method: "showPois",
                       keyword: keyword,
                       bdid: bdid,
@@ -116,7 +116,7 @@
             }
             return;
           }
-          var page = app._stateManager.pushState("VoiceListenerPage", {});
+          const page = app._stateManager.pushState("VoiceListenerPage", {});
         },
       });
       thisObject._searchView.setSearchIconClass("voice_search");
@@ -130,14 +130,14 @@
         visible: false,
         listener: {
           onRouteBtnClicked: function (sender, poinInfo) {
-            var startPoint = {};
-            var locationManager = mapView.locationManager;
+            const startPoint = {};
+            const locationManager = mapView.locationManager;
             if (locationManager) {
-              var myPositionInfo = locationManager["getMyPositionInfo"]();
-              var lon = myPositionInfo["position"][0];
-              var lat = myPositionInfo["position"][1];
-              var bdid = myPositionInfo["bdid"] || "";
-              var floorId = myPositionInfo["floorId"] || "";
+              const myPositionInfo = locationManager["getMyPositionInfo"]();
+              const lon = myPositionInfo["position"][0];
+              const lat = myPositionInfo["position"][1];
+              const bdid = myPositionInfo["bdid"] || "";
+              const floorId = myPositionInfo["floorId"] || "";
               startPoint["lon"] = lon;
               startPoint["lat"] = lat;
               startPoint["bdid"] = bdid;
@@ -145,7 +145,7 @@
               startPoint["name"] = "我的位置";
               startPoint["posMode"] = "myPosition";
             }
-            var args = {
+            const args = {;
               method: "takeToThere",
               endPoint: poinInfo,
               startPoint: startPoint,
@@ -162,7 +162,7 @@
             thisObject._app._stateManager.goBack();
           },
           onImgLoaded: function () {
-            var height = thisObject._dom.find(".spot-popup-card").height();
+            const height = thisObject._dom.find(".spot-popup-card").height();
             if (height) {
               mapView.setBottomViewHeight(height + 26);
             }
@@ -184,32 +184,32 @@
             thisObject._app._stateManager.goBack();
           },
           onImgLoaded: function () {
-            var height = thisObject._dom.find(".detailInfo-component ").height();
+            const height = thisObject._dom.find(".detailInfo-component ").height();
             if (height) {
               mapView.setBottomViewHeight(height + 26);
             }
           },
           onListenBtnClicked: function (sender, data) {
-            var params = thisObject._app._params;
-            var userId = params["userId"],
+            const params = thisObject._app._params;
+            const userId = params["userId"],;
               token = params["token"],
               bdid = data.bdid || params["buildingId"];
             if (thisObject._app._params["scenic"] == "2") {
               // if(data["sprite"] == 1){
-              var d = {
+              const d = {;
                 type: "postEventToMiniProgram",
                 id: userId,
-                methodToMiniProgram: "exhibitId=" + (data["id2"] || data["id"]) + "&bdid=" + bdid + "&token=" + token,
+                methodToMiniProgram: "exhibitId=" + (data["id2"] || data["id"]) + `&bdid=${bdid}&token=` + token,
                 roleType: "receiver",
               };
               window["locWebSocketPostMessage"] && window["locWebSocketPostMessage"](d);
               if (thisObject._app._params["scenic"] == "2") {
                 wx.miniProgram.navigateTo({
-                  url: "/pages/index/index?exhibitId=" + data["id2"] + "&token=" + token + "&bdid=" + bdid,
+                  url: "/pages/index/index?exhibitId=" + data["id2"] + `&token=${token}&bdid=` + bdid,
                 });
               } else {
                 wx.miniProgram.switchTab({
-                  url: "/pages/index/index?exhibitId=" + data["id2"] + "&token=" + token + "&bdid=" + bdid,
+                  url: "/pages/index/index?exhibitId=" + data["id2"] + `&token=${token}&bdid=` + bdid,
                 });
               }
 
@@ -224,7 +224,7 @@
                 return;
 
                 wx.miniProgram.navigateTo({
-                  url: "/pages/pay/pay?" + "token=" + token + "&bdid=" + bdid + "&fromPage=mapView",
+                  url: "/pages/pay/pay?" + `token=${token}&bdid=` + bdid + "&fromPage=mapView",
                 });
               } else {
                 // 已支付未到期
@@ -235,11 +235,11 @@
             });
           },
           moreClick: function (sender, data) {
-            var alertBox = thisObject._dom.find(".alertBox");
+            const alertBox = thisObject._dom.find(".alertBox");
             if (alertBox.length) {
               alertBox.remove();
             }
-            var dom = '<div class="alertBox"><div class="close icon-close2"></div>';
+            const dom = '<div class="alertBox"><div class="close icon-close2"></div>';
             if (data.introImage) {
               dom += '<div><img style="width: 100%" src="' + data.introImage + '"></div>';
             }
@@ -249,8 +249,8 @@
             domUtils.showMask();
             thisObject._dom.append($(dom));
             alertBox = thisObject._dom.find(".alertBox");
-            var closeBtn = alertBox.find(".close");
-            var maskDom = $("#__mask_info_1");
+            const closeBtn = alertBox.find(".close");
+            const maskDom = $("#__mask_info_1");
             closeBtn.on("click", function () {
               alertBox.hide();
               domUtils.hideMask();
@@ -271,8 +271,8 @@
      * @param {Function} failedCB 失败回调
      */
     getPayStatus: function (successCB, failedCB) {
-      var thisObject = this;
-      var command = thisObject._app._params;
+      const thisObject = this;
+      const command = thisObject._app._params;
       daxiapp.utils.getPayStatus(
         {
           getPayStatusUrl: thisObject._app._config.getPayStatusUrl,
@@ -285,19 +285,19 @@
       );
     },
     onStateBeginWithParam: function (args) {
-      var thisObject = this;
+      const thisObject = this;
       this._super(args);
       if (!args) return;
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.setBottomViewHeight(this.bottomViewHeight);
       this.params = args["data"];
       this._poiDetailView.show();
       this.openPoiDetailPage(args["data"]["poiInfo"]);
       mapView._mapSDK["on"]("poiClick", this.onPoiClick, this);
       thisObject._searchView.updateData();
-      var topViewHeight = 0;
+      const topViewHeight = 0;
       domUtils.find($("body"), ".map_header_wrapper4").forEach(function (item) {
-        var h = $(item).height();
+        const h = $(item).height();
         if (h > 0) {
           topViewHeight = h + 8;
         }
@@ -307,7 +307,7 @@
 
     onHideByPushStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.pushState(true);
       mapView._mapSDK["off"]("poiClick", this.onPoiClick, this);
       this._dxCardWithAudioCtrl.pausePlay();
@@ -315,7 +315,7 @@
 
     onShowByPopStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.popState();
       mapView._mapSDK["on"]("poiClick", this.onPoiClick, this);
     },
@@ -343,15 +343,15 @@
 
     // open PoiDetail
     openPoiDetailPage: function (poiInfo) {
-      var thisObject = this;
-      var app = thisObject._app;
-      var mapView = app._mapView;
+      const thisObject = this;
+      const app = thisObject._app;
+      const mapView = app._mapView;
 
-      var locationManager = mapView._locationManager;
+      const locationManager = mapView._locationManager;
       if (locationManager.getLocationState() == 2) {
-        var mypos = locationManager.getMyPositionInfo();
-        var position = mypos["position"];
-        var distance = daxiapp["naviMath"].getGeodeticCircleDistance({ x: position[0], y: position[1] }, { x: poiInfo["lon"], y: poiInfo["lat"] });
+        const mypos = locationManager.getMyPositionInfo();
+        const position = mypos["position"];
+        const distance = daxiapp["naviMath"].getGeodeticCircleDistance({ x: position[0], y: position[1] }, { x: poiInfo["lon"], y: poiInfo["lat"] });
         distance = daxiapp["utils"].distanceToText(distance);
         mapView._locationBtnCtrl.setUserTrackingMode(DaxiMap["UserTrackingMode"]["None"]);
       }
@@ -362,12 +362,12 @@
         thisObject.DXPOIInfoCard(poiInfo, distance);
       }
       if (poiInfo.description) {
-        var viewHeight = thisObject._dxCardWithAudioCtrl._dom.height();
+        const viewHeight = thisObject._dxCardWithAudioCtrl._dom.height();
         mapView.setBottomViewHeight(viewHeight + 20, !thisObject.topCompass);
       }
       if (poiInfo.detailed == undefined) {
         //从搜索列表中进来的没有detail
-        var poiId = poiInfo.featureId || poiInfo.id;
+        const poiId = poiInfo.featureId || poiInfo.id;
         if (poiInfo.detailed == 1) {
           //有POI详情
           thisObject.getPoiDetailInfo(poiInfo["id"] || poiInfo["featureId"], function (data) {
@@ -383,30 +383,30 @@
     },
 
     DXPOIInfoCard: function (poiInfo, distance, detailData) {
-      var thisObject = this;
+      const thisObject = this;
       thisObject.audioInfo = null;
-      var app = this._app;
-      var config = app._config;
-      var mapView = app._mapView;
-      var app = thisObject._app;
-      var mapView = app._mapView;
-      var bdid = poiInfo["bdid"] || thisObject._app._mapView._mapSDK["getCurrentBDID"]() || "";
-      var arealType = "outdoor";
+      const app = this._app;
+      const config = app._config;
+      const mapView = app._mapView;
+      const app = thisObject._app;
+      const mapView = app._mapView;
+      const bdid = poiInfo["bdid"] || thisObject._app._mapView._mapSDK["getCurrentBDID"]() || "";
+      const arealType = "outdoor";
       if (bdid) {
         arealType = "indoor";
       }
-      var type = poiInfo["type"];
-      var poiInfo = poiInfo["data"] || poiInfo;
+      const type = poiInfo["type"];
+      const poiInfo = poiInfo["data"] || poiInfo;
       if (type == "Exhibition" && !poiInfo["detailUrl"]) {
         poiInfo["detailUrl"] = "/pages/guide/index";
       }
       !poiInfo["type"] ? (poiInfo["type"] = type) : "";
-      var floorId = poiInfo["floorId"];
-      var floorName = "",
+      const floorId = poiInfo["floorId"];
+      const floorName = "",;
         floorCnName = "";
 
       if (floorId && mapView.currBuilding) {
-        var floorInfo = mapView.currBuilding["getFloorInfo"](floorId);
+        const floorInfo = mapView.currBuilding["getFloorInfo"](floorId);
         floorName = floorInfo["flname"];
         floorCnName = floorInfo["flcnname"];
       }
@@ -421,15 +421,15 @@
       poiInfo["iconClose"] = true;
       poiInfo["showLineBtn"] = true; // DXSpotPopupComponent 需要此字段显示路线按钮
 
-      var zoom = config["poiDetailPage"] && config["poiDetailPage"]["minZoom"];
+      const zoom = config["poiDetailPage"] && config["poiDetailPage"]["minZoom"];
 
-      var markerInfo = daxiapp.utils.copyData(poiInfo);
+      const markerInfo = daxiapp.utils.copyData(poiInfo);
       delete markerInfo["imageUrl"];
       this.showMarker(markerInfo);
       this._poiDetailView.updateData(poiInfo, detailData);
       this._poiDetailView.show();
       setTimeout(function () {
-        var bottomHeight = thisObject._poiDetailView.getHeight();
+        const bottomHeight = thisObject._poiDetailView.getHeight();
         console.log(thisObject);
         if (poiInfo["imageUrl"] && bottomHeight < 68) {
           bottomHeight += 14;
@@ -456,14 +456,14 @@
       }
     },
     openRoute: function (poinInfo) {
-      var locationManager = this._app._mapView._locationManager;
-      var startPoint = {};
+      const locationManager = this._app._mapView._locationManager;
+      const startPoint = {};
       if (locationManager) {
-        var myPositionInfo = locationManager["getMyPositionInfo"]();
-        var lon = myPositionInfo["position"][0];
-        var lat = myPositionInfo["position"][1];
-        var bdid = myPositionInfo["bdid"] || "";
-        var floorId = myPositionInfo["floorId"] || "";
+        const myPositionInfo = locationManager["getMyPositionInfo"]();
+        const lon = myPositionInfo["position"][0];
+        const lat = myPositionInfo["position"][1];
+        const bdid = myPositionInfo["bdid"] || "";
+        const floorId = myPositionInfo["floorId"] || "";
         startPoint["lon"] = lon;
         startPoint["lat"] = lat;
         startPoint["bdid"] = bdid;
@@ -472,7 +472,7 @@
         startPoint["posMode"] = "myPosition";
       }
 
-      var args = {
+      const args = {;
         method: "takeToThere",
         endPoint: poinInfo,
         startPoint: startPoint, //定位起点信息
@@ -486,9 +486,9 @@
 
     showMarker: function (poiInfo) {
       //return
-      var thisObject = this;
+      const thisObject = this;
       thisObject.clearAllRenderObject();
-      var markerOption = {
+      const markerOption = {;
         featureId: poiInfo["featureId"],
         lon: poiInfo["lon"],
         lat: poiInfo["lat"],
@@ -503,7 +503,7 @@
       // 处理精灵图模式
       if (poiInfo["sprite"] == 1 || (poiInfo["type"] == "Exhibit" && !markerOption["markerIcon"])) {
         // 使用精灵图，设置 imgKey 和 highlightImgKey
-        var spriteKey = poiInfo["imgKey"] || poiInfo["markerIcon"] || "museum_" + (poiInfo["exhibitId"] || poiInfo["id"]);
+        const spriteKey = poiInfo["imgKey"] || poiInfo["markerIcon"] || "museum_" + (poiInfo["exhibitId"] || poiInfo["id"]);
         markerOption["markerIcon"] = spriteKey;
         markerOption["activeMarkerIcon"] = spriteKey;
         markerOption["imgKey"] = spriteKey;
@@ -523,30 +523,30 @@
         markerOption["highlightWidth"] = markerOption["width"] = poiInfo["width"];
         markerOption["highlightHeight"] = markerOption["height"] = poiInfo["height"] || markerOption["width"];
       }
-      var mapSDK = thisObject._app._mapView._mapSDK;
-      var marker = new daximap["DXSceneMarker"]();
+      const mapSDK = thisObject._app._mapView._mapSDK;
+      const marker = new daximap["DXSceneMarker"]();
       marker["initialize"](mapSDK, markerOption);
       marker.id = daxiapp["utils"].createUUID();
       marker["addToMap"]();
       thisObject._renderObjects.push(marker);
     },
     showDXAudioInfoCard: function (poiInfo) {
-      var thisObject = this;
+      const thisObject = this;
       if (thisObject?.audioInfo?.id == poiInfo?.id && thisObject?.audioInfo?.id2 == poiInfo?.id2) {
         return;
       }
       thisObject.audioInfo = poiInfo;
-      var type = poiInfo["type"];
-      var data = poiInfo["data"] || poiInfo;
+      const type = poiInfo["type"];
+      const data = poiInfo["data"] || poiInfo;
       data["type"] = data["type"] || type;
       data["detailUrl"] = data["detailUrl"] || "";
       thisObject._dxCardWithAudioCtrl?.cancel();
       thisObject.clearAllRenderObject();
-      var app = thisObject._app;
-      var poiDetailPageConfig = app._config?.["poiDetailPage"];
-      var zoom = poiDetailPageConfig?.["exhibitZoom"];
-      var maxZoom = poiDetailPageConfig?.["maxZoom"];
-      var currZoom = app._mapView._mapSDK.getZoom();
+      const app = thisObject._app;
+      const poiDetailPageConfig = app._config?.["poiDetailPage"];
+      const zoom = poiDetailPageConfig?.["exhibitZoom"];
+      const maxZoom = poiDetailPageConfig?.["maxZoom"];
+      const currZoom = app._mapView._mapSDK.getZoom();
       if (maxZoom && maxZoom < currZoom) {
         currZoom = maxZoom;
       }
@@ -554,10 +554,10 @@
         currZoom = zoom;
       }
 
-      var id = data["id"] || data["exhibitId"] || data["exhibit_id"];
-      var introImage = data["introImage"] == "null" ? "" : data["introImage"];
+      const id = data["id"] || data["exhibitId"] || data["exhibit_id"];
+      const introImage = data["introImage"] == "null" ? "" : data["introImage"];
       data["audioUrl"] = data["audioUrl"] || "";
-      var info = {
+      const info = {;
         id: id,
         id2: data["id2"],
         name: data["name"] || data["exhibit_name"],
@@ -593,7 +593,7 @@
       thisObject._dxCardWithAudioCtrl.updateData(info);
       setTimeout(function () {
         thisObject._dxCardWithAudioCtrl.show();
-        var height = thisObject._dxCardWithAudioCtrl.getHeight();
+        const height = thisObject._dxCardWithAudioCtrl.getHeight();
         thisObject._app._mapView.setBottomViewHeight(height + (thisObject._app._config?.["bottom"] ?? 0), false);
         app._mapView._mapSDK["easeTo"]({
           lon: data["lon"],
@@ -610,26 +610,26 @@
     },
 
     getParams: function () {
-      var thisObject = this;
-      var token = this._app._params["token"];
-      var mapView = this._app._mapView;
-      var mapSDK = mapView._mapSDK;
-      var floorId = mapSDK["getCurrentFloorId"]() || "";
-      var pos = mapSDK["getPosition"]();
-      var lon = pos["lon"],
+      const thisObject = this;
+      const token = this._app._params["token"];
+      const mapView = this._app._mapView;
+      const mapSDK = mapView._mapSDK;
+      const floorId = mapSDK["getCurrentFloorId"]() || "";
+      const pos = mapSDK["getPosition"]();
+      const lon = pos["lon"],;
         lat = pos["lat"];
-      var bdInfo = mapView.getCurrIndoorBuilding()["bdInfo"];
-      var bdid = bdInfo["bdid"];
+      const bdInfo = mapView.getCurrIndoorBuilding()["bdInfo"];
+      const bdid = bdInfo["bdid"];
       floorId = floorId || bdInfo["groundFloorId"];
       if (mapSDK["getCurrentBDID"]() != bdid) {
         lon = bdInfo["center"][0];
         lat = bdInfo["center"][1];
       }
       // 定位点
-      var locationManager = mapView._locationManager;
-      var myPositionInfo = locationManager["getMyPositionInfo"]();
+      const locationManager = mapView._locationManager;
+      const myPositionInfo = locationManager["getMyPositionInfo"]();
 
-      var defStartPoint;
+      const defStartPoint;
       if (bdid) {
         if (thisObject.buildingInfo && thisObject.buildingInfo["defStartPoint"]) {
           thisObject.buildingInfo["defStartPoint"]["bdid"] = thisObject.buildingInfo["bdid"];
@@ -646,7 +646,7 @@
         }
       }
       // 室外的搜索都已当前地图位置搜索，如果想按照的
-      var data = {
+      const data = {;
         bdid: bdid,
         token: token,
         floorId: floorId,
@@ -661,12 +661,12 @@
     },
     // 打开SearchPage
     openSearchPage: function (e) {
-      var thisObject = this;
+      const thisObject = this;
       // 当前地图点位
-      var params = thisObject.getParams();
+      const params = thisObject.getParams();
       params["keyword"] = e["keyword"];
-      var command = { method: "openSearchPage", data: params };
-      var page = thisObject._app._stateManager.pushState("MapStateSearchPage", command);
+      const command = { method: "openSearchPage", data: params };
+      const page = thisObject._app._stateManager.pushState("MapStateSearchPage", command);
       page._once("searchPageCallback", function (sender, searchResult) {
         if (searchResult.retVal == "OK") {
           thisObject.showPois(searchResult["data"]);
@@ -674,13 +674,13 @@
       });
     },
     showPois: function (args) {
-      var params = this.getParams();
+      const params = this.getParams();
       if (params["bdid"]) {
-        var arealType = "indoor";
+        const arealType = "indoor";
         args["arealType"] = arealType;
         args["type"] == undefined ? (args["type"] = 1) : "";
       } else {
-        var arealType = "outdoor";
+        const arealType = "outdoor";
         args["arealType"] = arealType;
         args["type"] == undefined ? (args["type"] = 11) : "";
       }
@@ -694,14 +694,14 @@
       this._app.pageCommand.openPoiState(args);
     },
     openMainPoiPage: function (args) {
-      var thisObject = this;
-      var params = thisObject.getParams();
+      const thisObject = this;
+      const params = thisObject.getParams();
 
-      var command = { data: params, method: "openMainPoiPage" };
+      const command = { data: params, method: "openMainPoiPage" };
       if (thisObject.buildingInfo) {
         command["data"]["cnname"] = thisObject.buildingInfo.cn_name;
       }
-      var page = thisObject._app._stateManager.pushState("MapStateMainPoiPage", command);
+      const page = thisObject._app._stateManager.pushState("MapStateMainPoiPage", command);
       page._once("selectPoiCallback", function (sender, selectPoiResult) {
         if (selectPoiResult.retVal == "OK") {
           thisObject.showPois(selectPoiResult["data"]);
@@ -709,11 +709,11 @@
       });
     },
     getPoiDetailInfo: function (poiId, callback) {
-      var thisObject = this;
-      var command = this._app._params;
-      var token = command["token"];
-      var bdid = this._app._mapView._mapSDK.getCurrentBDID() || command["bdid"];
-      var url = "https://map1a.daxicn.com/server39/daxi-manager/api/map/getDetail?token=" + token + "&bdid=" + bdid + "&ftId=" + poiId + "&t=" + Date.now();
+      const thisObject = this;
+      const command = this._app._params;
+      const token = command["token"];
+      const bdid = this._app._mapView._mapSDK.getCurrentBDID() || command["bdid"];
+      const url = `https://map1a.daxicn.com/server39/daxi-manager/api/map/getDetail?token=${token}&bdid=` + bdid + `&ftId=${poiId}&t=` + Date.now();
       thisObject._app.downloader.getServiceData(
         url,
         "get",

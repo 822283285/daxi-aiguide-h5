@@ -4,7 +4,7 @@
  */
 (function(window) {
   // 工具函数
-  var util = {
+  const util = {;
     // 类型检测
     isFunction: function(obj) {
       return typeof obj === 'function';
@@ -25,7 +25,7 @@
     // 合并对象
     extend: function(target) {
       for (var i = 1; i < arguments.length; i++) {
-        var source = arguments[i];
+        const source = arguments[i];
         for (var key in source) {
           if (source.hasOwnProperty(key)) {
             target[key] = source[key];
@@ -50,7 +50,7 @@
 
   // 核心构造函数
   function Z(dom) {
-    var len = dom ? dom.length : 0;
+    const len = dom ? dom.length : 0;
     for (var i = 0; i < len; i++) {
       this[i] = dom[i];
     }
@@ -75,7 +75,7 @@
     }
     
     // 选择DOM元素
-    var elements;
+    const elements;
     if (util.isString(selector)) {
       elements = document.querySelectorAll(selector);
     }
@@ -84,7 +84,7 @@
   }
 
   // 动画相关工具函数
-  var animationUtil = {
+  const animationUtil = {;
     // 生成动画样式
     generateAnimationStyles: function(params) {
       var duration = params.duration || 300; // 默认300ms
@@ -92,21 +92,21 @@
       var delay = params.delay || 0; // 默认无延迟
       
       return {
-        'transition': 'all ' + duration + 'ms ' + easing + ' ' + delay + 'ms',
-        '-webkit-transition': 'all ' + duration + 'ms ' + easing + ' ' + delay + 'ms'
+        'transition': `all ${duration}ms ` + easing + ` ${delay}ms`,
+        '-webkit-transition': `all ${duration}ms ` + easing + ` ${delay}ms`
       };
     },
     
     // 绑定过渡结束事件
     bindTransitionEnd: function(element, callback) {
-      var endEvents = [
+      const endEvents = [;
         'transitionend', 
         'webkitTransitionEnd',
         'oTransitionEnd',
         'MSTransitionEnd'
       ];
       
-      var handler = function(e) {
+      const handler = function(e) {;
         for (var i = 0; i < endEvents.length; i++) {
           element.removeEventListener(endEvents[i], handler);
         }
@@ -128,7 +128,7 @@
       if (document.readyState === 'complete') {
         callback(DXDomUtil);
       } else {
-        var self = this;
+        const self = this;
         document.addEventListener('DOMContentLoaded', function() {
           callback(DXDomUtil);
         }, false);
@@ -154,7 +154,7 @@
     
     // 触发事件
     trigger: function(event) {
-      var evt = document.createEvent('HTMLEvents');
+      const evt = document.createEvent('HTMLEvents');
       evt.initEvent(event, true, true);
       this.each(function(element) {
         element.dispatchEvent(evt);
@@ -238,8 +238,8 @@
       if (value === undefined) {
         return this[0] ? getComputedStyle(this[0])[util.camelCase(prop)] : null;
       }
-      var camelProp = util.camelCase(prop);
-      var unitValue = value;
+      const camelProp = util.camelCase(prop);
+      const unitValue = value;
       if (util.isNumeric(value) && 
           ['opacity', 'zIndex', 'fontWeight'].indexOf(camelProp) === -1) {
         unitValue = value + 'px';
@@ -261,9 +261,9 @@
     
     // 查找子元素
     find: function(selector) {
-      var elements = [];
+      const elements = [];
       this.each(function(element) {
-        var found = element.querySelectorAll(selector);
+        const found = element.querySelectorAll(selector);
         elements = elements.concat(util.toArray(found));
       });
       return new Z(elements);
@@ -271,7 +271,7 @@
     
     // 获取父元素
     parent: function() {
-      var parents = [];
+      const parents = [];
       this.each(function(element) {
         if (element.parentNode && parents.indexOf(element.parentNode) === -1) {
           parents.push(element.parentNode);
@@ -297,16 +297,16 @@
         options = {};
       }
       options = options || {};
-      var self = this;
+      const self = this;
       
       // 为每个元素应用动画
       this.each(function(element, index) {
         // 保存原始过渡样式
-        var originalTransition = element.style.transition || '';
-        var originalWebkitTransition = element.style.webkitTransition || '';
+        const originalTransition = element.style.transition || '';
+        const originalWebkitTransition = element.style.webkitTransition || '';
         
         // 应用动画样式
-        var animationStyles = animationUtil.generateAnimationStyles(options);
+        const animationStyles = animationUtil.generateAnimationStyles(options);
         for (var prop in animationStyles) {
           if (animationStyles.hasOwnProperty(prop)) {
             element.style[prop] = animationStyles[prop];
@@ -329,8 +329,8 @@
         setTimeout(function() {
           for (var prop in properties) {
             if (properties.hasOwnProperty(prop)) {
-              var camelProp = util.camelCase(prop);
-              var value = properties[prop];
+              const camelProp = util.camelCase(prop);
+              const value = properties[prop];
               if (util.isNumeric(value) && 
                   ['opacity', 'zIndex', 'fontWeight'].indexOf(camelProp) === -1) {
                 element.style[camelProp] = value + 'px';
@@ -347,10 +347,10 @@
     
     // 显示元素（带动画）
     show: function(duration, callback) {
-      var self = this;
+      const self = this;
       return this.each(function(element) {
         // 保存原始display值
-        var originalDisplay = element.getAttribute('data-original-display') || 'block';
+        const originalDisplay = element.getAttribute('data-original-display') || 'block';
         
         // 如果有持续时间，使用动画
         if (duration) {
@@ -367,11 +367,11 @@
     
     // 隐藏元素（带动画）
     hide: function(duration, callback) {
-      var self = this;
+      const self = this;
       return this.each(function(element) {
         // 保存当前display值
         if (!element.getAttribute('data-original-display')) {
-          var currentDisplay = getComputedStyle(element).display;
+          const currentDisplay = getComputedStyle(element).display;
           if (currentDisplay !== 'none') {
             element.setAttribute('data-original-display', currentDisplay);
           }
@@ -415,7 +415,7 @@
 
   // AJAX功能
   DXDomUtil.ajax = function(options) {
-    var settings = util.extend({
+    const settings = util.extend({;
       url: '',
       method: 'GET',
       data: null,
@@ -427,7 +427,7 @@
       error: function() {}
     }, options);
 
-    var xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
     xhr.open(settings.method, settings.url, true);
 
     // 设置请求头
@@ -439,7 +439,7 @@
 
     xhr.onload = function() {
       if (xhr.status >= 200 && xhr.status < 300) {
-        var response = xhr.responseText;
+        const response = xhr.responseText;
         if (settings.dataType === 'json') {
           try {
             response = JSON.parse(response);
@@ -458,9 +458,9 @@
     };
 
     // 处理数据
-    var data = settings.data;
+    const data = settings.data;
     if (data && typeof data === 'object') {
-      var dataArr = [];
+      const dataArr = [];
       for (var key in data) {
         if (data.hasOwnProperty(key)) {
           dataArr.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));

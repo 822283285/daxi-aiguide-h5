@@ -4,21 +4,21 @@
 window["OnDXMapCreated"]=function(app,mapsdk){
     //由于初始化不能正确进入地图，在切换建筑列表时执行
     mapsdk.on("onIndoorBuildingActive",function(sender,bdInfo){
-        var command = widget.utils.getParam();
-        var main = {
+        const command = widget.utils.getParam();
+        const main = {;
             loadTrigger:function (){
-                var thisObject = this;
-                var t = new Date().getTime();
-                var url = (window["projDataPath"]||'../../../data/{{token}}/{{bdid}}/{{filename}}').replace("{{token}}",command["token"]).replace("{{bdid}}",bdInfo.bdid).replace("{{filename}}","trigger.json")
+                const thisObject = this;
+                const t = new Date().getTime();
+                const url = (window["projDataPath"]||'../../../data/{{token}}/{{bdid}}/{{filename}}').replace("{{token}}",command["token"]).replace("{{bdid}}",bdInfo.bdid).replace("{{filename}}","trigger.json");
                 //'../example/data/1d7ff36ea19a939bc9d59e70579e7228/'+ bdInfo.bdid +'/trigger1.json?t=' + t;
                 widget.service.getDataJsonViaBlob(url,function (geo){
-                    var obj = {};
+                    const obj = {};
                     for(var fl in geo){
                         if(fl.indexOf("F") != -1){
-                            var flname = "F" + fl.replace("F","");
+                            const flname = "F" + fl.replace("F","");
                         }
                         if(fl.indexOf("B") != -1){
-                            var flname = "B" + fl.replace("B","");
+                            const flname = "B" + fl.replace("B","");
                         }
                         obj[flname] = geo[fl];
                     }
@@ -44,22 +44,22 @@ window["OnDXMapCreated"]=function(app,mapsdk){
                 })
             },
             getGeo(location){
-                var thisObject = this;
-                var currFloorId = location.floorId;
+                const thisObject = this;
+                const currFloorId = location.floorId;
                 if(currFloorId){
-                    var bdid = location["bdid"]|| app._mapView._mapSDK.getCurrentBDID();
-                    var currFloorInfo = app._mapView._mapSDK.getFloorInfo(bdid,currFloorId);
+                    const bdid = location["bdid"]|| app._mapView._mapSDK.getCurrentBDID();
+                    const currFloorInfo = app._mapView._mapSDK.getFloorInfo(bdid,currFloorId);
                     if(!currFloorInfo){
                         return;
                     }
-                    var flname = currFloorInfo["flname"];
-                    var pos = {"lon":location.position[0],"lat":location.position[1]};
+                    const flname = currFloorInfo["flname"];
+                    const pos = {"lon":location.position[0],"lat":location.position[1]};
                     if(thisObject.GEO && thisObject.GEO[flname]){
                         //var found = this.checkArea(thisObject.featuresArr,pos);
-                        var found = this.checkArea(thisObject.GEO[flname].geofences.features,pos);
+                        const found = this.checkArea(thisObject.GEO[flname].geofences.features,pos);
                         if(found && found != thisObject.isIn){
                             thisObject.isIn = found;
-                            var str = '<div style="padding-bottom: 20px">';
+                            const str = '<div style="padding-bottom: 20px">';
                             if(found.properties.text){
                                 str += `<div style="text-align: left"><div>${found.properties.text}</div>`
                             }
@@ -91,18 +91,18 @@ window["OnDXMapCreated"]=function(app,mapsdk){
 
             },
             checkArea:function(geo2,lonLat){
-                var found;
+                const found;
                 for (var i = geo2.length-1; i >= 0;i--) {
-                    var mid = geo2[i]["properties"]["ID"];
-                    var name = geo2[i]["properties"]["NAME"];
-                    var description = geo2[i]["properties"]["DESCRIPTIO"];
-                    var rfds = geo2[i];
+                    const mid = geo2[i]["properties"]["ID"];
+                    const name = geo2[i]["properties"]["NAME"];
+                    const description = geo2[i]["properties"]["DESCRIPTIO"];
+                    const rfds = geo2[i];
                     if (rfds["geometry"]) {
-                        var newArr = [];
+                        const newArr = [];
                         rfds.geometry.coordinates[0].forEach(function (item) {
                             newArr.push([item[0], item[1]])
                         })
-                        var inside = this.pointInPolygon([lonLat['lon'],lonLat['lat']],newArr);
+                        const inside = this.pointInPolygon([lonLat['lon'],lonLat['lat']],newArr);
                         if(inside){
                             found = rfds;
                             break
@@ -114,12 +114,12 @@ window["OnDXMapCreated"]=function(app,mapsdk){
                 return found
             },
             pointInPolygon(pos, polygon){
-                var inside = false;
-                var polygonSize = polygon.length;
+                const inside = false;
+                const polygonSize = polygon.length;
                 var val1, val2
                 for(var i = 0; i < polygonSize; i++){
-                    var p1 = polygon[(i +  polygonSize)%polygonSize];
-                    var p2 = polygon[(i + 1 + polygonSize)%polygonSize];
+                    const p1 = polygon[(i +  polygonSize)%polygonSize];
+                    const p2 = polygon[(i + 1 + polygonSize)%polygonSize];
                     if(pos[1] < p2[1]){
                         if(pos[1] >= p1[1]){
                             val1 = (pos[1] - p1[1]) * (p2[0] - p1[0]);
@@ -139,19 +139,19 @@ window["OnDXMapCreated"]=function(app,mapsdk){
                 return inside;
             },
             drawArea:function (geofences){
-                var thisObject = this;
+                const thisObject = this;
                 for(var floor in geofences){
-                    var features = geofences[floor].geofences.features;
+                    const features = geofences[floor].geofences.features;
                     features.forEach(function (item){
                         item.geometry.coordinates.forEach(function (areaPos) {
-                            var newArr = [];
+                            const newArr = [];
                             areaPos.forEach(function (item) {
                                 //newArr.push([item[0]/3600, item[1]/3600])
                                 newArr.push([item[0], item[1]])
                             });
                             item.geometry.coordinates[0] = newArr;
                         })
-                        var featuresArr = [];
+                        const featuresArr = [];
                         featuresArr.push(item);
                         thisObject.featuresArr = featuresArr;
                         thisObject.featuresFloorId = item.properties.FL_ID;
@@ -160,21 +160,21 @@ window["OnDXMapCreated"]=function(app,mapsdk){
                         }else{
                             window.extrusion.setSource(featuresArr);
                         }*/
-                        var polygon = mapsdk.createPolygon(bdInfo.bdid,item.properties.FL_ID,featuresArr,"#00ff33","#00F",0.5,"#00F");
+                        const polygon = mapsdk.createPolygon(bdInfo.bdid,item.properties.FL_ID,featuresArr,"#00ff33","#00F",0.5,"#00F");
                     })
                 }
             },
             translatePoi:function (deptid,callback){
-                var url = "https://map1a.daxicn.com/wx3dmap/getPoiInfo?type=1&deptids="+ deptid +"&token=1d7ff36ea19a939bc9d59e70579e7228&bdid=" + bdInfo.bdid;
+                const url = `https://map1a.daxicn.com/wx3dmap/getPoiInfo?type=1&deptids=${deptid}&token=1d7ff36ea19a939bc9d59e70579e7228&bdid=` + bdInfo.bdid;
                 widget.service.getDataJsonViaBlob(url,function (res){
                     if(res.code == 1){
-                        var poi = res.result[0].poiId;
+                        const poi = res.result[0].poiId;
                         callback && callback(poi);
                     }
                 })
             },
             init:function (){
-                var thisObject = this;
+                const thisObject = this;
                 if(!bdInfo){return;}
                 thisObject.loadTrigger();
 

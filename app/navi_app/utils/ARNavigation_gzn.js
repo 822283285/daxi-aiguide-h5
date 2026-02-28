@@ -1,5 +1,5 @@
 (function(global){
-    var daxiapp = global["DaxiApp"] = global["DaxiApp"] || {};
+    const daxiapp = global["DaxiApp"] = global["DaxiApp"] || {};
     let directionValue = ["东", "东南", "南", "西南", "西", "西北", "北", "东北", "东", "东南", "南", "西南", "西"]
 
     function createIcon() {
@@ -25,8 +25,8 @@
     }
 
 	//创建导航箭头
-	var dhjt;
-	var ds = true;
+	const dhjt;
+	const ds = true;
 	function createDhjt(){
 		const loader = new THREE.FBXLoader();
         loader.load('./assets/model/jiantou_09.fbx', (fbx) => {
@@ -175,7 +175,7 @@
         ctx.font = '12px Microsoft YaHei'
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
-        ctx.fillText("距离" + distance + "m", (width - height) / 2 + height, height * 3 / 4)
+        ctx.fillText(`距离${distance}m`, (width - height) / 2 + height, height * 3 / 4)
         return canvas
     };
     /**
@@ -187,7 +187,7 @@
         // video = document.createElement('video');
           window.userMedia = "beforeOpen";
           if(window["command"]["eventByWSS"]){
-              var data = {
+              const data = {;
                   "type": "postEventToMiniProgram",
                   "id": window["command"]["userId"],
                   "methodToMiniProgram": "event=beforeOpen",
@@ -196,7 +196,7 @@
               window["locWebSocketPostMessage"] && window["locWebSocketPostMessage"](data);
           }
         video = document.getElementById("ARModuleCameraVideo");
-        var constrains = {
+        const constrains = {;
           // 关闭音频
             audio: false,
             video: {
@@ -210,7 +210,7 @@
         //部分手机如鸿蒙系统 原因是浏览器history问题
         // navigator.mediaDevices.getUserMedia 提示用户给予使用媒体输入的许可，媒体输入会产生一个MediaStream，里面包含了请求的媒体类型的轨道。
         // const stream = await navigator.mediaDevices.getUserMedia({
-         var getUserMedia = null;
+         const getUserMedia = null;
         //  if (navigator.mediaDevices.getUserMedia) { //标准
         //       getUserMedia = navigator.mediaDevices.getUserMedia;
 
@@ -267,7 +267,7 @@
                   document.getElementById("ARMask").style.display ="none";
                   window.userMedia = "opened";
                   if(window["command"]["eventByWSS"]){
-                      var data = {
+                      const data = {;
                           "type": "postEventToMiniProgram",
                           "id": window["command"]["userId"],
                           "methodToMiniProgram": "event=opened",
@@ -416,7 +416,7 @@
         }
 
         //绘制所有导航线
-        var lastRotation;
+        const lastRotation;
         function drawNavLine(coordinates,myPosition) {
 
           if(!scene){
@@ -428,7 +428,7 @@
               x: 0,
               y: 0
             }
-			var cont = 0;
+			const cont = 0;
             for (let i = 1; i < coordinates.length; i++) {
               let x = coordinates[i].x - coordinates[0].x
               let y = coordinates[i].y - coordinates[0].y
@@ -438,7 +438,7 @@
                 let angle = calAngleX(x - starPoint.x, y - starPoint.y)
 				distance = distance>15?15:distance
 				cont = cont+distance;
-                var flag = true;
+                const flag = true;
                 if(i !== 1){
                     flag = false;
                 }
@@ -457,10 +457,10 @@
           }
         }
 
-        var showCount = 4;
+        const showCount = 4;
         //创建一条线
         function createLine(starPoint, length, angle,flag) {
-          var index = 1;
+          const index = 1;
           for (let i = 0.1; i <= length; i+=3) {
               if(index>showCount){
                   return;
@@ -477,7 +477,7 @@
 			lingMeshArray.push(obj);
             if(dhjt){
               index++;
-              var mesh = dhjt.clone();
+              const mesh = dhjt.clone();
               mesh.position.set(x, y, -2)
               mesh.rotation.z = angle - Math.PI / 2
               group.add(mesh)
@@ -593,7 +593,7 @@
         function a(t, e, i) {
           if (Math.abs(e) < 70)
               return t;
-            var o = t * (Math.PI / 180)
+            const o = t * (Math.PI / 180);
               , a = e * (Math.PI / 180)
               , n = i * (Math.PI / 180)
               , r = Math.cos(o)
@@ -609,7 +609,7 @@
         function a(t, e, i) {
           if (Math.abs(e) < 70)
               return t;
-            var o = t * (Math.PI / 180)
+            const o = t * (Math.PI / 180);
               , a = e * (Math.PI / 180)
               , n = i * (Math.PI / 180)
               , r = Math.cos(o)
@@ -643,7 +643,7 @@
                         realAlpha = event.alpha - 360;
                     }
                 } else {
-                    var heading = Math.round(event["webkitCompassHeading"] ? 0 - event["webkitCompassHeading"] : event.alpha);
+                    const heading = Math.round(event["webkitCompassHeading"] ? 0 - event["webkitCompassHeading"] : event.alpha);
                     heading -= orientation || 0;
                     realAlpha = heading - 360;
                 }

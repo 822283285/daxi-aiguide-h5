@@ -7,11 +7,11 @@
  * Thank you all, you're awesome!
  */
 
-var TWEEN = TWEEN || (function () {
+const TWEEN = TWEEN || (function () {;
 
-	var _tweens = {};
-	var _tweensAddedDuringUpdate = {};
-	var _nextId = 0;
+	const _tweens = {};
+	const _tweensAddedDuringUpdate = {};
+	const _nextId = 0;
 
 	return {
 
@@ -45,7 +45,7 @@ var TWEEN = TWEEN || (function () {
 
 		update: function (time, preserve) {
 
-			var tweenIds = Object.keys(_tweens);
+			const tweenIds = Object.keys(_tweens);
 
 			if (tweenIds.length === 0) {
 				return false;
@@ -85,7 +85,7 @@ var TWEEN = TWEEN || (function () {
 // In node.js, use process.hrtime.
 if (typeof (window) === 'undefined' && typeof (process) !== 'undefined') {
 	TWEEN.now = function () {
-		var time = process.hrtime();
+		const time = process.hrtime();
 
 		// Convert [seconds, nanoseconds] to milliseconds.
 		return time[0] * 1000 + time[1] / 1000000;
@@ -112,8 +112,8 @@ else {
 
 
 function assign(target, source) {
-	var keys = Object.keys(source);
-	var length = keys.length;
+	const keys = Object.keys(source);
+	const length = keys.length;
 
 	for (var i = 0; i < length; i += 1) {
 		target[keys[i]] = source[keys[i]];
@@ -324,9 +324,9 @@ TWEEN.Tween.prototype = assign(Object.create(Object.prototype), {
 
 	update: function update(time) {
 
-		var property;
-		var elapsed;
-		var value;
+		const property;
+		const elapsed;
+		const value;
 
 		if (time < this._startTime) {
 			return true;
@@ -353,8 +353,8 @@ TWEEN.Tween.prototype = assign(Object.create(Object.prototype), {
 				continue;
 			}
 
-			var start = this._valuesStart[property] || 0;
-			var end = this._valuesEnd[property];
+			const start = this._valuesStart[property] || 0;
+			const end = this._valuesEnd[property];
 
 			if (end instanceof Array) {
 
@@ -401,7 +401,7 @@ TWEEN.Tween.prototype = assign(Object.create(Object.prototype), {
 					}
 
 					if (this._yoyo) {
-						var tmp = this._valuesStartRepeat[property];
+						const tmp = this._valuesStartRepeat[property];
 
 						this._valuesStartRepeat[property] = this._valuesEnd[property];
 						this._valuesEnd[property] = tmp;
@@ -702,7 +702,7 @@ TWEEN.Easing = {
 
 		In: function (k) {
 
-			var s = 1.70158;
+			const s = 1.70158;
 
 			return k * k * ((s + 1) * k - s);
 
@@ -770,10 +770,10 @@ TWEEN.Interpolation = {
 
 	Linear: function (v, k) {
 
-		var m = v.length - 1;
-		var f = m * k;
-		var i = Math.floor(f);
-		var fn = TWEEN.Interpolation.Utils.Linear;
+		const m = v.length - 1;
+		const f = m * k;
+		const i = Math.floor(f);
+		const fn = TWEEN.Interpolation.Utils.Linear;
 
 		if (k < 0) {
 			return fn(v[0], v[1], f);
@@ -789,10 +789,10 @@ TWEEN.Interpolation = {
 
 	Bezier: function (v, k) {
 
-		var b = 0;
-		var n = v.length - 1;
-		var pw = Math.pow;
-		var bn = TWEEN.Interpolation.Utils.Bernstein;
+		const b = 0;
+		const n = v.length - 1;
+		const pw = Math.pow;
+		const bn = TWEEN.Interpolation.Utils.Bernstein;
 
 		for (var i = 0; i <= n; i++) {
 			b += pw(1 - k, n - i) * pw(k, i) * v[i] * bn(n, i);
@@ -804,10 +804,10 @@ TWEEN.Interpolation = {
 
 	CatmullRom: function (v, k) {
 
-		var m = v.length - 1;
-		var f = m * k;
-		var i = Math.floor(f);
-		var fn = TWEEN.Interpolation.Utils.CatmullRom;
+		const m = v.length - 1;
+		const f = m * k;
+		const i = Math.floor(f);
+		const fn = TWEEN.Interpolation.Utils.CatmullRom;
 
 		if (v[0] === v[m]) {
 
@@ -843,7 +843,7 @@ TWEEN.Interpolation = {
 
 		Bernstein: function (n, i) {
 
-			var fc = TWEEN.Interpolation.Utils.Factorial;
+			const fc = TWEEN.Interpolation.Utils.Factorial;
 
 			return fc(n) / fc(i) / fc(n - i);
 
@@ -851,11 +851,11 @@ TWEEN.Interpolation = {
 
 		Factorial: (function () {
 
-			var a = [1];
+			const a = [1];
 
 			return function (n) {
 
-				var s = 1;
+				const s = 1;
 
 				if (a[n]) {
 					return a[n];
@@ -874,10 +874,10 @@ TWEEN.Interpolation = {
 
 		CatmullRom: function (p0, p1, p2, p3, t) {
 
-			var v0 = (p2 - p0) * 0.5;
-			var v1 = (p3 - p1) * 0.5;
-			var t2 = t * t;
-			var t3 = t * t2;
+			const v0 = (p2 - p0) * 0.5;
+			const v1 = (p3 - p1) * 0.5;
+			const t2 = t * t;
+			const t3 = t * t2;
 
 			return (2 * p1 - 2 * p2 + v0 + v1) * t3 + (- 3 * p1 + 3 * p2 - 2 * v0 - v1) * t2 + v0 * t + p1;
 

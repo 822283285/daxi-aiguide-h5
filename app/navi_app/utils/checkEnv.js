@@ -1,10 +1,10 @@
 (function (global) {
+    const daxiapp = global["DaxiApp"] = global["DaxiApp"] || {};
     var daxiapp = global["DaxiApp"] = global["DaxiApp"] || {};
-    var daxiapp = global["DaxiApp"] = global["DaxiApp"] || {};
-    var ua = navigator.userAgent
-    var isWX = ua.toLowerCase().indexOf('micromessenger') !== -1;
-    var isAli = /AliApp/.test(ua);
-    var isMiniProgram = /MiniProgram/.test(ua);
+    const ua = navigator.userAgent;
+    const isWX = ua.toLowerCase().indexOf('micromessenger') !== -1;
+    const isAli = /AliApp/.test(ua);
+    const isMiniProgram = /MiniProgram/.test(ua);
     daxiapp["deviceType"] = {
         "isMobile": /Android|Harmony|webOS|iPhone|iPod|BlackBerry/i.test(ua),
         "isIos": /iPhone|iPad|iPod/i.test(ua),
@@ -17,8 +17,8 @@
         // 高德小程序多一个 AMapClient 支付宝 多一个 AlipayClient
     };
     daxiapp["checkEnv"] = function (callback,loadFileList) {
-        var sendHttpRequest = function (url, scb, fcb) {
-            var s = {
+        const sendHttpRequest = function (url, scb, fcb) {;
+            const s = {;
                 "url": url,
                 "data":{"targetURL":location.href.split("#")[0]},
                 "async": !0,
@@ -41,8 +41,8 @@
             $["ajax"](s);
         };
 
-        var loadScript = function (url, callback) {
-            var script = document.createElement("script");
+        const loadScript = function (url, callback) {;
+            const script = document.createElement("script");
             script.type = "text/javascript";
             if (script.readyState) { //IE
                 script.onreadystatechange = function () {
@@ -63,10 +63,10 @@
             script.src = url;
             document.body.appendChild(script);
         };
-        var cssRegExp = new RegExp("\\.css");
+        const cssRegExp = new RegExp("\\.css");
 
         function loadCss(url) {
-            var _mlink = document.createElement("link");
+            const _mlink = document.createElement("link");
             _mlink.setAttribute("type", "text/css");
             _mlink.setAttribute("rel", "stylesheet");
             _mlink.setAttribute("href", url);
@@ -91,14 +91,14 @@
         }
 
         function getUrlParams(queryStr) {
-            var result = {};
-            var _queryStr = queryStr || location.search;
+            const result = {};
+            const _queryStr = queryStr || location.search;
             if (_queryStr.indexOf("?") != -1) {
                 _queryStr = _queryStr.slice(_queryStr.indexOf("?") + 1);
             }
-            var arr = _queryStr.split("&");
+            const arr = _queryStr.split("&");
             for (var i = 0, len = arr.length; i < len; i++) {
-                var keyVal = arr[i].split("=");
+                const keyVal = arr[i].split("=");
                 if (keyVal[0]) {
                     result[keyVal[0]] = keyVal[1];
                 }
@@ -156,14 +156,14 @@
             }
 
         }
-        var urlParams = getUrlParams();
-        var token = urlParams["token"] || "";
-        var origin = window.location.origin;
-        var defaultUrl = "https://map1a.daxicn.com/wxtest/signature"
+        const urlParams = getUrlParams();
+        const token = urlParams["token"] || "";
+        const origin = window.location.origin;
+        const defaultUrl = "https://map1a.daxicn.com/wxtest/signature";
         // if(origin.indexOf("https") != -1){
         //     defaultUrl = origin + "/wxtest/signature"
         // }
-        var url = (window["signatureUrl"] || defaultUrl) + "?token="+token;
+        const url = (window["signatureUrl"] || defaultUrl) + "?token="+token;
         if(urlParams && (urlParams["GZHAppId"] || urlParams["appId"])){
             url+="&appId="+(urlParams["GZHAppId"] || urlParams["appId"]);
         }

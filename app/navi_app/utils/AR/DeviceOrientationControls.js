@@ -4,9 +4,9 @@
 
 THREE.DeviceOrientationControls = function ( object ) {
 
-	var scope = this;
-	var changeEvent = { type: 'change' };
-	var EPS = 0.000001;
+	const scope = this;
+	const changeEvent = { type: 'change' };
+	const EPS = 0.000001;
 
 	this.object = object;
 	this.object.rotation.reorder( 'YXZ' );
@@ -18,13 +18,13 @@ THREE.DeviceOrientationControls = function ( object ) {
 
 	this.alphaOffset = 0; // radians
 
-	var onDeviceOrientationChangeEvent = function ( event ) {
+	const onDeviceOrientationChangeEvent = function ( event ) {;
 
 		scope.deviceOrientation = event;
 
 	};
 
-	var onScreenOrientationChangeEvent = function () {
+	const onScreenOrientationChangeEvent = function () {;
 
 		scope.screenOrientation = window.orientation || 0;
 
@@ -32,13 +32,13 @@ THREE.DeviceOrientationControls = function ( object ) {
 
 	// The angles alpha, beta and gamma form a set of intrinsic Tait-Bryan angles of type Z-X'-Y''
 
-	var setObjectQuaternion = function () {
+	const setObjectQuaternion = function () {;
 
-		var zee = new THREE.Vector3( 0, 0, 1 );
+		const zee = new THREE.Vector3( 0, 0, 1 );
 
-		var euler = new THREE.Euler();
+		const euler = new THREE.Euler();
 
-		var q0 = new THREE.Quaternion();
+		const q0 = new THREE.Quaternion();
 
 		var q1 = new THREE.Quaternion( - Math.sqrt( 0.5 ), 0, 0, Math.sqrt( 0.5 ) ); // - PI/2 around the x-axis
 
@@ -101,13 +101,13 @@ THREE.DeviceOrientationControls = function ( object ) {
 
 	this.update = ( function () {
 
-		var lastQuaternion = new THREE.Quaternion();
+		const lastQuaternion = new THREE.Quaternion();
 
 		return function () {
 
 			if ( scope.enabled === false ) return;
 
-			var device = scope.deviceOrientation;
+			const device = scope.deviceOrientation;
 
 			if ( device ) {
 

@@ -1,5 +1,5 @@
 (function(global){
-    var daxiapp = global["DaxiApp"] = global["DaxiApp"] || {};
+    const daxiapp = global["DaxiApp"] = global["DaxiApp"] || {};
     let directionValue = ["东", "东南", "南", "西南", "西", "西北", "北", "东北", "东", "东南", "南", "西南", "西"]
 
     function createIcon() {
@@ -39,8 +39,8 @@
             man3D = fbx;
         });
     }
-	var dhjt;
-	var ds = true;
+	const dhjt;
+	const ds = true;
 	function createDhjt(){
 		const loader = new THREE.FBXLoader();
         loader.load('./assets/model/jiantou_09.fbx', (fbx) => {
@@ -189,7 +189,7 @@
         ctx.font = '12px Microsoft YaHei'
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
-        ctx.fillText("距离" + distance + "m", (width - height) / 2 + height, height * 3 / 4)
+        ctx.fillText(`距离${distance}m`, (width - height) / 2 + height, height * 3 / 4)
         return canvas
     };
     /**
@@ -201,7 +201,7 @@
         // video = document.createElement('video');
 
         video = document.getElementById("ARModuleCameraVideo");
-        var constrains = {
+        const constrains = {;
           // 关闭音频
             audio: false,
             video: {
@@ -231,7 +231,7 @@
         //   }
         if (navigator.mediaDevices.getUserMedia === undefined) {
           navigator.mediaDevices.getUserMedia = function (constraints) {
-               var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+               const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
                if (!getUserMedia) {
                    return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
                }
@@ -400,7 +400,7 @@
         }
       
         //绘制所有导航线
-        var lastRotation;
+        const lastRotation;
         function drawNavLine(coordinates,myPosition) {
          
           if(!scene){
@@ -412,8 +412,8 @@
               x: 0,
               y: 0
             }
-            var flag = true;
-			var cont = 0;
+            const flag = true;
+			const cont = 0;
             for (let i = 1; i < coordinates.length; i++) {
               let x = coordinates[i].x - coordinates[0].x
               let y = coordinates[i].y - coordinates[0].y
@@ -587,7 +587,7 @@
         function a(t, e, i) {
           if (Math.abs(e) < 70)
               return t;
-            var o = t * (Math.PI / 180)
+            const o = t * (Math.PI / 180);
               , a = e * (Math.PI / 180)
               , n = i * (Math.PI / 180)
               , r = Math.cos(o)
@@ -603,7 +603,7 @@
         function a(t, e, i) {
           if (Math.abs(e) < 70)
               return t;
-            var o = t * (Math.PI / 180)
+            const o = t * (Math.PI / 180);
               , a = e * (Math.PI / 180)
               , n = i * (Math.PI / 180)
               , r = Math.cos(o)
@@ -641,7 +641,7 @@
             }else{
               // realAlpha = event.alpha;
               //ios 角度取值
-              var heading = Math.round(event["webkitCompassHeading"] ? 0 - event["webkitCompassHeading"] : event.alpha);
+              const heading = Math.round(event["webkitCompassHeading"] ? 0 - event["webkitCompassHeading"] : event.alpha);
               heading -= orientation||0;
               realAlpha = heading-360;
             }

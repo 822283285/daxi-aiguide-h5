@@ -1,33 +1,26 @@
-// ES6 Module Version of daxiapp.utils.js
-// Converted from IIFE to ES6 modules
-
-import { DaxiMap, EventHandler, EventHandlerManager, Cross } from '../../map_sdk/map/daximap.utils.js';
-
-// Global DaxiApp object
-export const DaxiApp = window.DaxiApp || {};
-
-
+(function (global) {
+  const daxiapp = (global["DaxiApp"] = global["DaxiApp"] || {});
 
   // 复用 DaxiMap 的设备检测
-  DaxiApp.deviceType = window.DaxiMap ? window.DaxiMap.deviceType : {};
+  daxiapp.deviceType = global.DaxiMap ? global.DaxiMap.deviceType : {};
 
   // 复用 DaxiMap 的事件系统和跨域通信
-  DaxiApp["EventHandler"] = window.EventHandler; // 复用事件系统
-  DaxiApp["EventHandlerManager"] = window.EventHandlerManager; // 复用事件管理器
-  DaxiApp["Cross"] = window.Cross; // 复用跨域通信类
+  daxiapp["EventHandler"] = global.EventHandler; // 复用事件系统
+  daxiapp["EventHandlerManager"] = global.EventHandlerManager; // 复用事件管理器
+  daxiapp["Cross"] = global.Cross; // 复用跨域通信类
 
   //////////////////////////////////////////////////////////////
   // DXUtils - 工具库
   //////////////////////////////////////////////////////////////
-  export const DXUtils = (() => {
-    const thisObject = {
+  const DXUtils = (function () {;
+    const thisObject = {;
       sysParams: {},
       myScroll: null,
       animateTime: 300,
       lastCacheTime: 0,
       maxCacheInterval: 30000,
       cachedTrainData: [],
-      Platform: DaxiApp.deviceType,
+      Platform: daxiapp.deviceType,
     };
 
     /**
@@ -36,7 +29,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {Function} successCB 成功回调
      * @param {Function} failedCB 失败回调
      */
-    thisObject.getPayStatus = (params, successCB, failedCB) => {
+    thisObject.getPayStatus = function (params, successCB, failedCB) {
       const userId = params.userId;
       const url = `${params.getPayStatusUrl}?token=${params.token}&bdid=${params.bdid}&openid=${userId}&t=${new Date().getTime()}`;
 
@@ -59,8 +52,8 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {Object} params 参数对象
      * @returns {string} 建筑ID
      */
-    thisObject.getBdid = (params) => {
-      return params["bdid"] || params["poiid"] || params["buildingId"] || (window["launcher"] && window["launcher"]["getBdid"]()) || "B000A11DAF";
+    thisObject.getBdid = function (params) {
+      return params["bdid"] || params["poiid"] || params["buildingId"] || (global["launcher"] && global["launcher"]["getBdid"]()) || "B000A11DAF";
     };
 
     /**
@@ -69,7 +62,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {string} [defaultValue=""] 默认值
      * @returns {string} 解码后的字符串
      */
-    thisObject.getStringVal = (val, defaultValue) => {
+    thisObject.getStringVal = function (val, defaultValue) {
       return decodeURIComponent(val || defaultValue || "");
     };
 
@@ -79,7 +72,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {number} [defaultValue=0] 默认值
      * @returns {number} 整数
      */
-    thisObject.getIntVal = (val, defaultValue) => {
+    thisObject.getIntVal = function (val, defaultValue) {
       const result = parseInt(val, 10);
       return isNaN(result) ? parseInt(defaultValue, 10) || 0 : result;
     };
@@ -90,7 +83,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {number} [defaultValue=0] 默认值
      * @returns {number} 浮点数
      */
-    thisObject.getFloatVal = (val, defaultValue) => {
+    thisObject.getFloatVal = function (val, defaultValue) {
       const result = parseFloat(val);
       return isNaN(result) ? parseFloat(defaultValue) || 0 : result;
     };
@@ -101,7 +94,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {boolean} [defaultValue=false] 默认值
      * @returns {boolean} 布尔值
      */
-    thisObject.getBooleanVal = (val, defaultValue) => {
+    thisObject.getBooleanVal = function (val, defaultValue) {
       if (val === true || val === "true" || val === "1") {
         return true;
       }
@@ -116,7 +109,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {string} url URL 字符串
      * @returns {Object} 参数键值对对象
      */
-    thisObject.parseLancherParam = (url) => {
+    thisObject.parseLancherParam = function (url) {
       const result = {};
       const queryString = url.indexOf("?") !== -1 ? url.split("?")[1] : url.substr(1);
       queryString = queryString.split("#")[0]; // 移除 hash 部分
@@ -137,7 +130,7 @@ export const DaxiApp = window.DaxiApp || {};
      * 从 URL 解析命令参数
      * @returns {Object} 格式化的命令配置对象
      */
-    thisObject.getCommand = () => {
+    thisObject.getCommand = function () {
       // 解析 URL 参数
       const queryStr = location.search || location.hash;
       const params = thisObject.parseLancherParam(queryStr);
@@ -310,7 +303,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {number|string} distance 距离（米）
      * @returns {string} 格式化的距离文本
      */
-    thisObject.distanceToText = (distance) => {
+    thisObject.distanceToText = function (distance) {
       distance = Number(distance);
       if (!distance || distance <= 0) {
         return "";
@@ -331,7 +324,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {Array} arr 回调数组
      * @param {Function} cb 回调函数
      */
-    thisObject.addCallback = (arr, cb) => {
+    thisObject.addCallback = function (arr, cb) {
       if (arr.indexOf(cb) === -1) {
         arr.push(cb);
       }
@@ -342,7 +335,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {Array} arr 回调数组
      * @param {Function} cb 回调函数
      */
-    thisObject.removeCallback = (arr, cb) => {
+    thisObject.removeCallback = function (arr, cb) {
       const index = arr.indexOf(cb);
       if (index !== -1) {
         arr.splice(index, 1);
@@ -354,7 +347,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {Array} arr 回调数组
      * @param {Array} [params] 传递给回调的参数数组
      */
-    thisObject.trigger = (arr, params) => {
+    thisObject.trigger = function (arr, params) {
       params = params || [];
       for (let i = 0; i < arr.length; i++) {
         arr[i].apply(null, params);
@@ -366,7 +359,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {string} phoneNumber 手机号
      * @returns {boolean} 是否有效
      */
-    thisObject.isValidPhoneNumber = (phoneNumber) => {
+    thisObject.isValidPhoneNumber = function (phoneNumber) {
       return /^1[3-9]\d{9}$/.test(phoneNumber);
     };
 
@@ -376,7 +369,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {string} [baseURL=""] 基础URL前缀
      * @returns {Promise} 全部加载完成后 resolve
      */
-    thisObject.preloadImages = (imageUrls, baseURL) => {
+    thisObject.preloadImages = function (imageUrls, baseURL) {
       baseURL = baseURL || "";
       return new Promise((resolve, reject) => {
         if (!imageUrls || !imageUrls.length) {
@@ -388,20 +381,20 @@ export const DaxiApp = window.DaxiApp || {};
 
         imageUrls.forEach((url) => {
           const img = new Image();
-          img.onload = () => {
+          img.onload = function () {
             loadedCount++;
             if (loadedCount === totalCount) {
               resolve();
             }
           };
-          img.onerror = (e) => {
+          img.onerror = function (e) {
             loadedCount++;
-            console.warn(`Image load failed: ${baseURL}${url}`);
+            console.warn("Image load failed:", baseURL + url);
             if (loadedCount === totalCount) {
               resolve();
             }
           };
-          img.src = `${baseURL}${url}`;
+          img.src = baseURL + url;
         });
       });
     };
@@ -411,7 +404,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {number} totalSeconds 总秒数
      * @returns {string} 格式化的时间字符串
      */
-    thisObject.formatSecondsToTime = (totalSeconds) => {
+    thisObject.formatSecondsToTime = function (totalSeconds) {
       const minutes = Math.floor(totalSeconds / 60);
       const seconds = Math.round(totalSeconds % 60);
       return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
@@ -422,21 +415,21 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {number} length 字节数
      * @returns {string} 十六进制字符串
      */
-    const randomHex = (length) => {
-      let hex = "";
+    function randomHex(length) {
+      const hex = "";
       for (let i = 0; i < length; i++) {
         hex += Math.floor(Math.random() * 256)
           .toString(16)
           .padStart(2, "0");
       }
       return hex;
-    };
+    }
 
     /**
      * 生成 UUID (格式: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
      * @returns {string} UUID 字符串
      */
-    thisObject.createUUID = () => {
+    thisObject.createUUID = function () {
       return `${randomHex(4)}-${randomHex(2)}-${randomHex(2)}-${randomHex(2)}-${randomHex(6)}`;
     };
 
@@ -446,7 +439,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {Function} callback - 加载成功回调
      * @param {Function} [failedCB] - 加载失败回调（可选）
      */
-    thisObject.loadScript = (url, callback, failedCB) => {
+    thisObject.loadScript = function (url, callback, failedCB) {
       const isJSON = url.includes(".json");
 
       if (isJSON) {
@@ -458,19 +451,19 @@ export const DaxiApp = window.DaxiApp || {};
       script.type = "text/javascript";
 
       // 绑定加载完成事件
-      const onLoadComplete = () => {;
+      const onLoadComplete = function () {;
         callback && callback();
       };
 
       // 绑定加载失败事件
-      const onLoadError = (e) => {;
+      const onLoadError = function (e) {;
         console.error("Script load failed:", url, e);
         failedCB && failedCB(e);
       };
 
       // IE 浏览器使用 readyState
       if (script.readyState) {
-        script.onreadystatechange = () => {
+        script.onreadystatechange = function () {
           if (script.readyState === "loaded" || script.readyState === "complete") {
             script.onreadystatechange = null;
             onLoadComplete();
@@ -493,7 +486,7 @@ export const DaxiApp = window.DaxiApp || {};
      * @param {Function} [successCB] 每个脚本加载成功回调
      * @param {Function} [failedCB] 脚本加载失败回调（返回 true 可继续加载后续脚本）
      */
-    thisObject.loadScriptRecursive = (fileList, index, successCB, failedCB) => {
+    thisObject.loadScriptRecursive = function (fileList, index, successCB, failedCB) {
       // 参数校验
       if (!fileList || !fileList.length) {
         failedCB && failedCB("fileList is empty");
@@ -524,11 +517,11 @@ let url, onSuccess, onFailed;
       // 加载脚本
       thisObject.loadScript(
         url,
-        (data) => {
+        function (data) {
           onSuccess && onSuccess(data);
           thisObject.loadScriptRecursive(fileList, index + 1, successCB, failedCB);
         },
-        (error) => {
+        function (error) {
           const shouldContinue = onFailed && onFailed(error);
           if (shouldContinue === true) {
             thisObject.loadScriptRecursive(fileList, index + 1, successCB, failedCB);
@@ -542,7 +535,7 @@ let url, onSuccess, onFailed;
      * @param {string} platform 平台类型 ("android" | "ios")
      * @param {Function} [callbackFn] 初始化完成回调
      */
-    thisObject.initCordova = (platform, callbackFn) => {
+    thisObject.initCordova = function (platform, callbackFn) {
       const platformPaths = {;
         android: "../dependency/android/cordova.js",
         ios: "../dependency/ios/cordova.js",
@@ -555,8 +548,8 @@ let url, onSuccess, onFailed;
         return;
       }
 
-      thisObject.loadScript(cordovaPath, () => {
-        window.cordova.exec = window.cordova.require("cordova/exec");
+      thisObject.loadScript(cordovaPath, function () {
+        global.cordova.exec = global.cordova.require("cordova/exec");
         callbackFn && callbackFn();
       });
     };
@@ -567,7 +560,7 @@ let url, onSuccess, onFailed;
      * @param {Function} [successFn] 成功回调
      * @param {Function} [failedFn] 失败回调
      */
-    thisObject.loadLangFile = (lang, successFn, failedFn) => {
+    thisObject.loadLangFile = function (lang, successFn, failedFn) {
       lang = lang || "zh";
       const url = `../langs/${lang}.json`;
 
@@ -581,7 +574,7 @@ let url, onSuccess, onFailed;
      * @param {string} baseUrlKey window 上的基础 URL 变量名
      * @returns {string} 解析后的完整路径
      */
-    const _resolveUrl = (path, baseUrlKey) => {
+    function _resolveUrl(path, baseUrlKey) {
       const command = thisObject.getCommand();
       if (!path) {
         return "";
@@ -598,7 +591,7 @@ let url, onSuccess, onFailed;
      * @param {string} path 路径
      * @returns {string} 完整路径
      */
-    thisObject.addDataPath = (path) => {
+    thisObject.addDataPath = function (path) {
       return _resolveUrl(path, "dataPath");
     };
 
@@ -607,7 +600,7 @@ let url, onSuccess, onFailed;
      * @param {string} path 路径
      * @returns {string} 完整路径
      */
-    thisObject.addProjectUrl = (path) => {
+    thisObject.addProjectUrl = function (path) {
       return _resolveUrl(path, "projectUrl");
     };
 
@@ -616,7 +609,7 @@ let url, onSuccess, onFailed;
      * @param {string} path 路径
      * @returns {string} 完整路径
      */
-    thisObject.addScenicUrl = (path) => {
+    thisObject.addScenicUrl = function (path) {
       return _resolveUrl(path, "scenicUrl");
     };
 
@@ -625,11 +618,11 @@ let url, onSuccess, onFailed;
      * @param {Object} geofenceData 地理围栏数据
      * @returns {Object} 解析后的数据 { floors, building, roadMapLink, ble, checkpoints }
      */
-    thisObject.parseGeofenceObject = (geofenceData) => {
+    thisObject.parseGeofenceObject = function (geofenceData) {
       const DEGREE_TO_SECOND = 1 / 3600.0;
 
       // 转换坐标数组（多边形/线段）
-      const convertCoordinatesArray = (coords) => {
+      function convertCoordinatesArray(coords) {
         for (let j = 0; j < coords.length; j++) {
           coords[j][0] *= DEGREE_TO_SECOND;
           coords[j][1] *= DEGREE_TO_SECOND;
@@ -637,7 +630,7 @@ let url, onSuccess, onFailed;
       }
 
       // 转换单个坐标（点）
-      const convertCoordinates = (coords) => {
+      function convertCoordinates(coords) {
         coords[0] *= DEGREE_TO_SECOND;
         coords[1] *= DEGREE_TO_SECOND;
       }
@@ -646,35 +639,35 @@ let url, onSuccess, onFailed;
       const fieldConfigs = [;
         {
           key: "geofences",
-          path: (f) => {
+          path: function (f) {
             return f.geometry.coordinates[0];
           },
           isPoint: false,
         },
         {
           key: "flInfo",
-          path: (f) => {
+          path: function (f) {
             return f.geometry.coordinates[0];
           },
           isPoint: false,
         },
         {
           key: "roadMapLinks",
-          path: (f) => {
+          path: function (f) {
             return f.geometry.coordinates;
           },
           isPoint: false,
         },
         {
           key: "ble",
-          path: (f) => {
+          path: function (f) {
             return f.geometry.coordinates;
           },
           isPoint: true,
         },
         {
           key: "checkpoints",
-          path: (f) => {
+          path: function (f) {
             return f.geometry.coordinates;
           },
           isPoint: true,
@@ -715,7 +708,7 @@ let url, onSuccess, onFailed;
      * @param {Function} [callbackFn] 回调函数（兼容旧 API）
      * @returns {string} 如果不传回调则同步返回字符串
      */
-    thisObject.arraybufferToString = (buffer, encoding, callbackFn) => {
+    thisObject.arraybufferToString = function (buffer, encoding, callbackFn) {
       encoding = encoding || "utf-8";
       const text = new TextDecoder(encoding).decode(buffer);
       if (callbackFn) {
@@ -737,7 +730,7 @@ let url, onSuccess, onFailed;
      * @param {Function} [options.error] 失败回调
      * @returns {XMLHttpRequest|null} XHR 对象
      */
-    thisObject.request = (options) => {
+    thisObject.request = function (options) {
       const xhr = thisObject.getHttpObject();
       if (!xhr) return null;
 
@@ -745,7 +738,7 @@ let url, onSuccess, onFailed;
       const url = options.url;
       const timeout = options.timeout || 15000;
 
-      xhr.onreadystatechange = () => {
+      xhr.onreadystatechange = function () {
         if (xhr.readyState !== 4) return;
 
         if (xhr.status === 200 || xhr.status === 304 || xhr.status === 0) {
@@ -755,11 +748,11 @@ let url, onSuccess, onFailed;
         }
       };
 
-      xhr.onerror = (e) => {
+      xhr.onerror = function (e) {
         options.error && options.error(e);
       };
 
-      xhr.ontimeout = (e) => {
+      xhr.ontimeout = function (e) {
         console.warn("Request timeout:", url);
         options.error && options.error(e);
       };
@@ -792,7 +785,7 @@ let url, onSuccess, onFailed;
      * @param {Function} [failedFn] 失败回调
      * @returns {XMLHttpRequest} 请求对象
      */
-    thisObject.getDataByPostRaw = (url, data, successFn, failedFn) => {
+    thisObject.getDataByPostRaw = function (url, data, successFn, failedFn) {
       return thisObject.request({
         method: "POST",
         url: url,
@@ -812,7 +805,7 @@ let url, onSuccess, onFailed;
      * @param {Function} [failedFn] 失败回调
      * @returns {XMLHttpRequest} 请求对象
      */
-    thisObject.postDataXHR = (url, data, successFn, failedFn) => {
+    thisObject.postDataXHR = function (url, data, successFn, failedFn) {
       const formData = new FormData();
       for (let key in data) {
         if (data.hasOwnProperty(key)) {
@@ -839,7 +832,7 @@ let url, onSuccess, onFailed;
      * @param {string} [type="json"] 响应类型 (json/text/rawPost)
      * @returns {XMLHttpRequest} 请求对象
      */
-    thisObject.getDataBySecurityRequest = (url, method, data, successFn, failedFn, type) => {
+    thisObject.getDataBySecurityRequest = function (url, method, data, successFn, failedFn, type) {
       method = (method || "GET").toUpperCase();
       type = type || "json";
 
@@ -868,7 +861,7 @@ let url, onSuccess, onFailed;
      * @param {Object} data 参数对象
      * @returns {string} 拼接后的完整 URL
      */
-    thisObject.jsonToUrl = (url, data) => {
+    thisObject.jsonToUrl = function (url, data) {
       if (!data || typeof data !== "object") {
         return url || "";
       }
@@ -902,10 +895,10 @@ let url, onSuccess, onFailed;
      * @param {Function} [failedFn] 失败回调
      * @returns {XMLHttpRequest} 请求对象
      */
-    thisObject.getDataTextViaBlob = (url, successFn, failedFn) => {
+    thisObject.getDataTextViaBlob = function (url, successFn, failedFn) {
       return thisObject.loadByteStream(
         url,
-        (arrayBuffer) => {
+        function (arrayBuffer) {
           const text = thisObject.arraybufferToString(arrayBuffer, "utf-8");
           successFn && successFn(text);
         },
@@ -920,10 +913,10 @@ let url, onSuccess, onFailed;
      * @param {Function} [failedFn] 失败回调
      * @returns {XMLHttpRequest} 请求对象
      */
-    thisObject.getDataJsonViaBlob = (url, successFn, failedFn) => {
+    thisObject.getDataJsonViaBlob = function (url, successFn, failedFn) {
       return thisObject.loadByteStream(
         url,
-        (arrayBuffer) => {
+        function (arrayBuffer) {
           try {
             const text = thisObject.arraybufferToString(arrayBuffer, "utf-8");
             const json = JSON.parse(text);
@@ -944,12 +937,12 @@ let url, onSuccess, onFailed;
      * @param {Function} [failedFn] 失败回调
      * @returns {XMLHttpRequest|null} 请求对象
      */
-    thisObject.loadByteStream = (url, successFn, failedFn) => {
+    thisObject.loadByteStream = function (url, successFn, failedFn) {
       return thisObject.request({
         method: "GET",
         url: url,
         responseType: "arraybuffer",
-        success: (response) => {
+        success: function (response) {
           if (response) {
             successFn && successFn(response);
           } else {
@@ -964,7 +957,7 @@ let url, onSuccess, onFailed;
      * 创建 XMLHttpRequest 对象
      * @returns {XMLHttpRequest|null} XHR 对象，不支持时返回 null
      */
-    thisObject.getHttpObject = () => {
+    thisObject.getHttpObject = function () {
       if (window.XMLHttpRequest) {
         return new XMLHttpRequest();
       }
@@ -985,21 +978,21 @@ let url, onSuccess, onFailed;
      * @param {boolean} [isAsync=true] 是否异步
      * @returns {XMLHttpRequest} XHR 对象
      */
-    thisObject.getData = (url, data, dataType, successFn, failedFn, isAsync) => {
+    thisObject.getData = function (url, data, dataType, successFn, failedFn, isAsync) {
       const xhr = thisObject.getHttpObject();
       if (!xhr) return null;
 
       isAsync = isAsync !== false;
 
-      xhr.ontimeout = () => {
+      xhr.ontimeout = function () {
         failedFn && failedFn({ errMsg: "Timeout" });
       };
 
-      xhr.onerror = (e) => {
+      xhr.onerror = function (e) {
         failedFn && failedFn(e);
       };
 
-      xhr.onreadystatechange = () => {
+      xhr.onreadystatechange = function () {
         if (xhr.readyState !== 4) return;
 
         if (xhr.status !== 200 && xhr.status !== 304) {
@@ -1043,7 +1036,7 @@ let url, onSuccess, onFailed;
      * @param {string} path 图片路径
      * @returns {string} 完整的图片 URL
      */
-    thisObject.getImgUrl = (path) => {
+    thisObject.getImgUrl = function (path) {
       const envSuffix = window.currentEnv === "uat" ? "-beta" : "";
       return `https://apigm${envSuffix}.huawei.com/api/map-feature-material/map-materials/${path}?X-MAG-ID=com.huawei.livespace`;
     };
@@ -1053,7 +1046,7 @@ let url, onSuccess, onFailed;
      * @param {string} path 数据路径
      * @returns {string} 完整的数据 URL
      */
-    thisObject.getMapUrl = (path) => {
+    thisObject.getMapUrl = function (path) {
       // HWH5 环境使用远程 API
       if (window.HWH5) {
         const envSuffix = window.currentEnv === "uat" ? "-beta" : "";
@@ -1069,8 +1062,8 @@ let url, onSuccess, onFailed;
      * @param {string} eventName 事件名称
      * @param {Object} [data] 附加数据
      */
-    thisObject.addRecord = (eventName, data) => {
-      const doRecord = () => {;
+    thisObject.addRecord = function (eventName, data) {
+      const doRecord = function () {;
         const config = thisObject.recordList[eventName];
         if (!config || !window.hwa) return;
 
@@ -1097,11 +1090,11 @@ let url, onSuccess, onFailed;
         url,
         {},
         "json",
-        (res) => {
+        function (res) {
           thisObject.recordList = res;
           doRecord();
         },
-        (err) => {
+        function (err) {
           console.warn("获取 record.json 失败:", err);
         },
       );
@@ -1114,7 +1107,7 @@ let url, onSuccess, onFailed;
      * @param {Object} data 源数据
      * @returns {Object} 深拷贝后的数据
      */
-    thisObject.copyData = (data) => {
+    thisObject.copyData = function (data) {
       const str = JSON.stringify(data);
       return JSON.parse(str);
     };
@@ -1126,10 +1119,10 @@ let url, onSuccess, onFailed;
      * @param {string} [retVal="OK"] 返回值标识
      * @returns {Object} 命令对象
      */
-    thisObject.createCommandByCloneData = (method, data, retVal) => {
+    thisObject.createCommandByCloneData = function (method, data, retVal) {
       const command = thisObject.copyData(data || {});
       command.method = method;
-      command.retVal = DaxiApp.defaultValue(retVal, "OK");
+      command.retVal = daxiapp.defaultValue(retVal, "OK");
       return command;
     };
 
@@ -1139,7 +1132,7 @@ let url, onSuccess, onFailed;
      * @param {Object} objB 对象 B
      * @returns {boolean} 是否相同
      */
-    thisObject.compareObj = (objA, objB) => {
+    thisObject.compareObj = function (objA, objB) {
       return JSON.stringify(objA) === JSON.stringify(objB);
     };
 
@@ -1148,11 +1141,11 @@ let url, onSuccess, onFailed;
      * @param {string} type 类型名称
      * @returns {Function} 类型检查函数
      */
-    const createTypeChecker = (type) => {
-      return (obj) => {
+    function createTypeChecker(type) {
+      return function (obj) {
         return Object.prototype.toString.call(obj) === `[object ${type}]`;
       };
-    };
+    }
 
     /**
      * 检查是否为对象
@@ -1190,7 +1183,7 @@ let url, onSuccess, onFailed;
     thisObject.isUndefined = createTypeChecker("Undefined");
 
     /** 模态框组件 */
-    thisObject.modal = (() => {
+    thisObject.modal = (function () {
       const modalEl = null;
       const timer = null;
       const currentCallback = null;
@@ -1200,7 +1193,7 @@ let url, onSuccess, onFailed;
        * @param {Object} options 配置项
        * @returns {HTMLElement}
        */
-      const createModal = (options) => {
+      function createModal(options) {
         const div = document.createElement("div");
         div.id = "modal";
         div.innerHTML = `
@@ -1228,10 +1221,10 @@ let url, onSuccess, onFailed;
        * 绑定按钮点击事件
        * @param {Object} options 配置项
        */
-      const bindEvents = (options) => {
+      function bindEvents(options) {
         const buttons = modalEl.querySelectorAll(".btn_modal");
         buttons.forEach((btn) => {
-          btn.addEventListener("click", () => {
+          btn.addEventListener("click", function () {
             const index = this.getAttribute("data-index");
             if (currentCallback) {
               currentCallback(index);
@@ -1241,18 +1234,18 @@ let url, onSuccess, onFailed;
             }
           });
         });
-      };
+      }
 
       /**
        * 启动倒计时
        * @param {number} seconds 秒数
        * @param {Function} updateFn 更新回调
        */
-      const startCountdown = (seconds, updateFn) => {
+      function startCountdown(seconds, updateFn) {
         const remaining = seconds;
         const firstBtn = modalEl.querySelector(".btn_modal");
 
-        const tick = () => {
+        function tick() {
           updateFn && updateFn(remaining);
 
           if (remaining > 0) {
@@ -1264,10 +1257,10 @@ let url, onSuccess, onFailed;
             updateFn && updateFn(0);
             modal.destroy();
           }
-        };
+        }
 
         tick();
-      };
+      }
 
       const modal = {;
         visible: false,
@@ -1284,7 +1277,7 @@ let url, onSuccess, onFailed;
          * @param {number} [params.time] 倒计时秒数
          * @param {boolean} [params.autoClose=true] 点击按钮后是否自动关闭
          */
-        show: (params) => {
+        show: function (params) {
           params = params || {};
 
           // 先销毁已有的
@@ -1325,7 +1318,7 @@ let url, onSuccess, onFailed;
         },
 
         /** 销毁模态框 */
-        destroy: () => {
+        destroy: function () {
           if (timer) {
             clearTimeout(timer);
             timer = null;
@@ -1339,7 +1332,7 @@ let url, onSuccess, onFailed;
         },
 
         /** 停止倒计时 */
-        stopCountdown: () => {
+        stopCountdown: function () {
           if (timer) {
             clearTimeout(timer);
             timer = null;
@@ -1352,7 +1345,7 @@ let url, onSuccess, onFailed;
     return thisObject;
   })();
 
-  ((DaxiApp) => {
+  (function (daxiapp) {
     //////////////////////////////////////////////////////////////
     // Vector3 - 向量工具库
     //////////////////////////////////////////////////////////////
@@ -1364,7 +1357,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vec 目标向量
      * @returns {number[]} 目标向量
      */
-    Vector3.makeZero = (vec) => {
+    Vector3.makeZero = function (vec) {
       vec[0] = 0;
       vec[1] = 0;
       vec[2] = 0;
@@ -1375,7 +1368,7 @@ let url, onSuccess, onFailed;
      * 创建一个新的零向量 [0, 0, 0]
      * @returns {number[]} 新向量
      */
-    Vector3.create = () => {
+    Vector3.create = function () {
       return [0, 0, 0];
     };
 
@@ -1386,7 +1379,7 @@ let url, onSuccess, onFailed;
      * @param {number} z Z 分量
      * @returns {number[]} 新向量
      */
-    Vector3.make = (x, y, z) => {
+    Vector3.make = function (x, y, z) {
       return [x, y, z];
     };
 
@@ -1398,7 +1391,7 @@ let url, onSuccess, onFailed;
      * @param {number} z Z 分量
      * @returns {number[]} 目标向量
      */
-    Vector3.assign = (vec, x, y, z) => {
+    Vector3.assign = function (vec, x, y, z) {
       vec[0] = x;
       vec[1] = y;
       vec[2] = z;
@@ -1412,7 +1405,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vec2 输入向量 2
      * @returns {number[]} 结果向量
      */
-    Vector3.add = (retVal, vec1, vec2) => {
+    Vector3.add = function (retVal, vec1, vec2) {
       retVal[0] = vec1[0] + vec2[0];
       retVal[1] = vec1[1] + vec2[1];
       retVal[2] = vec1[2] + vec2[2];
@@ -1426,7 +1419,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vec2 减数向量
      * @returns {number[]} 结果向量
      */
-    Vector3.sub = (retVal, vec1, vec2) => {
+    Vector3.sub = function (retVal, vec1, vec2) {
       retVal[0] = vec1[0] - vec2[0];
       retVal[1] = vec1[1] - vec2[1];
       retVal[2] = vec1[2] - vec2[2];
@@ -1440,7 +1433,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vec2 输入向量 2
      * @returns {number[]} 结果向量
      */
-    Vector3.multiply = (retVal, vec1, vec2) => {
+    Vector3.multiply = function (retVal, vec1, vec2) {
       retVal[0] = vec1[0] * vec2[0];
       retVal[1] = vec1[1] * vec2[1];
       retVal[2] = vec1[2] * vec2[2];
@@ -1454,7 +1447,7 @@ let url, onSuccess, onFailed;
      * @param {number} scale 缩放比例
      * @returns {number[]} 结果向量
      */
-    Vector3.scale = (retVal, vec, scale) => {
+    Vector3.scale = function (retVal, vec, scale) {
       retVal[0] = vec[0] * scale;
       retVal[1] = vec[1] * scale;
       retVal[2] = vec[2] * scale;
@@ -1467,7 +1460,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vec 输入向量
      * @returns {number[]} 结果向量
      */
-    Vector3.normalize = (retVal, vec) => {
+    Vector3.normalize = function (retVal, vec) {
       const length = Vector3.length(vec);
       if (length > 0.0) {
         const r = 1 / length;
@@ -1484,7 +1477,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vec2 向量 2
      * @returns {number} 点积结果
      */
-    Vector3.dot = (vec1, vec2) => {
+    Vector3.dot = function (vec1, vec2) {
       return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
     };
 
@@ -1495,7 +1488,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} right 右向量
      * @returns {number[]} 结果向量
      */
-    Vector3.cross = (retVal, left, right) => {
+    Vector3.cross = function (retVal, left, right) {
       const leftX = left[0];
       const leftY = left[1];
       const leftZ = left[2];
@@ -1521,7 +1514,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} mat 4x4 变换矩阵 (列主序)
      * @returns {number[]} 结果向量
      */
-    Vector3.transformNormal = (retVal, vec, mat) => {
+    Vector3.transformNormal = function (retVal, vec, mat) {
       const x = vec[0],;
         y = vec[1],
         z = vec[2];
@@ -1536,7 +1529,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vec 输入向量
      * @returns {number} 向量长度
      */
-    Vector3.length = (vec) => {
+    Vector3.length = function (vec) {
       return Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
     };
 
@@ -1546,7 +1539,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} right 向量 2
      * @returns {number} 两点之间的距离
      */
-    Vector3.distance = (left, right) => {
+    Vector3.distance = function (left, right) {
       return Math.sqrt((left[0] - right[0]) * (left[0] - right[0]) + (left[1] - right[1]) * (left[1] - right[1]) + (left[2] - right[2]) * (left[2] - right[2]));
     };
 
@@ -1555,7 +1548,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vec 输入向量
      * @returns {number} 向量长度的平方
      */
-    Vector3.squaredLength = (vec) => {
+    Vector3.squaredLength = function (vec) {
       return vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2];
     };
 
@@ -1565,7 +1558,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vec 源向量
      * @returns {number[]} 目标向量
      */
-    Vector3.clone = (retVal, vec) => {
+    Vector3.clone = function (retVal, vec) {
       retVal[0] = vec[0];
       retVal[1] = vec[1];
       retVal[2] = vec[2];
@@ -1579,7 +1572,7 @@ let url, onSuccess, onFailed;
      * @param {number} epsilon 容差值
      * @returns {boolean} 是否近似相等
      */
-    Vector3.equalsEpsilon = (left, right, epsilon) => {
+    Vector3.equalsEpsilon = function (left, right, epsilon) {
       return left === right || (Math.abs(left[0] - right[0]) <= epsilon && Math.abs(left[1] - right[1]) <= epsilon && Math.abs(left[2] - right[2]) <= epsilon);
     };
 
@@ -1589,7 +1582,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vec 输入向量
      * @returns {number[]} 结果向量
      */
-    Vector3.negate = (retVal, vec) => {
+    Vector3.negate = function (retVal, vec) {
       retVal[0] = -vec[0];
       retVal[1] = -vec[1];
       retVal[2] = -vec[2];
@@ -1602,7 +1595,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vec 输入向量
      * @returns {number[]} 结果向量
      */
-    Vector3.abs = (retVal, vec) => {
+    Vector3.abs = function (retVal, vec) {
       retVal[0] = Math.abs(vec[0]);
       retVal[1] = Math.abs(vec[1]);
       retVal[2] = Math.abs(vec[2]);
@@ -1617,7 +1610,7 @@ let url, onSuccess, onFailed;
      * @param {number} t 缩放因子
      * @returns {number[]} 结果向量
      */
-    Vector3.mad = (retVal, vec1, vec2, t) => {
+    Vector3.mad = function (retVal, vec1, vec2, t) {
       retVal[0] = vec1[0] + vec2[0] * t;
       retVal[1] = vec1[1] + vec2[1] * t;
       retVal[2] = vec1[2] + vec2[2] * t;
@@ -1631,7 +1624,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} mat 4x4 变换矩阵 (列主序)
      * @returns {number[]} 结果向量
      */
-    Vector3.transformCoordEx = (retVal, vec, mat) => {
+    Vector3.transformCoordEx = function (retVal, vec, mat) {
       const vX = vec[0];
       const vY = vec[1];
       const vZ = vec[2];
@@ -1653,7 +1646,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vec 源向量
      * @returns {number[]} 新的向量副本
      */
-    Vector3.copy = (vec) => {
+    Vector3.copy = function (vec) {
       return [vec[0], vec[1], vec[2]];
     };
 
@@ -1664,7 +1657,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} mat 4x4 变换矩阵 (列主序)
      * @returns {number[]} 结果向量
      */
-    Vector3.transformCoord = (retVal, vec, mat) => {
+    Vector3.transformCoord = function (retVal, vec, mat) {
       const vX = vec[0];
       const vY = vec[1];
       const vZ = vec[2];
@@ -1685,7 +1678,7 @@ let url, onSuccess, onFailed;
      * @param {number} t 插值系数 [0, 1]
      * @returns {number[]} 结果向量
      */
-    Vector3.lerp = (retVal, vec1, vec2, t) => {
+    Vector3.lerp = function (retVal, vec1, vec2, t) {
       Vector3.sub(_lerpTempDir, vec2, vec1);
       Vector3.mad(retVal, vec1, _lerpTempDir, t);
       return retVal;
@@ -1710,7 +1703,7 @@ let url, onSuccess, onFailed;
      *
      * @param mat
      */
-    Matrix.makeIdentity = (mat) => {
+    Matrix.makeIdentity = function (mat) {
       mat[0] = 1;
       mat[1] = 0;
       mat[2] = 0;
@@ -1729,7 +1722,7 @@ let url, onSuccess, onFailed;
       mat[15] = 1;
     };
 
-    Matrix.create = () => {
+    Matrix.create = function () {
       return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     };
 
@@ -1738,12 +1731,12 @@ let url, onSuccess, onFailed;
      * @param array
      * @returns {{stack: Array, push: Function, pop: Function}}
      */
-    Matrix.makeMatrixStack = (array) => {
+    Matrix.makeMatrixStack = function (array) {
       const stk = [];
       stk.top = 0;
       return {
         stack: stk,
-        push: () => {
+        push: function () {
           const bt = this.stack;
           if (bt.top < bt.length) {
             return bt[bt.top++];
@@ -1755,7 +1748,7 @@ let url, onSuccess, onFailed;
           }
           return bu;
         },
-        pop: () => {
+        pop: function () {
           if (--this.stack.top < 0) {
             console.log("error: matrix stack underflow");
           }
@@ -1769,7 +1762,7 @@ let url, onSuccess, onFailed;
      * @param { Matrix } m1  input matrix1;
      * @param { Matrix } m2  input matrix2;
      */
-    Matrix.multiply = (retVal, m1, m2) => {
+    Matrix.multiply = function (retVal, m1, m2) {
       const M00 = m1[0],;
         M01 = m1[1],
         M02 = m1[2],
@@ -1824,7 +1817,7 @@ let url, onSuccess, onFailed;
       retVal[15] = M30 * n03 + M31 * n13 + M32 * n23 + M33 * n33;
     };
 
-    Matrix.lookatRH = (retVal, position, target, up) => {
+    Matrix.lookatRH = function (retVal, position, target, up) {
       const xAxis = [0, 0, 0];
       const yAxis = [0, 0, 0];
       const zAxis = [0, 0, 0];
@@ -1847,7 +1840,7 @@ let url, onSuccess, onFailed;
       retVal[15] = 1.0;
     };
 
-    Matrix.perspectiveRH = (retVal, fovy, aspect, zn, zf) => {
+    Matrix.perspectiveRH = function (retVal, fovy, aspect, zn, zf) {
       const tan_fovy = 1 / Math.tan(fovy * 0.5);
       retVal[0] = tan_fovy / aspect;
       retVal[1] = 0;
@@ -1867,8 +1860,8 @@ let url, onSuccess, onFailed;
       retVal[15] = 0;
     };
 
-    Matrix.orthoRH = (retVal, w, h, zn, zf) => {
-      //const tan_fovy = 1 / Math.tan(fovy * 0.5);
+    Matrix.orthoRH = function (retVal, w, h, zn, zf) {
+      //var tan_fovy = 1 / Math.tan(fovy * 0.5);
       retVal[0] = 2 / w;
       retVal[1] = 0;
       retVal[2] = 0;
@@ -1887,7 +1880,7 @@ let url, onSuccess, onFailed;
       retVal[15] = 1.0;
     };
 
-    Matrix.computeOrthographicOffCenter = (left, right, bottom, top, near, far, result) => {
+    Matrix.computeOrthographicOffCenter = function (left, right, bottom, top, near, far, result) {
       const a = 1.0 / (right - left);
       const b = 1.0 / (top - bottom);
       const c = 1.0 / (far - near);
@@ -1918,7 +1911,7 @@ let url, onSuccess, onFailed;
       return result;
     };
 
-    Matrix.fromTNBP = (retVal, xAxis, yAxis, zAxis, vecP) => {
+    Matrix.fromTNBP = function (retVal, xAxis, yAxis, zAxis, vecP) {
       ((retVal[0] = xAxis[0]), (retVal[1] = xAxis[1]), (retVal[2] = xAxis[2]), (retVal[3] = 0));
       ((retVal[4] = yAxis[0]), (retVal[5] = yAxis[1]), (retVal[6] = yAxis[2]), (retVal[7] = 0));
       ((retVal[8] = zAxis[0]), (retVal[9] = zAxis[1]), (retVal[10] = zAxis[2]), (retVal[11] = 0));
@@ -1927,7 +1920,7 @@ let url, onSuccess, onFailed;
       return retVal;
     };
 
-    Matrix.translate = (retVal, x, y, z) => {
+    Matrix.translate = function (retVal, x, y, z) {
       retVal[0] = 1;
       retVal[1] = 0;
       retVal[2] = 0;
@@ -1946,7 +1939,7 @@ let url, onSuccess, onFailed;
       retVal[15] = 1;
     };
 
-    Matrix.scale = (retVal, x, y, z) => {
+    Matrix.scale = function (retVal, x, y, z) {
       retVal[0] = x;
       retVal[1] = 0;
       retVal[2] = 0;
@@ -1965,7 +1958,7 @@ let url, onSuccess, onFailed;
       retVal[15] = 1;
     };
 
-    Matrix.rotateAxisX = (retVal, angel) => {
+    Matrix.rotateAxisX = function (retVal, angel) {
       const cos_angel = Math.cos(angel);
       const sin_angel = Math.sin(angel);
       retVal[0] = 1;
@@ -1986,7 +1979,7 @@ let url, onSuccess, onFailed;
       retVal[15] = 1;
     };
 
-    Matrix.rotateAxisY = (retVal, angel) => {
+    Matrix.rotateAxisY = function (retVal, angel) {
       const cos_angel = Math.cos(angel);
       const sin_angel = Math.sin(angel);
       retVal[0] = cos_angel;
@@ -2007,7 +2000,7 @@ let url, onSuccess, onFailed;
       retVal[15] = 1;
     };
 
-    Matrix.rotateAxisZ = (retVal, angel) => {
+    Matrix.rotateAxisZ = function (retVal, angel) {
       const cos_angel = Math.cos(angel);
       const sin_angel = Math.sin(angel);
       retVal[0] = cos_angel;
@@ -2028,9 +2021,9 @@ let url, onSuccess, onFailed;
       retVal[15] = 1;
     };
 
-    Matrix.rotateAxis = (retVal, from, to, angel) => {};
+    Matrix.rotateAxis = function (retVal, from, to, angel) {};
 
-    Matrix.fromQuaternion = (retVal, q) => {
+    Matrix.fromQuaternion = function (retVal, q) {
       const x = q[0],;
         y = q[1],
         z = q[2],
@@ -2063,7 +2056,7 @@ let url, onSuccess, onFailed;
       retVal[15] = 1;
     };
 
-    Matrix.inverse = (result, matrix) => {
+    Matrix.inverse = function (result, matrix) {
       const a0 = matrix[0] * matrix[5] - matrix[1] * matrix[4];
       const a1 = matrix[0] * matrix[6] - matrix[2] * matrix[4];
       const a2 = matrix[0] * matrix[7] - matrix[3] * matrix[4];
@@ -2110,7 +2103,7 @@ let url, onSuccess, onFailed;
       return result;
     };
 
-    Matrix.transpose = (mat) => {
+    Matrix.transpose = function (mat) {
       const tmp = 0;
       tmp = mat[1];
       mat[1] = mat[4];
@@ -2132,7 +2125,7 @@ let url, onSuccess, onFailed;
       mat[14] = tmp;
     };
 
-    Matrix.clone = (result, matrix) => {
+    Matrix.clone = function (result, matrix) {
       result[0] = matrix[0];
       result[1] = matrix[1];
       result[2] = matrix[2];
@@ -2152,7 +2145,7 @@ let url, onSuccess, onFailed;
       return result;
     };
 
-    Matrix.transformCoord = (retVal, vec, mat) => {
+    Matrix.transformCoord = function (retVal, vec, mat) {
       const vX = vec[0];
       const vY = vec[1];
       const vZ = vec[2];
@@ -2170,7 +2163,7 @@ let url, onSuccess, onFailed;
     };
 
     //-----------------------------------------------------------------------
-    Matrix.toEulerAnglesZXY = (result, matrix) => {
+    Matrix.toEulerAnglesZXY = function (result, matrix) {
       result[1] = Math.asin(matrix[6]);
       if (result[1] < Math.PI * 0.5) {
         if (result[1] > -Math.PI * 0.5) {
@@ -2198,11 +2191,11 @@ let url, onSuccess, onFailed;
     //////////////////////////////////////////////////////////////
     const Plane = {};
     DXUtils["Plane"] = Plane;
-    Plane.create = () => {
+    Plane.create = function () {
       return [0, 0, 0, 1];
     };
 
-    Plane.assign = (retVal, x, y, z, w) => {
+    Plane.assign = function (retVal, x, y, z, w) {
       retVal[0] = x;
       retVal[1] = y;
       retVal[2] = z;
@@ -2210,7 +2203,7 @@ let url, onSuccess, onFailed;
     };
 
     const s_zero_tolerance = 2.2204460492503131e-16;
-    Plane.intersectRay = (intersectPt, ray, plane) => {
+    Plane.intersectRay = function (intersectPt, ray, plane) {
       const delt = Vector3.dot(ray._dir, [0, 0, 1]);
       if (Math.abs(delt) < s_zero_tolerance) {
         return false;
@@ -2245,7 +2238,7 @@ let url, onSuccess, onFailed;
      * @param {number} index - 索引
      * @returns {{x: number, y: number, segment_length: number}} 坐标对象
      */
-    navi_utils.getVector = (geometry, index) => {
+    navi_utils.getVector = function (geometry, index) {
       return {
         x: geometry[index]["x"],
         y: geometry[index]["y"],
@@ -2259,7 +2252,7 @@ let url, onSuccess, onFailed;
      * @param {number} index - 索引
      * @returns {{x: number, y: number, segment_length: number}} 坐标对象
      */
-    navi_utils.getVectorMectro = (geometry, index) => {
+    navi_utils.getVectorMectro = function (geometry, index) {
       return {
         x: geometry[index]["x"],
         y: geometry[index]["y"],
@@ -2273,7 +2266,7 @@ let url, onSuccess, onFailed;
      * @param {number} index - 索引
      * @returns {{x: number, y: number, segment_length: number}} 坐标对象
      */
-    navi_utils.getVector2 = (geometry, index) => {
+    navi_utils.getVector2 = function (geometry, index) {
       return {
         x: geometry[index][0],
         y: geometry[index][1],
@@ -2287,7 +2280,7 @@ let url, onSuccess, onFailed;
      * @param {number} index - 索引
      * @returns {number[]} 三维向量 [x, y, 0]
      */
-    navi_utils.getVector3 = (geometry, index) => {
+    navi_utils.getVector3 = function (geometry, index) {
       return [geometry[index][0], geometry[index][1], 0];
     };
 
@@ -2296,7 +2289,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vecOut - 输出的 ECEF 坐标 [x, y, z]
      * @param {number[]} vecIn - 输入的地理坐标 [longitude, latitude, radius]（弧度制）
      */
-    navi_utils.transformGeographicToECEF = (vecOut, vecIn) => {
+    navi_utils.transformGeographicToECEF = function (vecOut, vecIn) {
       const longitude = vecIn[0],;
         latitude = vecIn[1],
         radius = vecIn[2];
@@ -2311,7 +2304,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vecOut - 输出的地理坐标 [longitude, latitude, radius]（弧度制）
      * @param {number[]} vecIn - 输入的 ECEF 坐标 [x, y, z]
      */
-    navi_utils.transformECEFToGeographic = (vecOut, vecIn) => {
+    navi_utils.transformECEFToGeographic = function (vecOut, vecIn) {
       const x = vecIn[0],;
         y = vecIn[1],
         z = vecIn[2];
@@ -2329,7 +2322,7 @@ let url, onSuccess, onFailed;
      * @param {number} longtitude - 经度（角度制）
      * @returns {number} 墨卡托 X 坐标
      */
-    navi_utils.transformLonToMectroX = (longtitude) => {
+    navi_utils.transformLonToMectroX = function (longtitude) {
       return (longtitude / 180) * halfcircumference;
     };
 
@@ -2338,7 +2331,7 @@ let url, onSuccess, onFailed;
      * @param {number} latitude - 纬度（角度制）
      * @returns {number} 墨卡托 Y 坐标
      */
-    navi_utils.transformLatToMectroY = (latitude) => {
+    navi_utils.transformLatToMectroY = function (latitude) {
       return (Math.log(Math.tan(Math.PI * 0.25 + latitude * 0.5 * DEGREE_TO_RADIAN)) * halfcircumference) / Math.PI;
     };
 
@@ -2347,7 +2340,7 @@ let url, onSuccess, onFailed;
      * @param {number} x - 墨卡托 X 坐标
      * @returns {number} 经度（角度制）
      */
-    navi_utils.transformMectroXToLon = (x) => {
+    navi_utils.transformMectroXToLon = function (x) {
       return (x / halfcircumference) * 180;
     };
 
@@ -2356,7 +2349,7 @@ let url, onSuccess, onFailed;
      * @param {number} y - 墨卡托 Y 坐标
      * @returns {number} 纬度（角度制）
      */
-    navi_utils.transformMectroYToLat = (y) => {
+    navi_utils.transformMectroYToLat = function (y) {
       y = (y / halfcircumference) * Math.PI;
       return RADIAN_TO_DEGREE * (2 * Math.atan(Math.exp(y)) - Math.PI / 2);
     };
@@ -2366,7 +2359,7 @@ let url, onSuccess, onFailed;
      * @param {Object|Array} lonlat - 经纬度坐标，支持 {lon, lat}, {x, y} 或 [lon, lat] 格式
      * @returns {{x: number, y: number}} 墨卡托投影坐标对象
      */
-    navi_utils.lonLatToMectro = (lonlat) => {
+    navi_utils.lonLatToMectro = function (lonlat) {
       const lon = lonlat.lon || lonlat.x || lonlat[0];
       const lat = lonlat.lat || lonlat.y || lonlat[1];
       const x = navi_utils.transformLonToMectroX(lon);
@@ -2379,7 +2372,7 @@ let url, onSuccess, onFailed;
      * @param {Object} mectroXY - 墨卡托投影坐标对象 {x, y}
      * @returns {{lon: number, lat: number}} 经纬度坐标对象
      */
-    navi_utils.mectroTolLonLat = (mectroXY) => {
+    navi_utils.mectroTolLonLat = function (mectroXY) {
       const lon = navi_utils.transformMectroXToLon(mectroXY["x"]);
       const lat = navi_utils.transformMectroYToLat(mectroXY["y"]);
       return { lon: lon, lat: lat };
@@ -2390,7 +2383,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} lonLat - 经纬度数组 [longitude, latitude]
      * @param {number[]} utmXY - 接收转换结果的数组 [x, y]
      */
-    navi_utils.lonlatToUtmXY = (lonLat, utmXY) => {
+    navi_utils.lonlatToUtmXY = function (lonLat, utmXY) {
       // 计算 UTM 分带 (Zone)
       const zone = parseInt(Math.floor((lonLat[0] + 180.0) / 6)) + 1;
       MapLatLonToXY(DegToRad(lonLat[1]), DegToRad(lonLat[0]), UTMCentralMeridian(zone), utmXY);
@@ -2403,7 +2396,7 @@ let url, onSuccess, onFailed;
       if (utmXY[1] < 0.0) utmXY[1] += 10000000.0;
     };
 
-    navi_utils.getArrowBodyPoints = (points, neckLeft, neckRight, tailWidthFactor) => {
+    navi_utils.getArrowBodyPoints = function (points, neckLeft, neckRight, tailWidthFactor) {
       const allLen = PlotUtils.wholeDistance(points);
       const len = PlotUtils.getBaseLength(points);
       const tailWidth = len * tailWidthFactor;
@@ -2423,7 +2416,7 @@ let url, onSuccess, onFailed;
       }
       return leftBodyPnts.concat(rightBodyPnts);
     };
-    navi_utils.getArrowHeadPoints = (
+    navi_utils.getArrowHeadPoints = function (
       points,
       tailLeft,
       tailRight,
@@ -2432,7 +2425,7 @@ let url, onSuccess, onFailed;
       headTailFactor,
       neckWidthFactor,
       neckHeightFactor,
-    ) => {
+    ) {
       headWidthFactor = headWidthFactor || 0.25;
       headHeightFactor = headHeightFactor || 0.18;
       headTailFactor = headTailFactor || 0.15;
@@ -2459,7 +2452,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
       const neckRight = PlotUtils.getThirdPoint(headPnt, neckEndPnt, P.Constants.HALF_PI, neckWidth, true);
       return [neckLeft, headLeft, headPnt, headRight, neckRight];
     };
-    navi_utils.generate = (points) => {
+    navi_utils.generate = function (points) {
       const poinstLen = points.length;
       if (poinstLen < 2) {
         return;
@@ -2498,7 +2491,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * 创建一个4x4单位矩阵（列主序存储）
      * @returns {number[]} 长度为16的数组，表示4x4单位矩阵
      */
-    navi_utils.makeMatrix = () => {
+    navi_utils.makeMatrix = function () {
       return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     };
 
@@ -2509,7 +2502,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {number[]} matOut - 输出的4x4转换矩阵（列主序，长度16）
      * @param {number[]} vecIn - ECEF坐标系下的参考点位置向量 [x, y, z]
      */
-    navi_utils.matrixECEFToENU = (matOut, vecIn) => {
+    navi_utils.matrixECEFToENU = function (matOut, vecIn) {
       const vec_x = [0, 0, 0],;
         vec_y = [0, 0, 0],
         vec_z = navi_utils.Vector3_copy(vecIn);
@@ -2532,7 +2525,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {number[]} matOut - 输出的4x4转换矩阵（列主序，长度16）
      * @param {number[]} vecIn - ECEF坐标系下的参考点位置向量 [x, y, z]
      */
-    navi_utils.matrixENUToECEF = (matOut, vecIn) => {
+    navi_utils.matrixENUToECEF = function (matOut, vecIn) {
       const vec_x = [0, 0, 0];
       const vec_y = [0, 0, 0];
       const vec_z = navi_utils.Vector3_copy(vecIn);
@@ -2562,7 +2555,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {number[]} vecP - 位置向量（Position）
      * @returns {number[]} 返回构建的矩阵（同retVal）
      */
-    navi_utils.Matrix_fromTNBP = (retVal, xAxis, yAxis, zAxis, vecP) => {
+    navi_utils.Matrix_fromTNBP = function (retVal, xAxis, yAxis, zAxis, vecP) {
       ((retVal[0] = xAxis[0]), (retVal[1] = xAxis[1]), (retVal[2] = xAxis[2]), (retVal[3] = 0));
       ((retVal[4] = yAxis[0]), (retVal[5] = yAxis[1]), (retVal[6] = yAxis[2]), (retVal[7] = 0));
       ((retVal[8] = zAxis[0]), (retVal[9] = zAxis[1]), (retVal[10] = zAxis[2]), (retVal[11] = 0));
@@ -2579,7 +2572,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {number[]} matrix - 输入的原始矩阵（列主序，长度16）
      * @returns {number[]} 返回逆矩阵（同result）
      */
-    navi_utils.Matrix_inverse = (result, matrix) => {
+    navi_utils.Matrix_inverse = function (result, matrix) {
       const matrix0 = matrix[0];
       const matrix1 = matrix[1];
       const matrix2 = matrix[2];
@@ -2625,7 +2618,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {number} lat2 - 第二点纬度（弧度）
      * @returns {number} 大圆弧弧度
      */
-    navi_utils.getGeodeticCircleRadians = (lon1, lat1, lon2, lat2) => {
+    navi_utils.getGeodeticCircleRadians = function (lon1, lat1, lon2, lat2) {
       const a = Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2) + Math.sin(lat1) * Math.sin(lat2);
       return Math.abs(Math.acos(a));
     };
@@ -2634,7 +2627,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * 创建一个新的轴对齐包围盒（AABB）
      * @returns {{_min: number[], _max: number[]}} AABB 对象
      */
-    navi_utils.AABB_create = () => {
+    navi_utils.AABB_create = function () {
       return {
         _min: [Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE],
         _max: [-Number.MAX_VALUE, -Number.MAX_VALUE, -Number.MAX_VALUE],
@@ -2646,7 +2639,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {{_min: number[], _max: number[]}} extOut - AABB 对象
      * @returns {{_min: number[], _max: number[]}} 重置后的 AABB
      */
-    navi_utils.AABB_makeInvalid = (extOut) => {
+    navi_utils.AABB_makeInvalid = function (extOut) {
       extOut._min[0] = Number.MAX_VALUE;
       extOut._min[1] = Number.MAX_VALUE;
       extOut._min[2] = Number.MAX_VALUE;
@@ -2662,7 +2655,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {{_min: number[], _max: number[]}} ext1 - 输入 AABB
      * @param {number[]} vec - 要合并的点
      */
-    navi_utils.AABB_mergePoint = (extOut, ext1, vec) => {
+    navi_utils.AABB_mergePoint = function (extOut, ext1, vec) {
       extOut._max[0] = Math.max(ext1._max[0], vec[0]);
       extOut._min[0] = Math.min(ext1._min[0], vec[0]);
       extOut._max[1] = Math.max(ext1._max[1], vec[1]);
@@ -2676,59 +2669,59 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {{_min: number[], _max: number[]}} aabb - AABB 对象
      * @returns {boolean} 是否有效
      */
-    navi_utils.AABB_isValid = (aabb) => {
+    navi_utils.AABB_isValid = function (aabb) {
       return aabb._max[0] >= aabb._min[0] && aabb._max[1] >= aabb._min[1] && aabb._max[2] >= aabb._min[2] && aabb._max[0] >= 0;
     };
 
-    navi_utils.Vector3_copy = (vec) => {
+    navi_utils.Vector3_copy = function (vec) {
       return Vector3.copy(vec);
     };
 
-    navi_utils.Vector3_add = (retVal, vec1, vec2) => {
+    navi_utils.Vector3_add = function (retVal, vec1, vec2) {
       return Vector3.add(retVal, vec1, vec2);
     };
 
-    navi_utils.Vector3_sub = (retVal, vec1, vec2) => {
+    navi_utils.Vector3_sub = function (retVal, vec1, vec2) {
       return Vector3.sub(retVal, vec1, vec2);
     };
 
-    navi_utils.Vector3_scale = (retVal, vec, scale) => {
+    navi_utils.Vector3_scale = function (retVal, vec, scale) {
       return Vector3.scale(retVal, vec, scale);
     };
 
-    navi_utils.Vector3_normalize = (retVal, vec) => {
+    navi_utils.Vector3_normalize = function (retVal, vec) {
       return Vector3.normalize(retVal, vec);
     };
 
-    navi_utils.Vector3_length = (vec) => {
+    navi_utils.Vector3_length = function (vec) {
       return Vector3.length(vec);
     };
 
-    navi_utils.Vector3_distance = (vec1, vec2) => {
+    navi_utils.Vector3_distance = function (vec1, vec2) {
       return Vector3.distance(vec1, vec2);
     };
 
-    navi_utils.Vector3_dot = (vec1, vec2) => {
+    navi_utils.Vector3_dot = function (vec1, vec2) {
       return Vector3.dot(vec1, vec2);
     };
 
-    navi_utils.Vector3_cross = (retVal, left, right) => {
+    navi_utils.Vector3_cross = function (retVal, left, right) {
       return Vector3.cross(retVal, left, right);
     };
 
-    navi_utils.Vector3_transformCoord = (retVal, vec, mat) => {
+    navi_utils.Vector3_transformCoord = function (retVal, vec, mat) {
       return Vector3.transformCoord(retVal, vec, mat);
     };
 
-    navi_utils.Vector3_transformNormal = (retVal, vec, mat) => {
+    navi_utils.Vector3_transformNormal = function (retVal, vec, mat) {
       return Vector3.transformNormal(retVal, vec, mat);
     };
 
-    navi_utils.Vector3_lerp = (retVal, vec1, vec2, t) => {
+    navi_utils.Vector3_lerp = function (retVal, vec1, vec2, t) {
       return Vector3.lerp(retVal, vec1, vec2, t);
     };
 
-    navi_utils.Vector3_mad = (retVal, vec1, vec2, t) => {
+    navi_utils.Vector3_mad = function (retVal, vec1, vec2, t) {
       return Vector3.mad(retVal, vec1, vec2, t);
     };
 
@@ -2737,7 +2730,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {number[]} q - 四元数 [x, y, z, w]
      * @returns {number} 四元数的欧几里得范数
      */
-    navi_utils.Quaternion_length = (q) => {
+    navi_utils.Quaternion_length = function (q) {
       return Math.sqrt(q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3]);
     };
 
@@ -2747,7 +2740,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {number[]} q - 输入四元数
      * @returns {number[]} 归一化后的四元数
      */
-    navi_utils.Quaternion_normalize = (retVal, q) => {
+    navi_utils.Quaternion_normalize = function (retVal, q) {
       const len = navi_utils.Quaternion_length(q);
       if (len > 1e-12) {
         const invLen = 1.0 / len;
@@ -2768,7 +2761,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {number[]} q2 - 结束四元数
      * @param {number} t - 插值系数 [0, 1]
      */
-    navi_utils.Quaternion_slerp = (retVal, q1, q2, t) => {
+    navi_utils.Quaternion_slerp = function (retVal, q1, q2, t) {
       const x1 = q1[0],;
         y1 = q1[1],
         z1 = q1[2],
@@ -2819,7 +2812,7 @@ let x3, y3, z3, w3;
      * @param {number} y - 绕 Y 轴旋转角度（弧度）
      * @param {number} z - 绕 Z 轴旋转角度（弧度）
      */
-    navi_utils.Quaternion_fromEuler = (retVal, x, y, z) => {
+    navi_utils.Quaternion_fromEuler = function (retVal, x, y, z) {
       const c1 = Math.cos(y * 0.5),;
         c2 = Math.cos(z * 0.5),
         c3 = Math.cos(x * 0.5);
@@ -2837,7 +2830,7 @@ let x3, y3, z3, w3;
      * @param {number[]} retVal - 结果欧拉角 [x, y, z]（弧度）
      * @param {number[]} q - 四元数 [x, y, z, w]
      */
-    navi_utils.Quaternion_toEuler = (retVal, q) => {
+    navi_utils.Quaternion_toEuler = function (retVal, q) {
       const qx = q[0],;
         qy = q[1],
         qz = q[2],
@@ -2871,7 +2864,7 @@ let x3, y3, z3, w3;
      * @param {{x: number, y: number}} vec2 - 第二个坐标点
      * @returns {number} 距离（米）
      */
-    navi_utils.getGeodeticCircleDistance = (vec1, vec2) => {
+    navi_utils.getGeodeticCircleDistance = function (vec1, vec2) {
       const dis =;
         navi_utils.getGeodeticCircleRadians(vec1.x * DEGREE_TO_RADIAN, vec1.y * DEGREE_TO_RADIAN, vec2.x * DEGREE_TO_RADIAN, vec2.y * DEGREE_TO_RADIAN) *
         earthRadius;
@@ -2884,7 +2877,7 @@ let x3, y3, z3, w3;
      * @param {{x: number, y: number}} vec2 - 第二个坐标点（角秒）
      * @returns {number} 距离（米）
      */
-    navi_utils.getGeodeticCircleDistanceSecond = (vec1, vec2) => {
+    navi_utils.getGeodeticCircleDistanceSecond = function (vec1, vec2) {
       const dis =;
         navi_utils.getGeodeticCircleRadians(vec1.x * SECOND_TO_RADIAN, vec1.y * SECOND_TO_RADIAN, vec2.x * SECOND_TO_RADIAN, vec2.y * SECOND_TO_RADIAN) *
         earthRadius;
@@ -2897,7 +2890,7 @@ let x3, y3, z3, w3;
      * @param {number[]} vec2 - 第二个坐标点 [lon, lat]
      * @returns {number} 距离（米）
      */
-    navi_utils.getGeodeticCircleDistanceVector = (vec1, vec2) => {
+    navi_utils.getGeodeticCircleDistanceVector = function (vec1, vec2) {
       const dis =;
         navi_utils.getGeodeticCircleRadians(vec1[0] * DEGREE_TO_RADIAN, vec1[1] * DEGREE_TO_RADIAN, vec2[0] * DEGREE_TO_RADIAN, vec2[1] * DEGREE_TO_RADIAN) *
         earthRadius;
@@ -2910,7 +2903,7 @@ let x3, y3, z3, w3;
      * @param {number[]} vec2 - 第二个坐标点 [lon, lat]（角秒）
      * @returns {number} 距离（米）
      */
-    navi_utils.getGeodeticCircleDistanceVectorSecond = (vec1, vec2) => {
+    navi_utils.getGeodeticCircleDistanceVectorSecond = function (vec1, vec2) {
       const dis =;
         navi_utils.getGeodeticCircleRadians(vec1[0] * SECOND_TO_RADIAN, vec1[1] * SECOND_TO_RADIAN, vec2[0] * SECOND_TO_RADIAN, vec2[1] * SECOND_TO_RADIAN) *
         earthRadius;
@@ -2922,7 +2915,7 @@ let x3, y3, z3, w3;
      * @param {Object} obj - 要遍历的对象
      * @param {Function} callbackFn - 回调函数 (key, value)
      */
-    navi_utils.forEach = (obj, callbackFn) => {
+    navi_utils.forEach = function (obj, callbackFn) {
       for (let key in obj) {
         if (obj.hasOwnProperty(key)) {
           callbackFn(key, obj[key]);
@@ -2935,7 +2928,7 @@ let x3, y3, z3, w3;
      * @param {Object} obj - 要遍历的对象
      * @param {Function} callbackFn - 回调函数 (key, value)，返回 1 时中断遍历
      */
-    navi_utils.foreach = (obj, callbackFn) => {
+    navi_utils.foreach = function (obj, callbackFn) {
       for (let key in obj) {
         if (obj.hasOwnProperty(key)) {
           if (callbackFn(key, obj[key]) === 1) break;
@@ -2950,7 +2943,7 @@ let x3, y3, z3, w3;
      * @param {{x: number, y: number}} c - 结束点
      * @returns {number} 拐弯角度（度），左转为负，右转为正
      */
-    navi_utils.calcAngel = (a, b, c) => {
+    navi_utils.calcAngel = function (a, b, c) {
       const a_sphr = [a.x * DEGREE_TO_RADIAN, a.y * DEGREE_TO_RADIAN, earthRadius];
       const b_sphr = [b.x * DEGREE_TO_RADIAN, b.y * DEGREE_TO_RADIAN, earthRadius];
       const c_sphr = [c.x * DEGREE_TO_RADIAN, c.y * DEGREE_TO_RADIAN, earthRadius];
@@ -2980,7 +2973,7 @@ let x3, y3, z3, w3;
      * @param {{x: number, y: number}} c - 结束点
      * @returns {number} 航向角（度），0-360
      */
-    navi_utils.calcHeading = (b, c) => {
+    navi_utils.calcHeading = function (b, c) {
       const a_sphr = [b.x * DEGREE_TO_RADIAN, (b.y + 1) * DEGREE_TO_RADIAN, earthRadius];
       const b_sphr = [b.x * DEGREE_TO_RADIAN, b.y * DEGREE_TO_RADIAN, earthRadius];
       const c_sphr = [c.x * DEGREE_TO_RADIAN, c.y * DEGREE_TO_RADIAN, earthRadius];
@@ -3010,7 +3003,7 @@ let x3, y3, z3, w3;
      * @param {number[]} p2 - 结束点 [lon, lat]
      * @returns {number} 方位角（弧度）
      */
-    navi_utils.getAzimuth = (p1, p2) => {
+    navi_utils.getAzimuth = function (p1, p2) {
       const angle = Math.asin(Math.abs(p2[1] - p1[1]) / navi_utils.getGeodeticCircleDistance(p1, p2));
       if (p2[1] >= p1[1] && p2[0] >= p1[0]) return angle + Math.PI;
       if (p2[1] >= p1[1] && p2[0] < p1[0]) return Math.PI * 2 - angle;
@@ -3025,7 +3018,7 @@ let x3, y3, z3, w3;
      * @param {number[]} v2 - 线段终点
      * @returns {number} 最短距离
      */
-    navi_utils.minDistance = (point, v1, v2) => {
+    navi_utils.minDistance = function (point, v1, v2) {
       const p_v1 = [0, 0, 0],;
         p_v2 = [0, 0, 0],
         dir = [0, 0, 0];
@@ -3048,7 +3041,7 @@ let x3, y3, z3, w3;
      * @param {Array} geometry - 几何坐标数组
      * @returns {Array} 拆分后的线段数组
      */
-    navi_utils.resamplerGeometry = (geometry) => {
+    navi_utils.resamplerGeometry = function (geometry) {
       const geometry_new = [];
       const segmentArray = [];
       for (let kk = 0; kk < geometry.length; kk++) {
@@ -3119,7 +3112,7 @@ let A = geometry_new[i - 1],
      * @param {number} [diffLen=0.1] - 容差距离
      * @returns {boolean} 点是否在线段附近
      */
-    navi_utils.pointToLineInVector = (checkPosition, segment0, segment1, intersctPosition, diffLen) => {
+    navi_utils.pointToLineInVector = function (checkPosition, segment0, segment1, intersctPosition, diffLen) {
       const pos_sphr = [checkPosition[0] * DEGREE_TO_RADIAN, checkPosition[1] * DEGREE_TO_RADIAN, earthRadius];
       const a_sphr = [segment0[0] * DEGREE_TO_RADIAN, segment0[1] * DEGREE_TO_RADIAN, earthRadius];
       const b_sphr = [segment1[0] * DEGREE_TO_RADIAN, segment1[1] * DEGREE_TO_RADIAN, earthRadius];
@@ -3154,7 +3147,7 @@ let A = geometry_new[i - 1],
      * @param {number} py - 点 y
      * @returns {boolean} 点是否在矩形内
      */
-    navi_utils.isPointOnLine = (x, y, endx, endy, px, py) => {
+    navi_utils.isPointOnLine = function (x, y, endx, endy, px, py) {
       x = parseInt(x);
       y = parseInt(y);
       endx = parseInt(endx);
@@ -3173,7 +3166,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} proot - 输出最近点
      * @returns {number} 点到线段的距离
      */
-    navi_utils.pointToLine = (point, p1, p2, proot) => {
+    navi_utils.pointToLine = function (point, p1, p2, proot) {
       const p_v1 = [0, 0, 0],;
         p_v2 = [0, 0, 0],
         dir = [0, 0, 0];
@@ -3229,7 +3222,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} Q - 输出投影点
      * @returns {number} 1
      */
-    navi_utils.point2line = (p, p1, p2, Q) => {
+    navi_utils.point2line = function (p, p1, p2, Q) {
       const a = p2[0] - p1[0],;
         b = p2[1] - p1[1],
         c = p2[2] - p1[2];
@@ -3254,7 +3247,7 @@ let A = geometry_new[i - 1],
      * 时间格式化内部函数
      * @private
      */
-    const _formatTime = (time, onsec, language) => {
+    function _formatTime(time, onsec, language) {
       const unitSec = language === "En" ? " seconds " : "秒";
       const unitMinute = language === "En" ? " minutes " : "分钟";
       const unitHours = language === "En" ? " hours " : "小时";
@@ -3287,7 +3280,7 @@ let A = geometry_new[i - 1],
      * @param {string} [language] - 语言 ('En' 或中文)
      * @returns {string} 格式化的时间字符串
      */
-    navi_utils.MillisecondToDate = (msd, onsec, language) => {
+    navi_utils.MillisecondToDate = function (msd, onsec, language) {
       return _formatTime(parseFloat(msd) / 1000, onsec, language);
     };
 
@@ -3298,7 +3291,7 @@ let A = geometry_new[i - 1],
      * @param {string} [language] - 语言 ('En' 或中文)
      * @returns {string} 格式化的时间字符串
      */
-    navi_utils.secondToDate = (time, onsec, language) => {
+    navi_utils.secondToDate = function (time, onsec, language) {
       return _formatTime(time, onsec, language);
     };
 
@@ -3309,7 +3302,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} b - 结束坐标 [lon, lat]
      * @param {number} t - 插值系数 [0, 1]
      */
-    navi_utils.slerp = (retVal, a, b, t) => {
+    navi_utils.slerp = function (retVal, a, b, t) {
       const a_sphr = [a[0] * DEGREE_TO_RADIAN, a[1] * DEGREE_TO_RADIAN, earthRadius];
       const b_sphr = [b[0] * DEGREE_TO_RADIAN, b[1] * DEGREE_TO_RADIAN, earthRadius];
       const a_ecef = [0, 0, 0],;
@@ -3329,7 +3322,7 @@ let A = geometry_new[i - 1],
      * @param {number} [tilt] - 倾斜角度（未使用）
      * @returns {{center_x: number, center_y: number, angel: number, distance: number}} 中心和视距信息
      */
-    navi_utils.calcCenterAndDistance = (geometry) => {
+    navi_utils.calcCenterAndDistance = function (geometry) {
       const minx = Infinity,;
         miny = Infinity,
         maxx = -Infinity,
@@ -3366,7 +3359,7 @@ let A = geometry_new[i - 1],
      * @param {number} epsilon - 容差值
      * @returns {number} 0=在线上, -1=左侧, 1=右侧
      */
-    navi_utils.judgeSide = (point_judge, section_point1, section_point2, epsilon) => {
+    navi_utils.judgeSide = function (point_judge, section_point1, section_point2, epsilon) {
       const line_vec = [section_point2[0] - section_point1[0], section_point2[1] - section_point1[1], 0];
       navi_utils.Vector3_normalize(line_vec, line_vec);
       const test_vec = [point_judge[0] - section_point1[0], point_judge[1] - section_point1[1], 0];
@@ -3387,7 +3380,7 @@ let A = geometry_new[i - 1],
      * @param {Array} geometry_new - 输出过滤后的数组
      * @returns {number} 过滤后的点数
      */
-    navi_utils.purifyGeometry = (geometry, geometry_new) => {
+    navi_utils.purifyGeometry = function (geometry, geometry_new) {
       if (geometry.length === 0) return 0;
       geometry_new.push(navi_utils.getVector(geometry, 0));
       for (let kk = 0; kk < geometry.length - 1; kk++) {
@@ -3404,7 +3397,7 @@ let A = geometry_new[i - 1],
      * 计算几何路径每段的长度（数组格式坐标）
      * @param {Array} geometry_new - 几何坐标数组
      */
-    navi_utils.calcGeometrySegmentLengthVector = (geometry_new) => {
+    navi_utils.calcGeometrySegmentLengthVector = function (geometry_new) {
       if (geometry_new.length === 0) return;
       geometry_new.total_length = 0;
       geometry_new[0].segment_length = 0;
@@ -3422,7 +3415,7 @@ let A = geometry_new[i - 1],
      * @param {Array} geometry_new - 几何坐标数组
      * @returns {number} 总长度
      */
-    navi_utils.calcGeometryLengthVector = (geometry_new) => {
+    navi_utils.calcGeometryLengthVector = function (geometry_new) {
       if (geometry_new.length === 0) return 0;
       const totalLength = 0;
       for (let kk = 0; kk < geometry_new.length - 1; kk++) {
@@ -3437,7 +3430,7 @@ let A = geometry_new[i - 1],
      * @param {{x: number, y: number}} end - 结束点
      * @returns {number} 角度（0-360度）
      */
-    navi_utils.getAngle = (start, end) => {
+    navi_utils.getAngle = function (start, end) {
       const diff_x = (end.x - start.x) * 100000;
       const diff_y = (end.y - start.y) * 100000;
       const invLen = 1 / Math.sqrt(diff_x * diff_x + diff_y * diff_y);
@@ -3452,7 +3445,7 @@ let A = geometry_new[i - 1],
      * @param {Array|Object} endPnt - 结束点
      * @returns {number} 距离
      */
-    navi_utils.calcMectroPointLen = (startPnt, endPnt) => {
+    navi_utils.calcMectroPointLen = function (startPnt, endPnt) {
       const x1 = startPnt[0] || startPnt.x;
       const y1 = startPnt[1] || startPnt.y;
       const x2 = endPnt[0] || endPnt.x;
@@ -3466,7 +3459,7 @@ let A = geometry_new[i - 1],
      * @param {Array|Object} endPnt - 结束点
      * @returns {number} 弧度角
      */
-    navi_utils.getRadianAngle = (startPnt, endPnt) => {
+    navi_utils.getRadianAngle = function (startPnt, endPnt) {
       const x1 = startPnt[0] || startPnt.x;
       const y1 = startPnt[1] || startPnt.y;
       const x2 = endPnt[0] || endPnt.x;
@@ -3486,7 +3479,7 @@ let A = geometry_new[i - 1],
      * @param {number} dis - 距离
      * @returns {number[]} 新坐标 [x, y]
      */
-    navi_utils.getMectroPointInAngleWidthDis = (point, angle, dis) => {
+    navi_utils.getMectroPointInAngleWidthDis = function (point, angle, dis) {
       return [point[0] + dis * Math.sin(angle), point[1] + dis * Math.cos(angle)];
     };
 
@@ -3494,7 +3487,7 @@ let A = geometry_new[i - 1],
      * 计算几何路径每段的长度（对象格式坐标）
      * @param {Array} geometry_new - 几何坐标数组
      */
-    navi_utils.calcGeometrySegmentLength = (geometry_new) => {
+    navi_utils.calcGeometrySegmentLength = function (geometry_new) {
       if (geometry_new.length === 0) return;
       geometry_new.total_length = 0;
       geometry_new[0].segment_length = 0;
@@ -3512,7 +3505,7 @@ let A = geometry_new[i - 1],
      * @param {Array} geometryLine - 几何坐标数组
      * @returns {number} 点数
      */
-    navi_utils.calcGeometryAngel = (geometryLine) => {
+    navi_utils.calcGeometryAngel = function (geometryLine) {
       if (geometryLine.length === 0) return 0;
       geometryLine[0].angel = 0;
       geometryLine[geometryLine.length - 1].angel = 0;
@@ -3540,7 +3533,7 @@ let A = geometry_new[i - 1],
      * @param {number} epsl - 容差值
      * @returns {number} 相交结果类型 (0=不相交, 1=相交, 2-5=端点相交)
      */
-    navi_utils.lineLineIntersect = (v1, v2, p1, p2, intersect_point, epsl) => {
+    navi_utils.lineLineIntersect = function (v1, v2, p1, p2, intersect_point, epsl) {
       const p1_v1v2 = navi_utils.judgeSide(p1, v1, v2, epsl);
       const p2_v1v2 = navi_utils.judgeSide(p2, v1, v2, epsl);
 
@@ -3597,7 +3590,7 @@ let A = geometry_new[i - 1],
      * @param {Object} ret - 输出结果对象
      * @returns {number} 最小距离或 -1
      */
-    navi_utils.segmentInterectPolygon = (inSegment, polygon, ret) => {
+    navi_utils.segmentInterectPolygon = function (inSegment, polygon, ret) {
       const totalDistance = navi_utils.getGeodeticCircleDistanceVector(inSegment[0], inSegment[1]);
       const point0 = { point: inSegment[0], type: 0, distance: 0 };
       const point1 = { point: inSegment[1], type: 0, distance: totalDistance };
@@ -3656,7 +3649,7 @@ let A = geometry_new[i - 1],
      * @param {Array} polygon - 多边形顶点数组
      * @returns {boolean} 是否在多边形内
      */
-    navi_utils.pointInPolygon = (pos, polygon) => {
+    navi_utils.pointInPolygon = function (pos, polygon) {
       const inside = false;
       const n = polygon.length;
       for (let i = 0; i < n; i++) {
@@ -3684,7 +3677,7 @@ let A = geometry_new[i - 1],
      * @param {number} lambda0 - 中央经线（弧度）
      * @param {number[]} utmXY - 输出 UTM 坐标 [x, y]
      */
-    const MapLatLonToXY = (phi, lambda, lambda0, utmXY) => {
+    function MapLatLonToXY(phi, lambda, lambda0, utmXY) {
       const cosPhi = Math.cos(phi);
       const cosPhi2 = cosPhi * cosPhi;
       const cosPhi3 = cosPhi2 * cosPhi;
@@ -3731,7 +3724,7 @@ let A = geometry_new[i - 1],
      * @param {*} data - 要拷贝的数据
      * @returns {*} 拷贝后的数据
      */
-    navi_utils.copyData = (data) => {
+    navi_utils.copyData = function (data) {
       return JSON.parse(JSON.stringify(data));
     };
 
@@ -3740,7 +3733,7 @@ let A = geometry_new[i - 1],
      * @param {Object} marker - 标记对象
      * @returns {Object} JSON 格式的标记信息
      */
-    navi_utils.parseToJSON = (marker) => {
+    navi_utils.parseToJSON = function (marker) {
       return {
         id: marker.id,
         floorId: marker.floorId,
@@ -3768,14 +3761,14 @@ let A = geometry_new[i - 1],
      * @param {string} floorId - 楼层 ID
      * @returns {number} 楼层号（负数表示地下）
      */
-    navi_utils.getRealFloorNumbyFloorId = (floorId) => {
+    navi_utils.getRealFloorNumbyFloorId = function (floorId) {
       const len = floorId.length;
       const startIndex = len - 8;
       const str1 = floorId.slice(startIndex + 1, len - 5);
       const flabs = parseInt(str1);
       return floorId[startIndex] === "0" ? -flabs : flabs;
     };
-    DaxiApp["naviMath"] = navi_utils;
+    daxiapp["naviMath"] = navi_utils;
 
     //////////////////////////////////////////////////////////////
     // P - 常量工具库
@@ -3799,7 +3792,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} pnt2 - 点 2
      * @returns {number} 距离
      */
-    PlotUtils.distance = (pnt1, pnt2) => {
+    PlotUtils.distance = function (pnt1, pnt2) {
       const dx = pnt1[0] - pnt2[0],;
         dy = pnt1[1] - pnt2[1];
       return Math.sqrt(dx * dx + dy * dy);
@@ -3810,7 +3803,7 @@ let A = geometry_new[i - 1],
      * @param {Array} points - 点数组
      * @returns {number} 总距离
      */
-    PlotUtils.wholeDistance = (points) => {
+    PlotUtils.wholeDistance = function (points) {
       const distance = 0;
       for (let i = 0; i < points.length - 1; i++) {
         distance += PlotUtils.distance(points[i], points[i + 1]);
@@ -3823,7 +3816,7 @@ let A = geometry_new[i - 1],
      * @param {Array} points - 点数组
      * @returns {number} 基准长度
      */
-    PlotUtils.getBaseLength = (points) => {
+    PlotUtils.getBaseLength = function (points) {
       return Math.pow(PlotUtils.wholeDistance(points), 0.99);
     };
 
@@ -3833,7 +3826,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} pnt2 - 点 2
      * @returns {number[]} 中点坐标
      */
-    PlotUtils.mid = (pnt1, pnt2) => {
+    PlotUtils.mid = function (pnt1, pnt2) {
       return [(pnt1[0] + pnt2[0]) / 2, (pnt1[1] + pnt2[1]) / 2];
     };
 
@@ -3844,7 +3837,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} pnt3 - 点 3
      * @returns {number[]} 圆心坐标
      */
-    PlotUtils.getCircleCenterOfThreePoints = (pnt1, pnt2, pnt3) => {
+    PlotUtils.getCircleCenterOfThreePoints = function (pnt1, pnt2, pnt3) {
       const pntA = PlotUtils.mid(pnt1, pnt2);
       const pntB = [pntA[0] - pnt1[1] + pnt2[1], pntA[1] + pnt1[0] - pnt2[0]];
       const pntC = PlotUtils.mid(pnt1, pnt3);
@@ -3860,7 +3853,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} pntD - 线 2 点 D
      * @returns {number[]} 交点坐标
      */
-    PlotUtils.getIntersectPoint = (pntA, pntB, pntC, pntD) => {
+    PlotUtils.getIntersectPoint = function (pntA, pntB, pntC, pntD) {
       let x, y;
       if (pntA[1] === pntB[1]) {
         const f = (pntD[0] - pntC[0]) / (pntD[1] - pntC[1]);
@@ -3883,7 +3876,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} endPnt - 结束点
      * @returns {number} 方位角（弧度）
      */
-    PlotUtils.getAzimuth = (startPnt, endPnt) => {
+    PlotUtils.getAzimuth = function (startPnt, endPnt) {
       const angle = Math.asin(Math.abs(endPnt[1] - startPnt[1]) / PlotUtils.distance(startPnt, endPnt));
       if (endPnt[1] >= startPnt[1] && endPnt[0] >= startPnt[0]) return angle + Math.PI;
       if (endPnt[1] >= startPnt[1] && endPnt[0] < startPnt[0]) return P.Constants.TWO_PI - angle;
@@ -3898,7 +3891,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} pntC - 点 C
      * @returns {number} 夹角（弧度）
      */
-    PlotUtils.getAngleOfThreePoints = (pntA, pntB, pntC) => {
+    PlotUtils.getAngleOfThreePoints = function (pntA, pntB, pntC) {
       const angle = PlotUtils.getAzimuth(pntB, pntA) - PlotUtils.getAzimuth(pntB, pntC);
       return angle < 0 ? angle + P.Constants.TWO_PI : angle;
     };
@@ -3910,7 +3903,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} pnt3 - 点 3
      * @returns {boolean} 是否顺时针
      */
-    PlotUtils.isClockWise = (pnt1, pnt2, pnt3) => {
+    PlotUtils.isClockWise = function (pnt1, pnt2, pnt3) {
       return (pnt3[1] - pnt1[1]) * (pnt2[0] - pnt1[0]) > (pnt2[1] - pnt1[1]) * (pnt3[0] - pnt1[0]);
     };
 
@@ -3921,7 +3914,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} endPnt - 终点
      * @returns {number[]} 点坐标
      */
-    PlotUtils.getPointOnLine = (t, startPnt, endPnt) => {
+    PlotUtils.getPointOnLine = function (t, startPnt, endPnt) {
       return [startPnt[0] + t * (endPnt[0] - startPnt[0]), startPnt[1] + t * (endPnt[1] - startPnt[1])];
     };
 
@@ -3934,7 +3927,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} endPnt - 终点
      * @returns {number[]} 点坐标
      */
-    PlotUtils.getCubicValue = (t, startPnt, cPnt1, cPnt2, endPnt) => {
+    PlotUtils.getCubicValue = function (t, startPnt, cPnt1, cPnt2, endPnt) {
       t = Math.max(Math.min(t, 1), 0);
       const tp = 1 - t,;
         t2 = t * t,
@@ -3956,7 +3949,7 @@ let A = geometry_new[i - 1],
      * @param {boolean} clockWise - 是否顺时针
      * @returns {number[]} 第三点坐标
      */
-    PlotUtils.getThirdPoint = (startPnt, endPnt, angle, distance, clockWise) => {
+    PlotUtils.getThirdPoint = function (startPnt, endPnt, angle, distance, clockWise) {
       const azimuth = PlotUtils.getAzimuth(startPnt, endPnt);
       const alpha = clockWise ? azimuth + angle : azimuth - angle;
       return [endPnt[0] + distance * Math.cos(alpha), endPnt[1] + distance * Math.sin(alpha)];
@@ -3970,7 +3963,7 @@ let A = geometry_new[i - 1],
      * @param {number} endAngle - 结束角
      * @returns {Array} 圆弧上的点数组
      */
-    PlotUtils.getArcPoints = (center, radius, startAngle, endAngle) => {
+    PlotUtils.getArcPoints = function (center, radius, startAngle, endAngle) {
       const pnts = [];
       const angleDiff = endAngle - startAngle;
       if (angleDiff < 0) angleDiff += P.Constants.TWO_PI;
@@ -3989,7 +3982,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} pnt3 - 后一个点
      * @returns {Array} [右侧法向量点, 左侧法向量点]
      */
-    PlotUtils.getBisectorNormals = (t, pnt1, pnt2, pnt3) => {
+    PlotUtils.getBisectorNormals = function (t, pnt1, pnt2, pnt3) {
       const normal = PlotUtils.getNormal(pnt1, pnt2, pnt3);
       const dist = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1]);
       let bisectorNormalRight, bisectorNormalLeft;
@@ -4019,7 +4012,7 @@ let A = geometry_new[i - 1],
      * @param {number[]} pnt3 - 点 3
      * @returns {number[]} 法向量
      */
-    PlotUtils.getNormal = (pnt1, pnt2, pnt3) => {
+    PlotUtils.getNormal = function (pnt1, pnt2, pnt3) {
       const dX1 = pnt1[0] - pnt2[0],;
         dY1 = pnt1[1] - pnt2[1];
       const d1 = Math.sqrt(dX1 * dX1 + dY1 * dY1);
@@ -4039,7 +4032,7 @@ let A = geometry_new[i - 1],
      * @param {Array} controlPoints - 控制点数组
      * @returns {Array} 曲线点数组
      */
-    PlotUtils.getCurvePoints = (t, controlPoints) => {
+    PlotUtils.getCurvePoints = function (t, controlPoints) {
       const leftControl = PlotUtils.getLeftMostControlPoint(controlPoints);
       const normals = [leftControl];
       for (let i = 0; i < controlPoints.length - 2; i++) {
@@ -4067,7 +4060,7 @@ let A = geometry_new[i - 1],
      * @param {Array} controlPoints - 控制点数组
      * @returns {number[]} 控制点坐标
      */
-    PlotUtils.getLeftMostControlPoint = (controlPoints) => {
+    PlotUtils.getLeftMostControlPoint = function (controlPoints) {
       const pnt1 = controlPoints[0],;
         pnt2 = controlPoints[1],
         pnt3 = controlPoints[2];
@@ -4101,7 +4094,7 @@ let A = geometry_new[i - 1],
      * @param {Array} controlPoints - 控制点数组
      * @returns {number[]} 控制点坐标
      */
-    PlotUtils.getRightMostControlPoint = (controlPoints) => {
+    PlotUtils.getRightMostControlPoint = function (controlPoints) {
       const count = controlPoints.length;
       const pnt1 = controlPoints[count - 3],;
         pnt2 = controlPoints[count - 2],
@@ -4136,7 +4129,7 @@ let A = geometry_new[i - 1],
      * @param {Array} points - 控制点数组
      * @returns {Array} 贝塞尔曲线点数组
      */
-    PlotUtils.getBezierPoints = (points) => {
+    PlotUtils.getBezierPoints = function (points) {
       if (points.length <= 2) return points;
       const bezierPoints = [];
       const n = points.length - 1;
@@ -4162,7 +4155,7 @@ let A = geometry_new[i - 1],
      * @param {number} index - 索引
      * @returns {number} 二项式系数
      */
-    PlotUtils.getBinomialFactor = (n, index) => {
+    PlotUtils.getBinomialFactor = function (n, index) {
       return PlotUtils.getFactorial(n) / (PlotUtils.getFactorial(index) * PlotUtils.getFactorial(n - index));
     };
 
@@ -4174,7 +4167,7 @@ let A = geometry_new[i - 1],
      * @param {number} n - 数字
      * @returns {number} 阶乘结果
      */
-    PlotUtils.getFactorial = (n) => {
+    PlotUtils.getFactorial = function (n) {
       if (n < factorialCache.length) return factorialCache[n];
       const result = factorialCache[factorialCache.length - 1];
       for (let i = factorialCache.length; i <= n; i++) {
@@ -4189,7 +4182,7 @@ let A = geometry_new[i - 1],
      * @param {Array} points - 控制点数组
      * @returns {Array} B 样条曲线点数组
      */
-    PlotUtils.getQBSplinePoints = (points) => {
+    PlotUtils.getQBSplinePoints = function (points) {
       if (points.length <= 2) return points;
       const bSplinePoints = [points[0]];
       const m = points.length - 3;
@@ -4215,27 +4208,27 @@ let A = geometry_new[i - 1],
      * @param {number} t - 参数
      * @returns {number} 基函数值
      */
-    PlotUtils.getQuadricBSplineFactor = (k, t) => {
+    PlotUtils.getQuadricBSplineFactor = function (k, t) {
       const t1 = 1 - t;
       if (k === 0) return (t1 * t1) / 2;
       if (k === 1) return (-2 * t * t + 2 * t + 1) / 2;
       if (k === 2) return (t * t) / 2;
       return 0;
     };
-  })(DaxiApp);
+  })(daxiapp);
 
   /**
    * 检查一个值是否已定义（非 undefined 且非 null）
    * @param {*} value - 要检查的值
    * @returns {boolean} 如果值已定义则返回 true，否则返回 false
    * @example
-   * if (DaxiApp.defined(positions)) {
+   * if (daxiapp.defined(positions)) {
    *   doSomething();
    * } else {
    *   doSomethingElse();
    * }
    */
-  DaxiApp["defined"] = (value) => {
+  daxiapp["defined"] = function (value) {
     "use strict";
     return value !== undefined && value !== null;
   };
@@ -4246,9 +4239,9 @@ let A = geometry_new[i - 1],
    * @param {*} b - 默认值
    * @returns {*} 如果 a 已定义则返回 a，否则返回 b
    * @example
-   * param = DaxiApp.defaultValue(param, 'default');
+   * param = daxiapp.defaultValue(param, 'default');
    */
-  DaxiApp["defaultValue"] = (a, b) => {
+  daxiapp["defaultValue"] = function (a, b) {
     "use strict";
     return a !== undefined && a !== null ? a : b;
   };
@@ -4261,9 +4254,9 @@ let A = geometry_new[i - 1],
    * @param {Object} props - 属性描述符对象
    * @returns {Object} 已定义属性的对象
    */
-  DaxiApp["defineProperties"] = ((defined) => {
+  daxiapp["defineProperties"] = (function (defined) {
     "use strict";
-    const definePropertyWorks = (() => {
+    const definePropertyWorks = (function () {;
       try {
         return "x" in Object.defineProperty({}, "x", {});
       } catch (e) {
@@ -4273,19 +4266,19 @@ let A = geometry_new[i - 1],
     })();
     const defineProperties = Object.defineProperties;
     if (!definePropertyWorks || !defined(defineProperties)) {
-      defineProperties = (o) => {
+      defineProperties = function (o) {
         return o;
       };
     }
     return defineProperties;
-  })(DaxiApp["defined"]);
+  })(daxiapp["defined"]);
 
   /**
    * 数据下载器类，封装了多种数据请求方法
    * @class DXDownloader
    * @param {Object} [map] - 地图对象（保留参数）
    */
-  const DXDownloader = (map) => {;
+  const DXDownloader = function (map) {;
     const proto = DXDownloader.prototype;
 
     /**
@@ -4299,7 +4292,7 @@ let A = geometry_new[i - 1],
      * @param {Function} [completeFn] - 完成回调
      * @returns {*} 请求结果
      */
-    proto.getData = (url, method, dataType, data, successFn, failedFn, completeFn) => {
+    proto.getData = function (url, method, dataType, data, successFn, failedFn, completeFn) {
       return DXUtils.getData(url, data, dataType, successFn, failedFn, completeFn);
     };
 
@@ -4314,7 +4307,7 @@ let A = geometry_new[i - 1],
      * @param {Function} [completeFn] - 完成回调
      * @returns {*} 请求结果
      */
-    proto.getServiceData = (url, method, dataType, data, successFn, failedFn, completeFn) => {
+    proto.getServiceData = function (url, method, dataType, data, successFn, failedFn, completeFn) {
       return DXUtils.getDataBySecurityRequest(url, method, data, successFn, failedFn, dataType);
     };
 
@@ -4329,7 +4322,7 @@ let A = geometry_new[i - 1],
      * @param {Function} [completeFn] - 完成回调
      * @returns {*} 请求结果
      */
-    proto.getPackageData = (url, method, dataType, data, successFn, failedFn, completeFn) => {
+    proto.getPackageData = function (url, method, dataType, data, successFn, failedFn, completeFn) {
       return DXUtils.getData(url, data, dataType, successFn, failedFn, completeFn);
     };
 
@@ -4344,17 +4337,17 @@ let A = geometry_new[i - 1],
      * @param {Function} [completeFn] - 完成回调
      * @returns {*} 请求结果
      */
-    proto.requestData = (url, method, dataType, data, successFn, failedFn, completeFn) => {
+    proto.requestData = function (url, method, dataType, data, successFn, failedFn, completeFn) {
       return DXUtils.getDataBySecurityRequest(url, method, data, successFn, failedFn, completeFn);
     };
     proto["requestData"] = proto.requestData;
   };
-  DaxiApp["DXDownloader"] = DXDownloader;
-  DaxiApp["utils"] = DXUtils;
+  daxiapp["DXDownloader"] = DXDownloader;
+  daxiapp["utils"] = DXUtils;
 
   /**
    * 创建跨域通信桥接器
-   * @param {Window} window - 全局 window 对象
+   * @param {Window} global - 全局 window 对象
    * @returns {Object} 跨域桥接器对象
    * @property {Object} signalHandler - 信号处理器映射
    * @property {Window} targetWindow - 目标窗口
@@ -4367,7 +4360,7 @@ let A = geometry_new[i - 1],
    * @property {Function} callEx - 发送跨域消息到指定窗口
    * @property {Function} messageHandle - 消息处理函数
    */
-  DaxiApp["createCrossDomainBridge"] = (window) => {
+  daxiapp["createCrossDomainBridge"] = function (global) {
     const thisObject = {;
       signalHandler: {},
       targetWindow: undefined,
@@ -4378,10 +4371,10 @@ let A = geometry_new[i - 1],
        * @param {Window} twin - 目标窗口
        * @param {string} tdomain - 目标域
        */
-      init: (twin, tdomain) => {
+      init: function (twin, tdomain) {
         this.targetWindow = twin;
         this.targetDomain = tdomain;
-        window.addEventListener("message", this.messageHandle, false);
+        global.addEventListener("message", this.messageHandle, false);
       },
 
       /**
@@ -4389,7 +4382,7 @@ let A = geometry_new[i - 1],
        * @param {string} signal - 信号名称
        * @param {Function} func - 处理函数
        */
-      on: (signal, func) => {
+      on: function (signal, func) {
         this.signalHandler[signal] = func;
       },
 
@@ -4397,7 +4390,7 @@ let A = geometry_new[i - 1],
        * 移除信号处理器
        * @param {string} signal - 信号名称
        */
-      off: (signal) => {
+      off: function (signal) {
         if (this.signalHandler[signal]) {
           delete this.signalHandler[signal];
         }
@@ -4406,8 +4399,8 @@ let A = geometry_new[i - 1],
       /**
        * 销毁桥接器，移除消息监听
        */
-      destory: () => {
-        window.removeEventListener("message", this.messageHandle);
+      destory: function () {
+        global.removeEventListener("message", this.messageHandle);
       },
 
       /**
@@ -4416,7 +4409,7 @@ let A = geometry_new[i - 1],
        * @param {*} data - 消息数据
        * @param {Function} [callbackFn] - 回调函数
        */
-      call: (signal, data, callbackFn) => {
+      call: function (signal, data, callbackFn) {
         const notice = { signal: signal, data: data };
         if (callbackFn) {
           notice["callback"] = `callback_${new Date().getTime()}${Math.random()}`;
@@ -4434,7 +4427,7 @@ let A = geometry_new[i - 1],
        * @param {*} data - 消息数据
        * @param {Function} [callbackFn] - 回调函数
        */
-      callEx: (win, domain, signal, data, callbackFn) => {
+      callEx: function (win, domain, signal, data, callbackFn) {
         const notice = { signal: signal, data: data };
         if (callbackFn) {
           notice["callback"] = `callback_${new Date().getTime()}${Math.random()}`;
@@ -4448,7 +4441,7 @@ let A = geometry_new[i - 1],
        * 处理接收到的跨域消息
        * @param {MessageEvent} e - 消息事件
        */
-      messageHandle: (e) => {
+      messageHandle: function (e) {
         const realEvent = e["originalEvent"] || e,;
           data = realEvent["data"],
           swin = realEvent["source"],
@@ -4476,7 +4469,7 @@ let A = geometry_new[i - 1],
           } else {
             const params = protocol["data"]["data"];
             const method = protocol["data"]["method"];
-            window[method] && window[method](params);
+            global[method] && global[method](params);
           }
         } catch (e) {
           console.log(e);
@@ -4493,7 +4486,7 @@ let A = geometry_new[i - 1],
    * @param {Object} options - 配置选项
    * @param {string} options.token - 搜索令牌
    */
-  const MapSearch = (options) => {;
+  const MapSearch = function (options) {;
     const thisObject = this;
     thisObject._token = options ? options.token : "";
     thisObject._downloader = null;
@@ -4525,7 +4518,7 @@ let A = geometry_new[i - 1],
      * @param {Function} successFn - 成功回调函数
      * @param {Function} failedFn - 失败回调函数
      */
-    proto["query"] = (options, successFn, failedFn) => {
+    proto["query"] = function (options, successFn, failedFn) {
       const searchOptions = {;
         token: options["token"] || thisObject._token,
         ct: options["count"] || 200,
@@ -4556,7 +4549,7 @@ let A = geometry_new[i - 1],
         url,
         searchOptions,
         true,
-        (data) => {
+        function (data) {
           const result = typeof data === "string" ? (data ? JSON.parse(data) : []) : data;
 
           if (result && result.length && !options["hideDis"] && searchOptions["location"]) {
@@ -4573,7 +4566,7 @@ let A = geometry_new[i - 1],
           successFn(result);
         },
         failedFn,
-        () => {
+        function () {
           failedFn && failedFn({ error: "timeout" });
         },
       );
@@ -4589,7 +4582,7 @@ let A = geometry_new[i - 1],
      * @param {Function} onFailed - 失败回调
      * @param {Function} onTimeout - 超时回调
      */
-    proto._sendQuery = (url, queryData, isAsync, onSuccess, onFailed, onTimeout) => {
+    proto._sendQuery = function (url, queryData, isAsync, onSuccess, onFailed, onTimeout) {
       if (window["downloader"]) {
         window["downloader"]["getServiceData"](url, "post", "json", queryData, onSuccess, onFailed);
         return;
@@ -4598,10 +4591,10 @@ let A = geometry_new[i - 1],
       this.request.abort();
       this.request.responseType = "json";
       this.request.timeout = 150000;
-      this.request.ontimeout = () => {
+      this.request.ontimeout = function () {
         (onTimeout || onFailed) && (onTimeout ? onTimeout() : onFailed({ ret: "ERROR", code: -1, errMsg: "timeout" }));
       };
-      this.request.onreadystatechange = () => {
+      this.request.onreadystatechange = function () {
         if (this.readyState !== 4) return;
 
         if (this.status !== 0 && this.status !== 200 && this.status !== 304) {
@@ -4621,19 +4614,19 @@ let A = geometry_new[i - 1],
     /**
      * 取消当前搜索请求
      */
-    proto.cancel = () => {
+    proto.cancel = function () {
       this.request.abort();
     };
     proto["cancel"] = proto.cancel;
   };
 
-  DaxiApp["Search"] = MapSearch;
-  DaxiApp["Cross"] = Cross;
+  daxiapp["Search"] = MapSearch;
+  daxiapp["Cross"] = Cross;
 
   /**
    * 通用工具方法集合
    */
-  DaxiApp["common"] = {
+  daxiapp["common"] = {
     /**
      * 获取用户详细信息
      * @param {Object} userInfo - 用户基本信息
@@ -4641,7 +4634,7 @@ let A = geometry_new[i - 1],
      * @param {Function} successFn - 成功回调函数
      * @param {Function} failedFn - 失败回调函数
      */
-    getUserDetailInfo: (userInfo, successFn, failedFn) => {
+    getUserDetailInfo: function (userInfo, successFn, failedFn) {
       const appId = app._params["appId"] || app._config["appId"];
       const secret = app._params["secret"] || "";
       const userId = userInfo["userId"];
@@ -4652,7 +4645,7 @@ let A = geometry_new[i - 1],
       DXMapUtils.getData(
         url,
         { appId: appId, userId: userId, secret: secret },
-        (result) => {
+        function (result) {
           if (result.success && result.result) {
             Object.assign(userInfo, result.result, { userName: result.result["nickName"] });
             successFn && successFn(userInfo);
@@ -4660,7 +4653,7 @@ let A = geometry_new[i - 1],
             failedFn && failedFn(result);
           }
         },
-        (error) => {
+        function (error) {
           failedFn && failedFn(error);
         },
       );
@@ -4679,7 +4672,7 @@ let A = geometry_new[i - 1],
      * @param {Function} successFn - 成功回调函数
      * @param {Function} failedFn - 失败回调函数
      */
-    getUserInfo: (params, successFn, failedFn) => {
+    getUserInfo: function (params, successFn, failedFn) {
       const userId = (params["data"] && params["data"]["userId"]) || params["userId"];
       if (!userId) return;
 
@@ -4693,14 +4686,14 @@ let A = geometry_new[i - 1],
         "GET",
         "json",
         { openid: userId, client: params["projScene"] || "wechat", t: Date.now() },
-        (result) => {
+        function (result) {
           if (result.code === 0 && result.data) {
             successFn && successFn(result.data);
           } else {
             failedFn && failedFn(result.data || result);
           }
         },
-        (error) => {
+        function (error) {
           failedFn && failedFn(error);
         },
       );
@@ -4718,11 +4711,11 @@ let A = geometry_new[i - 1],
      * @param {Function} [params.successFn] - 成功回调
      * @param {Function} [params.failedFn] - 失败回调
      */
-    addUserInfo: (params) => {
+    addUserInfo: function (params) {
       const data = params["data"];
       if (!data["userId"]) return;
 
-      const url = `${params["url"] || `${app._config["user"]["userServerUrl"]}/add`}?t=${Date.now()}`;
+      const url = `${params["url"] || app._config["user"]["userServerUrl"] + "/add"}?t=${Date.now()}`;
       const downloader = params["downloader"] || new DXDownloader();
 
       downloader.getServiceData(
@@ -4730,14 +4723,14 @@ let A = geometry_new[i - 1],
         "POST",
         "json",
         { openid: data["userId"], username: data["userName"], avatarUrl: data["avatarUrl"] },
-        (result) => {
+        function (result) {
           if (result.statusCode === 200 && result.data) {
             params["successFn"] && params["successFn"](result.data);
           } else {
             params["failedFn"] && params["failedFn"](result.data || result);
           }
         },
-        (error) => {
+        function (error) {
           params["failedFn"] && params["failedFn"](error);
         },
       );
@@ -4748,7 +4741,7 @@ let A = geometry_new[i - 1],
    * 坐标系转换工具（WGS84/GCJ02/BD09）
    * @namespace GCJ2WGSUtils
    */
-  DaxiApp["GCJ2WGSUtils"] = (() => {
+  daxiapp["GCJ2WGSUtils"] = (function () {
     const PI = 3.1415926535897932384626;
     const SEMI_MAJOR = 6378245.0;
     const ECCENTRICITY_SQ = 0.00669342162296594323;
@@ -4760,7 +4753,7 @@ let A = geometry_new[i - 1],
      * @param {number} y - 纬度偏移
      * @returns {number} 转换后的纬度偏移
      */
-    const transformLat = (x, y) => {
+    function transformLat(x, y) {
       const ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
       ret += ((20.0 * Math.sin(6.0 * x * PI) + 20.0 * Math.sin(2.0 * x * PI)) * 2.0) / 3.0;
       ret += ((20.0 * Math.sin(y * PI) + 40.0 * Math.sin((y / 3.0) * PI)) * 2.0) / 3.0;
@@ -4775,7 +4768,7 @@ let A = geometry_new[i - 1],
      * @param {number} y - 纬度偏移
      * @returns {number} 转换后的经度偏移
      */
-    const transformLon = (x, y) => {
+    function transformLon(x, y) {
       const ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
       ret += ((20.0 * Math.sin(6.0 * x * PI) + 20.0 * Math.sin(2.0 * x * PI)) * 2.0) / 3.0;
       ret += ((20.0 * Math.sin(x * PI) + 40.0 * Math.sin((x / 3.0) * PI)) * 2.0) / 3.0;
@@ -4790,7 +4783,7 @@ let A = geometry_new[i - 1],
      * @param {number} lon - 经度
      * @returns {boolean} 是否在境外
      */
-    const isOutOfChina = (lat, lon) => {
+    function isOutOfChina(lat, lon) {
       return lon < 72.004 || lon > 137.8347 || lat < 0.8293 || lat > 55.8271;
     }
 
@@ -4801,7 +4794,7 @@ let A = geometry_new[i - 1],
      * @param {number} lon - 经度
      * @returns {Object} 转换后的坐标 {lon, lat, china}
      */
-    const transform = (lat, lon) => {
+    function transform(lat, lon) {
       if (isOutOfChina(lat, lon)) {
         return { lon: lon, lat: lat, china: false };
       }
@@ -4824,7 +4817,7 @@ let A = geometry_new[i - 1],
      * @param {number} lon - WGS84经度
      * @returns {Object} GCJ02坐标 {lon, lat, china}
      */
-    const wgs84_To_Gcj02 = (lat, lon) => {
+    function wgs84_To_Gcj02(lat, lon) {
       return transform(lat, lon);
     }
 
@@ -4834,7 +4827,7 @@ let A = geometry_new[i - 1],
      * @param {number} lon - GCJ02经度
      * @returns {Object} WGS84坐标 {lon, lat, china}
      */
-    const gcj02_To_Wgs84 = (lat, lon) => {
+    function gcj02_To_Wgs84(lat, lon) {
       const gcj = transform(lat, lon);
       return { lon: lon * 2 - gcj.lon, lat: lat * 2 - gcj.lat, china: gcj["china"] };
     }
@@ -4845,7 +4838,7 @@ let A = geometry_new[i - 1],
      * @param {number} bdLon - BD09经度
      * @returns {Object} GCJ02坐标 {lon, lat}
      */
-    const bd09ToGcj02 = (bdLat, bdLon) => {
+    function bd09ToGcj02(bdLat, bdLon) {
       const X_PI = (PI * 3000.0) / 180.0;
       const x = bdLon - 0.0065;
       const y = bdLat - 0.006;
@@ -4860,7 +4853,7 @@ let A = geometry_new[i - 1],
      * @param {number} gcjLon - GCJ02经度
      * @returns {Object} BD09坐标 {lon, lat}
      */
-    const gcj02ToBd09 = (gcjLat, gcjLon) => {
+    function gcj02ToBd09(gcjLat, gcjLon) {
       const X_PI = (PI * 3000.0) / 180.0;
       const z = Math.sqrt(gcjLon * gcjLon + gcjLat * gcjLat) + 0.00002 * Math.sin(gcjLat * X_PI);
       const theta = Math.atan2(gcjLat, gcjLon) + 0.000003 * Math.cos(gcjLon * X_PI);
@@ -4874,7 +4867,4 @@ let A = geometry_new[i - 1],
       gcj02_To_Bd09: gcj02ToBd09,
     };
   })();
-
-// Export DXUtils
-export { DXUtils };
-export default DaxiApp;
+})(window);

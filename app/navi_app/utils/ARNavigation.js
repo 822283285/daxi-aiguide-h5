@@ -1,5 +1,5 @@
 (function(global){
-    var daxiapp = global["DaxiApp"] = global["DaxiApp"] || {};
+    const daxiapp = global["DaxiApp"] = global["DaxiApp"] || {};
     let directionValue = ["东", "东南", "南", "西南", "西", "西北", "北", "东北", "东", "东南", "南", "西南", "西"]
 
     function createIcon() {
@@ -153,7 +153,7 @@
         ctx.font = '12px Microsoft YaHei'
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
-        ctx.fillText("距离" + distance + "m", (width - height) / 2 + height, height * 3 / 4)
+        ctx.fillText(`距离${distance}m`, (width - height) / 2 + height, height * 3 / 4)
         return canvas
     };
     /**
@@ -165,7 +165,7 @@
         // video = document.createElement('video');
 
         video = document.getElementById("ARModuleCameraVideo");
-        var constrains = {
+        const constrains = {;
           // 关闭音频
             audio: false,
             video: {
@@ -183,7 +183,7 @@
         //部分手机如鸿蒙系统 原因是浏览器history问题
         // navigator.mediaDevices.getUserMedia 提示用户给予使用媒体输入的许可，媒体输入会产生一个MediaStream，里面包含了请求的媒体类型的轨道。
         // const stream = await navigator.mediaDevices.getUserMedia({
-         var getUserMedia = null;
+         const getUserMedia = null;
         //  if (navigator.mediaDevices.getUserMedia) { //标准
         //       getUserMedia = navigator.mediaDevices.getUserMedia;
 
@@ -230,7 +230,7 @@
           video.height = height;
           window.userMedia = "opened";
           if(window["command"]["eventByWSS"]){
-              var data = {
+              const data = {;
                   "type": "postEventToMiniProgram",
                   "id": window["command"]["userId"],
                   "methodToMiniProgram": "event=opened",
@@ -551,7 +551,7 @@
         function a(t, e, i) {
           if (Math.abs(e) < 70)
               return t;
-            var o = t * (Math.PI / 180)
+            const o = t * (Math.PI / 180);
               , a = e * (Math.PI / 180)
               , n = i * (Math.PI / 180)
               , r = Math.cos(o)
@@ -567,7 +567,7 @@
         function a(t, e, i) {
           if (Math.abs(e) < 70)
               return t;
-            var o = t * (Math.PI / 180)
+            const o = t * (Math.PI / 180);
               , a = e * (Math.PI / 180)
               , n = i * (Math.PI / 180)
               , r = Math.cos(o)
@@ -605,7 +605,7 @@
             }else{
               // realAlpha = event.alpha;
               //ios 角度取值
-              var heading = Math.round(event["webkitCompassHeading"] ? 0 - event["webkitCompassHeading"] : event.alpha);
+              const heading = Math.round(event["webkitCompassHeading"] ? 0 - event["webkitCompassHeading"] : event.alpha);
               heading -= orientation||0;
               realAlpha = heading-360;
             }
@@ -675,7 +675,7 @@
         this.startArNavigation = function (coor,heading,myPosition) {
           window.userMedia = "beforeOpen";
             if(window["command"]["eventByWSS"]){
-                var data = {
+                const data = {;
                     "type": "postEventToMiniProgram",
                     "id": window["command"]["userId"],
                     "methodToMiniProgram": "event=beforeOpen",

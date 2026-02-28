@@ -1,27 +1,27 @@
 (function (global) {
   "use strict";
-  var daxiapp = global["DaxiApp"] || {};
-  var domUtils = daxiapp["dom"];
-  var dxUtil = daxiapp["utils"];
-  var MapStateClass = daxiapp["MapStateClass"];
-  var PayPage = MapStateClass.extend({
+  const daxiapp = global["DaxiApp"] || {};
+  const domUtils = daxiapp["dom"];
+  const dxUtil = daxiapp["utils"];
+  const MapStateClass = daxiapp["MapStateClass"];
+  const PayPage = MapStateClass.extend({;
     __init__: function () {
       this._super();
       this._rtti = "PayPage";
     },
     initialize: function (app, container) {
       this._super(app, container);
-      var thisObject = this;
+      const thisObject = this;
       thisObject.bdid = "unknown";
       thisObject._app = app;
-      var mapView = app._mapView;
-      var basicMap_html = '<div id="pay_page" class="dx_full_frame_container"><div class="back"></div>' + '<div class="wrapper">' + "</div></div>";
+      const mapView = app._mapView;
+      const basicMap_html = '<div id="pay_page" class="dx_full_frame_container"><div class="back"></div>' + '<div class="wrapper">' + "</div></div>";
       domUtils.append(thisObject._container, basicMap_html);
       thisObject._dom = domUtils.find(thisObject._container, "#pay_page");
       thisObject._bdid = "";
       thisObject._wrapper = domUtils.find(thisObject._dom, ".wrapper");
       thisObject._loadingDom = domUtils.find(thisObject._dom, "#loading");
-      var mainContainerHtml = '<div class="pay-main"></div>';
+      const mainContainerHtml = '<div class="pay-main"></div>';
       domUtils.append(thisObject._wrapper, mainContainerHtml);
       thisObject._mainContainerDom = domUtils.find(thisObject._wrapper, ".pay-main");
       thisObject._QRCodeView = new daxiapp["DXShowQRCodeComponent"](app, container);
@@ -43,14 +43,14 @@
           });
         },
         showQRCode: function () {
-          var command = thisObject._app._params;
-          var userId = command.userId;
-          var data = {
+          const command = thisObject._app._params;
+          const userId = command.userId;
+          const data = {;
             openid: userId,
             nickname: "",
           };
-          var AESData = AES.encrypt(JSON.stringify(data));
-          var content =
+          const AESData = AES.encrypt(JSON.stringify(data));
+          const content =;
             ' <div class="title">工作人员扫码免费送蓝牙耳机</div>' +
             '    <div class="tip">有效期：购买后三天内</div>' +
             '    <div id="qrcode"></div>' +
@@ -67,7 +67,7 @@
     onStateBeginWithParam: function (args) {
       this._super(args);
       if (!args) return;
-      var thisObject = this;
+      const thisObject = this;
       this.configData = {};
       this.params = args["data"];
       thisObject.getPayStatus(function (data) {
@@ -75,7 +75,7 @@
           thisObject.getPayInfo(function (res) {
             if (res.code == 0) {
               if (res.data.payData) {
-                var payData = JSON.parse(res.data.payData);
+                const payData = JSON.parse(res.data.payData);
                 args.payOrderId = res.data.payOrderId;
                 args.mchOrderNo = res.data.mchOrderNo;
                 args.payData = payData;
@@ -97,7 +97,7 @@
     },
     runCommand: function (cmd) {
       this.params = cmd;
-      var bdid = this.params["bdid"];
+      const bdid = this.params["bdid"];
       if (this.bdid != bdid) {
         this.bdid = bdid;
         this.updateData(bdid);
@@ -112,7 +112,7 @@
 
     onShowByPopStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
     },
 
     onStateEnd: function (args) {
@@ -123,15 +123,15 @@
     // Run Command
     runCommond: function (command) {},
     getPayInfo: function (successCB, failedCB) {
-      var thisObject = this;
-      var command = thisObject._app._params;
-      var userId = command.userId;
-      var data = {
+      const thisObject = this;
+      const command = thisObject._app._params;
+      const userId = command.userId;
+      const data = {;
         openid: userId,
         nickname: "微信用户",
         mchNo: command.merchantCode,
       };
-      var url = "https://map1a.daxicn.com/payApi/merchantApi/api/pay/payOrders";
+      const url = "https://map1a.daxicn.com/payApi/merchantApi/api/pay/payOrders";
       dxUtil.getDataByPostRaw(
         url,
         data,
@@ -154,8 +154,8 @@
      * @param {Function} failedCB 失败回调
      */
     getPayStatus: function (successCB, failedCB) {
-      var thisObject = this;
-      var command = thisObject._app._params;
+      const thisObject = this;
+      const command = thisObject._app._params;
       daxiapp.utils.getPayStatus(
         {
           getPayStatusUrl: thisObject._app._config.getPayStatusUrl,
@@ -173,14 +173,14 @@
     },
     // 打开SearchPage
     openSearchPage: function (e) {
-      var thisObject = this;
-      var params = thisObject._app._params;
+      const thisObject = this;
+      const params = thisObject._app._params;
       params["keyword"] = e["keyword"];
-      var searchResultargs = {
+      const searchResultargs = {;
         method: "openSearchPage",
         data: params,
       };
-      var page = thisObject._app._stateManager.pushState("MapStateSearchPage", searchResultargs);
+      const page = thisObject._app._stateManager.pushState("MapStateSearchPage", searchResultargs);
       page._once("searchPageCallback", function (sender, searchResult) {
         if (searchResult.retVal == "OK") {
           if (thisObject.params.defStartPoint) {
@@ -191,14 +191,14 @@
       });
     },
     listenGetHeadset: function () {
-      var thisObject = this;
+      const thisObject = this;
       //模拟成功
       setTimeout(function () {
-        var content =
+        const content =;
           '<div class="getHeadsetSuccess" style="padding: 10px 0"><img src="./images/shouxihu/paysuccess.png"><div style="color: #45978f; padding-top: 20px; font-size: 20px">领取成功</div></div>';
         thisObject._QRCodeView.updateData(content);
         setTimeout(function () {
-          var page = thisObject._app._stateManager.pushState("MapStateExhibitionRoute", {});
+          const page = thisObject._app._stateManager.pushState("MapStateExhibitionRoute", {});
         }, 3000);
       }, 3000);
     },

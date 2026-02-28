@@ -1,7 +1,7 @@
 
-var widget = {};
+const widget = {};
 widget.service = (function ($) {
-    var thisObject={};
+    const thisObject={};
     thisObject.getDataJsonP=function(url,data,onDataRecive,beforeSend,complete,error){
         $['ajax']({
             'url':url,
@@ -57,7 +57,7 @@ widget.service = (function ($) {
         });
     };
     thisObject.xmlRequest = function (url,data){
-        var xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onload = function (e) {
@@ -72,7 +72,7 @@ widget.service = (function ($) {
         this.loadByteStream(url, function(arrbuf) {
             thisObject.arraybufferToString(arrbuf, "UTF-8", function(str) {
                 if(str){
-                    var json = JSON.parse(str);
+                    const json = JSON.parse(str);
                     scb && scb(json);
                 }
             });
@@ -81,7 +81,7 @@ widget.service = (function ($) {
     thisObject.loadByteStream = function(url, scb, fcb) {
         if (window.XMLHttpRequest) {
             try {
-                var request = new XMLHttpRequest();
+                const request = new XMLHttpRequest();
                 request.timeout = 0;
                 request.onreadystatechange = function() {
                     var request = this;
@@ -93,7 +93,7 @@ widget.service = (function ($) {
                         }
                         if (request.status !== 0 && request.status !== 200 && request.status !== 304) {} else {
                             // if (mesh.state === ENTITY_ABORTING) {} else {
-                            var byteStream = null;
+                            const byteStream = null;
                             if (request.responseType == "arraybuffer" && request.response) {
                                 byteStream = request.response;
                                 scb && scb(byteStream);
@@ -129,20 +129,20 @@ widget.service = (function ($) {
         return false;
     };
     thisObject.arraybufferToString = function(buffer, encoding, callback) {
-        var blob = new Blob([buffer], { type: 'text/plain' });
-        var reader = new FileReader();
+        const blob = new Blob([buffer], { type: 'text/plain' });
+        const reader = new FileReader();
         reader.onload = function(evt) { callback(evt.target.result); };
         reader.readAsText(blob, encoding);
     };
     return thisObject
 })($);
 widget.dom = (function ($) {
-    var thisObject={};
+    const thisObject={};
     thisObject.showInfo = function (msg, delay) {
         if (typeof(delay) == "undefined") {
             delay = 2000;
         }
-        var $info = $("#__msg_info");
+        const $info = $("#__msg_info");
         if ($info.length == 0) {
             $info = $('<div id="__msg_info"><div></div></div>');
             $info["css"]({
@@ -193,7 +193,7 @@ widget.dom = (function ($) {
         if (typeof(delay) == "undefined") {
             delay = 2000;
         }
-        var $info = $("#__msg_info2");
+        const $info = $("#__msg_info2");
         if ($info.length == 0) {
             $info = $('<div id="__msg_info2"><span style="display: inline-block; width: 20%; float:left;position: absolute;transform: translateY(-50%);top: 50%;"><img src="assets/res/icon_warn.png" style="width: 100%"></span><div></div></div>');
             $info["css"]({
@@ -240,14 +240,14 @@ widget.dom = (function ($) {
         $info.css("display","block")
     };
     thisObject.hideInfo = function () {
-        var $info = $("#__msg_info");
+        const $info = $("#__msg_info");
         $info["hide"]();
     };
     thisObject.tout = function () {
 
     };
     thisObject.showMask = function (opaque, isClear) {
-        var $info = $("#__mask_info_1");
+        const $info = $("#__mask_info_1");
         if ($info.length == 0) {
             $info = $('<div id="__mask_info_1"></div>');
             $info["css"]({
@@ -271,7 +271,7 @@ widget.dom = (function ($) {
     }
 
     thisObject.hideMask = function () {
-        var $info = $("#__mask_info_1");
+        const $info = $("#__mask_info_1");
         if ($info.length !== 0) {
             $info["hide"]();
             return true;
@@ -279,7 +279,7 @@ widget.dom = (function ($) {
         return false;
     };
     thisObject.showmsgbox = function (callback, msg, btnName1, btnName2, callback1) {
-        var $info = $("#__wifiMsgbox_info");
+        const $info = $("#__wifiMsgbox_info");
         if (msg === undefined) {
             msg = '需要开启蓝牙和Wifi';
         }
@@ -289,7 +289,7 @@ widget.dom = (function ($) {
         $info = "";
         thisObject.showMask();
         if ($info.length == 0) {
-            $info = $(' <div id="__wifiMsgbox_info"><ul><li>' + msg + '</li><li class="showMessageBox_normal_button">' + btnName1 + '</li><li class="clearfix showMessageBox_highlight_button">' + btnName2 + '</li></ul></div>');
+            $info = $(` <div id="__wifiMsgbox_info"><ul><li>${msg}</li><li class="showMessageBox_normal_button">` + btnName1 + `</li><li class="clearfix showMessageBox_highlight_button">${btnName2}</li></ul></div>`);
             $info["css"]({
                 'position': 'absolute',
                 'width': '70%',
@@ -337,14 +337,14 @@ widget.dom = (function ($) {
 
             $("body").append($info);
         }
-        var text = $info.find("li")['eq'](0)["html"]();
+        const text = $info.find("li")['eq'](0)["html"]();
         if (text !== msg) {
             $info.find("li")['eq'](0)["html"](msg);
         }
         $info['show']();
         $info.find("li")['eq'](1)['off']("click");
         $info.find("li")['eq'](2)['off']("click");
-        var hide = function () {
+        const hide = function () {;
             $info["hide"]();
             thisObject.hideMask();
         };
@@ -358,8 +358,8 @@ widget.dom = (function ($) {
         });
     };
     thisObject.showmsgbox3 = function (title, msg, btnName1, btnName2,callback, callback1) {
-        var thisObject = this;
-        var $info = $(".van-dialog");
+        const thisObject = this;
+        const $info = $(".van-dialog");
         if (msg === undefined) {
             msg = '需要开启蓝牙和Wifi';
         }
@@ -369,17 +369,17 @@ widget.dom = (function ($) {
         $info = "";
         thisObject.showMask();
         if ($info.length == 0) {
-            $info = $(' <div class="van-dialog"><div class="van-dialog__header">'+ title +'</div><div class="van-dialog__content"><div class="van-dialog__message van-dialog__message--has-title">' + msg + '</div></div><div class="van-hairline--top van-dialog__footer"><button type="button" class="van-button van-button--default van-button--large van-dialog__cancel"><div class="van-button__content"><span class="van-button__text">'+ btnName1 +'</span></div></button><button type="button" class="van-button van-button--default van-button--large van-dialog__confirm van-hairline--left"><div class="van-button__content"><span class="van-button__text">'+ btnName2 +'</span></div></button></div></div>');
+            $info = $(` <div class="van-dialog"><div class="van-dialog__header">${title}</div><div class="van-dialog__content"><div class="van-dialog__message van-dialog__message--has-title">` + msg + `</div></div><div class="van-hairline--top van-dialog__footer"><button type="button" class="van-button van-button--default van-button--large van-dialog__cancel"><div class="van-button__content"><span class="van-button__text">${btnName1}</span></div></button><button type="button" class="van-button van-button--default van-button--large van-dialog__confirm van-hairline--left"><div class="van-button__content"><span class="van-button__text">`+ btnName2 +'</span></div></button></div></div>');
             $("body").append($info);
         }
-        var text = $info.find(".van-dialog__message")["html"]();
+        const text = $info.find(".van-dialog__message")["html"]();
         if (text !== msg) {
             $info.find(".van-dialog__message")["html"](msg);
         }
         $info['show']();
         $info.find(".van-dialog__footer button")['eq'](0)['off']("click");
         $info.find(".van-dialog__footer button")['eq'](1)['off']("click");
-        var hide = function () {
+        const hide = function () {;
             $info["hide"]();
             thisObject.hideMask();
 
@@ -396,10 +396,10 @@ widget.dom = (function ($) {
     return thisObject;
 })($);
 widget.utils = (function ($) {
-    var thisObject = {};
+    const thisObject = {};
     thisObject.formatDateTime = function (time, format) {//时间戳转日期格式
-        var t = new Date(time);
-        var tf = function(i){return (i < 10 ? '0' : '') + i};
+        const t = new Date(time);
+        const tf = function(i){return (i < 10 ? '0' : '') + i};
         return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function(a){
             switch(a){
                 case 'yyyy':
@@ -424,12 +424,12 @@ widget.utils = (function ($) {
         })
     };
     thisObject.getParam = function() {
-        var url = location.search;
-        var theRequest = {};
+        const url = location.search;
+        const theRequest = {};
         if (url.indexOf("#") != -1 || url.indexOf("?") != -1) {
             url = url.substr(1);
         }
-        var strs = url.split("&");
+        const strs = url.split("&");
         for (var i = 0; i < strs.length; i++) {
             theRequest[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
         }
@@ -439,29 +439,29 @@ widget.utils = (function ($) {
 })($);
 widget.wfr = (function($) {
     //温附二生成校验码
-    var company = "DXDH",
+    const company = "DXDH",;
         token = 5465879;
-    var code = {
+    const code = {;
         makeCode: function (input){
-            var timestamp = parseInt(new Date().getTime() / 1000);
-            var message = company + token + timestamp + JSON.stringify(input);
-            var sign = md5(message);
-            var ls_code = company + "_" + timestamp + "|" + sign;
+            const timestamp = parseInt(new Date().getTime() / 1000);
+            const message = company + token + timestamp + JSON.stringify(input);
+            const sign = md5(message);
+            const ls_code = company + `_${timestamp}|` + sign;
             return ls_code;
         },
         makeXML:function (data){
-            var xmls = '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/"><soap:Header/><soap:Body><tem:DoAction><tem:ls_class>'+ data.ls_class +'</tem:ls_class><tem:ls_action>'+ data.ls_action +'</tem:ls_action><tem:ls_input>'+ data.ls_input +'</tem:ls_input><tem:ls_code>'+ data.ls_code +'</tem:ls_code></tem:DoAction></soap:Body></soap:Envelope>'
+            const xmls = '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/"><soap:Header/><soap:Body><tem:DoAction><tem:ls_class>'+ data.ls_class +'</tem:ls_class><tem:ls_action>'+ data.ls_action +'</tem:ls_action><tem:ls_input>'+ data.ls_input +'</tem:ls_input><tem:ls_code>'+ data.ls_code +'</tem:ls_code></tem:DoAction></soap:Body></soap:Envelope>';
             return xmls;
         }
     };
     return code;
 })($);
 widget.xml = (function($) {
-    var xml = {
+    const xml = {;
         xmlToJson: function(xml, key) {
             var childNodes, result;
             if(key) {
-                var keys = key.split("->");
+                const keys = key.split("->");
                 for(var i = 0; i < keys.length; i++) {
                     if(i == 0) {
                         childNodes = xml.getElementsByTagName(keys[i])[0];
@@ -477,13 +477,13 @@ widget.xml = (function($) {
 
             function parse(xml) {
                 // Create the return object
-                var obj = {};
+                const obj = {};
                 if(xml.nodeType == 1) { // element
                     // do attributes
                     if(xml.attributes.length > 0) {
                         obj["@attributes"] = {};
                         for(var j = 0; j < xml.attributes.length; j++) {
-                            var attribute = xml.attributes.item(j);
+                            const attribute = xml.attributes.item(j);
                             obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
                         }
                     }
@@ -493,13 +493,13 @@ widget.xml = (function($) {
                 // do children
                 if(xml.hasChildNodes()) {
                     for(var i = 0; i < xml.childNodes.length; i++) {
-                        var item = xml.childNodes.item(i);
-                        var nodeName = item.nodeName;
+                        const item = xml.childNodes.item(i);
+                        const nodeName = item.nodeName;
                         if(typeof(obj[nodeName]) == "undefined") {
                             obj[nodeName] = parse(item);
                         } else {
                             if(typeof(obj[nodeName].length) == "undefined") {
-                                var old = obj[nodeName];
+                                const old = obj[nodeName];
                                 obj[nodeName] = [];
                                 obj[nodeName].push(old);
                             }
@@ -512,7 +512,7 @@ widget.xml = (function($) {
         },
         jsonToxml: function(json){
             if(document.all){
-                var xmlDom = new ActiveXObject("Microsoft.XMLDOM");
+                const xmlDom = new ActiveXObject("Microsoft.XMLDOM");
                 xmlDom.loadXML(json);
                 return xmlDom;
             }else{
@@ -523,15 +523,15 @@ widget.xml = (function($) {
     return xml;
 })($);
 widget.getAngle = function (start, end){
-    var diff_x = (end.x - start.x) * 100000,
+    const diff_x = (end.x - start.x) * 100000,;
         diff_y = (end.y - start.y) * 100000;
-    var InvLength = 1 / Math.sqrt(diff_x * diff_x + diff_y * diff_y);
-    var vec2 = [diff_x * InvLength, diff_y * InvLength];
-    var vec1 = [0, 1];
+    const InvLength = 1 / Math.sqrt(diff_x * diff_x + diff_y * diff_y);
+    const vec2 = [diff_x * InvLength, diff_y * InvLength];
+    const vec1 = [0, 1];
 
     //navi_utils.Vector3_dot = function( vec1, vec2 ) {
-    var dotValue = vec1[0] * vec2[0] + vec1[1] * vec2[1];
-    var angle = Math.acos(dotValue) / Math.PI * 180;
+    const dotValue = vec1[0] * vec2[0] + vec1[1] * vec2[1];
+    const angle = Math.acos(dotValue) / Math.PI * 180;
 
     if (diff_x < 0) {
         angle = 360 - angle;
@@ -540,7 +540,7 @@ widget.getAngle = function (start, end){
 };
 widget.getAngelPlayAction = function (angle,heading){
     //var heading = mapconfig["guideoneHeading"] || 0;//大屏机角度，面向正北为0度。顺时针相加角度。
-    var angelSegment = Math.ceil(Math.abs((heading - angle) / 22.5));
+    const angelSegment = Math.ceil(Math.abs((heading - angle) / 22.5));
     if(angelSegment == 1 || angelSegment == 16){
         //前
         return "前方";

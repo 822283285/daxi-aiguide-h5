@@ -1,9 +1,9 @@
 let ARNavigation = function(parentDom,params){
     let that = this;
-    var clientHeight = document.documentElement.clientHeight;
-    var cameraHeight = clientHeight - 250
-    var html = '<video id="cameraVideo" style="display: none" autoplay playsinline webkit-playsinline="true" x5-playsinline="true"></video>' +
-        '<div style="position: absolute;top: 0px;bottom: 0px;left:0px;width:100%;height:'+ cameraHeight +'px;margin-top:0px" id="ARModuleCameraVideo"></div>' +
+    const clientHeight = document.documentElement.clientHeight;
+    const cameraHeight = clientHeight - 250;
+    const html = '<video id="cameraVideo" style="display: none" autoplay playsinline webkit-playsinline="true" x5-playsinline="true"></video>' +;
+        `<div style="position: absolute;top: 0px;bottom: 0px;left:0px;width:100%;height:${cameraHeight}px;margin-top:0px" id="ARModuleCameraVideo"></div>` +
         '<div id="compassLine" style="display: none;position:absolute;"></div>'+
         '<div id="ARMask" style="position: absolute;top: 0px;bottom: 0px;left:0px;width: 100%;height: 100vh;background: rgba(45, 45, 45, 0.73);z-index: 8;">' +
       /*  '<img src="../utils/AR/img/close.png" id="ARCloseBtn" style="position: absolute;right: 14px;top: 20px;width: 26px;height: 26px;">'+*/
@@ -11,7 +11,7 @@ let ARNavigation = function(parentDom,params){
     $(parentDom).append(html);
   window.userMedia = "beforeOpen";
   if(window["command"]["eventByWSS"]){
-      var data = {
+      const data = {;
           "type": "postEventToMiniProgram",
           "id": window["command"]["userId"],
           "methodToMiniProgram": "event=beforeOpen",
@@ -59,7 +59,7 @@ let ARNavigation = function(parentDom,params){
             scene.background = videoTexture;
           window.userMedia = "opened";
           if(window["command"]["eventByWSS"]){
-              var data = {
+              const data = {;
                   "type": "postEventToMiniProgram",
                   "id": window["command"]["userId"],
                   "methodToMiniProgram": "event=opened",
@@ -71,9 +71,9 @@ let ARNavigation = function(parentDom,params){
   }
 
     function openCamera(width, height) {
-        var self = this;
+        const self = this;
         video = document.getElementById("cameraVideo");
-        var constrains = {
+        const constrains = {;
             // 关闭音频
             audio: false,
             video: {
@@ -88,7 +88,7 @@ let ARNavigation = function(parentDom,params){
         };
         if (navigator.mediaDevices.getUserMedia === undefined) {
             navigator.mediaDevices.getUserMedia = function (constraints) {
-                var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+                const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
                 if (!getUserMedia) {
                     return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
                 }
@@ -142,7 +142,7 @@ let ARNavigation = function(parentDom,params){
             turnReminderTexture.wrapT = THREE.RepeatWrapping;
             turnReminderTexture.repeat.set(10, 1);
             const geometry = new THREE.PlaneGeometry(10, 1);
-            var material = new THREE.MeshBasicMaterial({
+            const material = new THREE.MeshBasicMaterial({;
                 map: turnReminderTexture,
                 side: THREE.DoubleSide,
                 transparent: true, // 允许透明
@@ -198,10 +198,10 @@ let ARNavigation = function(parentDom,params){
 
 
     this.createNavigationLine = function(points,showLength,width,imgUrl) {
-        var route = [];
-        var test = [];
+        const route = [];
+        const test = [];
         for(var i = 0; i < points.length; i++){
-            var mktPoint =getMercator(points[i]);
+            const mktPoint =getMercator(points[i]);
             test.push({x:mktPoint[0],y:mktPoint[1]});
             route.push(new THREE.Vector3(mktPoint[0], mktPoint[1], 0));
         }
@@ -375,7 +375,7 @@ let ARNavigation = function(parentDom,params){
             object.rotateX(Math.PI / 2);
             object.scale.set(0.03, 0.03, 0.03);
             mixer = new THREE.AnimationMixer(object);
-            var action = mixer.clipAction(object.animations[0]);
+            const action = mixer.clipAction(object.animations[0]);
             action.play();
             model3D = object;
             model3DIsShow = true
@@ -472,10 +472,10 @@ let ARNavigation = function(parentDom,params){
     }
 
     function getMercator(poi) {
-        var mercator = {};
-        var earthRad = 6378137.0;
+        const mercator = {};
+        const earthRad = 6378137.0;
         mercator.x = poi[0] * Math.PI / 180 * earthRad;
-        var a = poi[1] * Math.PI / 180;
+        const a = poi[1] * Math.PI / 180;
         mercator.y = earthRad / 2 * Math.log((1.0 + Math.sin(a)) / (1.0 - Math.sin(a)));
         //将第一个坐标设为中心点缩小其他坐标
         if(!referencePoint || !referencePoint.x || !referencePoint.y){

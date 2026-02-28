@@ -1,11 +1,11 @@
 (function (global) {
   "use strict";
-  var daxiapp = global["DaxiApp"] || {};
-  var daximap = window["DaxiMap"] || {};
-  var domUtils = daxiapp["dom"];
-  var MapStateClass = daxiapp["MapStateClass"];
+  const daxiapp = global["DaxiApp"] || {};
+  const daximap = window["DaxiMap"] || {};
+  const domUtils = daxiapp["dom"];
+  const MapStateClass = daxiapp["MapStateClass"];
 
-  var MapStateAutoPlayExhibit = MapStateClass.extend({
+  const MapStateAutoPlayExhibit = MapStateClass.extend({;
     __init__: function () {
       this._super();
       this._rtti = "MapStateAutoPlayExhibit";
@@ -18,15 +18,15 @@
       this.panoPoiVisible = false;
       this._exhibitAutoPlay = true;
       this._stopCheckExhibitsByLoc = true;
-      var thisObject = this;
-      var basicMap_html = '<div id="auto_play_zhanpin_page" class="browse_map_page"></div>';
+      const thisObject = this;
+      const basicMap_html = '<div id="auto_play_zhanpin_page" class="browse_map_page"></div>';
       domUtils.append(thisObject._container, basicMap_html);
       thisObject._dom = domUtils.find(thisObject._container, "#auto_play_zhanpin_page");
       thisObject._bdid = null;
 
       thisObject._listComponent = new daxiapp["DXListComponent"](thisObject._dom);
       thisObject._listComponent.init({});
-      var listConponentTop = 48;
+      const listConponentTop = 48;
       if (app._config["hideLocState"]) {
         listConponentTop -= 34;
       }
@@ -77,7 +77,7 @@
                 slide.pcompsInstance && slide.pcompsInstance.pausePlay();
               } else {
                 slide.pcompsInstance && slide.pcompsInstance.startPlay();
-                var data = slide["pcompsInstance"]["_data"];
+                const data = slide["pcompsInstance"]["_data"];
                 data["width"] = 64;
                 data["height"] = 64;
                 thisObject.showMarker(data);
@@ -107,7 +107,7 @@
 
     onStateBeginWithParam: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.setTopViewHeight(14);
       mapView.setBottomViewHeight(20);
       mapView.pushState();
@@ -144,15 +144,15 @@
     },
 
     openRoute: function (poinInfo) {
-      var locationManager = this._mapView._locationManager;
-      var startPoint = {};
+      const locationManager = this._mapView._locationManager;
+      const startPoint = {};
 
       if (locationManager) {
-        var myPositionInfo = locationManager["getMyPositionInfo"]();
-        var lon = myPositionInfo["position"][0];
-        var lat = myPositionInfo["position"][1];
-        var bdid = myPositionInfo["bdid"] || "";
-        var floorId = myPositionInfo["floorId"] || "";
+        const myPositionInfo = locationManager["getMyPositionInfo"]();
+        const lon = myPositionInfo["position"][0];
+        const lat = myPositionInfo["position"][1];
+        const bdid = myPositionInfo["bdid"] || "";
+        const floorId = myPositionInfo["floorId"] || "";
         // var token = this._app._params["token"]||myPositionInfo["token"];
         startPoint["lon"] = lon;
         startPoint["lat"] = lat;
@@ -162,7 +162,7 @@
         startPoint["posMode"] = "myPosition";
       }
 
-      var args = {
+      const args = {;
         method: "takeToThere",
         endPoint: poinInfo,
         startPoint: startPoint, //定位起点信息
@@ -182,9 +182,9 @@
       );
     },
     showMarker: function (poiInfo) {
-      var thisObject = this;
+      const thisObject = this;
       thisObject.clearAllRenderObject();
-      var markerOption = {
+      const markerOption = {;
         featureId: poiInfo["featureId"],
         lon: poiInfo["lon"],
         lat: poiInfo["lat"],
@@ -198,8 +198,8 @@
         markerOption["width"] = poiInfo["width"];
         markerOption["height"] = poiInfo["height"] || poiInfo["width"];
       }
-      var mapSDK = thisObject._app._mapView._mapSDK;
-      var marker = new daximap["DXSceneMarker"]();
+      const mapSDK = thisObject._app._mapView._mapSDK;
+      const marker = new daximap["DXSceneMarker"]();
       marker["initialize"](mapSDK, markerOption);
       marker.id = daxiapp["utils"].createUUID();
       marker["addToMap"]();
@@ -214,20 +214,20 @@
     },
     // Run Command
     getParams: function () {
-      var thisObject = this;
-      var token = this._app._params["token"];
-      var mapView = this._app._mapView;
-      var mapSDK = mapView._mapSDK;
-      var bdid = mapSDK["getCurrentBDID"]() || "";
-      var floorId = mapSDK["getCurrentFloorId"]() || "";
-      var pos = mapSDK["getPosition"]();
-      var lon = pos["lon"],
+      const thisObject = this;
+      const token = this._app._params["token"];
+      const mapView = this._app._mapView;
+      const mapSDK = mapView._mapSDK;
+      const bdid = mapSDK["getCurrentBDID"]() || "";
+      const floorId = mapSDK["getCurrentFloorId"]() || "";
+      const pos = mapSDK["getPosition"]();
+      const lon = pos["lon"],;
         lat = pos["lat"];
       // 定位点
-      var locationManager = mapView._locationManager;
-      var myPositionInfo = locationManager["getMyPositionInfo"]();
+      const locationManager = mapView._locationManager;
+      const myPositionInfo = locationManager["getMyPositionInfo"]();
 
-      var defStartPoint;
+      const defStartPoint;
       if (bdid) {
         if (thisObject.buildingInfo && thisObject.buildingInfo["defStartPoint"]) {
           thisObject.buildingInfo["defStartPoint"]["bdid"] = thisObject.buildingInfo["bdid"];
@@ -244,7 +244,7 @@
         }
       }
       // 室外的搜索都已当前地图位置搜索，如果想按照的
-      var data = {
+      const data = {;
         bdid: bdid,
         token: token,
         floorId: floorId,
@@ -273,39 +273,39 @@
       this.showExhibit(data);
     },
     startCheckExhibitsByLoc: function (exhibitsAreaData, loc) {
-      var thisObject = this;
+      const thisObject = this;
       this._stopCheckExhibitsByLoc = false;
 
       if (exhibitsAreaData && loc) {
-        var floorId = loc["floorId"],
+        const floorId = loc["floorId"],;
           lon = loc["position"][0],
           lat = loc["position"][1];
-        var curFLExhibitsAreaData = exhibitsAreaData["result"];
+        const curFLExhibitsAreaData = exhibitsAreaData["result"];
         for (var i = 0, len = curFLExhibitsAreaData.length; i < len; i++) {
           if (loc["floorId"] != curFLExhibitsAreaData[i]["floorId"]) {
             continue;
           }
 
-          var polygon = curFLExhibitsAreaData[i]["polygon"];
-          var flag = daxiapp["naviMath"]["pointInPolygon"]([lon, lat], polygon);
+          const polygon = curFLExhibitsAreaData[i]["polygon"];
+          const flag = daxiapp["naviMath"]["pointInPolygon"]([lon, lat], polygon);
           if (flag && (!thisObject.lastMatch || thisObject.lastMatch != curFLExhibitsAreaData[i])) {
             thisObject.dxSwiperComponent.show();
             // 更新
             thisObject.lastMatch = curFLExhibitsAreaData[i];
-            var exhibits = curFLExhibitsAreaData[i]["exhibits"];
-            var slide = thisObject.dxSwiperComponent.getActiveSlide();
+            const exhibits = curFLExhibitsAreaData[i]["exhibits"];
+            const slide = thisObject.dxSwiperComponent.getActiveSlide();
             slide && slide.pcompsInstance && slide.pcompsInstance["cancel"]();
             thisObject.dxSwiperComponent.removeAllSlides();
-            var slides = [];
+            const slides = [];
             exhibits.forEach(function (data, index) {
               data["enableClose"] = true;
               data["autoplay"] = true;
               data["detailUrl"] = true;
               data["iconClose"] = true;
-              var exhibitId = data["exhibitId"];
+              const exhibitId = data["exhibitId"];
               data["activeMarkerIcon"] = data["markerIcon"] = "museum_" + exhibitId;
               data.showLineBtn = true;
-              var exhibitInfoCtrl = new daxiapp["DXDetailInfoComponent"]();
+              const exhibitInfoCtrl = new daxiapp["DXDetailInfoComponent"]();
               exhibitInfoCtrl.init(null, {
                 class: "swiper-slide",
                 style: {},
@@ -332,7 +332,7 @@
                     thisObject.clearAllRenderObject();
                   },
                   onImgLoaded: function () {
-                    var height = thisObject._dom.find(".detailInfo-component ").height();
+                    const height = thisObject._dom.find(".detailInfo-component ").height();
                     if (height) {
                       thisObject._app._mapView.setBottomViewHeight(height + 16);
                     }
@@ -351,8 +351,8 @@
             });
 
             thisObject.dxSwiperComponent.appendSlide(slides);
-            var height = thisObject.dxSwiperComponent.getHeight();
-            var mapView = thisObject._app._mapView;
+            const height = thisObject.dxSwiperComponent.getHeight();
+            const mapView = thisObject._app._mapView;
             mapView.setBottomViewHeight(height + 26);
             break;
           }
@@ -366,12 +366,12 @@
       this._stopCheckExhibitsByLoc = true;
       this.lastMatch = null;
       this.dxSwiperComponent.hide();
-      var slide = this.dxSwiperComponent.getActiveSlide();
+      const slide = this.dxSwiperComponent.getActiveSlide();
       slide && slide.pcompsInstance && slide.pcompsInstance["cancel"]();
       this.dxSwiperComponent.removeAllSlides();
     },
     pauseExhibitPlay: function () {
-      var slide = this.dxSwiperComponent.getActiveSlide();
+      const slide = this.dxSwiperComponent.getActiveSlide();
       slide && slide.pcompsInstance && slide.pcompsInstance["pausePlay"]();
     },
     runCommond: function (command) {
