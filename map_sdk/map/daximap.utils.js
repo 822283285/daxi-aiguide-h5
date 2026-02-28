@@ -3,35 +3,34 @@
  * 基于 John Resig 的 Simple JavaScript Inheritance
  * @see https://johnresig.com/blog/simple-javascript-inheritance/
  */
-(function (global) {
   "use strict";
 
-  var initializing = false;
+  let initializing = false;
 
   // 检测浏览器是否支持函数反编译（用于检测 _super 调用）
-  var fnTest = /\b_super\b/;
+  let fnTest = /\b_super\b/;
 
   /** 基础类构造函数 */
   function Class() {}
 
   /** 创建子类 */
   Class.extend = function (props) {
-    var _super = this.prototype;
+    let _super = this.prototype;
 
     // 创建原型实例（跳过构造函数）
     initializing = true;
-    var prototype = new this();
+    let prototype = new this();
     initializing = false;
 
     // 复制属性到原型
-    for (var name in props) {
+    for (let name in props) {
       if (typeof props[name] == "function" && typeof _super[name] == "function" && fnTest.test(props[name])) {
         // 包装函数以支持 _super 调用
         prototype[name] = (function (name, fn) {
           return function () {
-            var tmp = this._super;
+            let tmp = this._super;
             this._super = _super[name];
-            var ret = fn.apply(this, arguments);
+            let ret = fn.apply(this, arguments);
             this._super = tmp;
             return ret;
           };
@@ -55,27 +54,25 @@
     return SubClass;
   };
 
-  global.Class = Class;
-})(window);
+  export { Class };
 
-(function (global) {
-  var daximap = (global["DaxiMap"] = global["DaxiMap"] || {});
+  const daximap = window.DaxiMap || {};
 
   /**
    * 设备类型检测与系统信息解析
    * 提供完整的设备、操作系统、浏览器环境检测
    */
   daximap["deviceType"] = (function () {
-    var ua = navigator.userAgent;
-    var uaLower = ua.toLowerCase();
-    var vendor = navigator.vendor || "";
+    let ua = navigator.userAgent;
+    let uaLower = ua.toLowerCase();
+    let vendor = navigator.vendor || "";
 
     // 环境检测
-    var isWX = uaLower.indexOf("micromessenger") !== -1;
-    var isAli = /AliApp/i.test(ua);
-    var isMiniProgram = /MiniProgram/i.test(ua);
+    let isWX = uaLower.indexOf("micromessenger") !== -1;
+    let isAli = /AliApp/i.test(ua);
+    let isMiniProgram = /MiniProgram/i.test(ua);
 
-    var deviceType = {
+    let deviceType = {
       // 基础设备检测
       isMobile: /Android|Harmony|webOS|iPhone|iPod|BlackBerry/i.test(ua),
       isIos: /iPhone|iPad|iPod/i.test(ua),
@@ -102,7 +99,7 @@
     };
 
     // 版本解析配置
-    var versionParsers = {
+    let versionParsers = {
       iPhone: { pattern: /iPhone OS ([\d_]+)/, replace: true },
       iPad: { pattern: /iPad; CPU OS ([\d_]+)/, replace: true },
       Android: { pattern: /Android ([\d.]+)/, devicePattern: /\(Linux; Android [^;]+; ([^)]+) Build/ },
@@ -111,16 +108,16 @@
     };
 
     // 解析设备信息
-    for (var os in versionParsers) {
-      var config = versionParsers[os];
-      var match = ua.match(config.pattern);
+    for (let os in versionParsers) {
+      let config = versionParsers[os];
+      let match = ua.match(config.pattern);
       if (match) {
         deviceType.osName = os;
         deviceType.osVersion = config.replace ? match[1].replace(/_/g, ".") : match[1];
 
         // Android 设备名称
         if (config.devicePattern) {
-          var deviceMatch = ua.match(config.devicePattern);
+          let deviceMatch = ua.match(config.devicePattern);
           deviceType.deviceName = deviceMatch ? deviceMatch[1] : "Android";
         }
         break;
@@ -178,7 +175,7 @@
     addEventHandler: function (callback, context) {
       if (typeof callback !== "function") return;
       // 避免重复添加
-      for (var i = 0; i < this._handlers.length; i++) {
+      for (let i = 0; i < this._handlers.length; i++) {
         if (this._handlers[i].fn == callback) return;
       }
       this._handlers.push({ fn: callback, ctx: context, once: false });
@@ -191,7 +188,7 @@
      */
     addEventHandlerOnce: function (callback, context) {
       if (typeof callback !== "function") return;
-      for (var i = 0; i < this._handlers.length; i++) {
+      for (let i = 0; i < this._handlers.length; i++) {
         if (this._handlers[i].fn == callback) return;
       }
       this._handlers.push({ fn: callback, ctx: context, once: true });
@@ -202,7 +199,7 @@
      * @param {Function} callback 回调函数
      */
     removeEventHandler: function (callback) {
-      for (var i = this._handlers.length - 1; i >= 0; i--) {
+      for (let i = this._handlers.length - 1; i >= 0; i--) {
         if (this._handlers[i].fn == callback) {
           this._handlers.splice(i, 1);
         }
@@ -223,9 +220,9 @@
      */
     notifyEvent: function (data, extra) {
       // 复制数组避免遍历时修改
-      var handlers = this._handlers.slice();
-      for (var i = 0; i < handlers.length; i++) {
-        var handler = handlers[i];
+      let handlers = this._handlers.slice();
+      for (let i = 0; i < handlers.length; i++) {
+        let handler = handlers[i];
         handler.fn.call(handler.ctx, handler.ctx, data, extra);
         // 移除一次性监听器
         if (handler.once) {
@@ -316,7 +313,7 @@
   // Cross - 跨域 iframe 通信桥接器
   //////////////////////////////////////////////////////////////
 
-  var Cross = (function () {
+  let Cross = (function () {
     /**
      * 跨域通信构造函数
      * @param {Window} _global 当前窗口
@@ -328,7 +325,7 @@
         return new Cross(_global, targetWin, targetDomain);
       }
 
-      var self = this;
+      let self = this;
       this.signalHandler = {};
       this.targetWindow = targetWin;
       this.targetDomain = targetDomain;
@@ -346,16 +343,16 @@
 
       /** 处理消息 */
       _handleMessage: function (e) {
-        var data = e.data;
-        var source = e.source;
-        var origin = e.origin;
+        let data = e.data;
+        let source = e.source;
+        let origin = e.origin;
 
         try {
-          var protocol = typeof data == "string" ? JSON.parse(data) : data;
-          var handler = this.signalHandler[protocol.signal];
+          let protocol = typeof data == "string" ? JSON.parse(data) : data;
+          let handler = this.signalHandler[protocol.signal];
 
           if (handler) {
-            var result = handler.call(null, protocol.data, {
+            let result = handler.call(null, protocol.data, {
               source: source,
               origin: origin,
               callback: protocol.callback,
@@ -412,7 +409,7 @@
        * @param {Function} callback 回调函数
        */
       callEx: function (win, domain, signal, data, callback) {
-        var message = {
+        let message = {
           signal: signal,
           data: data,
         };
@@ -442,10 +439,10 @@
   //////////////////////////////////////////////////////////////
   // DXMapUtils
   //////////////////////////////////////////////////////////////
-  var DXMapUtils = (function () {
-    var thisObject = {};
+  let DXMapUtils = (function () {
+    let thisObject = {};
     (function (a) {
-      var b = window.navigator.userAgent;
+      let b = window.navigator.userAgent;
       a.Platform = {
         ios: /iPad|iPod|iPhone/i.test(b),
         iphone: /iPhone\sOS\s(\d[_\d]*)/i.test(b),
@@ -459,11 +456,11 @@
       };
     })(thisObject);
 
-    var cssRegExp = new RegExp("\\.css");
+    let cssRegExp = new RegExp("\\.css");
 
     thisObject.defineGetterSetter = function (obj, key, getFunc, opt_setFunc) {
       if (Object.defineProperty) {
-        var desc = {
+        let desc = {
           get: getFunc,
           configurable: true,
         };
@@ -488,8 +485,8 @@
       if (a.indexOf) {
         return a.indexOf(item);
       }
-      var len = a.length;
-      for (var i = 0; i < len; ++i) {
+      let len = a.length;
+      for (let i = 0; i < len; ++i) {
         if (a[i] == item) {
           return i;
         }
@@ -501,7 +498,7 @@
      * Returns whether the item was found in the array.
      */
     thisObject.arrayRemove = function (a, item) {
-      var index = thisObject.arrayIndexOf(a, item);
+      let index = thisObject.arrayIndexOf(a, item);
       if (index !== -1) {
         a.splice(index, 1);
       }
@@ -536,7 +533,7 @@
         return obj;
       }
 
-      var retVal, i;
+      let retVal, i;
 
       if (thisObject.isArray(obj)) {
         retVal = [];
@@ -565,8 +562,8 @@
      * @returns
      */
     thisObject.bin2String = function (array) {
-      var result = "";
-      for (var i = 0; i < array.length; i++) {
+      let result = "";
+      for (let i = 0; i < array.length; i++) {
         result += String.fromCharCode(array[i]);
       }
       return result;
@@ -576,13 +573,13 @@
      * 合并对象
      */
     (thisObject.merge = function (target) {
-      var args = arguments;
-      var result = {};
+      let args = arguments;
+      let result = {};
       if (args.length > 1) {
-        for (var i = 0; i < args.length; i++) {
-          var obj = args[i];
+        for (let i = 0; i < args.length; i++) {
+          let obj = args[i];
           if (typeof obj == "object") {
-            for (var key in obj) {
+            for (let key in obj) {
               result[key] = obj[key];
             }
           }
@@ -597,16 +594,16 @@
        */
       (thisObject.close = function (context, func, params) {
         return function () {
-          var args = params || arguments;
+          let args = params || arguments;
           return func.apply(context, args);
         };
       });
 
     // ------------------------------------------------------------------------------
     function UUIDcreatePart(length) {
-      var uuidpart = "";
-      for (var i = 0; i < length; i++) {
-        var uuidchar = parseInt(Math.random() * 256, 10).toString(16);
+      let uuidpart = "";
+      for (let i = 0; i < length; i++) {
+        let uuidchar = parseInt(Math.random() * 256, 10).toString(16);
         if (uuidchar.length == 1) {
           uuidchar = "0" + uuidchar;
         }
@@ -624,14 +621,14 @@
 
     thisObject.decodePoiData = function (poiData) {
       if (poiData) {
-        var centerLon = poiData["centerlon"];
-        var centerLat = poiData["centerlat"];
-        var poiDatas = poiData["data"];
-        for (var floorId in poiDatas) {
+        let centerLon = poiData["centerlon"];
+        let centerLat = poiData["centerlat"];
+        let poiDatas = poiData["data"];
+        for (let floorId in poiDatas) {
           poiDatas[floorId]["floorId"] = floorId;
-          var pois = poiDatas[floorId]["poi"];
-          for (var poiId in pois) {
-            var poiObj = pois[poiId];
+          let pois = poiDatas[floorId]["poi"];
+          for (let poiId in pois) {
+            let poiObj = pois[poiId];
             poiObj["lon"] = poiObj["lon"] / 1000000 + centerLon;
             poiObj["lat"] = poiObj["lat"] / 1000000 + centerLat;
             poiObj["floorId"] = floorId;
@@ -642,7 +639,7 @@
       return poiData;
     };
     thisObject.distanceToText = function (distance) {
-      var text = "";
+      let text = "";
       distance = Math.round(distance);
       if (distance == 0 || distance == "0") {
         return "";
@@ -663,7 +660,7 @@
      */
     thisObject.extend = (function () {
       // proxy used to establish prototype chain
-      var F = function () {};
+      let F = function () {};
       // extend Child from Parent
       return function (Child, Parent) {
         F.prototype = Parent.prototype;
@@ -673,13 +670,13 @@
       };
     })();
     thisObject.shallowCopyData = function (dstData, srcData) {
-      for (var key in srcData) {
+      for (let key in srcData) {
         dstData[key] = srcData[key];
       }
     };
     thisObject.deepCopyData = function (dstData, srcData) {
-      for (var key in srcData) {
-        var value = srcData[key];
+      for (let key in srcData) {
+        let value = srcData[key];
         if (thisObject.isArray(value)) {
           dstData[key] = [];
           thisObject.deepCopyData(dstData[key], value);
@@ -692,7 +689,7 @@
       }
     };
     thisObject.extendObj = function (target, params, forceOver) {
-      for (var key in params) {
+      for (let key in params) {
         if (!forceOver) {
           if (params[key] != undefined && target[key] == undefined) {
             target[key] = params[key];
@@ -721,20 +718,20 @@
     };
 
     thisObject.parseLancherParam = function (url) {
-      var theRequest = {};
+      let theRequest = {};
       if (url.indexOf("?") != -1) {
         url = url.substr(1);
         url = url.split("#")[0];
       } else {
         url = url.substr(1);
       }
-      var strs = url.split("&");
-      for (var i = 0; i < strs.length; i++) {
+      let strs = url.split("&");
+      for (let i = 0; i < strs.length; i++) {
         theRequest[strs[i].split("=")[0]] = strs[i].split("=")[1];
       }
       if (window["launcher"] && !thisObject.laucherParams) {
         thisObject.laucherParams = window["launcher"]["init"]() || {};
-        for (var key in theRequest) {
+        for (let key in theRequest) {
           thisObject.laucherParams[key] = theRequest[key];
         }
         return thisObject.laucherParams;
@@ -743,10 +740,10 @@
     };
 
     thisObject.rgbToFloatRGBA = function (_rgb) {
-      var ret = [0, 0, 0, 1];
+      let ret = [0, 0, 0, 1];
       if (_rgb && _rgb instanceof Array) {
-        var colorRadio = 1.0 / 255;
-        for (var i = 0; i < _rgb.length; i++) {
+        let colorRadio = 1.0 / 255;
+        for (let i = 0; i < _rgb.length; i++) {
           ret[i] = _rgb[i] * colorRadio;
         }
       }
@@ -764,20 +761,20 @@
         if (!data) {
           return url;
         }
-        var tempArr = [];
-        for (var i in data) {
+        let tempArr = [];
+        for (let i in data) {
           if (
             encodeURIComponent(data[i]) != "undefined" &&
             encodeURIComponent(data[i]) != null &&
             encodeURIComponent(data[i]) != "" &&
             encodeURIComponent(data[i])
           ) {
-            var key = encodeURIComponent(i);
-            var value = encodeURIComponent(data[i]);
+            let key = encodeURIComponent(i);
+            let value = encodeURIComponent(data[i]);
             tempArr.push(key + "=" + value);
           }
         }
-        var urlParamsStr = tempArr.join("&");
+        let urlParamsStr = tempArr.join("&");
         if (url.indexOf("?") == -1) {
           url += "?";
         } else if (url.indexOf("?") != url.length - 1) {
@@ -791,20 +788,20 @@
     };
 
     thisObject.getGeodeticCircleRadians = function (lon1, lat1, lon2, lat2) {
-      var a = Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2) + Math.sin(lat1) * Math.sin(lat2);
+      let a = Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2) + Math.sin(lat1) * Math.sin(lat2);
       return Math.abs(Math.acos(a));
     };
 
-    var isType = function (type) {
+    let isType = function (type) {
       return function (obj) {
         return {}.toString.call(obj) == "[object " + type + "]";
       };
     };
-    var isObject = isType("Object");
-    var isString = isType("String");
-    var isArray = Array.isArray || isType("Array");
-    var isFunction = isType("Function");
-    var isUndefined = isType("Undefined");
+    let isObject = isType("Object");
+    let isString = isType("String");
+    let isArray = Array.isArray || isType("Array");
+    let isFunction = isType("Function");
+    let isUndefined = isType("Undefined");
 
     thisObject.isObject = isObject;
     thisObject.isString = isString;
@@ -818,7 +815,7 @@
      * @param {Function} callback
      */
     thisObject.loadScript = function (url, callback, failedCB) {
-      var script = document.createElement("script");
+      let script = document.createElement("script");
       script.type = "text/javascript";
       if (script.readyState) {
         //IE
@@ -847,7 +844,7 @@
      * @param {String} url 路径
      */
     thisObject.loadCss = function (url) {
-      var _mlink = document.createElement("link");
+      let _mlink = document.createElement("link");
       _mlink.setAttribute("type", "text/css");
       _mlink.setAttribute("rel", "stylesheet");
       _mlink.setAttribute("href", url);
@@ -895,11 +892,11 @@
        * @returns
        */
       (thisObject.getDataByPostRaw = function (url, data, onDataRecive, error, beforeSend, complete) {
-        var request = thisObject.getHttpObject();
+        let request = thisObject.getHttpObject();
         if (request) {
           try {
             request.onreadystatechange = function () {
-              var request = this;
+              let request = this;
               if (request.readyState == 4) {
                 // success
                 if (request.status == 200 || request.status == 304) {
@@ -941,11 +938,11 @@
      * @returns
      */
     thisObject.postDataXHR = function (url, data, onDataRecive, error, beforeSend, complete) {
-      var request = thisObject.getHttpObject();
+      let request = thisObject.getHttpObject();
       if (request) {
         try {
           request.onreadystatechange = function () {
-            var request = this;
+            let request = this;
             if (request.readyState == 4) {
               // success
               if (request.status == 200 || request.status == 304) {
@@ -963,8 +960,8 @@
             console.log("timeout ", e);
             error && error(e);
           };
-          var formData = new FormData();
-          for (var key in data) {
+          let formData = new FormData();
+          for (let key in data) {
             if (data.hasOwnProperty(key)) {
               formData.append(key, data[key]);
             }
@@ -999,7 +996,7 @@
           if (url.indexOf("?") == -1) {
             url += "?";
           }
-          var fullUrl = thisObject.jsonToUrl(url, data);
+          let fullUrl = thisObject.jsonToUrl(url, data);
           return thisObject.getDataTextViaBlob(fullUrl, successCB, errorCB);
         } else {
           return thisObject.getDataByPostRaw(url, data, successCB, null, null, errorCB, func);
@@ -1014,8 +1011,8 @@
      * @param {*} callback
      */
     thisObject.arraybufferToString = function (buffer, encoding, callback) {
-      var blob = new Blob([buffer], { type: "text/plain" });
-      var reader = new FileReader();
+      let blob = new Blob([buffer], { type: "text/plain" });
+      let reader = new FileReader();
       reader.onload = function (evt) {
         callback(evt.target.result);
       };
@@ -1051,7 +1048,7 @@
         url,
         function (arrbuf) {
           thisObject.arraybufferToString(arrbuf, "UTF-8", function (str) {
-            var json = JSON.parse(str);
+            let json = JSON.parse(str);
             scb && scb(json);
           });
         },
@@ -1068,15 +1065,15 @@
     thisObject.loadByteStream = function (url, scb, fcb) {
       if (window.XMLHttpRequest) {
         try {
-          var request = new XMLHttpRequest();
+          let request = new XMLHttpRequest();
           request.timeout = 15000;
           request.onreadystatechange = function () {
-            var request = this;
+            let request = this;
             if (request.readyState == 4) {
               // success
               if (request.status !== 0 && request.status !== 200 && request.status !== 304) {
               } else {
-                var byteStream = null;
+                let byteStream = null;
                 if (request.responseType == "arraybuffer" && request.response) {
                   byteStream = request.response;
                   scb && scb(byteStream);
@@ -1116,7 +1113,7 @@
      * @returns HttpObject
      */
     thisObject.getHttpObject = function () {
-      var xhr = false;
+      let xhr = false;
       if (window.XMLHttpRequest) xhr = new XMLHttpRequest();
       if ("withCredentials" in xhr) {
         return xhr;
@@ -1140,14 +1137,14 @@
      * @returns
      */
     thisObject.getData = function (url, data, dataType, successCB, failedCB, isAsync) {
-      var xhr = thisObject.getHttpObject();
+      let xhr = thisObject.getHttpObject();
       xhr.ontimeout = function () {
         failedCB && failedCB({ errMsg: "TimeOut" });
       };
       xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
           if (xhr.status == 200 || xhr.status == 304) {
-            var type = xhr.getResponseHeader("Content-Type");
+            let type = xhr.getResponseHeader("Content-Type");
             if (type.indexOf("xml") != -1 && xhr.responseXML) {
               successCB && successCB(xhr.responseXML);
             } else if (type.indexOf("application/json") != -1) {
@@ -1158,7 +1155,7 @@
                 failedCB && failedCB(e.toString());
               }
             } else {
-              var resultData = xhr.responseText;
+              let resultData = xhr.responseText;
               if (dataType == "json") {
                 resultData = JSON.parse(resultData);
               }
@@ -1184,7 +1181,7 @@
     //  * @param {Function} fcb 调用失败后的回调
     //  */
     // thisObject.downloadPackage = function(token,bdid,successCB,failedCB){
-    //     var jsonStr = JSON.stringify({"token":token||'',"bdid":bdid||''});
+    //     let jsonStr = JSON.stringify({"token":token||'',"bdid":bdid||''});
     //     if(window["exec"]){
     //         window["exec"](successCB, failedCB, "DXJSBre", "downloadPackage", [jsonStr]);
     //     }
@@ -1196,7 +1193,7 @@
      * @returns
      */
     thisObject["copyData"] = thisObject.copyData = function (data) {
-      var str = JSON.stringify(data);
+      let str = JSON.stringify(data);
       return JSON.parse(str);
     };
 
@@ -1207,8 +1204,8 @@
      * @returns
      */
     thisObject.compareObj = function (objA, objB) {
-      var strA = JSON.stringify(objA);
-      var strB = JSON.stringify(objB);
+      let strA = JSON.stringify(objA);
+      let strB = JSON.stringify(objB);
       if (strA == strB) {
         return true;
       } else {
@@ -1238,9 +1235,9 @@
      * @param {*} newClassName
      */
     thisObject.addDomClass = function (containerId, newClassName) {
-      var containerdDom = document.getElementById(containerId);
-      var className = containerdDom.className;
-      var classNameArr = className.split(" ");
+      let containerdDom = document.getElementById(containerId);
+      let className = containerdDom.className;
+      let classNameArr = className.split(" ");
       if (classNameArr.indexOf(newClassName) == -1) {
         className && (className += " ");
         className += newClassName; //main_map_container
@@ -1255,17 +1252,17 @@
      * @returns
      */
     thisObject.createDom = function (params, parentNode) {
-      var tagName = params["tagName"];
-      var attrs = params["attrs"];
-      var children = params["children"];
-      var text = params["text"];
-      var dom = document.createElement(tagName);
-      var events = params["events"];
-      for (var key in attrs) {
+      let tagName = params["tagName"];
+      let attrs = params["attrs"];
+      let children = params["children"];
+      let text = params["text"];
+      let dom = document.createElement(tagName);
+      let events = params["events"];
+      for (let key in attrs) {
         dom.setAttribute(key, attrs[key]);
       }
       if (text) {
-        var textNode = document.createTextNode(text);
+        let textNode = document.createTextNode(text);
         dom.appendChild(textNode);
       }
       if (children) {
@@ -1295,11 +1292,11 @@
      * @returns 返回连接后的路径
      */
     thisObject.joinPath = function (path1, path2) {
-      var args = arguments;
-      var url = "";
+      let args = arguments;
+      let url = "";
       args.length > 0 ? (url = args[0] || "") : "";
-      for (var i = 1; i < args.length; i++) {
-        var _path = args[i];
+      for (let i = 1; i < args.length; i++) {
+        let _path = args[i];
         if (url.slice(-1) != "/") {
           url += "/";
         }
@@ -1325,20 +1322,20 @@
     };
 
     // navi_utils
-    var navi_utils = {};
-    var navi_map = navi_map || {};
-    var earthRadius = 6378137.0;
+    let navi_utils = {};
+    let navi_map = navi_map || {};
+    let earthRadius = 6378137.0;
     navi_utils.earth_radius = earthRadius;
-    var DEGREE_TO_RADIAN = 0.0174532925199433;
-    var SECOND_TO_RADIAN = DEGREE_TO_RADIAN / 3600;
-    var RADIAN_TO_DEGREE = 180 / Math.PI;
+    let DEGREE_TO_RADIAN = 0.0174532925199433;
+    let SECOND_TO_RADIAN = DEGREE_TO_RADIAN / 3600;
+    let RADIAN_TO_DEGREE = 180 / Math.PI;
     // module.exports = navi_utils;
 
     navi_utils.DEGREE_TO_RADIAN = DEGREE_TO_RADIAN;
     navi_utils.RADIAN_TO_DEGREE = RADIAN_TO_DEGREE;
     navi_utils.SECOND_TO_RADIANS = SECOND_TO_RADIAN;
     navi_utils.getVector = function (geometry, index) {
-      var result = [];
+      let result = [];
       result.x = geometry[index]["x"];
       result.y = geometry[index]["y"];
       result.speed = geometry[index]["speed"] || 1;
@@ -1355,10 +1352,10 @@
     };
 
     navi_utils.getVector3 = function (geometry, index) {
-      var aa = [geometry[index][0], geometry[index][1], 0];
+      let aa = [geometry[index][0], geometry[index][1], 0];
       return aa;
     };
-    var halfcircumference = 20037508.34;
+    let halfcircumference = 20037508.34;
     navi_utils.transformLonToMectroX = function (longtitude) {
       return (longtitude / 180) * halfcircumference;
     };
@@ -1374,52 +1371,52 @@
     };
 
     navi_utils.transformGeographicToECEF = function (vecOut, vecIn) {
-      var longitude = vecIn[0],
+      let longitude = vecIn[0],
         latitude = vecIn[1],
         radius = vecIn[2];
-      var cos_lat = radius * Math.cos(latitude);
+      let cos_lat = radius * Math.cos(latitude);
       vecOut[0] = cos_lat * Math.cos(longitude);
       vecOut[1] = cos_lat * Math.sin(longitude);
       vecOut[2] = radius * Math.sin(latitude);
     };
 
     navi_utils.transformECEFToGeographic = function (vecOut, vecIn) {
-      var x = vecIn[0],
+      let x = vecIn[0],
         y = vecIn[1],
         z = vecIn[2];
-      var ret_z = Math.sqrt(x * x + y * y + z * z);
+      let ret_z = Math.sqrt(x * x + y * y + z * z);
       vecOut[0] = Math.atan2(y, x);
       vecOut[1] = Math.asin(z / ret_z);
       vecOut[2] = ret_z;
     };
     navi_utils.lonLatToMectro = function (lonlat) {
-      var lon = lonlat.lon || lonlat.x || lonlat[0];
-      var lat = lonlat.lat || lonlat.y || lonlat[1];
-      var x = navi_utils.transformLonToMectroX(lon);
-      var y = navi_utils.transformLatToMectroY(lat);
+      let lon = lonlat.lon || lonlat.x || lonlat[0];
+      let lat = lonlat.lat || lonlat.y || lonlat[1];
+      let x = navi_utils.transformLonToMectroX(lon);
+      let y = navi_utils.transformLatToMectroY(lat);
       return { x: x, y: y };
     };
     navi_utils.mectroTolLonLat = function (mectroXY) {
-      var lon = navi_utils.transformMectroXToLon(mectroXY["x"]);
-      var lat = navi_utils.transformMectroYToLat(mectroXY["y"]);
+      let lon = navi_utils.transformMectroXToLon(mectroXY["x"]);
+      let lat = navi_utils.transformMectroYToLat(mectroXY["y"]);
       return { lon: lon, lat: lat };
     };
 
     navi_utils.getArrowBodyPoints = function (points, neckLeft, neckRight, tailWidthFactor) {
-      var allLen = PlotUtils.wholeDistance(points);
-      var len = PlotUtils.getBaseLength(points);
-      var tailWidth = len * tailWidthFactor;
-      var neckWidth = PlotUtils.distance(neckLeft, neckRight);
-      var widthDif = (tailWidth - neckWidth) / 2;
-      var tempLen = 0,
+      let allLen = PlotUtils.wholeDistance(points);
+      let len = PlotUtils.getBaseLength(points);
+      let tailWidth = len * tailWidthFactor;
+      let neckWidth = PlotUtils.distance(neckLeft, neckRight);
+      let widthDif = (tailWidth - neckWidth) / 2;
+      let tempLen = 0,
         leftBodyPnts = [],
         rightBodyPnts = [];
-      for (var i = 1; i < points.length - 1; i++) {
-        var angle = PlotUtils.getAngleOfThreePoints(points[i - 1], points[i], points[i + 1]) / 2;
+      for (let i = 1; i < points.length - 1; i++) {
+        let angle = PlotUtils.getAngleOfThreePoints(points[i - 1], points[i], points[i + 1]) / 2;
         tempLen += PlotUtils.distance(points[i - 1], points[i]);
-        var w = (tailWidth / 2 - (tempLen / allLen) * widthDif) / Math.sin(angle);
-        var left = PlotUtils.getThirdPoint(points[i - 1], points[i], Math.PI - angle, w, true);
-        var right = PlotUtils.getThirdPoint(points[i - 1], points[i], angle, w, false);
+        let w = (tailWidth / 2 - (tempLen / allLen) * widthDif) / Math.sin(angle);
+        let left = PlotUtils.getThirdPoint(points[i - 1], points[i], Math.PI - angle, w, true);
+        let right = PlotUtils.getThirdPoint(points[i - 1], points[i], angle, w, false);
         leftBodyPnts.push(left);
         rightBodyPnts.push(right);
       }
@@ -1441,56 +1438,56 @@
       neckWidthFactor = neckWidthFactor || 0.2;
       neckHeightFactor = neckHeightFactor || 0.85;
 
-      var len = PlotUtils.getBaseLength(points);
-      var headHeight = len * headHeightFactor;
-      var headPnt = points[points.length - 1];
+      let len = PlotUtils.getBaseLength(points);
+      let headHeight = len * headHeightFactor;
+      let headPnt = points[points.length - 1];
       len = PlotUtils.distance(headPnt, points[points.length - 2]);
-      var tailWidth = PlotUtils.distance(tailLeft, tailRight);
+      let tailWidth = PlotUtils.distance(tailLeft, tailRight);
       if (headHeight > tailWidth * headTailFactor) {
         headHeight = tailWidth * headTailFactor;
       }
-      var headWidth = 1; //headHeight * headWidthFactor;
-      var neckWidth = 0.5; //headHeight * neckWidthFactor;
+      let headWidth = 1; //headHeight * headWidthFactor;
+      let neckWidth = 0.5; //headHeight * neckWidthFactor;
       headHeight = 1; //headHeight > len ? len : headHeight;
-      var neckHeight = headHeight * neckHeightFactor;
-      var headEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0.317, headHeight, true);
-      var neckEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0.317, neckHeight, true);
-      var headLeft = PlotUtils.getThirdPoint(headPnt, headEndPnt, P.Constants.HALF_PI, headWidth, false);
-      var headRight = PlotUtils.getThirdPoint(headPnt, headEndPnt, P.Constants.HALF_PI, headWidth, true);
-      var neckLeft = PlotUtils.getThirdPoint(headPnt, neckEndPnt, P.Constants.HALF_PI, neckWidth, false);
-      var neckRight = PlotUtils.getThirdPoint(headPnt, neckEndPnt, P.Constants.HALF_PI, neckWidth, true);
+      let neckHeight = headHeight * neckHeightFactor;
+      let headEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0.317, headHeight, true);
+      let neckEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0.317, neckHeight, true);
+      let headLeft = PlotUtils.getThirdPoint(headPnt, headEndPnt, P.Constants.HALF_PI, headWidth, false);
+      let headRight = PlotUtils.getThirdPoint(headPnt, headEndPnt, P.Constants.HALF_PI, headWidth, true);
+      let neckLeft = PlotUtils.getThirdPoint(headPnt, neckEndPnt, P.Constants.HALF_PI, neckWidth, false);
+      let neckRight = PlotUtils.getThirdPoint(headPnt, neckEndPnt, P.Constants.HALF_PI, neckWidth, true);
       return [neckLeft, headLeft, headPnt, headRight, neckRight];
     };
     navi_utils.generate = function (points) {
-      var poinstLen = points.length;
+      let poinstLen = points.length;
       if (poinstLen < 2) {
         return;
       }
       if (poinstLen == 2) {
         return points;
       }
-      var pnts = points;
+      let pnts = points;
       // 计算箭尾
-      var tailLeft = pnts[0];
-      var tailRight = pnts[1];
+      let tailLeft = pnts[0];
+      let tailRight = pnts[1];
       if (PlotUtils.isClockWise(pnts[0], pnts[1], pnts[2])) {
         tailLeft = pnts[1];
         tailRight = pnts[0];
       }
-      var midTail = PlotUtils.mid(tailLeft, tailRight);
-      var bonePnts = [midTail].concat(pnts.slice(2));
+      let midTail = PlotUtils.mid(tailLeft, tailRight);
+      let bonePnts = [midTail].concat(pnts.slice(2));
       // 计算箭头
-      var headPnts = navi_utils.getArrowHeadPoints(bonePnts, tailLeft, tailRight);
-      var neckLeft = headPnts[0];
-      var neckRight = headPnts[4];
-      var tailWidthFactor = PlotUtils.distance(tailLeft, tailRight) / PlotUtils.getBaseLength(bonePnts);
+      let headPnts = navi_utils.getArrowHeadPoints(bonePnts, tailLeft, tailRight);
+      let neckLeft = headPnts[0];
+      let neckRight = headPnts[4];
+      let tailWidthFactor = PlotUtils.distance(tailLeft, tailRight) / PlotUtils.getBaseLength(bonePnts);
       // 计算箭身
-      var bodyPnts = navi_utils.getArrowBodyPoints(bonePnts, neckLeft, neckRight, tailWidthFactor);
+      let bodyPnts = navi_utils.getArrowBodyPoints(bonePnts, neckLeft, neckRight, tailWidthFactor);
       // 整合
-      var count = bodyPnts.length;
-      var leftPnts = [tailLeft].concat(bodyPnts.slice(0, count / 2));
+      let count = bodyPnts.length;
+      let leftPnts = [tailLeft].concat(bodyPnts.slice(0, count / 2));
       leftPnts.push(neckLeft);
-      var rightPnts = [tailRight].concat(bodyPnts.slice(count / 2, count));
+      let rightPnts = [tailRight].concat(bodyPnts.slice(count / 2, count));
       rightPnts.push(neckRight);
 
       // leftPnts = PlotUtils.getQBSplinePoints(leftPnts);
@@ -1504,10 +1501,10 @@
     };
 
     navi_utils.matrixECEFToENU = function (matOut, vecIn) {
-      var vec_x = [0, 0, 0],
+      let vec_x = [0, 0, 0],
         vec_y = [0, 0, 0],
         vec_z = navi_utils.Vector3_copy(vecIn);
-      var s_unit_z = [0, 0, 1];
+      let s_unit_z = [0, 0, 1];
       navi_utils.Vector3_normalize(vec_z, vec_z);
 
       navi_utils.Vector3_cross(vec_x, s_unit_z, vec_z);
@@ -1521,10 +1518,10 @@
     };
 
     navi_utils.matrixENUToECEF = function (matOut, vecIn) {
-      var vec_x = [0, 0, 0],
+      let vec_x = [0, 0, 0],
         vec_y = [0, 0, 0],
         vec_z = navi_utils.Vector3_copy(vecIn);
-      var s_unit_z = [0, 0, 1];
+      let s_unit_z = [0, 0, 1];
       navi_utils.Vector3_normalize(vec_z, vec_z);
 
       navi_utils.Vector3_cross(vec_x, s_unit_z, vec_z);
@@ -1546,23 +1543,23 @@
     };
 
     navi_utils.Matrix_inverse = function (result, matrix) {
-      var matrix0 = matrix[0];
-      var matrix1 = matrix[1];
-      var matrix2 = matrix[2];
-      var matrix4 = matrix[4];
-      var matrix5 = matrix[5];
-      var matrix6 = matrix[6];
-      var matrix8 = matrix[8];
-      var matrix9 = matrix[9];
-      var matrix10 = matrix[10];
+      let matrix0 = matrix[0];
+      let matrix1 = matrix[1];
+      let matrix2 = matrix[2];
+      let matrix4 = matrix[4];
+      let matrix5 = matrix[5];
+      let matrix6 = matrix[6];
+      let matrix8 = matrix[8];
+      let matrix9 = matrix[9];
+      let matrix10 = matrix[10];
 
-      var vX = matrix[12];
-      var vY = matrix[13];
-      var vZ = matrix[14];
+      let vX = matrix[12];
+      let vY = matrix[13];
+      let vZ = matrix[14];
 
-      var x = -matrix0 * vX - matrix1 * vY - matrix2 * vZ;
-      var y = -matrix4 * vX - matrix5 * vY - matrix6 * vZ;
-      var z = -matrix8 * vX - matrix9 * vY - matrix10 * vZ;
+      let x = -matrix0 * vX - matrix1 * vY - matrix2 * vZ;
+      let y = -matrix4 * vX - matrix5 * vY - matrix6 * vZ;
+      let z = -matrix8 * vX - matrix9 * vY - matrix10 * vZ;
 
       result[0] = matrix0;
       result[1] = matrix4;
@@ -1584,7 +1581,7 @@
     };
 
     navi_utils.Matrix4_perspectiveRH = function (retVal, fovy, aspect, zn, zf) {
-      var tan_fovy = 1 / Math.tan(fovy * 0.5);
+      let tan_fovy = 1 / Math.tan(fovy * 0.5);
       retVal[0] = tan_fovy / aspect;
       retVal[1] = 0;
       retVal[2] = 0;
@@ -1604,20 +1601,20 @@
     };
 
     navi_utils.getGeodeticCircleRadians = function (lon1, lat1, lon2, lat2) {
-      var a = Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2) + Math.sin(lat1) * Math.sin(lat2);
+      let a = Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2) + Math.sin(lat1) * Math.sin(lat2);
       return Math.abs(Math.acos(a));
     };
 
     navi_utils.getSegmentDistance = function (geometry) {
-      for (var i = 0; i < geometry.length - 1; i++) {
-        var A = geometry[i];
-        var B = geometry[i + 1];
+      for (let i = 0; i < geometry.length - 1; i++) {
+        let A = geometry[i];
+        let B = geometry[i + 1];
         //navi_utils.getGeodeticCircleDistance()
       }
     };
 
     navi_utils.AABB_create = function () {
-      var newObject = {
+      let newObject = {
         _min: [Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE],
         _max: [-Number.MAX_VALUE, -Number.MAX_VALUE, -Number.MAX_VALUE],
       };
@@ -1648,7 +1645,7 @@
     };
 
     navi_utils.Vector3_copy = function (vec) {
-      var newObject = [0, 0, 0];
+      let newObject = [0, 0, 0];
       newObject[0] = vec[0];
       newObject[1] = vec[1];
       newObject[2] = vec[2];
@@ -1677,10 +1674,10 @@
     };
 
     navi_utils.Vector3_normalize = function (retVal, vec) {
-      var length = navi_utils.Vector3_length(vec);
+      let length = navi_utils.Vector3_length(vec);
       //if ( length > 0.000001 )
       if (length > 0.0) {
-        var r = 1 / length;
+        let r = 1 / length;
         retVal[0] = vec[0] * r;
         retVal[1] = vec[1] * r;
         retVal[2] = vec[2] * r;
@@ -1692,7 +1689,7 @@
       return Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
     };
 
-    var vector_sub_temp = [0, 0, 0];
+    let vector_sub_temp = [0, 0, 0];
     navi_utils.Vector3_distance = function (vec1, vec2) {
       navi_utils.Vector3_sub(vector_sub_temp, vec1, vec2);
       return Math.sqrt(vector_sub_temp[0] * vector_sub_temp[0] + vector_sub_temp[1] * vector_sub_temp[1] + vector_sub_temp[2] * vector_sub_temp[2]);
@@ -1706,16 +1703,16 @@
       /* retVal[0] = vec1[1] * vec2[2] - vec1[2] * vec2[1];
             retVal[1] = vec1[2] * vec2[0] - vec1[0] * vec2[2];
             retVal[2] = vec1[0] * vec2[1] - vec1[1] * vec2[0];  */
-      var leftX = left[0];
-      var leftY = left[1];
-      var leftZ = left[2];
-      var rightX = right[0];
-      var rightY = right[1];
-      var rightZ = right[2];
+      let leftX = left[0];
+      let leftY = left[1];
+      let leftZ = left[2];
+      let rightX = right[0];
+      let rightY = right[1];
+      let rightZ = right[2];
 
-      var x = leftY * rightZ - leftZ * rightY;
-      var y = leftZ * rightX - leftX * rightZ;
-      var z = leftX * rightY - leftY * rightX;
+      let x = leftY * rightZ - leftZ * rightY;
+      let y = leftZ * rightX - leftX * rightZ;
+      let z = leftX * rightY - leftY * rightX;
 
       retVal[0] = x;
       retVal[1] = y;
@@ -1725,15 +1722,15 @@
     };
 
     navi_utils.Vector3_transformCoord = function (retVal, vec, mat) {
-      var vX = vec[0];
-      var vY = vec[1];
-      var vZ = vec[2];
-      var vW = 1.0;
+      let vX = vec[0];
+      let vY = vec[1];
+      let vZ = vec[2];
+      let vW = 1.0;
 
-      var x = mat[0] * vX + mat[4] * vY + mat[8] * vZ + mat[12] * vW;
-      var y = mat[1] * vX + mat[5] * vY + mat[9] * vZ + mat[13] * vW;
-      var z = mat[2] * vX + mat[6] * vY + mat[10] * vZ + mat[14] * vW;
-      // var w = matrix[3] * vX + matrix[7] * vY + matrix[11] * vZ + matrix[15] * vW;
+      let x = mat[0] * vX + mat[4] * vY + mat[8] * vZ + mat[12] * vW;
+      let y = mat[1] * vX + mat[5] * vY + mat[9] * vZ + mat[13] * vW;
+      let z = mat[2] * vX + mat[6] * vY + mat[10] * vZ + mat[14] * vW;
+      // let w = matrix[3] * vX + matrix[7] * vY + matrix[11] * vZ + matrix[15] * vW;
 
       retVal[0] = x;
       retVal[1] = y;
@@ -1743,7 +1740,7 @@
     };
 
     navi_utils.Vector3_transformNormal = function (retVal, vec, mat) {
-      var x = vec[0],
+      let x = vec[0],
         y = vec[1],
         z = vec[2];
       retVal[0] = x * mat[0] + y * mat[4] + z * mat[8];
@@ -1751,10 +1748,10 @@
       retVal[2] = x * mat[2] + y * mat[6] + z * mat[10];
     };
 
-    var temp_lerp_dir = [0, 0, 0];
+    let temp_lerp_dir = [0, 0, 0];
     navi_utils.Vector3_lerp = function (retVal, vec1, vec2, t) {
       navi_utils.Vector3_sub(temp_lerp_dir, vec2, vec1);
-      //var length = navi_utils.Vector3_length(temp_lerp_dir);
+      //let length = navi_utils.Vector3_length(temp_lerp_dir);
       navi_utils.Vector3_mad(retVal, vec1, temp_lerp_dir, t);
     };
 
@@ -1769,9 +1766,9 @@
     };
 
     navi_utils.Quaternion_normalize = function (retVal, q1) {
-      var length = navi_utils.Quaternion_length(q1);
+      let length = navi_utils.Quaternion_length(q1);
       if (length > 0.000000000001) {
-        var t = 1.0 / length;
+        let t = 1.0 / length;
         retVal[0] *= t;
         retVal[1] *= t;
         retVal[2] *= t;
@@ -1784,20 +1781,20 @@
       }
     };
 
-    //  var rkT = Quaternion.create();
+    //  let rkT = Quaternion.create();
     navi_utils.Quaternion_slerp = function (retVal, q1, q2, t) {
-      /* var x1 = q1[0], y1 = q1[1], z1 = q1[2], w1 = q1[3];
-            var x2 = q2[0], y2 = q2[1], z2 = q2[2], w2 = q2[3];
+      /* let x1 = q1[0], y1 = q1[1], z1 = q1[2], w1 = q1[3];
+            let x2 = q2[0], y2 = q2[1], z2 = q2[2], w2 = q2[3];
 
-            var cos_omega = x1 * x2 + y1 * y2 + z1 * z2 + w1 * w2;
-            var angle = Math.acos( cos_omega );
+            let cos_omega = x1 * x2 + y1 * y2 + z1 * z2 + w1 * w2;
+            let angle = Math.acos( cos_omega );
 
             if( Math.abs( angle ) >= 0.000000000001 )
             {
-            var sin_angle = Math.sin(angle);
-            var sin_angle_inv = 1.0 / sin_angle;
-            var coeff0 = Math.sin( (1.0 - t ) * angle ) * sin_angle_inv;
-            var coeff1 = Math.sin( t * angle ) * sin_angle_inv;
+            let sin_angle = Math.sin(angle);
+            let sin_angle_inv = 1.0 / sin_angle;
+            let coeff0 = Math.sin( (1.0 - t ) * angle ) * sin_angle_inv;
+            let coeff1 = Math.sin( t * angle ) * sin_angle_inv;
 
             retVal[3] = w1 * coeff0 + w2 * coeff1;
             retVal[0] = x1 * coeff0 + x2 * coeff1;
@@ -1809,18 +1806,18 @@
             retVal = q1;
             } */
 
-      var x1 = q1[0],
+      let x1 = q1[0],
         y1 = q1[1],
         z1 = q1[2],
         w1 = q1[3];
-      var x2 = q2[0],
+      let x2 = q2[0],
         y2 = q2[1],
         z2 = q2[2],
         w2 = q2[3];
 
-      var fCos = x1 * x2 + y1 * y2 + z1 * z2 + w1 * w2;
+      let fCos = x1 * x2 + y1 * y2 + z1 * z2 + w1 * w2;
 
-      var x3, y3, z3, w3;
+      let x3, y3, z3, w3;
       // Do we need to invert rotation?
       if (fCos < 0.0) {
         fCos = -fCos;
@@ -1837,11 +1834,11 @@
 
       if (Math.abs(fCos) < 1 - 1e-3) {
         // Standard case (slerp)
-        var fSin = Math.sqrt(1 - fCos * fCos);
-        var fAngle = Math.atan2(fSin, fCos);
-        var fInvSin = 1.0 / fSin;
-        var fCoeff0 = Math.sin((1.0 - t) * fAngle) * fInvSin;
-        var fCoeff1 = Math.sin(t * fAngle) * fInvSin;
+        let fSin = Math.sqrt(1 - fCos * fCos);
+        let fAngle = Math.atan2(fSin, fCos);
+        let fInvSin = 1.0 / fSin;
+        let fCoeff0 = Math.sin((1.0 - t) * fAngle) * fInvSin;
+        let fCoeff1 = Math.sin(t * fAngle) * fInvSin;
         retVal[0] = fCoeff0 * x1 + fCoeff1 * x3;
         retVal[1] = fCoeff0 * y1 + fCoeff1 * y3;
         retVal[2] = fCoeff0 * z1 + fCoeff1 * z3;
@@ -1858,12 +1855,12 @@
 
     //navi_utils.Quaternion_slerp()
     navi_utils.Quaternion_fromEuler = function (retVal, x, y, z) {
-      var c1 = Math.cos(y * 0.5);
-      var c2 = Math.cos(z * 0.5);
-      var c3 = Math.cos(x * 0.5);
-      var s1 = Math.sin(y * 0.5);
-      var s2 = Math.sin(z * 0.5);
-      var s3 = Math.sin(x * 0.5);
+      let c1 = Math.cos(y * 0.5);
+      let c2 = Math.cos(z * 0.5);
+      let c3 = Math.cos(x * 0.5);
+      let s1 = Math.sin(y * 0.5);
+      let s2 = Math.sin(z * 0.5);
+      let s3 = Math.sin(x * 0.5);
       retVal[3] = c1 * c2 * c3 - s1 * s2 * s3;
       retVal[0] = s1 * s2 * c3 + c1 * c2 * s3;
       retVal[1] = s1 * c2 * c3 + c1 * s2 * s3;
@@ -1871,15 +1868,15 @@
     };
 
     navi_utils.Quaternion_toEuler = function (retVal, q1) {
-      var qx = q1[0],
+      let qx = q1[0],
         qy = q1[1],
         qz = q1[2],
         qw = q1[3];
-      var qw2 = qw * qw;
-      var qx2 = qx * qx;
-      var qy2 = qy * qy;
-      var qz2 = qz * qz;
-      var test = qx * qy + qz * qw;
+      let qw2 = qw * qw;
+      let qx2 = qx * qx;
+      let qy2 = qy * qy;
+      let qz2 = qz * qz;
+      let test = qx * qy + qz * qw;
       if (test > 0.499) {
         retVal[0] = 0.0;
         retVal[1] = Math.atan2(qx, qw) * 2;
@@ -1898,7 +1895,7 @@
       retVal[2] = Math.asin(2.0 * qx * qy + 2.0 * qz * qw);
     };
     navi_utils.getGeodeticCircleDistance = function (vec1, vec2) {
-      var dis =
+      let dis =
         navi_utils.getGeodeticCircleRadians(vec1.x * DEGREE_TO_RADIAN, vec1.y * DEGREE_TO_RADIAN, vec2.x * DEGREE_TO_RADIAN, vec2.y * DEGREE_TO_RADIAN) *
         earthRadius;
       if (isNaN(dis)) {
@@ -1908,7 +1905,7 @@
     };
 
     navi_utils.getGeodeticCircleDistanceSecond = function (vec1, vec2) {
-      var dis =
+      let dis =
         navi_utils.getGeodeticCircleRadians(vec1.x * SECOND_TO_RADIAN, vec1.y * SECOND_TO_RADIAN, vec2.x * SECOND_TO_RADIAN, vec2.y * SECOND_TO_RADIAN) *
         earthRadius;
       if (isNaN(dis)) {
@@ -1918,7 +1915,7 @@
     };
 
     navi_utils.getGeodeticCircleDistanceVector = function (vec1, vec2) {
-      var dis =
+      let dis =
         navi_utils.getGeodeticCircleRadians(vec1[0] * DEGREE_TO_RADIAN, vec1[1] * DEGREE_TO_RADIAN, vec2[0] * DEGREE_TO_RADIAN, vec2[1] * DEGREE_TO_RADIAN) *
         earthRadius;
       if (isNaN(dis)) {
@@ -1928,7 +1925,7 @@
     };
 
     navi_utils.getGeodeticCircleDistanceVectorSecond = function (vec1, vec2) {
-      var dis =
+      let dis =
         navi_utils.getGeodeticCircleRadians(vec1[0] * SECOND_TO_RADIAN, vec1[1] * SECOND_TO_RADIAN, vec2[0] * SECOND_TO_RADIAN, vec2[1] * SECOND_TO_RADIAN) *
         earthRadius;
       if (isNaN(dis)) {
@@ -1938,7 +1935,7 @@
     };
 
     navi_utils.forEach = function (obj, callBack) {
-      for (var key in obj) {
+      for (let key in obj) {
         if (obj.hasOwnProperty(key)) {
           //filter,只输出私有属性
           callBack(key, obj[key]);
@@ -1947,7 +1944,7 @@
     };
 
     navi_utils.foreach = function (obj, callBack) {
-      for (var key in obj) {
+      for (let key in obj) {
         if (obj.hasOwnProperty(key)) {
           //filter,只输出私有属性
           if (callBack(key, obj[key]) == 1) break;
@@ -1956,14 +1953,14 @@
     };
 
     navi_utils.calcAngel = function (a, b, c) {
-      var a_sphr = [a.x * DEGREE_TO_RADIAN, a.y * DEGREE_TO_RADIAN, earthRadius];
-      var b_sphr = [b.x * DEGREE_TO_RADIAN, b.y * DEGREE_TO_RADIAN, earthRadius];
-      var c_sphr = [c.x * DEGREE_TO_RADIAN, c.y * DEGREE_TO_RADIAN, earthRadius];
-      var a_ecef = [0, 0, 0];
-      var b_ecef = [0, 0, 0];
-      var c_ecef = [0, 0, 0];
-      var e1 = [0, 0, 0];
-      var e2 = [0, 0, 0];
+      let a_sphr = [a.x * DEGREE_TO_RADIAN, a.y * DEGREE_TO_RADIAN, earthRadius];
+      let b_sphr = [b.x * DEGREE_TO_RADIAN, b.y * DEGREE_TO_RADIAN, earthRadius];
+      let c_sphr = [c.x * DEGREE_TO_RADIAN, c.y * DEGREE_TO_RADIAN, earthRadius];
+      let a_ecef = [0, 0, 0];
+      let b_ecef = [0, 0, 0];
+      let c_ecef = [0, 0, 0];
+      let e1 = [0, 0, 0];
+      let e2 = [0, 0, 0];
       navi_utils.transformGeographicToECEF(a_ecef, a_sphr);
       navi_utils.transformGeographicToECEF(b_ecef, b_sphr);
       navi_utils.transformGeographicToECEF(c_ecef, c_sphr);
@@ -1971,9 +1968,9 @@
       navi_utils.Vector3_sub(e2, c_ecef, b_ecef);
       navi_utils.Vector3_normalize(e1, e1);
       navi_utils.Vector3_normalize(e2, e2);
-      var angel = Math.acos(navi_utils.Vector3_dot(e1, e2)) * RADIAN_TO_DEGREE;
-      var right = [0, 0, 0];
-      var upNormal = [0, 0, 0];
+      let angel = Math.acos(navi_utils.Vector3_dot(e1, e2)) * RADIAN_TO_DEGREE;
+      let right = [0, 0, 0];
+      let upNormal = [0, 0, 0];
       navi_utils.Vector3_normalize(upNormal, b_ecef);
       navi_utils.Vector3_cross(right, e2, e1);
 
@@ -1984,14 +1981,14 @@
     };
 
     navi_utils.calcHeading = function (b, c) {
-      var a_sphr = [b.x * DEGREE_TO_RADIAN, (b.y + 1) * DEGREE_TO_RADIAN, earthRadius];
-      var b_sphr = [b.x * DEGREE_TO_RADIAN, b.y * DEGREE_TO_RADIAN, earthRadius];
-      var c_sphr = [c.x * DEGREE_TO_RADIAN, c.y * DEGREE_TO_RADIAN, earthRadius];
-      var a_ecef = [0, 0, 0];
-      var b_ecef = [0, 0, 0];
-      var c_ecef = [0, 0, 0];
-      var e1 = [0, 0, 0];
-      var e2 = [0, 0, 0];
+      let a_sphr = [b.x * DEGREE_TO_RADIAN, (b.y + 1) * DEGREE_TO_RADIAN, earthRadius];
+      let b_sphr = [b.x * DEGREE_TO_RADIAN, b.y * DEGREE_TO_RADIAN, earthRadius];
+      let c_sphr = [c.x * DEGREE_TO_RADIAN, c.y * DEGREE_TO_RADIAN, earthRadius];
+      let a_ecef = [0, 0, 0];
+      let b_ecef = [0, 0, 0];
+      let c_ecef = [0, 0, 0];
+      let e1 = [0, 0, 0];
+      let e2 = [0, 0, 0];
       navi_utils.transformGeographicToECEF(a_ecef, a_sphr);
       navi_utils.transformGeographicToECEF(b_ecef, b_sphr);
       navi_utils.transformGeographicToECEF(c_ecef, c_sphr);
@@ -1999,9 +1996,9 @@
       navi_utils.Vector3_sub(e2, c_ecef, b_ecef);
       navi_utils.Vector3_normalize(e1, e1);
       navi_utils.Vector3_normalize(e2, e2);
-      var angel = Math.acos(navi_utils.Vector3_dot(e1, e2)) * RADIAN_TO_DEGREE;
-      var right = [0, 0, 0];
-      var upNormal = [0, 0, 0];
+      let angel = Math.acos(navi_utils.Vector3_dot(e1, e2)) * RADIAN_TO_DEGREE;
+      let right = [0, 0, 0];
+      let upNormal = [0, 0, 0];
       navi_utils.Vector3_normalize(upNormal, b_ecef);
       navi_utils.Vector3_cross(right, e2, e1);
 
@@ -2012,8 +2009,8 @@
     };
     // mectro
     navi_utils.getAzimuth = function (p1, p2) {
-      var azimuth;
-      var angle = Math.asin(Math.abs(p2[1] - p1[1]) / navi_utils.getGeodeticCircleDistance(p1, p2));
+      let azimuth;
+      let angle = Math.asin(Math.abs(p2[1] - p1[1]) / navi_utils.getGeodeticCircleDistance(p1, p2));
       if (p2[1] >= p1[1] && p2[0] >= p1[0]) {
         azimuth = angle + Math.PI;
       } else if (p2[1] >= p1[1] && p2[0] < p1[0]) {
@@ -2027,17 +2024,17 @@
     };
 
     navi_utils.minDistance = function (point, v1, v2) {
-      var p_v1 = [0, 0, 0];
-      var p_v2 = [0, 0, 0];
-      var dir = [0, 0, 0];
+      let p_v1 = [0, 0, 0];
+      let p_v2 = [0, 0, 0];
+      let dir = [0, 0, 0];
       navi_utils.Vector3_sub(p_v1, point, v1);
       navi_utils.Vector3_sub(dir, v2, v1);
-      var l_dir = navi_utils.Vector3_length(dir);
+      let l_dir = navi_utils.Vector3_length(dir);
       if (l_dir == 0) {
         return navi_utils.Vector3_length(p_v1);
       }
 
-      var t = (v1[1] - point[1]) * (v1[1] - v2[1]) - ((v1[0] - point[0]) * (v2[0] - v1[0])) / (l_dir * l_dir);
+      let t = (v1[1] - point[1]) * (v1[1] - v2[1]) - ((v1[0] - point[0]) * (v2[0] - v1[0])) / (l_dir * l_dir);
       if (t < 0 || t > 1) {
         navi_utils.Vector3_sub(p_v2, point, v2);
         return Math.min(navi_utils.Vector3_length(p_v2), navi_utils.Vector3_length(p_v1));
@@ -2049,41 +2046,41 @@
     };
 
     navi_utils.resamplerGeometry = function (geometry) {
-      var geometry_new = [];
-      var segmentArray = [];
-      for (var kk = 0; kk < geometry.length; kk++) {
-        var tempPt = navi_utils.getVector(geometry, kk); //geometry[i - 1];
+      let geometry_new = [];
+      let segmentArray = [];
+      for (let kk = 0; kk < geometry.length; kk++) {
+        let tempPt = navi_utils.getVector(geometry, kk); //geometry[i - 1];
         geometry_new.push(tempPt);
       }
 
       if (geometry_new.length < 2) return segmentArray;
 
-      var segment = [];
+      let segment = [];
       segment.angel = 0;
       segment.segment_length = 0;
       segment.push(navi_utils.getVector(geometry_new, 0));
       segmentArray.push(segment);
-      var lastC = null;
+      let lastC = null;
       if (geometry_new.length == 2) {
-        var A = geometry_new[0];
-        var B = geometry_new[1];
-        var B_src = geometry[1];
+        let A = geometry_new[0];
+        let B = geometry_new[1];
+        let B_src = geometry[1];
         B_src.segment_length = navi_utils.getGeodeticCircleDistance(A, B);
         B.segment_length = B_src.segment_length;
         geometry.total_length = B_src.segment_length;
         segment.push(A);
         segment.push(B);
       } else {
-        for (var i = 1; i < geometry_new.length - 1; i++) {
-          var A = geometry_new[i - 1];
-          var B = geometry_new[i];
-          var C = geometry_new[i + 1];
-          var A_src = geometry[i - 1];
-          var B_src = geometry[i];
-          var angel = navi_utils.calcAngel(A, B, C);
+        for (let i = 1; i < geometry_new.length - 1; i++) {
+          let A = geometry_new[i - 1];
+          let B = geometry_new[i];
+          let C = geometry_new[i + 1];
+          let A_src = geometry[i - 1];
+          let B_src = geometry[i];
+          let angel = navi_utils.calcAngel(A, B, C);
           B_src.segment_length = B.segment_length = navi_utils.getGeodeticCircleDistance(A, B);
 
-          var isSplitSegment = true;
+          let isSplitSegment = true;
           //if(index == 0 && i == 1 &&  B.segment_length < 1.0){
           //    isSplitSegment = false;
           //}
@@ -2115,9 +2112,9 @@
           }
           geometry.total_length += B.segment_length;
         }
-        var A = geometry_new[geometry_new.length - 2];
-        var B = geometry_new[geometry_new.length - 1];
-        var B_src = geometry[geometry.length - 1];
+        let A = geometry_new[geometry_new.length - 2];
+        let B = geometry_new[geometry_new.length - 1];
+        let B_src = geometry[geometry.length - 1];
         B_src.segment_length = B.segment_length = navi_utils.getGeodeticCircleDistance(A, B);
         segment.push(B);
         segment.next_pt = B;
@@ -2128,21 +2125,21 @@
     };
 
     navi_utils.pointToLineInVector = function (checkPosition, segment0, segment1, intersctPosition, diffLen) {
-      var j = 0;
+      let j = 0;
 
-      var pos_sphr = [checkPosition[0] * DEGREE_TO_RADIAN, checkPosition[1] * DEGREE_TO_RADIAN, earthRadius];
-      var a_sphr = [segment0[0] * DEGREE_TO_RADIAN, segment0[1] * DEGREE_TO_RADIAN, earthRadius];
-      var b_sphr = [segment1[0] * DEGREE_TO_RADIAN, segment1[1] * DEGREE_TO_RADIAN, earthRadius];
-      var pos_ecef = [0, 0, 0];
-      var a_ecef = [0, 0, 0];
-      var b_ecef = [0, 0, 0];
-      var root_ecef = [0, 0, 0];
-      var root_sphr = [0, 0, 0];
+      let pos_sphr = [checkPosition[0] * DEGREE_TO_RADIAN, checkPosition[1] * DEGREE_TO_RADIAN, earthRadius];
+      let a_sphr = [segment0[0] * DEGREE_TO_RADIAN, segment0[1] * DEGREE_TO_RADIAN, earthRadius];
+      let b_sphr = [segment1[0] * DEGREE_TO_RADIAN, segment1[1] * DEGREE_TO_RADIAN, earthRadius];
+      let pos_ecef = [0, 0, 0];
+      let a_ecef = [0, 0, 0];
+      let b_ecef = [0, 0, 0];
+      let root_ecef = [0, 0, 0];
+      let root_sphr = [0, 0, 0];
       navi_utils.transformGeographicToECEF(pos_ecef, pos_sphr);
       navi_utils.transformGeographicToECEF(a_ecef, a_sphr);
       navi_utils.transformGeographicToECEF(b_ecef, b_sphr);
 
-      var tempDistance = navi_utils.pointToLine(pos_ecef, a_ecef, b_ecef, root_ecef);
+      let tempDistance = navi_utils.pointToLine(pos_ecef, a_ecef, b_ecef, root_ecef);
       if (tempDistance < (diffLen || 0.1)) {
         if (intersctPosition) {
           navi_utils.transformECEFToGeographic(root_sphr, root_ecef);
@@ -2158,7 +2155,7 @@
       //todo:需要精细计算具体的距离
     };
     navi_utils.isPointOnLine = function (x, y, endx, endy, px, py) {
-      // var f = function(somex) {
+      // let f = function(somex) {
       //     return (endy - y) / (endx - x) * (somex - x) + y;
       // };
       // return Math.abs(f(px) - py) < 0 // tolerance, rounding errors
@@ -2186,11 +2183,11 @@
     };
 
     navi_utils.pointToLine = function (point, p1, p2, proot) {
-      var ans = 0;
-      var a, b, c;
-      var p_v1 = [0, 0, 0];
-      var p_v2 = [0, 0, 0];
-      var dir = [0, 0, 0];
+      let ans = 0;
+      let a, b, c;
+      let p_v1 = [0, 0, 0];
+      let p_v2 = [0, 0, 0];
+      let dir = [0, 0, 0];
 
       navi_utils.Vector3_sub(p_v1, point, p1);
       navi_utils.Vector3_sub(p_v2, point, p2);
@@ -2232,16 +2229,16 @@
         return ans;
       }
       // 组成锐角三角形，则求三角形的高
-      var p0 = (a + b + c) / 2; // 半周长
-      var s = Math.sqrt(p0 * (p0 - a) * (p0 - b) * (p0 - c)); // 海伦公式求面积
+      let p0 = (a + b + c) / 2; // 半周长
+      let s = Math.sqrt(p0 * (p0 - a) * (p0 - b) * (p0 - c)); // 海伦公式求面积
       ans = (2 * s) / a; // 返回点到线的距离（利用三角形面积公式求高）
 
       ///////////////////////////////////////////////////
-      //var A = (p1[1]-p2[1])/(p1[0]- p2[0]);
-      //var B = p1[1]-A*p1[1];
+      //let A = (p1[1]-p2[1])/(p1[0]- p2[0]);
+      //let B = p1[1]-A*p1[1];
       ///// > 0 = ax +b -y;  对应垂线方程为 -x -ay + m = 0;(mm为系数)
       ///// > A = a; B = b;
-      //var m = point[0] + A*point[1];
+      //let m = point[0] + A*point[1];
       //
       ///// 求两直线交点坐标
       //proot[0]=(m-A*B)/(A*A + 1);
@@ -2252,8 +2249,8 @@
     };
 
     navi_utils.point2line = function (p, p1, p2, Q) {
-      var a, b, c;
-      var A, B, C;
+      let a, b, c;
+      let A, B, C;
 
       a = p2[0] - p1[0];
       b = p2[1] - p1[1];
@@ -2268,7 +2265,7 @@
         Q[1] = (b * Q[0] - B) / a;
         Q[2] = (c * Q[0] - C) / a;
       } else {
-        var D, temp;
+        let D, temp;
         D = c * p1[1] - b * p1[2];
         temp = b * b + c * c;
         Q[1] = (A * b + D * c) / temp;
@@ -2279,10 +2276,10 @@
       return 1;
     };
     navi_utils.MillisecondToDate = function (msd, onsec, language) {
-      var time = parseFloat(msd) / 1000;
-      var sec = "",
+      let time = parseFloat(msd) / 1000;
+      let sec = "",
         addmin = 0;
-      var unitSec = window["langData"]["second"] || "秒",
+      let unitSec = window["langData"]["second"] || "秒",
         unitMinute = window["langData"]["minute"] || "分钟",
         unitHours = window["langData"]["hour"] || "小时";
       if (language == "En") {
@@ -2327,10 +2324,10 @@
     };
 
     navi_utils.slerp = function (retVal, a, b, t) {
-      var a_sphr = [a[0] * DEGREE_TO_RADIAN, a[1] * DEGREE_TO_RADIAN, earthRadius];
-      var b_sphr = [b[0] * DEGREE_TO_RADIAN, b[1] * DEGREE_TO_RADIAN, earthRadius];
-      var a_ecef = [0, 0, 0];
-      var b_ecef = [0, 0, 0];
+      let a_sphr = [a[0] * DEGREE_TO_RADIAN, a[1] * DEGREE_TO_RADIAN, earthRadius];
+      let b_sphr = [b[0] * DEGREE_TO_RADIAN, b[1] * DEGREE_TO_RADIAN, earthRadius];
+      let a_ecef = [0, 0, 0];
+      let b_ecef = [0, 0, 0];
       navi_utils.transformGeographicToECEF(a_ecef, a_sphr);
       navi_utils.transformGeographicToECEF(b_ecef, b_sphr);
 
@@ -2342,32 +2339,32 @@
     };
 
     navi_utils.calcCenterAndDistance = function (geometry, tilt) {
-      var minx = 99999999999;
-      var miny = 99999999999;
-      var maxx = -99999999999;
-      var maxy = -99999999999;
-      for (var i = 0; i < geometry.length; i++) {
+      let minx = 99999999999;
+      let miny = 99999999999;
+      let maxx = -99999999999;
+      let maxy = -99999999999;
+      for (let i = 0; i < geometry.length; i++) {
         minx = Math.min(minx, geometry[i].x);
         miny = Math.min(miny, geometry[i].y);
         maxx = Math.max(maxx, geometry[i].x);
         maxy = Math.max(maxy, geometry[i].y);
       }
-      var center_x = (maxx + minx) * 0.5;
-      var center_y = (maxy + miny) * 0.5;
-      var camera_viewportHeight = 2 * 1.5;
-      var camera_frustum_fovy = Math.PI * 0.25;
-      // var distance = Vector3.length(camera._position) - Ellipsoid.Radius;
-      var tempScale = Math.tan(camera_frustum_fovy * 0.5) / (camera_viewportHeight * 0.5);
+      let center_x = (maxx + minx) * 0.5;
+      let center_y = (maxy + miny) * 0.5;
+      let camera_viewportHeight = 2 * 1.5;
+      let camera_frustum_fovy = Math.PI * 0.25;
+      // let distance = Vector3.length(camera._position) - Ellipsoid.Radius;
+      let tempScale = Math.tan(camera_frustum_fovy * 0.5) / (camera_viewportHeight * 0.5);
       //maxTileWidth = 512 * tempScale * distance * scale * 0.8;
-      var maxTileWidth =
+      let maxTileWidth =
         navi_utils.getGeodeticCircleRadians(minx * DEGREE_TO_RADIAN, miny * DEGREE_TO_RADIAN, maxx * DEGREE_TO_RADIAN, maxy * DEGREE_TO_RADIAN) *
         earthRadius *
         0.5;
-      var distance = maxTileWidth / tempScale;
+      let distance = maxTileWidth / tempScale;
       distance = Math.max(50, Math.min(distance, 190));
-      var angel = -(geometry.angel + geometry.angel2);
+      let angel = -(geometry.angel + geometry.angel2);
 
-      var ret = { center_x: center_x, center_y: center_y, angel: angel, distance: distance };
+      let ret = { center_x: center_x, center_y: center_y, angel: angel, distance: distance };
 
       return ret;
 
@@ -2376,7 +2373,7 @@
       //center_x = center_x - 0.0001;
     };
 
-    var LLR_NOT_INTERSECT = 0,
+    let LLR_NOT_INTERSECT = 0,
       LLR_INTERSECT = 1,
       LLR_INTERSECT_POINT_A = 2,
       LLR_INTERSECT_POINT_B = 3,
@@ -2384,22 +2381,22 @@
       LLR_INTERSECT_POINT_D = 5;
 
     navi_utils.judgeSide = function (point_judge, section_point1, section_point2, epsilon) {
-      var line_vec = [section_point2[0] - section_point1[0], section_point2[1] - section_point1[1], 0];
+      let line_vec = [section_point2[0] - section_point1[0], section_point2[1] - section_point1[1], 0];
       navi_utils.Vector3_normalize(line_vec, line_vec);
 
-      var test_vec = [point_judge[0] - section_point1[0], point_judge[1] - section_point1[1], 0];
-      var length = navi_utils.Vector3_length(test_vec);
+      let test_vec = [point_judge[0] - section_point1[0], point_judge[1] - section_point1[1], 0];
+      let length = navi_utils.Vector3_length(test_vec);
       navi_utils.Vector3_normalize(test_vec, test_vec);
 
-      var val = Math.acos(navi_utils.Vector3_dot(line_vec, test_vec));
-      var dist = length * Math.sin(val);
+      let val = Math.acos(navi_utils.Vector3_dot(line_vec, test_vec));
+      let dist = length * Math.sin(val);
       if (dist < epsilon) {
         return 0;
       }
 
-      var cross = [0, 0, 0];
+      let cross = [0, 0, 0];
       navi_utils.Vector3_cross(cross, test_vec, line_vec);
-      var test_dot = navi_utils.Vector3_dot(cross, [0, 0, 1]);
+      let test_dot = navi_utils.Vector3_dot(cross, [0, 0, 1]);
       if (test_dot < 0) {
         return -1;
       }
@@ -2410,10 +2407,10 @@
     navi_utils.purifyGeometry = function (geometry, geometry_new) {
       if (geometry.length == 0) return 0;
       geometry_new.push(navi_utils.getVector(geometry, 0));
-      for (var kk = 0; kk < geometry.length - 1; kk++) {
-        var tempPt = navi_utils.getVector(geometry, kk); //geometry[i - 1];
-        var tempPt2 = navi_utils.getVector(geometry, kk + 1);
-        var distance = navi_utils.getGeodeticCircleDistance(tempPt, tempPt2);
+      for (let kk = 0; kk < geometry.length - 1; kk++) {
+        let tempPt = navi_utils.getVector(geometry, kk); //geometry[i - 1];
+        let tempPt2 = navi_utils.getVector(geometry, kk + 1);
+        let distance = navi_utils.getGeodeticCircleDistance(tempPt, tempPt2);
         if (distance > 0.1) {
           geometry_new.push(tempPt2);
         }
@@ -2426,10 +2423,10 @@
       geometry_new.total_length = 0;
       geometry_new[0].segment_length = 0;
       geometry_new[0].sequence_length = 0;
-      for (var kk = 0; kk < geometry_new.length - 1; kk++) {
-        var tempPt = geometry_new[kk]; //geometry[i - 1];
-        var tempPt2 = geometry_new[kk + 1];
-        var distance = navi_utils.getGeodeticCircleDistanceVector(tempPt, tempPt2);
+      for (let kk = 0; kk < geometry_new.length - 1; kk++) {
+        let tempPt = geometry_new[kk]; //geometry[i - 1];
+        let tempPt2 = geometry_new[kk + 1];
+        let distance = navi_utils.getGeodeticCircleDistanceVector(tempPt, tempPt2);
         geometry_new[kk + 1].segment_length = distance;
         geometry_new[kk + 1].sequence_length = geometry_new.total_length + distance;
         geometry_new.total_length += distance;
@@ -2438,25 +2435,25 @@
 
     navi_utils.calcGeometryLengthVector = function (geometry_new) {
       if (geometry_new.length == 0) return 0;
-      var totalLength = 0;
-      for (var kk = 0; kk < geometry_new.length - 1; kk++) {
-        var tempPt = geometry_new[kk]; //geometry[i - 1];
-        var tempPt2 = geometry_new[kk + 1];
+      let totalLength = 0;
+      for (let kk = 0; kk < geometry_new.length - 1; kk++) {
+        let tempPt = geometry_new[kk]; //geometry[i - 1];
+        let tempPt2 = geometry_new[kk + 1];
         totalLength += navi_utils.getGeodeticCircleDistanceVector(tempPt, tempPt2);
       }
       return totalLength;
     };
 
     navi_utils.getAngle = function (start, end) {
-      var diff_x = (end.x - start.x) * 100000,
+      let diff_x = (end.x - start.x) * 100000,
         diff_y = (end.y - start.y) * 100000;
-      var InvLength = 1 / Math.sqrt(diff_x * diff_x + diff_y * diff_y);
-      var vec2 = [diff_x * InvLength, diff_y * InvLength];
-      var vec1 = [0, 1];
+      let InvLength = 1 / Math.sqrt(diff_x * diff_x + diff_y * diff_y);
+      let vec2 = [diff_x * InvLength, diff_y * InvLength];
+      let vec1 = [0, 1];
 
       //navi_utils.Vector3_dot = function( vec1, vec2 ) {
-      var dotValue = vec1[0] * vec2[0] + vec1[1] * vec2[1];
-      var angle = (Math.acos(dotValue) / Math.PI) * 180;
+      let dotValue = vec1[0] * vec2[0] + vec1[1] * vec2[1];
+      let angle = (Math.acos(dotValue) / Math.PI) * 180;
 
       if (diff_x < 0) {
         angle = 360 - angle;
@@ -2464,20 +2461,20 @@
       return angle;
     };
     navi_utils.calcMectroPointLen = function (startPnt, endPnt) {
-      var x1 = startPnt[0] || startPnt.x;
-      var y1 = startPnt[1] || startPnt.y;
-      var x2 = endPnt[0] || endPnt.x;
-      var y2 = endPnt[1] || endPnt.y;
+      let x1 = startPnt[0] || startPnt.x;
+      let y1 = startPnt[1] || startPnt.y;
+      let x2 = endPnt[0] || endPnt.x;
+      let y2 = endPnt[1] || endPnt.y;
       return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     };
     navi_utils.getRadianAngle = function (startPnt, endPnt) {
-      var radianAngle;
-      var x1 = startPnt[0] || startPnt.x;
-      var y1 = startPnt[1] || startPnt.y;
-      var x2 = endPnt[0] || endPnt.x;
-      var y2 = endPnt[1] || endPnt.y;
-      var dis = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-      var angle = Math.acos(Math.abs(y2 - y1) / dis);
+      let radianAngle;
+      let x1 = startPnt[0] || startPnt.x;
+      let y1 = startPnt[1] || startPnt.y;
+      let x2 = endPnt[0] || endPnt.x;
+      let y2 = endPnt[1] || endPnt.y;
+      let dis = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+      let angle = Math.acos(Math.abs(y2 - y1) / dis);
       if (y2 >= y1 && x2 >= x1) radianAngle = angle;
       else if (y2 >= y1 && x2 < x1) radianAngle = P.Constants.TWO_PI - angle;
       else if (y2 < y1 && x2 < x1) radianAngle = Math.PI + angle;
@@ -2485,48 +2482,48 @@
       return radianAngle;
     };
     navi_utils.getMectroPointInAngleWidthDis = function (point, angle, dis) {
-      var dx = dis * Math.sin(angle);
-      var dy = dis * Math.cos(angle);
+      let dx = dis * Math.sin(angle);
+      let dy = dis * Math.cos(angle);
       return [point[0] + dx, point[1] + dy];
     };
     navi_utils.computeArrowPolygon = function (linePoints, lineWidth, arrowWidth, arrowHeight) {
-      var resultPoints = [linePoints[0]];
-      var rightPoints = [],
+      let resultPoints = [linePoints[0]];
+      let rightPoints = [],
         leftPoints = [];
       if (linePoints.length < 2) {
         return null;
       }
-      var halfLineWidth = lineWidth * 0.5;
-      var mectroPoints = [];
+      let halfLineWidth = lineWidth * 0.5;
+      let mectroPoints = [];
       linePoints.forEach(function (point) {
-        var p = avi_utils.lonLatToMectro(point);
+        let p = avi_utils.lonLatToMectro(point);
         mectroPoints.push([p.x, p.y]);
       });
       if (mectroPoints.length == 2) {
-        var angle = navi_utils.getRadianAngle(mectroPoints[0], mectroPoints[1]);
-        var dis = navi_utils.calcMectroPointLen(mectroPoints[0], mectroPoints[1]);
-        var bodyLen = dis;
+        let angle = navi_utils.getRadianAngle(mectroPoints[0], mectroPoints[1]);
+        let dis = navi_utils.calcMectroPointLen(mectroPoints[0], mectroPoints[1]);
+        let bodyLen = dis;
 
-        var angleRight = angle + HALF_PI;
-        var angleLeft = angle - HALF_PI;
+        let angleRight = angle + HALF_PI;
+        let angleLeft = angle - HALF_PI;
         rightPoints.push(navi_utils.getMectroPointInAngleWidthDis(mectroPoints[0], angleRight, halfLineWidth));
         leftPoints.unshift(navi_utils.getMectroPointInAngleWidthDis(mectroPoints[0], angleLeft, halfLineWidth));
         if (dis > arrowHeight) {
           bodyLen -= arrowHeight;
-          var arrowHeadStart = navi_utils.getMectroPointInAngleWidthDis(mectroPoints[0], angle, bodyLen);
+          let arrowHeadStart = navi_utils.getMectroPointInAngleWidthDis(mectroPoints[0], angle, bodyLen);
         }
       }
-      for (var i = 1; i < mectroPoints.length - 1; i++) {}
+      for (let i = 1; i < mectroPoints.length - 1; i++) {}
     };
     navi_utils.calcGeometrySegmentLength = function (geometry_new) {
       if (geometry_new.length == 0) return 0;
       geometry_new.total_length = 0;
       geometry_new[0].segment_length = 0;
       geometry_new[0].sequence_length = 0;
-      for (var kk = 0; kk < geometry_new.length - 1; kk++) {
-        var tempPt = geometry_new[kk]; //geometry[i - 1];
-        var tempPt2 = geometry_new[kk + 1];
-        var distance = navi_utils.getGeodeticCircleDistance(tempPt, tempPt2);
+      for (let kk = 0; kk < geometry_new.length - 1; kk++) {
+        let tempPt = geometry_new[kk]; //geometry[i - 1];
+        let tempPt2 = geometry_new[kk + 1];
+        let distance = navi_utils.getGeodeticCircleDistance(tempPt, tempPt2);
         geometry_new[kk + 1].segment_length = distance;
         geometry_new[kk + 1].sequence_length = geometry_new.total_length + distance;
         geometry_new.total_length += distance;
@@ -2537,11 +2534,11 @@
       if (geometryLine.length == 0) return 0;
       geometryLine[0].angel = 0;
       geometryLine[geometryLine.length - 1].angel = 0;
-      for (var i = 1; i < geometryLine.length - 1; i++) {
-        var A = geometryLine[i - 1];
-        var B = geometryLine[i];
-        var C = geometryLine[i + 1];
-        var angel = navi_utils.calcAngel(A, B, C);
+      for (let i = 1; i < geometryLine.length - 1; i++) {
+        let A = geometryLine[i - 1];
+        let B = geometryLine[i];
+        let C = geometryLine[i + 1];
+        let angel = navi_utils.calcAngel(A, B, C);
         geometryLine[i].angel = angel;
       }
       return geometryLine.length;
@@ -2549,8 +2546,8 @@
 
     //// relationship ////////////////////////////////////////////////////////
     navi_utils.lineLineIntersect = function (v1, v2, p1, p2, intersect_point, epsl) {
-      var p1_v1v2 = navi_utils.judgeSide(p1, v1, v2, epsl);
-      var p2_v1v2 = navi_utils.judgeSide(p2, v1, v2, epsl);
+      let p1_v1v2 = navi_utils.judgeSide(p1, v1, v2, epsl);
+      let p2_v1v2 = navi_utils.judgeSide(p2, v1, v2, epsl);
 
       if (p1_v1v2 == 0) {
         if (v1[0] != v2[0] && (p1[0] - v1[0]) * (p1[0] - v2[0]) > 0) {
@@ -2579,19 +2576,19 @@
         return LLR_NOT_INTERSECT;
       }
 
-      var v1_p1p2 = navi_utils.judgeSide(v1, p1, p2, epsl);
-      var v2_p1p2 = navi_utils.judgeSide(v2, p1, p2, epsl);
+      let v1_p1p2 = navi_utils.judgeSide(v1, p1, p2, epsl);
+      let v2_p1p2 = navi_utils.judgeSide(v2, p1, p2, epsl);
 
       if (v1_p1p2 == v2_p1p2) {
         return LLR_NOT_INTERSECT;
       }
 
-      var denom = (p2[1] - p1[1]) * (v2[0] - v1[0]) - (p2[0] - p1[0]) * (v2[1] - v1[1]);
-      var nume_a = (p2[0] - p1[0]) * (v1[1] - p1[1]) - (p2[1] - p1[1]) * (v1[0] - p1[0]);
-      var nume_b = (v2[0] - v1[0]) * (v1[1] - p1[1]) - (v2[1] - v1[1]) * (v1[0] - p1[0]);
+      let denom = (p2[1] - p1[1]) * (v2[0] - v1[0]) - (p2[0] - p1[0]) * (v2[1] - v1[1]);
+      let nume_a = (p2[0] - p1[0]) * (v1[1] - p1[1]) - (p2[1] - p1[1]) * (v1[0] - p1[0]);
+      let nume_b = (v2[0] - v1[0]) * (v1[1] - p1[1]) - (v2[1] - v1[1]) * (v1[0] - p1[0]);
 
-      var v_ua = nume_a / denom;
-      var v_ub = nume_b / denom;
+      let v_ua = nume_a / denom;
+      let v_ub = nume_b / denom;
 
       if (v1_p1p2 == 0) {
         intersect_point[0] = v1[0];
@@ -2613,15 +2610,15 @@
 
     navi_utils.segmentInterectPolygon = function (inSegment, polygon, ret) {
       // segment Is in polygon
-      var totalDistance = navi_utils.getGeodeticCircleDistanceVector(inSegment[0], inSegment[1]);
-      var point0 = { point: inSegment[0], type: 0, distance: 0 };
-      var point1 = { point: inSegment[1], type: 0, distance: totalDistance };
+      let totalDistance = navi_utils.getGeodeticCircleDistanceVector(inSegment[0], inSegment[1]);
+      let point0 = { point: inSegment[0], type: 0, distance: 0 };
+      let point1 = { point: inSegment[1], type: 0, distance: totalDistance };
 
-      var segment = [point0, point1];
-      var inCount = 0;
-      var ptNumSegment = segment.length;
-      var ptNumPolygon = polygon.length;
-      for (var i = 0; i < ptNumSegment; i++) {
+      let segment = [point0, point1];
+      let inCount = 0;
+      let ptNumSegment = segment.length;
+      let ptNumPolygon = polygon.length;
+      for (let i = 0; i < ptNumSegment; i++) {
         if (navi_utils.pointInPolygon(segment[i].point, polygon)) {
           inCount++;
           ret.pointInPolygon.push(segment[i]);
@@ -2633,19 +2630,19 @@
       }
 
       // if segment is intersect polygon, add segment[0] and intersect point;
-      var isinstersect = false;
-      for (var i = 1; i < ptNumSegment; i++) {
-        var vecLine1 = segment[i - 1];
-        var vecLine2 = segment[i];
-        for (var j = 0; j < ptNumPolygon; j++) {
-          var vecPoly1 = polygon[j];
-          var vecPoly2 = polygon[(j + 1) % ptNumPolygon];
-          var intersect_point = [0, 0, 0];
+      let isinstersect = false;
+      for (let i = 1; i < ptNumSegment; i++) {
+        let vecLine1 = segment[i - 1];
+        let vecLine2 = segment[i];
+        for (let j = 0; j < ptNumPolygon; j++) {
+          let vecPoly1 = polygon[j];
+          let vecPoly2 = polygon[(j + 1) % ptNumPolygon];
+          let intersect_point = [0, 0, 0];
 
-          var retVal = navi_utils.lineLineIntersect(vecLine1.point, vecLine2.point, vecPoly1, vecPoly2, intersect_point, 0.00000001);
+          let retVal = navi_utils.lineLineIntersect(vecLine1.point, vecLine2.point, vecPoly1, vecPoly2, intersect_point, 0.00000001);
           if (retVal !== 0) {
-            var distance = navi_utils.getGeodeticCircleDistanceVector(intersect_point, vecLine1.point);
-            var intersectPt = null;
+            let distance = navi_utils.getGeodeticCircleDistanceVector(intersect_point, vecLine1.point);
+            let intersectPt = null;
             if (distance < 0.1) {
               intersectPt = point0;
             } else if (Math.abs(distance - totalDistance) < 0.1) {
@@ -2675,12 +2672,12 @@
     };
 
     navi_utils.pointInPolygon = function (pos, polygon) {
-      var inside = false;
-      var polygonSize = polygon.length;
-      var val1, val2;
-      for (var i = 0; i < polygonSize; i++) {
-        var p1 = polygon[(i + polygonSize) % polygonSize];
-        var p2 = polygon[(i + 1 + polygonSize) % polygonSize];
+      let inside = false;
+      let polygonSize = polygon.length;
+      let val1, val2;
+      for (let i = 0; i < polygonSize; i++) {
+        let p1 = polygon[(i + polygonSize) % polygonSize];
+        let p2 = polygon[(i + 1 + polygonSize) % polygonSize];
         if (pos[1] < p2[1]) {
           if (pos[1] >= p1[1]) {
             val1 = (pos[1] - p1[1]) * (p2[0] - p1[0]);
@@ -2701,9 +2698,9 @@
     };
 
     function MapLatLonToXY(phi, lambda, lambda0, utmXY) {
-      var N, nu2, ep2, t, t2, l;
-      var l3coef, l4coef, l5coef, l6coef, l7coef, l8coef;
-      var tmp;
+      let N, nu2, ep2, t, t2, l;
+      let l3coef, l4coef, l5coef, l6coef, l7coef, l8coef;
+      let tmp;
 
       /* Precalculate ep2 */
       ep2 = (Math.pow(sm_a, 2.0) - Math.pow(sm_b, 2.0)) / Math.pow(sm_b, 2.0);
@@ -2747,7 +2744,7 @@
     }
 
     navi_utils.lonlatToUtmXY = function (lonLat, utmXY) {
-      var zone = parseInt(Math.floor((lonLat[0] + 180.0) / 6)) + 1;
+      let zone = parseInt(Math.floor((lonLat[0] + 180.0) / 6)) + 1;
       //MapLatLonToXY (DegToRad(lat), DegToRad(lon), UTMCentralMeridian(zone), xy);
       MapLatLonToXY(DegToRad(lonLat[1]), DegToRad(lonLat[0]), UTMCentralMeridian(zone), utmXY);
 
@@ -2757,11 +2754,11 @@
       if (utmXY[1] < 0.0) utmXY[1] += 10000000.0;
     };
     navi_utils.copyData = function (data) {
-      var str = JSON.stringify(data);
+      let str = JSON.stringify(data);
       return JSON.parse(str);
     };
     navi_utils.parseToJSON = function (marker) {
-      var markerInfo = {};
+      let markerInfo = {};
       markerInfo["id"] = marker.id;
       markerInfo["floorId"] = marker.floorId;
       markerInfo["floorName"] = marker.floorName;
@@ -2783,11 +2780,11 @@
       return markerInfo;
     };
     navi_utils.getRealFloorNumbyFloorId = function (floorId) {
-      var len = floorId.length;
-      var startIndex = len - 8;
-      var endIndex = len - 5;
-      var str1 = floorId.slice(startIndex + 1, endIndex);
-      var flabs = parseInt(str1),
+      let len = floorId.length;
+      let startIndex = len - 8;
+      let endIndex = len - 5;
+      let str1 = floorId.slice(startIndex + 1, endIndex);
+      let flabs = parseInt(str1),
         floorNum;
       if (floorId[startIndex] == "0") {
         floorNum = -flabs;
@@ -2796,22 +2793,22 @@
       }
       return floorNum;
     };
-    var P = {};
+    let P = {};
     P.Constants = {
       TWO_PI: Math.PI * 2,
       HALF_PI: Math.PI / 2,
       FITTING_COUNT: 100,
       ZERO_TOLERANCE: 0.0001,
     };
-    var PlotUtils = {};
+    let PlotUtils = {};
 
     PlotUtils.distance = function (pnt1, pnt2) {
       return Math.sqrt(Math.pow(pnt1[0] - pnt2[0], 2) + Math.pow(pnt1[1] - pnt2[1], 2));
     };
 
     PlotUtils.wholeDistance = function (points) {
-      var distance = 0;
-      for (var i = 0; i < points.length - 1; i++) distance += PlotUtils.distance(points[i], points[i + 1]);
+      let distance = 0;
+      for (let i = 0; i < points.length - 1; i++) distance += PlotUtils.distance(points[i], points[i + 1]);
       return distance;
     };
 
@@ -2825,22 +2822,22 @@
     };
 
     PlotUtils.getCircleCenterOfThreePoints = function (pnt1, pnt2, pnt3) {
-      var pntA = [(pnt1[0] + pnt2[0]) / 2, (pnt1[1] + pnt2[1]) / 2];
-      var pntB = [pntA[0] - pnt1[1] + pnt2[1], pntA[1] + pnt1[0] - pnt2[0]];
-      var pntC = [(pnt1[0] + pnt3[0]) / 2, (pnt1[1] + pnt3[1]) / 2];
-      var pntD = [pntC[0] - pnt1[1] + pnt3[1], pntC[1] + pnt1[0] - pnt3[0]];
+      let pntA = [(pnt1[0] + pnt2[0]) / 2, (pnt1[1] + pnt2[1]) / 2];
+      let pntB = [pntA[0] - pnt1[1] + pnt2[1], pntA[1] + pnt1[0] - pnt2[0]];
+      let pntC = [(pnt1[0] + pnt3[0]) / 2, (pnt1[1] + pnt3[1]) / 2];
+      let pntD = [pntC[0] - pnt1[1] + pnt3[1], pntC[1] + pnt1[0] - pnt3[0]];
       return PlotUtils.getIntersectPoint(pntA, pntB, pntC, pntD);
     };
 
     PlotUtils.getIntersectPoint = function (pntA, pntB, pntC, pntD) {
       if (pntA[1] == pntB[1]) {
-        var f = (pntD[0] - pntC[0]) / (pntD[1] - pntC[1]);
-        var x = f * (pntA[1] - pntC[1]) + pntC[0];
-        var y = pntA[1];
+        let f = (pntD[0] - pntC[0]) / (pntD[1] - pntC[1]);
+        let x = f * (pntA[1] - pntC[1]) + pntC[0];
+        let y = pntA[1];
         return [x, y];
       }
       if (pntC[1] == pntD[1]) {
-        var e = (pntB[0] - pntA[0]) / (pntB[1] - pntA[1]);
+        let e = (pntB[0] - pntA[0]) / (pntB[1] - pntA[1]);
         x = e * (pntC[1] - pntA[1]) + pntA[0];
         y = pntC[1];
         return [x, y];
@@ -2853,8 +2850,8 @@
     };
 
     PlotUtils.getAzimuth = function (startPnt, endPnt) {
-      var azimuth;
-      var angle = Math.asin(Math.abs(endPnt[1] - startPnt[1]) / PlotUtils.distance(startPnt, endPnt));
+      let azimuth;
+      let angle = Math.asin(Math.abs(endPnt[1] - startPnt[1]) / PlotUtils.distance(startPnt, endPnt));
       if (endPnt[1] >= startPnt[1] && endPnt[0] >= startPnt[0]) azimuth = angle + Math.PI;
       else if (endPnt[1] >= startPnt[1] && endPnt[0] < startPnt[0]) azimuth = P.Constants.TWO_PI - angle;
       else if (endPnt[1] < startPnt[1] && endPnt[0] < startPnt[0]) azimuth = angle;
@@ -2863,7 +2860,7 @@
     };
 
     PlotUtils.getAngleOfThreePoints = function (pntA, pntB, pntC) {
-      var angle = PlotUtils.getAzimuth(pntB, pntA) - PlotUtils.getAzimuth(pntB, pntC);
+      let angle = PlotUtils.getAzimuth(pntB, pntA) - PlotUtils.getAzimuth(pntB, pntC);
       return angle < 0 ? angle + P.Constants.TWO_PI : angle;
     };
 
@@ -2872,39 +2869,39 @@
     };
 
     PlotUtils.getPointOnLine = function (t, startPnt, endPnt) {
-      var x = startPnt[0] + t * (endPnt[0] - startPnt[0]);
-      var y = startPnt[1] + t * (endPnt[1] - startPnt[1]);
+      let x = startPnt[0] + t * (endPnt[0] - startPnt[0]);
+      let y = startPnt[1] + t * (endPnt[1] - startPnt[1]);
       return [x, y];
     };
 
     PlotUtils.getCubicValue = function (t, startPnt, cPnt1, cPnt2, endPnt) {
       t = Math.max(Math.min(t, 1), 0);
-      var tp = 1 - t;
-      var t2 = t * t;
-      var t3 = t2 * t;
-      var tp2 = tp * tp;
-      var tp3 = tp2 * tp;
-      var x = tp3 * startPnt[0] + 3 * tp2 * t * cPnt1[0] + 3 * tp * t2 * cPnt2[0] + t3 * endPnt[0];
-      var y = tp3 * startPnt[1] + 3 * tp2 * t * cPnt1[1] + 3 * tp * t2 * cPnt2[1] + t3 * endPnt[1];
+      let tp = 1 - t;
+      let t2 = t * t;
+      let t3 = t2 * t;
+      let tp2 = tp * tp;
+      let tp3 = tp2 * tp;
+      let x = tp3 * startPnt[0] + 3 * tp2 * t * cPnt1[0] + 3 * tp * t2 * cPnt2[0] + t3 * endPnt[0];
+      let y = tp3 * startPnt[1] + 3 * tp2 * t * cPnt1[1] + 3 * tp * t2 * cPnt2[1] + t3 * endPnt[1];
       return [x, y];
     };
 
     PlotUtils.getThirdPoint = function (startPnt, endPnt, angle, distance, clockWise) {
-      var azimuth = PlotUtils.getAzimuth(startPnt, endPnt);
-      var alpha = clockWise ? azimuth + angle : azimuth - angle;
-      var dx = distance * Math.cos(alpha);
-      var dy = distance * Math.sin(alpha);
+      let azimuth = PlotUtils.getAzimuth(startPnt, endPnt);
+      let alpha = clockWise ? azimuth + angle : azimuth - angle;
+      let dx = distance * Math.cos(alpha);
+      let dy = distance * Math.sin(alpha);
       return [endPnt[0] + dx, endPnt[1] + dy];
     };
 
     PlotUtils.getArcPoints = function (center, radius, startAngle, endAngle) {
-      var x,
+      let x,
         y,
         pnts = [];
-      var angleDiff = endAngle - startAngle;
+      let angleDiff = endAngle - startAngle;
       angleDiff = angleDiff < 0 ? angleDiff + P.Constants.TWO_PI : angleDiff;
-      for (var i = 0; i <= P.Constants.FITTING_COUNT; i++) {
-        var angle = startAngle + (angleDiff * i) / P.Constants.FITTING_COUNT;
+      for (let i = 0; i <= P.Constants.FITTING_COUNT; i++) {
+        let angle = startAngle + (angleDiff * i) / P.Constants.FITTING_COUNT;
         x = center[0] + radius * Math.cos(angle);
         y = center[1] + radius * Math.sin(angle);
         pnts.push([x, y]);
@@ -2913,22 +2910,22 @@
     };
 
     PlotUtils.getBisectorNormals = function (t, pnt1, pnt2, pnt3) {
-      var normal = PlotUtils.getNormal(pnt1, pnt2, pnt3);
-      var dist = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1]);
-      var uX = normal[0] / dist;
-      var uY = normal[1] / dist;
-      var d1 = PlotUtils.distance(pnt1, pnt2);
-      var d2 = PlotUtils.distance(pnt2, pnt3);
+      let normal = PlotUtils.getNormal(pnt1, pnt2, pnt3);
+      let dist = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1]);
+      let uX = normal[0] / dist;
+      let uY = normal[1] / dist;
+      let d1 = PlotUtils.distance(pnt1, pnt2);
+      let d2 = PlotUtils.distance(pnt2, pnt3);
       if (dist > P.Constants.ZERO_TOLERANCE) {
         if (PlotUtils.isClockWise(pnt1, pnt2, pnt3)) {
-          var dt = t * d1;
-          var x = pnt2[0] - dt * uY;
-          var y = pnt2[1] + dt * uX;
-          var bisectorNormalRight = [x, y];
+          let dt = t * d1;
+          let x = pnt2[0] - dt * uY;
+          let y = pnt2[1] + dt * uX;
+          let bisectorNormalRight = [x, y];
           dt = t * d2;
           x = pnt2[0] + dt * uY;
           y = pnt2[1] - dt * uX;
-          var bisectorNormalLeft = [x, y];
+          let bisectorNormalLeft = [x, y];
         } else {
           dt = t * d1;
           x = pnt2[0] + dt * uY;
@@ -2951,42 +2948,42 @@
     };
 
     PlotUtils.getNormal = function (pnt1, pnt2, pnt3) {
-      var dX1 = pnt1[0] - pnt2[0];
-      var dY1 = pnt1[1] - pnt2[1];
-      var d1 = Math.sqrt(dX1 * dX1 + dY1 * dY1);
+      let dX1 = pnt1[0] - pnt2[0];
+      let dY1 = pnt1[1] - pnt2[1];
+      let d1 = Math.sqrt(dX1 * dX1 + dY1 * dY1);
       dX1 /= d1;
       dY1 /= d1;
 
-      var dX2 = pnt3[0] - pnt2[0];
-      var dY2 = pnt3[1] - pnt2[1];
-      var d2 = Math.sqrt(dX2 * dX2 + dY2 * dY2);
+      let dX2 = pnt3[0] - pnt2[0];
+      let dY2 = pnt3[1] - pnt2[1];
+      let d2 = Math.sqrt(dX2 * dX2 + dY2 * dY2);
       dX2 /= d2;
       dY2 /= d2;
 
-      var uX = dX1 + dX2;
-      var uY = dY1 + dY2;
+      let uX = dX1 + dX2;
+      let uY = dY1 + dY2;
       return [uX, uY];
     };
 
     PlotUtils.getCurvePoints = function (t, controlPoints) {
-      var leftControl = PlotUtils.getLeftMostControlPoint(controlPoints);
-      var normals = [leftControl];
-      for (var i = 0; i < controlPoints.length - 2; i++) {
-        var pnt1 = controlPoints[i];
-        var pnt2 = controlPoints[i + 1];
-        var pnt3 = controlPoints[i + 2];
-        var normalPoints = PlotUtils.getBisectorNormals(t, pnt1, pnt2, pnt3);
+      let leftControl = PlotUtils.getLeftMostControlPoint(controlPoints);
+      let normals = [leftControl];
+      for (let i = 0; i < controlPoints.length - 2; i++) {
+        let pnt1 = controlPoints[i];
+        let pnt2 = controlPoints[i + 1];
+        let pnt3 = controlPoints[i + 2];
+        let normalPoints = PlotUtils.getBisectorNormals(t, pnt1, pnt2, pnt3);
         normals = normals.concat(normalPoints);
       }
-      var rightControl = PlotUtils.getRightMostControlPoint(controlPoints);
+      let rightControl = PlotUtils.getRightMostControlPoint(controlPoints);
       normals.push(rightControl);
-      var points = [];
+      let points = [];
       for (i = 0; i < controlPoints.length - 1; i++) {
         pnt1 = controlPoints[i];
         pnt2 = controlPoints[i + 1];
         points.push(pnt1);
-        for (var t = 0; t < P.Constants.FITTING_COUNT; t++) {
-          var pnt = PlotUtils.getCubicValue(t / P.Constants.FITTING_COUNT, pnt1, normals[i * 2], normals[i * 2 + 1], pnt2);
+        for (let t = 0; t < P.Constants.FITTING_COUNT; t++) {
+          let pnt = PlotUtils.getCubicValue(t / P.Constants.FITTING_COUNT, pnt1, normals[i * 2], normals[i * 2 + 1], pnt2);
           points.push(pnt);
         }
         points.push(pnt2);
@@ -2995,35 +2992,35 @@
     };
 
     PlotUtils.getLeftMostControlPoint = function (controlPoints) {
-      var pnt1 = controlPoints[0];
-      var pnt2 = controlPoints[1];
-      var pnt3 = controlPoints[2];
-      var pnts = PlotUtils.getBisectorNormals(0, pnt1, pnt2, pnt3);
-      var normalRight = pnts[0];
-      var normal = PlotUtils.getNormal(pnt1, pnt2, pnt3);
-      var dist = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1]);
+      let pnt1 = controlPoints[0];
+      let pnt2 = controlPoints[1];
+      let pnt3 = controlPoints[2];
+      let pnts = PlotUtils.getBisectorNormals(0, pnt1, pnt2, pnt3);
+      let normalRight = pnts[0];
+      let normal = PlotUtils.getNormal(pnt1, pnt2, pnt3);
+      let dist = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1]);
       if (dist > P.Constants.ZERO_TOLERANCE) {
-        var mid = PlotUtils.mid(pnt1, pnt2);
-        var pX = pnt1[0] - mid[0];
-        var pY = pnt1[1] - mid[1];
+        let mid = PlotUtils.mid(pnt1, pnt2);
+        let pX = pnt1[0] - mid[0];
+        let pY = pnt1[1] - mid[1];
 
-        var d1 = PlotUtils.distance(pnt1, pnt2);
+        let d1 = PlotUtils.distance(pnt1, pnt2);
         // normal at midpoint
-        var n = 2.0 / d1;
-        var nX = -n * pY;
-        var nY = n * pX;
+        let n = 2.0 / d1;
+        let nX = -n * pY;
+        let nY = n * pX;
 
         // upper triangle of symmetric transform matrix
-        var a11 = nX * nX - nY * nY;
-        var a12 = 2 * nX * nY;
-        var a22 = nY * nY - nX * nX;
+        let a11 = nX * nX - nY * nY;
+        let a12 = 2 * nX * nY;
+        let a22 = nY * nY - nX * nX;
 
-        var dX = normalRight[0] - mid[0];
-        var dY = normalRight[1] - mid[1];
+        let dX = normalRight[0] - mid[0];
+        let dY = normalRight[1] - mid[1];
 
         // coordinates of reflected vector
-        var controlX = mid[0] + a11 * dX + a12 * dY;
-        var controlY = mid[1] + a12 * dX + a22 * dY;
+        let controlX = mid[0] + a11 * dX + a12 * dY;
+        let controlY = mid[1] + a12 * dX + a22 * dY;
       } else {
         controlX = pnt1[0] + t * (pnt2[0] - pnt1[0]);
         controlY = pnt1[1] + t * (pnt2[1] - pnt1[1]);
@@ -3032,36 +3029,36 @@
     };
 
     PlotUtils.getRightMostControlPoint = function (controlPoints) {
-      var count = controlPoints.length;
-      var pnt1 = controlPoints[count - 3];
-      var pnt2 = controlPoints[count - 2];
-      var pnt3 = controlPoints[count - 1];
-      var pnts = PlotUtils.getBisectorNormals(0, pnt1, pnt2, pnt3);
-      var normalLeft = pnts[1];
-      var normal = PlotUtils.getNormal(pnt1, pnt2, pnt3);
-      var dist = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1]);
+      let count = controlPoints.length;
+      let pnt1 = controlPoints[count - 3];
+      let pnt2 = controlPoints[count - 2];
+      let pnt3 = controlPoints[count - 1];
+      let pnts = PlotUtils.getBisectorNormals(0, pnt1, pnt2, pnt3);
+      let normalLeft = pnts[1];
+      let normal = PlotUtils.getNormal(pnt1, pnt2, pnt3);
+      let dist = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1]);
       if (dist > P.Constants.ZERO_TOLERANCE) {
-        var mid = PlotUtils.mid(pnt2, pnt3);
-        var pX = pnt3[0] - mid[0];
-        var pY = pnt3[1] - mid[1];
+        let mid = PlotUtils.mid(pnt2, pnt3);
+        let pX = pnt3[0] - mid[0];
+        let pY = pnt3[1] - mid[1];
 
-        var d1 = PlotUtils.distance(pnt2, pnt3);
+        let d1 = PlotUtils.distance(pnt2, pnt3);
         // normal at midpoint
-        var n = 2.0 / d1;
-        var nX = -n * pY;
-        var nY = n * pX;
+        let n = 2.0 / d1;
+        let nX = -n * pY;
+        let nY = n * pX;
 
         // upper triangle of symmetric transform matrix
-        var a11 = nX * nX - nY * nY;
-        var a12 = 2 * nX * nY;
-        var a22 = nY * nY - nX * nX;
+        let a11 = nX * nX - nY * nY;
+        let a12 = 2 * nX * nY;
+        let a22 = nY * nY - nX * nX;
 
-        var dX = normalLeft[0] - mid[0];
-        var dY = normalLeft[1] - mid[1];
+        let dX = normalLeft[0] - mid[0];
+        let dY = normalLeft[1] - mid[1];
 
         // coordinates of reflected vector
-        var controlX = mid[0] + a11 * dX + a12 * dY;
-        var controlY = mid[1] + a12 * dX + a22 * dY;
+        let controlX = mid[0] + a11 * dX + a12 * dY;
+        let controlY = mid[1] + a12 * dX + a22 * dY;
       } else {
         controlX = pnt3[0] + t * (pnt2[0] - pnt3[0]);
         controlY = pnt3[1] + t * (pnt2[1] - pnt3[1]);
@@ -3072,14 +3069,14 @@
     PlotUtils.getBezierPoints = function (points) {
       if (points.length <= 2) return points;
 
-      var bezierPoints = [];
-      var n = points.length - 1;
-      for (var t = 0; t <= 1; t += 0.01) {
-        var x = (y = 0);
-        for (var index = 0; index <= n; index++) {
-          var factor = PlotUtils.getBinomialFactor(n, index);
-          var a = Math.pow(t, index);
-          var b = Math.pow(1 - t, n - index);
+      let bezierPoints = [];
+      let n = points.length - 1;
+      for (let t = 0; t <= 1; t += 0.01) {
+        let x = (y = 0);
+        for (let index = 0; index <= n; index++) {
+          let factor = PlotUtils.getBinomialFactor(n, index);
+          let a = Math.pow(t, index);
+          let b = Math.pow(1 - t, n - index);
           x += factor * a * b * points[index][0];
           y += factor * a * b * points[index][1];
         }
@@ -3099,24 +3096,24 @@
       if (n == 3) return 6;
       if (n == 4) return 24;
       if (n == 5) return 120;
-      var result = 1;
-      for (var i = 1; i <= n; i++) result *= i;
+      let result = 1;
+      for (let i = 1; i <= n; i++) result *= i;
       return result;
     };
 
     PlotUtils.getQBSplinePoints = function (points) {
       if (points.length <= 2) return points;
 
-      var n = 2;
+      let n = 2;
 
-      var bSplinePoints = [];
-      var m = points.length - n - 1;
+      let bSplinePoints = [];
+      let m = points.length - n - 1;
       bSplinePoints.push(points[0]);
-      for (var i = 0; i <= m; i++) {
-        for (var t = 0; t <= 1; t += 0.05) {
-          var x = (y = 0);
-          for (var k = 0; k <= n; k++) {
-            var factor = PlotUtils.getQuadricBSplineFactor(k, t);
+      for (let i = 0; i <= m; i++) {
+        for (let t = 0; t <= 1; t += 0.05) {
+          let x = (y = 0);
+          for (let k = 0; k <= n; k++) {
+            let factor = PlotUtils.getQuadricBSplineFactor(k, t);
             x += factor * points[i + k][0];
             y += factor * points[i + k][1];
           }
@@ -3138,8 +3135,8 @@
     return thisObject;
   })();
 
-  var DXPathUtils = (function () {
-    var DXPathUtils = {};
+  let DXPathUtils = (function () {
+    let DXPathUtils = {};
     /**
      * 智能拼接URL，支持参数编码控制，不修改baseURL
      * @param {string} baseURL - 基础URL
@@ -3237,10 +3234,10 @@
       }
 
       // 处理参数为数组或对象的情况
-      var orderedParams = [];
+      let orderedParams = [];
       if (Array.isArray(options)) {
         orderedParams = options.map(function (item) {
-          var key = Object.keys(item)[0];
+          let key = Object.keys(item)[0];
           return { key: key, value: item[key] };
         });
       } else {
@@ -3252,24 +3249,24 @@
       // 解析基础URL，但不修改它
 
       if (baseURL.indexOf("://") != -1) {
-        var urlObj = new URL(baseURL);
-        var pathSegments = urlObj.pathname.split("/")["filter"](function (segment) {
+        let urlObj = new URL(baseURL);
+        let pathSegments = urlObj.pathname.split("/")["filter"](function (segment) {
           return segment !== "";
         });
-        var isStaticPath = baseURL["endsWith"]("/");
+        let isStaticPath = baseURL["endsWith"]("/");
       } else {
         return baseURL;
       }
 
       // 过滤已存在的参数值并应用编码
-      var filteredParams = orderedParams
+      let filteredParams = orderedParams
         .filter(function (param) {
           if (param.value == undefined) return false;
-          var valueStr = String(param.value);
+          let valueStr = String(param.value);
           return !(pathSegments["includes"](encodeURIComponent(valueStr)) || pathSegments["includes"](valueStr));
         })
         .map(function (param) {
-          var value = String(param.value);
+          let value = String(param.value);
           return {
             key: param.key,
             value: encode ? encodeURIComponent(value) : value,
@@ -3278,13 +3275,13 @@
 
       if (isStaticPath) {
         // 静态路径模式：/param1/param2/...
-        var staticPath = baseURL;
+        let staticPath = baseURL;
         // 确保路径不以双斜杠结尾（除非baseURL本身就是这样）
         if (!staticPath["endsWith"]("/")) staticPath += "/";
 
         // 按顺序添加参数值
 
-        for (var i = 0; i < filteredParams.length; i++) {
+        for (let i = 0; i < filteredParams.length; i++) {
           staticPath += filteredParams[i].value + "/";
         }
 
@@ -3293,26 +3290,26 @@
         // 查询参数模式：?param1=value1&param2=value2
         if (encode) {
           // 手动构建查询字符串，避免双重编码
-          var queryString = filteredParams.map(function (param) {
+          let queryString = filteredParams.map(function (param) {
             return param.key + "=" + param.value;
           });
 
           // 如果baseURL已有查询参数，合并它们
-          var baseQuery = baseURL.split("?")[1] || "";
-          var fullQuery = [baseQuery, queryString].filter(Boolean).join("&");
+          let baseQuery = baseURL.split("?")[1] || "";
+          let fullQuery = [baseQuery, queryString].filter(Boolean).join("&");
 
           return fullQuery ? baseURL.split("?")[0] + "?" + fullQuery : baseURL;
         } else {
           // 使用URLSearchParams自动编码
-          var queryParams = new URLSearchParams();
+          let queryParams = new URLSearchParams();
 
           // 按顺序添加参数
-          for (var j = 0; j < filteredParams.length; j++) {
+          for (let j = 0; j < filteredParams.length; j++) {
             queryParams.append(filteredParams[j].key, filteredParams[j].value);
           }
 
           // 合并原有查询参数
-          var existingParams = new URLSearchParams(urlObj.search);
+          let existingParams = new URLSearchParams(urlObj.search);
           existingParams.forEach(function (value, key) {
             if (!queryParams.has(key)) {
               queryParams.append(key, value);
@@ -3325,11 +3322,11 @@
     }
 
     function replaceUrlValues(baseUrl, options) {
-      var result = baseUrl;
+      let result = baseUrl;
       Object.keys(options).forEach(function (key) {
-        var value = options[key];
+        let value = options[key];
         // 使用正则表达式全局替换，但确保只替换完整路径段
-        var regex = new RegExp("(^|/|\\?)" + escapeRegExp(key) + "($|/|&)");
+        let regex = new RegExp("(^|/|\\?)" + escapeRegExp(key) + "($|/|&)");
         result = result.replace(regex, "$1" + value + "$2");
       });
       return result;
@@ -3351,8 +3348,8 @@
     }
 
     function normalizeDataPath(options) {
-      var dataPathUrl = options["dataPath"] || options["mapDataPath"] || "/data/{{token}}/{{bdid}}/";
-      var replaceOptions = {};
+      let dataPathUrl = options["dataPath"] || options["mapDataPath"] || "/data/{{token}}/{{bdid}}/";
+      let replaceOptions = {};
       replaceOptions[options["token"]] = "{{token}}";
       if (options["bdid"]) {
         replaceOptions[options["bdid"]] = "{{bdid}}";
@@ -3363,8 +3360,8 @@
       // }else{
       //     replaceOptions["{{bdid}}"] = "appConfig";
       // }
-      var replacedUrl = replaceUrlValues(dataPathUrl, replaceOptions);
-      var ret = buildUrl(replacedUrl, [{ token: "{{token}}" }, { bdid: "{{bdid}}" }]);
+      let replacedUrl = replaceUrlValues(dataPathUrl, replaceOptions);
+      let ret = buildUrl(replacedUrl, [{ token: "{{token}}" }, { bdid: "{{bdid}}" }]);
       ret = decodeURIComponent(ret);
       return ret;
     }
@@ -3382,13 +3379,13 @@
 
     function getAppDataUrl(baseUrl, options) {
       console.log(options);
-      var dataPathUrl = "";
-      var fileName = options["version"] == "v2" ? "bdlist.json" : "map.json";
+      let dataPathUrl = "";
+      let fileName = options["version"] == "v2" ? "bdlist.json" : "map.json";
       if (dataPathUrl.indexOf("{{filename}}") != -1) {
         ("");
         dataPathUrl = baseUrl.replace("{{filename}}", fileName);
       } else {
-        var isStaticPath = baseUrl["endsWith"]("/");
+        let isStaticPath = baseUrl["endsWith"]("/");
         dataPathUrl = baseUrl;
         if (isStaticPath) {
           dataPathUrl = assignUrlParams(baseUrl, { bdid: "appConfig" });
@@ -3402,13 +3399,13 @@
 
     function getMapDataUrl(baseUrl, options) {
       console.log(options);
-      var dataPathUrl = "";
-      var fileName = options["version"] == "v2" ? "bdlist.json" : "map.json";
+      let dataPathUrl = "";
+      let fileName = options["version"] == "v2" ? "bdlist.json" : "map.json";
       if (dataPathUrl.indexOf("{{filename}}") != -1) {
         ("");
         dataPathUrl = baseUrl.replace("{{filename}}", fileName);
       } else {
-        var isStaticPath = baseUrl["endsWith"]("/");
+        let isStaticPath = baseUrl["endsWith"]("/");
         dataPathUrl = baseUrl;
         if (isStaticPath) {
           dataPathUrl = assignUrlParams(baseUrl, { bdid: options.buildingId });
@@ -3432,7 +3429,7 @@
    */
   (function (window) {
     // 工具函数
-    var util = {
+    let util = {
       // 类型检测
       isFunction: function (obj) {
         return typeof obj == "function";
@@ -3452,9 +3449,9 @@
 
       // 合并对象
       extend: function (target) {
-        for (var i = 1; i < arguments.length; i++) {
-          var source = arguments[i];
-          for (var key in source) {
+        for (let i = 1; i < arguments.length; i++) {
+          let source = arguments[i];
+          for (let key in source) {
             if (source.hasOwnProperty(key)) {
               target[key] = source[key];
             }
@@ -3478,8 +3475,8 @@
 
     // 核心构造函数
     function Z(dom) {
-      var len = dom ? dom.length : 0;
-      for (var i = 0; i < len; i++) {
+      let len = dom ? dom.length : 0;
+      for (let i = 0; i < len; i++) {
         this[i] = dom[i];
       }
       this.length = len;
@@ -3503,7 +3500,7 @@
       }
 
       // 选择DOM元素
-      var elements;
+      let elements;
       if (util.isString(selector)) {
         elements = document.querySelectorAll(selector);
       }
@@ -3512,12 +3509,12 @@
     }
 
     // 动画相关工具函数
-    var animationUtil = {
+    let animationUtil = {
       // 生成动画样式
       generateAnimationStyles: function (params) {
-        var duration = params.duration || 300; // 默认300ms
-        var easing = params.easing || "ease"; // 默认缓动函数
-        var delay = params.delay || 0; // 默认无延迟
+        let duration = params.duration || 300; // 默认300ms
+        let easing = params.easing || "ease"; // 默认缓动函数
+        let delay = params.delay || 0; // 默认无延迟
 
         return {
           transition: "all " + duration + "ms " + easing + " " + delay + "ms",
@@ -3527,10 +3524,10 @@
 
       // 绑定过渡结束事件
       bindTransitionEnd: function (element, callback) {
-        var endEvents = ["transitionend", "webkitTransitionEnd", "oTransitionEnd", "MSTransitionEnd"];
+        let endEvents = ["transitionend", "webkitTransitionEnd", "oTransitionEnd", "MSTransitionEnd"];
 
-        var handler = function (e) {
-          for (var i = 0; i < endEvents.length; i++) {
+        let handler = function (e) {
+          for (let i = 0; i < endEvents.length; i++) {
             element.removeEventListener(endEvents[i], handler);
           }
           if (util.isFunction(callback)) {
@@ -3538,7 +3535,7 @@
           }
         };
 
-        for (var i = 0; i < endEvents.length; i++) {
+        for (let i = 0; i < endEvents.length; i++) {
           element.addEventListener(endEvents[i], handler, false);
         }
       },
@@ -3551,7 +3548,7 @@
         if (document.readyState == "complete") {
           callback(DXDomUtil);
         } else {
-          var self = this;
+          let self = this;
           document.addEventListener(
             "DOMContentLoaded",
             function () {
@@ -3581,7 +3578,7 @@
 
       // 触发事件
       trigger: function (event) {
-        var evt = document.createEvent("HTMLEvents");
+        let evt = document.createEvent("HTMLEvents");
         evt.initEvent(event, true, true);
         this.each(function (element) {
           element.dispatchEvent(evt);
@@ -3591,7 +3588,7 @@
 
       // 遍历元素
       each: function (callback) {
-        for (var i = 0; i < this.length; i++) {
+        for (let i = 0; i < this.length; i++) {
           callback.call(this[i], this[i], i);
         }
         return this;
@@ -3665,8 +3662,8 @@
         if (value == undefined) {
           return this[0] ? getComputedStyle(this[0])[util.camelCase(prop)] : null;
         }
-        var camelProp = util.camelCase(prop);
-        var unitValue = value;
+        let camelProp = util.camelCase(prop);
+        let unitValue = value;
         if (util.isNumeric(value) && ["opacity", "zIndex", "fontWeight"].indexOf(camelProp) == -1) {
           unitValue = value + "px";
         }
@@ -3687,9 +3684,9 @@
 
       // 查找子元素
       find: function (selector) {
-        var elements = [];
+        let elements = [];
         this.each(function (element) {
-          var found = element.querySelectorAll(selector);
+          let found = element.querySelectorAll(selector);
           elements = elements.concat(util.toArray(found));
         });
         return new Z(elements);
@@ -3697,7 +3694,7 @@
 
       // 获取父元素
       parent: function () {
-        var parents = [];
+        let parents = [];
         this.each(function (element) {
           if (element.parentNode && parents.indexOf(element.parentNode) == -1) {
             parents.push(element.parentNode);
@@ -3723,17 +3720,17 @@
           options = {};
         }
         options = options || {};
-        var self = this;
+        let self = this;
 
         // 为每个元素应用动画
         this.each(function (element, index) {
           // 保存原始过渡样式
-          var originalTransition = element.style.transition || "";
-          var originalWebkitTransition = element.style.webkitTransition || "";
+          let originalTransition = element.style.transition || "";
+          let originalWebkitTransition = element.style.webkitTransition || "";
 
           // 应用动画样式
-          var animationStyles = animationUtil.generateAnimationStyles(options);
-          for (var prop in animationStyles) {
+          let animationStyles = animationUtil.generateAnimationStyles(options);
+          for (let prop in animationStyles) {
             if (animationStyles.hasOwnProperty(prop)) {
               element.style[prop] = animationStyles[prop];
             }
@@ -3753,10 +3750,10 @@
 
           // 应用目标样式（触发过渡）
           setTimeout(function () {
-            for (var prop in properties) {
+            for (let prop in properties) {
               if (properties.hasOwnProperty(prop)) {
-                var camelProp = util.camelCase(prop);
-                var value = properties[prop];
+                let camelProp = util.camelCase(prop);
+                let value = properties[prop];
                 if (util.isNumeric(value) && ["opacity", "zIndex", "fontWeight"].indexOf(camelProp) == -1) {
                   element.style[camelProp] = value + "px";
                 } else {
@@ -3772,10 +3769,10 @@
 
       // 显示元素（带动画）
       show: function (duration, callback) {
-        var self = this;
+        let self = this;
         return this.each(function (element) {
           // 保存原始display值
-          var originalDisplay = element.getAttribute("data-original-display") || "block";
+          let originalDisplay = element.getAttribute("data-original-display") || "block";
 
           // 如果有持续时间，使用动画
           if (duration) {
@@ -3792,11 +3789,11 @@
 
       // 隐藏元素（带动画）
       hide: function (duration, callback) {
-        var self = this;
+        let self = this;
         return this.each(function (element) {
           // 保存当前display值
           if (!element.getAttribute("data-original-display")) {
-            var currentDisplay = getComputedStyle(element).display;
+            let currentDisplay = getComputedStyle(element).display;
             if (currentDisplay !== "none") {
               element.setAttribute("data-original-display", currentDisplay);
             }
@@ -3840,7 +3837,7 @@
 
     // AJAX功能
     DXDomUtil.ajax = function (options) {
-      var settings = util.extend(
+      let settings = util.extend(
         {
           url: "",
           method: "GET",
@@ -3855,11 +3852,11 @@
         options
       );
 
-      var xhr = new XMLHttpRequest();
+      let xhr = new XMLHttpRequest();
       xhr.open(settings.method, settings.url, true);
 
       // 设置请求头
-      for (var key in settings.headers) {
+      for (let key in settings.headers) {
         if (settings.headers.hasOwnProperty(key)) {
           xhr.setRequestHeader(key, settings.headers[key]);
         }
@@ -3867,7 +3864,7 @@
 
       xhr.onload = function () {
         if (xhr.status >= 200 && xhr.status < 300) {
-          var response = xhr.responseText;
+          let response = xhr.responseText;
           if (settings.dataType == "json") {
             try {
               response = JSON.parse(response);
@@ -3886,10 +3883,10 @@
       };
 
       // 处理数据
-      var data = settings.data;
+      let data = settings.data;
       if (data && typeof data == "object") {
-        var dataArr = [];
-        for (var key in data) {
+        let dataArr = [];
+        for (let key in data) {
           if (data.hasOwnProperty(key)) {
             dataArr.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
           }
@@ -3927,7 +3924,7 @@
   // DXMapUtils.domUtil
   //////////////////////////////////////////////////////////////
   DXMapUtils.domUtil = (function () {
-    var thisObject = {};
+    let thisObject = {};
     thisObject.notices = [];
     thisObject.dialogInstances = [];
     thisObject.dialogWithModalInstances = [];
@@ -3938,17 +3935,17 @@
      * @returns
      */
     thisObject.createDom = function (params, parentNode) {
-      var tagName = params["tagName"];
-      var attrs = params["attrs"];
-      var children = params["children"];
-      var text = params["text"];
-      var dom = document.createElement(tagName);
-      var events = params["events"];
-      for (var key in attrs) {
+      let tagName = params["tagName"];
+      let attrs = params["attrs"];
+      let children = params["children"];
+      let text = params["text"];
+      let dom = document.createElement(tagName);
+      let events = params["events"];
+      for (let key in attrs) {
         dom.setAttribute(key, attrs[key]);
       }
       if (text) {
-        var textNode = document.createTextNode(text);
+        let textNode = document.createTextNode(text);
         dom.appendChild(textNode);
       }
       if (children) {
@@ -3971,9 +3968,9 @@
       return dom;
     };
     thisObject.createLoading = function () {
-      var that = {};
-      var domBody = document.body;
-      var parentStyle =
+      let that = {};
+      let domBody = document.body;
+      let parentStyle =
         "background: rgb(0,0,0,0.8);position: absolute;top: 0px;bottom: 0px;left: 0px;right: 0px;z-index: 999;padding: 0px;margin: 0px;text-align: center;";
       that.dom = thisObject.createDom(
         {
@@ -4015,27 +4012,27 @@
     };
 
     thisObject.tipNotice = function (text, showTime, closeCallback, styleOptions) {
-      // var domId = "notice"+(new Date().getTime()%10000);
-      var that = {};
-      //var domStr = '<p class="toice"><span class="content">'+text+'</span></p>';
-      var domBody = document.body;
-      var style = "position:absolute;z-index:20;margin:0 auto;bottom:50%;width:100%;text-align: center;";
+      // let domId = "notice"+(new Date().getTime()%10000);
+      let that = {};
+      //let domStr = '<p class="toice"><span class="content">'+text+'</span></p>';
+      let domBody = document.body;
+      let style = "position:absolute;z-index:20;margin:0 auto;bottom:50%;width:100%;text-align: center;";
       if (styleOptions) {
-        for (var key in styleOptions) {
+        for (let key in styleOptions) {
           if (key != "subStyle") {
             style += key + ":" + styleOptions[key] + ";";
           }
         }
       }
-      var subSytle = { color: "rgb(110,110,110)", "background-color": "rgba(255,255,255,0.8)" };
-      var subStyleStr = "";
+      let subSytle = { color: "rgb(110,110,110)", "background-color": "rgba(255,255,255,0.8)" };
+      let subStyleStr = "";
       if (styleOptions && styleOptions["subStyle"]) {
-        var _subStyle = styleOptions["subStyle"];
-        for (var key2 in _subStyle) {
+        let _subStyle = styleOptions["subStyle"];
+        for (let key2 in _subStyle) {
           subSytle[key2] = _subStyle[key2];
         }
       }
-      for (var key in subSytle) {
+      for (let key in subSytle) {
         subStyleStr += key + ":" + subSytle[key] + ";";
       }
 
@@ -4096,13 +4093,13 @@
     thisObject.createMessageDom = function (text, styleOptions, closeCB, extendChildren, parentDom) {
       parentDom = parentDom || document.body;
       //padding: 15px 10px;
-      var style = "position:absolute;z-index:100;margin:0 auto;bottom:40%;width:100%;text-align: center;z-index: 100; font-size: 1.5rem;";
+      let style = "position:absolute;z-index:100;margin:0 auto;bottom:40%;width:100%;text-align: center;z-index: 100; font-size: 1.5rem;";
       if (styleOptions) {
-        for (var key in styleOptions) {
+        for (let key in styleOptions) {
           style += key + ":" + styleOptions[key] + ";";
         }
       }
-      var domArr = [
+      let domArr = [
         {
           tagName: "span",
           attrs: {
@@ -4141,7 +4138,7 @@
       } else if (extendChildren) {
         domArr.push(extendChildren);
       }
-      var dom = thisObject.createDom(
+      let dom = thisObject.createDom(
         {
           tagName: "div",
           attrs: {
@@ -4166,8 +4163,8 @@
     };
 
     thisObject.tipMessage = function (text, showTime, closeCallback, styleOptions) {
-      var that = {};
-      // var domBody = document.body;
+      let that = {};
+      // let domBody = document.body;
       that.dom = thisObject.createMessageDom(text, styleOptions, function () {
         closeCallback && closeCallback();
         clearTimeout(that.timer);
@@ -4196,13 +4193,13 @@
       }
     };
     thisObject.geneDialogdom = function (params, domBody, that, parentDom) {
-      var text = params["text"],
+      let text = params["text"],
         confirmCB = params["confirmCB"],
         cancelCB = params["cancelCB"],
         cancelBtnText = params["btn1"] || "",
         comfirmBtnText = params["btn2"] || "确定",
         styleOptions = params["style"];
-      var contentInfo = {
+      let contentInfo = {
         tagName: "p",
         attrs: {
           class: "",
@@ -4211,7 +4208,7 @@
         children: [],
       };
       if (cancelBtnText) {
-        var cancelContent = {
+        let cancelContent = {
           tagName: "span",
           text: cancelBtnText,
           attrs: {
@@ -4231,7 +4228,7 @@
         contentInfo["children"].push(cancelContent);
       }
       if (confirmCB || params["btn2"]) {
-        var comfirmContent = {
+        let comfirmContent = {
           tagName: "span",
           text: comfirmBtnText,
           attrs: {
@@ -4262,8 +4259,8 @@
       return thisObject.createMessageDom(text, styleOptions, cancelCB, contentInfo, domBody);
     };
     thisObject.dialog = function (params) {
-      var that = {};
-      var domBody = document.body;
+      let that = {};
+      let domBody = document.body;
 
       that.dom = thisObject.geneDialogdom(params, domBody, that, domBody);
 
@@ -4280,9 +4277,9 @@
       };
     };
     thisObject.creatDom = function (domString) {
-      var domTips = document.getElementById("domTips");
+      let domTips = document.getElementById("domTips");
       if (!domTips) {
-        var dom = document.createElement("div");
+        let dom = document.createElement("div");
         dom.id = "domTips";
         dom.style = "width:100%;height:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px;background:rgba(0,0,0,0.5);z-index: 100;";
         dom.innerHTML = domString;
@@ -4292,7 +4289,7 @@
       return domTips;
     };
     thisObject.tipDomMessage = function (domString) {
-      var that = {};
+      let that = {};
       that.dom = thisObject.creatDom(domString);
       that.domDisplay = getComputedStyle(that.dom)["display"];
       that.show = function () {
@@ -4311,9 +4308,9 @@
       return that;
     };
     thisObject.dialogWithModal = function (params) {
-      var that = {};
-      var domBody = document.body;
-      var wrapper = {
+      let that = {};
+      let domBody = document.body;
+      let wrapper = {
         tagName: "div",
         attrs: {
           class: "wrapper",
@@ -4336,12 +4333,12 @@
       };
     };
     thisObject.createListView = function (params, parentDom, update) {
-      var confirmCB = params["confirmCB"],
+      let confirmCB = params["confirmCB"],
         cancelCB = params["cancelCB"],
         onItemSelected = params["onItemSelected"];
-      var list = params["list"];
+      let list = params["list"];
       styleOptions = params["style"];
-      var contentInfo = {
+      let contentInfo = {
         tagName: "ul",
         attrs: {
           class: "component_list",
@@ -4351,7 +4348,7 @@
         children: [],
       };
       list.forEach(function (item) {
-        var itemDom = {
+        let itemDom = {
           tagName: "li",
           attrs: {
             class: "component_item",
@@ -4367,14 +4364,14 @@
             },
           ],
         };
-        for (var key in item) {
+        for (let key in item) {
           if (item[key] != undefined && key != "text") {
             itemDom["attrs"]["data" + "-" + key] = item[key];
           }
         }
         contentInfo["children"].push(itemDom);
       });
-      var wrapperInfo = {
+      let wrapperInfo = {
         tagName: "div",
         attrs: {
           class: "content",
@@ -4389,9 +4386,9 @@
       }
     };
     thisObject.listViewWithModal = function (params) {
-      var that = {};
-      var domBody = document.body;
-      var wrapper = {
+      let that = {};
+      let domBody = document.body;
+      let wrapper = {
         tagName: "div",
         attrs: {
           class: "wrapper",
@@ -4447,8 +4444,8 @@
   //////////////////////////////////////////////////////////////
   // DXDownloader
   //////////////////////////////////////////////////////////////
-  var DXDownloader = function (map) {
-    var proto = DXDownloader.prototype;
+  let DXDownloader = function (map) {
+    let proto = DXDownloader.prototype;
     proto["getData"] = function (url, method, dataType, data, successCB, errorCB, func) {
       return DXMapUtils.getData(url, data, dataType, successCB, errorCB, func); //
       // DXMapUtils.getDataBySecurityRequest(url, method, data, successCB, errorCB, func);
@@ -4471,8 +4468,8 @@
   //////////////////////////////////////////////////////////////
   // MapSearch
   //////////////////////////////////////////////////////////////
-  var MapSearch = function (options) {
-    var thisObject = this;
+  let MapSearch = function (options) {
+    let thisObject = this;
     options = options || {};
 
     thisObject._token = options.token || daximap["token"] || "";
@@ -4481,27 +4478,27 @@
     thisObject.count = 0;
     thisObject.result = 0;
 
-    var proto = MapSearch.prototype;
+    let proto = MapSearch.prototype;
     thisObject.request = DXMapUtils.getHttpObject();
     proto["query"] = function (options, successCB, failedCB) {
-      // var url = options["url"] || "http://123.206.49.147/query/search-query-v4/user/s";//"https://map1a.daxicn.com/daxi/query/search-query-v4/user/s";;
-      var url = options["url"] || thisObject._defaultUrl;
-      var token = options["token"] || thisObject._token;
-      var bdid = options["bdid"];
-      // var arealType = options["arealType"] || "indoor";
-      var keyword = options["keyword"];
-      var featureIds = options["featureIds"];
-      var lon = options["lon"];
-      var lat = options["lat"];
-      var ct = options["count"] || 200;
-      var floorId = options["floorId"] || "";
-      var type = options["type"];
-      var circle = options["circle"];
-      var radius = options["radius"];
-      var textarraycount = options["textarraycount"];
+      // let url = options["url"] || "http://123.206.49.147/query/search-query-v4/user/s";//"https://map1a.daxicn.com/daxi/query/search-query-v4/user/s";;
+      let url = options["url"] || thisObject._defaultUrl;
+      let token = options["token"] || thisObject._token;
+      let bdid = options["bdid"];
+      // let arealType = options["arealType"] || "indoor";
+      let keyword = options["keyword"];
+      let featureIds = options["featureIds"];
+      let lon = options["lon"];
+      let lat = options["lat"];
+      let ct = options["count"] || 200;
+      let floorId = options["floorId"] || "";
+      let type = options["type"];
+      let circle = options["circle"];
+      let radius = options["radius"];
+      let textarraycount = options["textarraycount"];
       // 搜索参数
 
-      var searchOptions = { token: token, ct: ct };
+      let searchOptions = { token: token, ct: ct };
       searchOptions["bdid"] = bdid;
       if (floorId) {
         searchOptions["flid"] = floorId;
@@ -4546,14 +4543,14 @@
         searchOptions["types"] = options["types"];
       }
       this.count++;
-      // var myPositionInfo = options["myPositionInfo"];
+      // let myPositionInfo = options["myPositionInfo"];
 
       this._sendQuery(
         url,
         searchOptions,
         true,
         function (data) {
-          var result;
+          let result;
           if (typeof data == "string") {
             if (data == "") {
               result = [];
@@ -4565,9 +4562,9 @@
           }
           if (result && result.length && !options["hideDis"]) {
             result.forEach(function (item) {
-              var distance = item["distance"];
+              let distance = item["distance"];
               if (!options["showRawDis"] && options["myPositionInfo"] && options["myPositionInfo"]["position"][0]) {
-                var distance = ~~DXMapUtils["naviMath"].getGeodeticCircleDistance(
+                let distance = ~~DXMapUtils["naviMath"].getGeodeticCircleDistance(
                   { x: item["lon"], y: item["lat"] },
                   { x: options["myPositionInfo"]["position"][0], y: options["myPositionInfo"]["position"][1] }
                 );
@@ -4575,7 +4572,7 @@
                 item["distanceDes"] = distanceDes;
               } else {
                 if (distance && searchOptions["location"]) {
-                  var distanceDes = "";
+                  let distanceDes = "";
                   if (typeof distance == "number" || typeof distance == "string") {
                     distanceDes = DXMapUtils.distanceToText(distance);
                   } else if (typeof distance == "object" && distance["distance"] != undefined) {
@@ -4618,13 +4615,13 @@
           }
         };
         this.request.onreadystatechange = function () {
-          var request = this;
+          let request = this;
           if (request.readyState == 4) {
             // success
             if (request.status !== 0 && request.status !== 200 && request.status !== 304) {
               onFailed && onFailed(request.response);
             } else {
-              var result = [];
+              let result = [];
               if (request.response) {
                 if (typeof request.response == "string") {
                   result = JSON.parse(request.response);
@@ -4658,26 +4655,26 @@
   //////////////////////////////////////////////////////////////
   // MapRouteSearch
   //////////////////////////////////////////////////////////////
-  var MapRouteSearch = function (options) {
-    var thisObject = this;
+  let MapRouteSearch = function (options) {
+    let thisObject = this;
     options = options || {};
     thisObject._token = options.token || daximap["token"] || "";
     thisObject._defaultUrl = options["url"] || "https://map1a.daxicn.com/RouteServiceForMetro39/route";
     thisObject._downloader = options["downloader"] || null;
 
-    var proto = MapRouteSearch.prototype;
+    let proto = MapRouteSearch.prototype;
     proto["query"] = function (options, successCB, failedCB) {
-      var url = options["routeUrl"] || thisObject._defaultUrl;
-      var token = options["token"] || thisObject._token;
-      var startPos = options["startPos"];
-      var stopPos = options["stopPos"];
-      var stategy = options["stategy"] || 1;
-      var transittype = options["transittype"] || 5;
+      let url = options["routeUrl"] || thisObject._defaultUrl;
+      let token = options["token"] || thisObject._token;
+      let startPos = options["startPos"];
+      let stopPos = options["stopPos"];
+      let stategy = options["stategy"] || 1;
+      let transittype = options["transittype"] || 5;
       if (!startPos["lon"] || !startPos["lat"] || stopPos["lon"] || stopPos["lat"]) {
         failedCB && failedCB({ code: -1, errMsg: "起终点坐标不能为空!" });
         return;
       }
-      var params = {
+      let params = {
         token: options["token"] || token || "",
         startbdid: startPos["bdid"] || "",
         startfloor: startPos["floorId"] || "",
@@ -4700,7 +4697,7 @@
         "json",
         params,
         function (data) {
-          var result;
+          let result;
           if (typeof data == "string") {
             if (data == "") {
               result = { code: -1 };
@@ -4718,17 +4715,17 @@
   };
   function parseDom(htmlString, contentType) {
     // 创建解析器
-    var parser = new DOMParser();
+    let parser = new DOMParser();
     if (!contentType) {
       contentType = "text/html";
     }
     // 根据内容类型解析
     if (contentType == "text/html") {
-      var doc = parser.parseFromString(htmlString, contentType);
+      let doc = parser.parseFromString(htmlString, contentType);
       // 返回body的子节点集合
-      var fragment = document.createDocumentFragment();
-      var childNodes = doc.body.childNodes;
-      for (var i = 0; i < childNodes.length; i++) {
+      let fragment = document.createDocumentFragment();
+      let childNodes = doc.body.childNodes;
+      for (let i = 0; i < childNodes.length; i++) {
         fragment.appendChild(childNodes[i]);
       }
       return fragment;
@@ -4747,7 +4744,7 @@
   daximap["DXDownloader"] = DXDownloader;
   daximap["browser"] = getBrowser();
   daximap["createCrossDomainBridge"] = function (global) {
-    var thisObject = {
+    let thisObject = {
       signalHandler: {},
       targetWindow: undefined,
       targetDomain: "",
@@ -4771,27 +4768,27 @@
       },
 
       call: function (signal, data, callbackfunc) {
-        var notice = { signal: signal, data: data };
+        let notice = { signal: signal, data: data };
         if (!!callbackfunc) {
           notice["callback"] = "callback_" + new Date().getTime() + Math.random();
           Cross["on"](notice["callback"], callbackfunc);
         }
-        var noticeStr = JSON.stringify(notice);
+        let noticeStr = JSON.stringify(notice);
         thisObject.targetWindow["postMessage"](noticeStr, thisObject.targetDomain);
       },
       callEx: function (win, domain, signal, data, callbackfunc) {
-        var notice = { signal: signal, data: data };
+        let notice = { signal: signal, data: data };
         if (!!callbackfunc) {
           notice["callback"] = "callback_" + new Date().getTime() + Math.random();
           Cross["on"](notice["callback"], callbackfunc);
         }
-        var noticeStr = JSON.stringify(notice);
+        let noticeStr = JSON.stringify(notice);
         win["postMessage"](noticeStr, domain);
       },
       messageHandle: function (e) {
-        //var realEvent = e.originalEvent,
+        //let realEvent = e.originalEvent,
 
-        var realEvent = e["originalEvent"] || e,
+        let realEvent = e["originalEvent"] || e,
           data = realEvent["data"],
           swin = realEvent["source"],
           origin = realEvent["origin"],
@@ -4803,7 +4800,7 @@
             protocol = data;
           }
           if (thisObject.signalHandler[protocol["signal"]]) {
-            var result = thisObject.signalHandler[protocol["signal"]]["call"](null, protocol["data"], {
+            let result = thisObject.signalHandler[protocol["signal"]]["call"](null, protocol["data"], {
               swin: swin,
               origin: origin,
               callback: protocol["callback"],
@@ -4817,8 +4814,8 @@
               }
             }
           } else {
-            var params = protocol["data"]["data"];
-            var method = protocol["data"]["method"];
+            let params = protocol["data"]["data"];
+            let method = protocol["data"]["method"];
             global[method] && global[method](params);
           }
         } catch (e) {
@@ -4831,34 +4828,34 @@
   };
 
   daximap.DXRouteCircelSampler = (function () {
-    var SamplerUtils = {};
+    let SamplerUtils = {};
     SamplerUtils.resamplerJSON = function (t, e) {
       if (!t || !t.features) return t;
       if (d && e && t.features.length == d.features.length) {
-        for (var n = o.default.point(e), a = d.features, i = [], r = 0, s = a.length; r < s; r++) {
-          var u = a[r],
+        for (let n = o.default.point(e), a = d.features, i = [], r = 0, s = a.length; r < s; r++) {
+          let u = a[r],
             l = u.geometry.coordinates.slice(-1)[0];
           l = o.default.point(l);
-          var f = (0, c.default)(n, l, u);
+          let f = (0, c.default)(n, l, u);
           (f.properties = u.properties), f.geometry.coordinates.splice(-1), i.push(f);
         }
         return o.default.featureCollection(i);
       }
 
-      var h = [],
+      let h = [],
         p = [],
         A = t.features.length;
-      for (var m = 0; m < A; m++) {
-        var y = t.features[m],
+      for (let m = 0; m < A; m++) {
+        let y = t.features[m],
           b = y.geometry.coordinates,
           T = (b = g(b))[0],
           w = [T],
           S = b[1],
           O = b.length;
-        for (var k = 1; k < O - 1; k++) {
+        for (let k = 1; k < O - 1; k++) {
           k > 1 && (T = w.slice(-1)[0]), (S = b[k]);
-          var M = b[k + 1];
-          var C = SamplerUtils.resamplerCorner(T, S, M);
+          let M = b[k + 1];
+          let C = SamplerUtils.resamplerCorner(T, S, M);
           if (C) {
             w = w.concat(C.geometry.coordinates);
           }
@@ -4868,31 +4865,31 @@
         p[m] = y.properties;
       }
 
-      var R = [],
+      let R = [],
         L = h.length;
-      for (var I = 0; I < L; I++) {
-        var _ = SamplerUtils.createLineString(h[I]);
+      for (let I = 0; I < L; I++) {
+        let _ = SamplerUtils.createLineString(h[I]);
         (_.properties = p[I]), (R[I] = _);
       }
-      var x = SamplerUtils.createfeatureCollection(R);
+      let x = SamplerUtils.createfeatureCollection(R);
       d = x;
       return x;
     };
 
     SamplerUtils["resampler"] = SamplerUtils.resampler = function (t, e) {
       if (!t) return t;
-      var h = [],
+      let h = [],
         A = 1;
-      for (var m = 0; m < A; m++) {
-        var b = t,
+      for (let m = 0; m < A; m++) {
+        let b = t,
           T = (b = g(b))[0],
           w = [T],
           S = b[1],
           O = b.length;
-        for (var k = 1; k < O - 1; k++) {
+        for (let k = 1; k < O - 1; k++) {
           k > 1 && (T = w.slice(-1)[0]), (S = b[k]);
-          var M = b[k + 1];
-          var C = SamplerUtils.resamplerCorner(T, S, M);
+          let M = b[k + 1];
+          let C = SamplerUtils.resamplerCorner(T, S, M);
           if (C) {
             w = w.concat(C.geometry.coordinates);
           }
@@ -4904,16 +4901,16 @@
     };
 
     function g(t) {
-      var e,
+      let e,
         n,
         a,
         o = [],
         i = t[0];
       o.push(i);
-      var p = 7;
-      for (var r = 1, u = t.length; r < u - 1; r++) {
+      let p = 7;
+      for (let r = 1, u = t.length; r < u - 1; r++) {
         i = o[o.length - 1];
-        var l = t[r],
+        let l = t[r],
           c = t[r + 1];
         ((e = i), (n = l), (a = c), SamplerUtils.diffAngel(SamplerUtils.calcAngel(e, n), SamplerUtils.calcAngel(n, a))) > p && o.push(l);
       }
@@ -4932,7 +4929,7 @@
 
     SamplerUtils.getCoord2 = function (e) {
       if (!e) throw new Error("obj is required");
-      var t = r(e);
+      let t = r(e);
       if (t.length > 1 && "number" == typeof t[0] && "number" == typeof t[1]) return t;
       throw new Error("Coordinate is not a valid Point");
     };
@@ -4961,14 +4958,14 @@
     };
     SamplerUtils.radiansToDistance = function (e, t) {
       if (void 0 == e || null == e) throw new Error("radians is required");
-      var r = SamplerUtils.params[t || "kilometers"];
+      let r = SamplerUtils.params[t || "kilometers"];
       if (!r) throw new Error("units is invalid");
       return e * r;
     };
 
     SamplerUtils.distanceToRadians = function (e, t) {
       if (void 0 == e || null == e) throw new Error("distance is required");
-      var r = SamplerUtils.params[t || "kilometers"];
+      let r = SamplerUtils.params[t || "kilometers"];
       if (!r) throw new Error("units is invalid");
       return e / r;
     };
@@ -5013,7 +5010,7 @@
       if (t && t.constructor !== Object) throw new Error("properties must be an Object");
       if (r && 4 !== r.length) throw new Error("bbox must be an Array of 4 numbers");
       if (n && -1 == ["string", "number"].indexOf(typeof n)) throw new Error("id must be a number or a string");
-      var o = {
+      let o = {
         type: "Feature",
       };
       return n && (o.id = n), r && (o.bbox = r), (o.properties = t || {}), (o.geometry = e), o;
@@ -5026,20 +5023,20 @@
     };
     SamplerUtils.getCoordFromFeature = function (e) {
       if (!e) throw new Error("obj is required");
-      var t;
+      let t;
       if ((e.length ? (t = e) : e.coordinates ? (t = e.coordinates) : e.geometry && e.geometry.coordinates && (t = e.geometry.coordinates), t))
         return SamplerUtils.getFirstCoordReverse(t), t;
       throw new Error("No valid coordinates");
     };
-    // var d, h = .002,p = 7;
+    // let d, h = .002,p = 7;
     SamplerUtils.calcAngel = function (e, t, r) {
       if ((void 0 == r && (r = {}), !0 == r.final))
         return (function (e, t) {
-          var r = i(t, e);
+          let r = i(t, e);
           return (r = (r + 180) % 360);
         })(e, t);
 
-      var a = SamplerUtils.getCoord(e),
+      let a = SamplerUtils.getCoord(e),
         s = SamplerUtils.getCoord(t),
         u = SamplerUtils.degreesToRadians(a[0]),
         c = SamplerUtils.degreesToRadians(s[0]),
@@ -5051,19 +5048,19 @@
     };
 
     SamplerUtils.diffAngel = function (t, e) {
-      var n = Math.abs(t - e);
+      let n = Math.abs(t - e);
       return n > 180 ? 360 - n : n;
     };
 
     SamplerUtils.addAngel = function (t, e) {
-      var n = t + e;
+      let n = t + e;
       return n > 180 ? (n -= 360) : n < -180 && (n += 360), n;
     };
 
-    // var n = r(20).getCoord,
+    // let n = r(20).getCoord,
     //          o = r(7).radiansToDistance;
     SamplerUtils.geographicsToLocal = function (e, t, r) {
-      var i = Math.PI / 180,
+      let i = Math.PI / 180,
         a = SamplerUtils.getCoord(e),
         s = SamplerUtils.getCoord(t),
         u = i * (s[1] - a[1]),
@@ -5074,12 +5071,12 @@
       return SamplerUtils.radiansToDistance(2 * Math.atan2(Math.sqrt(d), Math.sqrt(1 - d)), r);
     };
 
-    // var n = r(20).getCoord,
+    // let n = r(20).getCoord,
     //          o = r(7),
     //          i = o.point,
     //          a = o.distanceToRadians;
     SamplerUtils.localToGeographics = function (e, t, r, o) {
-      var s = Math.PI / 180,
+      let s = Math.PI / 180,
         u = 180 / Math.PI,
         c = SamplerUtils.getCoord(e),
         f = s * c[0],
@@ -5096,18 +5093,18 @@
       if (!Array.isArray(e)) throw new Error("features must be an Array");
       if (t && 4 !== t.length) throw new Error("bbox must be an Array of 4 numbers");
       if (r && -1 == ["string", "number"].indexOf(typeof r)) throw new Error("id must be a number or a string");
-      var n = {
+      let n = {
         type: "FeatureCollection",
       };
       return r && (n.id = r), t && (n.bbox = t), (n.features = e), n;
     };
 
     SamplerUtils.l = function (e, t) {
-      var r = SamplerUtils.getCoordFromFeature(e),
+      let r = SamplerUtils.getCoordFromFeature(e),
         n = SamplerUtils.getCoordFromFeature(t);
       if (2 !== r.length) throw new Error("<intersects> line1 must only contain 2 coordinates");
       if (2 !== n.length) throw new Error("<intersects> line2 must only contain 2 coordinates");
-      var o = r[0][0],
+      let o = r[0][0],
         i = r[0][1],
         s = r[1][0],
         c = r[1][1],
@@ -5119,13 +5116,13 @@
         v = (d - f) * (i - l) - (h - l) * (o - f),
         y = (s - o) * (i - l) - (c - i) * (o - f);
       if (0 == p) return null;
-      var m = v / p,
+      let m = v / p,
         g = y / p;
       return m >= 0 && m <= 1 && g >= 0 && g <= 1 ? SamplerUtils.toPoint([o + m * (s - o), i + m * (c - i)]) : null;
     };
 
     SamplerUtils.e = function (e, t) {
-      var r = {},
+      let r = {},
         n = [];
       if (
         ("LineString" == e.type && (e = SamplerUtils.toFeature(e)),
@@ -5137,15 +5134,15 @@
           2 == e.geometry.coordinates.length &&
           2 == t.geometry.coordinates.length)
       ) {
-        var u = SamplerUtils.l(e, t);
+        let u = SamplerUtils.l(e, t);
         return u && n.push(u), SamplerUtils.createfeatureCollection(n);
       }
-      // var d = o();
+      // let d = o();
       // return d.load(s(t)), c(s(e), function(e) {
       //  c(d.search(e), function(t) {
-      //      var o = l(e, t);
+      //      let o = l(e, t);
       //      if (o) {
-      //          var i = a(o).join(",");
+      //          let i = a(o).join(",");
       //          r[i] || (r[i] = !0, n.push(o))
       //      }
       //  })
@@ -5156,17 +5153,17 @@
       return t < 0 && (t += 360), t;
     };
     SamplerUtils.normalizeAngel2 = function (e) {
-      var t = e % 360;
+      let t = e % 360;
       return t < 0 && (t += 360), t;
     };
 
-    // var n = r(50),
+    // let n = r(50),
     //  o = r(7).polygon;
-    var xxx = function (e, t, r, i, a) {
+    let xxx = function (e, t, r, i, a) {
       if (!e) throw new Error("center is required");
       if (!t) throw new Error("radius is required");
       (r = r || 64), (a = a || e.properties || {});
-      for (var s = [], u = 0; u < r; u++) s.push(SamplerUtils.localToGeographics(e, t, (360 * u) / r, i).geometry.coordinates);
+      for (let s = [], u = 0; u < r; u++) s.push(SamplerUtils.localToGeographics(e, t, (360 * u) / r, i).geometry.coordinates);
       return s.push(s[0]), o([s], a);
     };
 
@@ -5176,33 +5173,33 @@
       if (void 0 == s || null == s) throw new Error("bearing2 is required");
       if (!t) throw new Error("radius is required");
       u = u || 64;
-      var f = SamplerUtils.normalizeAngel2(r),
+      let f = SamplerUtils.normalizeAngel2(r),
         l = SamplerUtils.normalizeAngel2(s),
         d = e.properties;
       if (f == l) return SamplerUtils.createLineString(xxx(e, t, u, c).geometry.coordinates[0], d);
-      for (var h = f, p = f < l ? l : l + 360, v = h, y = [], m = 0; v < p; )
+      for (let h = f, p = f < l ? l : l + 360, v = h, y = [], m = 0; v < p; )
         y.push(SamplerUtils.localToGeographics(e, t, v, c).geometry.coordinates), (v = h + (360 * ++m) / u);
       return v > p && y.push(SamplerUtils.localToGeographics(e, t, p, c).geometry.coordinates), SamplerUtils.createLineString(y, d);
     };
 
     SamplerUtils.resamplerCorner = function (t, e, n) {
-      var h = 0.002;
-      var a = (function (t, e, n) {
-          var a = SamplerUtils.diffAngel(SamplerUtils.calcAngel(e, t), SamplerUtils.calcAngel(e, n)); //y((0, s.default)(e, t), (0, s.default)(e, n)),
+      let h = 0.002;
+      let a = (function (t, e, n) {
+          let a = SamplerUtils.diffAngel(SamplerUtils.calcAngel(e, t), SamplerUtils.calcAngel(e, n)); //y((0, s.default)(e, t), (0, s.default)(e, n)),
           (o = SamplerUtils.geographicsToLocal(t, e, "kilometres")), (i = SamplerUtils.geographicsToLocal(e, n, "kilometres") / 2), (r = h), (l = o);
           i < l && (l = i);
-          var c = l * Math.tan((a / 360) * 3.14);
+          let c = l * Math.tan((a / 360) * 3.14);
           c < r && (r = c);
           return r;
         })(t, e, n),
         c = (function (t, e, n, a) {
-          var i = SamplerUtils.calcAngel(t, e),
+          let i = SamplerUtils.calcAngel(t, e),
             u = SamplerUtils.calcAngel(e, n),
             c = SamplerUtils.addAngel(i, 90);
           SamplerUtils.diffAngel(c, u) > 90 && (c = SamplerUtils.addAngel(c, 180));
-          var f = SamplerUtils.addAngel(u, 90);
+          let f = SamplerUtils.addAngel(u, 90);
           SamplerUtils.diffAngel(f, SamplerUtils.addAngel(i, 180)) > 90 && (f = SamplerUtils.addAngel(f, 180));
-          var d = SamplerUtils.localToGeographics(t, a, c, "kilometres"),
+          let d = SamplerUtils.localToGeographics(t, a, c, "kilometres"),
             h = SamplerUtils.localToGeographics(e, a, c, "kilometres"),
             p = SamplerUtils.localToGeographics(e, a, f, "kilometres"),
             g = SamplerUtils.localToGeographics(n, a, f, "kilometres"),
@@ -5218,7 +5215,7 @@
         })(t, e, n, a);
 
       if (!c) {
-        var tpstr = t.join(","),
+        let tpstr = t.join(","),
           epstr = e.join(","),
           npstr = n.join(",");
         if (tpstr == epstr && epstr != npstr) {
@@ -5228,12 +5225,12 @@
         }
         return;
       }
-      var f = (function (t, e) {
-          var n = SamplerUtils.normalizeAngel(t),
+      let f = (function (t, e) {
+          let n = SamplerUtils.normalizeAngel(t),
             a = SamplerUtils.normalizeAngel(e),
             o = !1;
           if ((n > a && n - a < 180) || a - n > 180) {
-            var i = t;
+            let i = t;
             (t = e), (e = i), (o = !0);
           }
           return {
@@ -5304,7 +5301,7 @@
   daximap.defineProperties = (function (defined) {
     "use strict";
 
-    var definePropertyWorks = (function () {
+    let definePropertyWorks = (function () {
       try {
         return "x" in Object.defineProperty({}, "x", {});
       } catch (e) {
@@ -5323,7 +5320,7 @@
      *
      * @exports defineProperties
      */
-    var defineProperties = Object.defineProperties;
+    let defineProperties = Object.defineProperties;
     if (!definePropertyWorks || !defined(defineProperties)) {
       defineProperties = function (o) {
         return o;
@@ -5332,4 +5329,7 @@
 
     return defineProperties;
   })(daximap.defined);
-})(window);
+
+// ES6 模块导出
+export { daximap as default };
+export const DaxiMap = daximap;

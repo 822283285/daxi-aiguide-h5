@@ -1,9 +1,8 @@
-(function (global) {
-  var daximap = (global["DaxiMap"] = global["DaxiMap"] || {});
-  var DXMapUtils = daximap["DXMapUtils"];
+  const daximap = window.DaxiMap || {};
+  let DXMapUtils = daximap["DXMapUtils"];
 
-  var EventHandler = daximap["EventHandler"];
-  var EventHandlerManager = daximap["EventHandlerManager"];
+  let EventHandler = daximap["EventHandler"];
+  let EventHandlerManager = daximap["EventHandlerManager"];
 
   ////locationCore/////
   function NativeLocation() {
@@ -94,7 +93,7 @@
   };
   //daxi定位检测
   WXLocation.prototype.watchLocation = function (watchSuccessCB, watchFailureCB, params) {
-    var thisObject = this;
+    let thisObject = this;
     function onInit(wxlocation) {
       params.wsLocUrl = ["wss://map.daxicn.com/ws/loc"];
 
@@ -102,9 +101,9 @@
     }
 
     if (!thisObject.wxLocation) {
-      var locPath = params["locPath"] || "../dependency/libs/";
-      var url;
-      var indoorLocalAlgorithms = window["indoorLocalAlgorithms"] || "";
+      let locPath = params["locPath"] || "../dependency/libs/";
+      let url;
+      let indoorLocalAlgorithms = window["indoorLocalAlgorithms"] || "";
       if (indoorLocalAlgorithms == "huawei") {
         url = locPath + "wx.loc2.min.js?t=" + window["version"];
         if (window["command"] && window["command"]["locTest"]) {
@@ -202,8 +201,8 @@
   WXLocation.prototype.stopMatchRoute = function (args, successCB, failureCB) {
     if (this.wxLocation) {
       if (args) {
-        var real_pos = args.real_pos;
-        var pos = {
+        let real_pos = args.real_pos;
+        let pos = {
           position: [real_pos["x"], real_pos["y"], real_pos["z"]],
           heading: args.heading,
           timeStamp: new Date().getTime(),
@@ -243,9 +242,9 @@
     return null;
   };
   WXLocation.prototype.shareToFriend = function (successCB, failureCB, params) {
-    var url = "../share/showShare?";
-    var str = "projName=DXOneMap_v3";
-    for (var key in params) {
+    let url = "../share/showShare?";
+    let str = "projName=DXOneMap_v3";
+    for (let key in params) {
       str.length > 0 ? (str += "&") : "";
       str += key + "=" + params[key];
     }
@@ -285,7 +284,7 @@
     }
   };
   WXLocation.prototype.navigateToGetWXUser = function () {
-    var url = "../user/user";
+    let url = "../user/user";
     wx["miniProgram"] &&
       wx["miniProgram"]["navigateTo"]({
         url: url,
@@ -297,8 +296,8 @@
   };
   WXLocation.prototype["openVoicePage"] = WXLocation.prototype.openVoicePage = function (params, successCB, failureCB) {
     this.onVoiceSuccess = successCB;
-    var url = "../transferVoice/transferVoice?";
-    for (var key in params) {
+    let url = "../transferVoice/transferVoice?";
+    for (let key in params) {
       if (url[url.length - 1] != "?") {
         url += "&";
       }
@@ -315,8 +314,8 @@
   };
   //返回获取蓝牙的原始数据
   WXLocation.prototype["openUserPage"] = WXLocation.prototype.openUserPage = function (successCB, failureCB) {
-    var url = "../user/user?";
-    for (var key in params) {
+    let url = "../user/user?";
+    for (let key in params) {
       if (url[url.length - 1] != "?") {
         url += "&";
       }
@@ -438,15 +437,15 @@
     this._locationResultArr = [];
     this._sendTimer = null;
     this.type = 1;
-    var thisObject = this;
+    let thisObject = this;
     this.getHandler = function (options, callback) {
       if (options["locLogType"] != undefined) {
         this.type = options["locLogType"];
       }
-      var url = logConfig["handlerUrl"];
+      let url = logConfig["handlerUrl"];
       if (logConfig["handlerUrl"]) {
-        var serial = (options["deviceId"] || options["unique_deviceno"] || DXMapUtils.createUUID()) + "_" + options["userId"];
-        var data = {
+        let serial = (options["deviceId"] || options["unique_deviceno"] || DXMapUtils.createUUID()) + "_" + options["userId"];
+        let data = {
           token: options["token"],
           type: this.type,
           t: new Date().getTime(),
@@ -487,9 +486,9 @@
 
     this.addData = function (param) {
       if (thisObject.handler) {
-        var locaResArr = this._locationResultArr;
+        let locaResArr = this._locationResultArr;
         if (locaResArr.length) {
-          var lastPos = locaResArr[locaResArr.length - 1];
+          let lastPos = locaResArr[locaResArr.length - 1];
           if (
             param["time"] - lastPos["time"] < 4000 &&
             lastPos["lon"] == param["lon"] &&
@@ -513,11 +512,11 @@
 
     this.sendLogs = function () {
       if (thisObject.handler) {
-        var locaResArr = this._locationResultArr;
-        var url = logConfig["pushLocUrl"];
+        let locaResArr = this._locationResultArr;
+        let url = logConfig["pushLocUrl"];
         if (url && thisObject.handler) {
           thisObject.state = "sending";
-          var records = thisObject.handler + "|" + thisObject.type;
+          let records = thisObject.handler + "|" + thisObject.type;
           locaResArr.forEach(function (item) {
             records += "|" + item["lon"] + "," + item["lat"] + "," + item["floorIndex"] + "," + item["time"] + "," + item["bdid"] + "," + item["count"];
           });
@@ -562,8 +561,8 @@
     return this;
   }
 
-  var DXLocationManager = function (options) {
-    var thisObject = this;
+  let DXLocationManager = function (options) {
+    let thisObject = this;
     thisObject._eventMgr = new EventHandlerManager();
     thisObject.events = {};
     thisObject.locationCore = null;
@@ -574,12 +573,12 @@
     }
 
     thisObject.animationIntervalTime = null;
-    var UNLOCATE = -1;
-    var LOCATION_FAILURE = 0;
-    var LOCATION_LOADING = 1;
-    var LOCATED = 2;
-    var LOCATED_OUTDOOR = 3;
-    var LOCATED_INDOOR = 2;
+    let UNLOCATE = -1;
+    let LOCATION_FAILURE = 0;
+    let LOCATION_LOADING = 1;
+    let LOCATED = 2;
+    let LOCATED_OUTDOOR = 3;
+    let LOCATED_INDOOR = 2;
     thisObject.locationState = UNLOCATE;
     if (options) {
       thisObject.token = options["token"] || daximap["token"] || "";
@@ -618,7 +617,7 @@
       direction: 0,
     };
 
-    var proto = DXLocationManager.prototype;
+    let proto = DXLocationManager.prototype;
     function init(thisObject) {
       if (thisObject.containerType === "native") {
         thisObject.locationCore = new NativeLocation();
@@ -630,7 +629,7 @@
         thisObject.locationCore = null;
       }
       if (thisObject.locationCore) {
-        var url = thisObject.dataPath || "../projdata/{{token}}/locatingConfig/{{bdid}}/{{filename}}";
+        let url = thisObject.dataPath || "../projdata/{{token}}/locatingConfig/{{bdid}}/{{filename}}";
         thisObject.locationCore.watchLocation(thisObject._watchLocationCB, thisObject._watchLocationFailed, options);
       }
     }
@@ -657,7 +656,7 @@
     };
 
     proto._Relocation = function (cb, isSimulate) {
-      var thisObject = this;
+      let thisObject = this;
       thisObject._setLocationState(LOCATION_LOADING);
       thisObject._once(
         "onLocationStateChanged",
@@ -694,7 +693,7 @@
     };
 
     proto._getMyPositionInfo = function () {
-      var posInfo = thisObject._location;
+      let posInfo = thisObject._location;
       return posInfo;
     };
 
@@ -715,7 +714,7 @@
     };
 
     proto._postLocationResult = function (e) {
-      var position = e["location"]["position"];
+      let position = e["location"]["position"];
       if (position && (!e["location"] || !e["location"]["x"])) {
         if (!e["location"]) {
           e["location"] = {};
@@ -735,20 +734,20 @@
     window["postLocationResult"] = proto._postLocationResult;
 
     proto._watchLocationCB = function (e) {
-      var status = UNLOCATE;
-      var code = e["code"];
+      let status = UNLOCATE;
+      let code = e["code"];
       if (e["location"] && (!e["location"]["bdid"] || e["location"]["bdid"] == "outdoor")) {
         e["location"]["bdid"] = "";
       }
 
       if (e && parseInt(code) === 220) {
         status = LOCATED;
-        var floornum = e["location"]["z"] || 0;
+        let floornum = e["location"]["z"] || 0;
 
-        var floorId = e["location"]["floorId"] || "";
+        let floorId = e["location"]["floorId"] || "";
         e["location"]["a"] = e["location"]["a"] < 0 ? 360 + e["location"]["a"] : e["location"]["a"];
-        var matched = [e["location"]["x"], e["location"]["y"]];
-        var loc = {
+        let matched = [e["location"]["x"], e["location"]["y"]];
+        let loc = {
           floorNum: floornum,
           floorId: floorId,
           bdid: e["location"]["bdid"],
@@ -776,7 +775,7 @@
     };
 
     proto._watchLocationFailed = function (e) {
-      var status = LOCATION_FAILURE;
+      let status = LOCATION_FAILURE;
       if (status !== thisObject.locationState) {
         thisObject._setLocationState(status);
       }
@@ -813,7 +812,7 @@
     };
     proto._shareToFriend = function (data, successCB, failedCB, params) {
       if (typeof params == "object") {
-        for (var key in params) {
+        for (let key in params) {
           if (params[key] != undefined && data[key] == undefined) {
             if (key == "testLocWs") {
               data["locByWSS"] = params[key];
@@ -990,11 +989,11 @@
   };
 
   daximap["LocationManager"] = DXLocationManager;
-  var initSDKAPI = function (options) {
-    var thisObject = this;
+  let initSDKAPI = function (options) {
+    let thisObject = this;
     options = options || {};
     thisObject.token = options["token"] || "";
-    var envType = options["envType"] || (window["cordova"] ? "native" : "web");
+    let envType = options["envType"] || (window["cordova"] ? "native" : "web");
     if (window["wx"] && window["wx"]["miniProgram"]) {
       envType = "wechat";
     } else if (window["my"]) {
@@ -1012,4 +1011,7 @@
   };
 
   daximap["initSDKAPI"] = initSDKAPI;
-})(window);
+
+// ES6 模块导出
+export { daximap as default };
+export const DaxiMap = daximap;

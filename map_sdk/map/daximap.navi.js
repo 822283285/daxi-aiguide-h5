@@ -6,47 +6,47 @@
  */
 
 /** 导航状态常量 */
-var STATE_NAVIGATE = 0; // 导航模式
-var STATE_FULLVIEW = 1; // 全览模式
-var STATE_SHOWPOI = 2; //看地图POI
-var STATE_NAVIGATE_END = 3; // 导航结束
-var STATE_NAVIGATE_PAUSE = 4; // 导航暂停
-var STATE_SHOWROUTE = 5; // 显示路线模式
+let STATE_NAVIGATE = 0; // 导航模式
+let STATE_FULLVIEW = 1; // 全览模式
+let STATE_SHOWPOI = 2; //看地图POI
+let STATE_NAVIGATE_END = 3; // 导航结束
+let STATE_NAVIGATE_PAUSE = 4; // 导航暂停
+let STATE_SHOWROUTE = 5; // 显示路线模式
 
 /** 语音播报阶段常量 */
-var BEFORE_STAGECHANGE_SPEAK = 1; // 阶段切换前播报
-var STAGECHANGING_SPEAK = 2; // 阶段切换中播报
+let BEFORE_STAGECHANGE_SPEAK = 1; // 阶段切换前播报
+let STAGECHANGING_SPEAK = 2; // 阶段切换中播报
 
-var daximap = window["DaxiMap"] || {};
-var DXRouteCircelSampler = function () {
-  var SamplerUtils = {};
+let daximap = window["DaxiMap"] || {};
+let DXRouteCircelSampler = function () {
+  let SamplerUtils = {};
   SamplerUtils.resamplerJSON = function (t, e) {
     if (!t || !t.features) return t;
     if (d && e && t.features.length === d.features.length) {
-      for (var n = o.default.point(e), a = d.features, i = [], r = 0, s = a.length; r < s; r++) {
-        var u = a[r],
+      for (let n = o.default.point(e), a = d.features, i = [], r = 0, s = a.length; r < s; r++) {
+        let u = a[r],
           l = u.geometry.coordinates.slice(-1)[0];
         l = o.default.point(l);
-        var f = (0, c.default)(n, l, u);
+        let f = (0, c.default)(n, l, u);
         (f.properties = u.properties), f.geometry.coordinates.splice(-1), i.push(f);
       }
       return o.default.featureCollection(i);
     }
 
-    var h = [],
+    let h = [],
       p = [],
       A = t.features.length;
-    for (var m = 0; m < A; m++) {
-      var y = t.features[m],
+    for (let m = 0; m < A; m++) {
+      let y = t.features[m],
         b = y.geometry.coordinates,
         T = (b = g(b))[0],
         w = [T],
         S = b[1],
         O = b.length;
-      for (var k = 1; k < O - 1; k++) {
+      for (let k = 1; k < O - 1; k++) {
         k > 1 && (T = w.slice(-1)[0]), (S = b[k]);
-        var M = b[k + 1];
-        var C = SamplerUtils.resamplerCorner(T, S, M);
+        let M = b[k + 1];
+        let C = SamplerUtils.resamplerCorner(T, S, M);
         w = w.concat(C.geometry.coordinates);
       }
       w.push(b.slice(-1)[0]);
@@ -54,31 +54,31 @@ var DXRouteCircelSampler = function () {
       p[m] = y.properties;
     }
 
-    var R = [],
+    let R = [],
       L = h.length;
-    for (var I = 0; I < L; I++) {
-      var _ = SamplerUtils.createLineString(h[I]);
+    for (let I = 0; I < L; I++) {
+      let _ = SamplerUtils.createLineString(h[I]);
       (_.properties = p[I]), (R[I] = _);
     }
-    var x = SamplerUtils.createfeatureCollection(R);
+    let x = SamplerUtils.createfeatureCollection(R);
     d = x;
     return x;
   };
 
   SamplerUtils.resampler = function (t, e) {
     if (!t) return t;
-    var h = [],
+    let h = [],
       A = 1;
-    for (var m = 0; m < A; m++) {
-      var b = t,
+    for (let m = 0; m < A; m++) {
+      let b = t,
         T = (b = g(b))[0],
         w = [T],
         S = b[1],
         O = b.length;
-      for (var k = 1; k < O - 1; k++) {
+      for (let k = 1; k < O - 1; k++) {
         k > 1 && (T = w.slice(-1)[0]), (S = b[k]);
-        var M = b[k + 1];
-        var C = SamplerUtils.resamplerCorner(T, S, M);
+        let M = b[k + 1];
+        let C = SamplerUtils.resamplerCorner(T, S, M);
         w = w.concat(C.geometry.coordinates);
       }
       w.push(b.slice(-1)[0]);
@@ -88,16 +88,16 @@ var DXRouteCircelSampler = function () {
   };
 
   function g(t) {
-    var e,
+    let e,
       n,
       a,
       o = [],
       i = t[0];
     o.push(i);
-    var p = 7;
-    for (var r = 1, u = t.length; r < u - 1; r++) {
+    let p = 7;
+    for (let r = 1, u = t.length; r < u - 1; r++) {
       i = o[o.length - 1];
-      var l = t[r],
+      let l = t[r],
         c = t[r + 1];
       ((e = i), (n = l), (a = c), SamplerUtils.diffAngel(SamplerUtils.calcAngel(e, n), SamplerUtils.calcAngel(n, a))) > p && o.push(l);
     }
@@ -116,7 +116,7 @@ var DXRouteCircelSampler = function () {
 
   SamplerUtils.getCoord2 = function (e) {
     if (!e) throw new Error("obj is required");
-    var t = r(e);
+    let t = r(e);
     if (t.length > 1 && "number" == typeof t[0] && "number" == typeof t[1]) return t;
     throw new Error("Coordinate is not a valid Point");
   };
@@ -145,14 +145,14 @@ var DXRouteCircelSampler = function () {
   };
   SamplerUtils.radiansToDistance = function (e, t) {
     if (void 0 === e || null === e) throw new Error("radians is required");
-    var r = SamplerUtils.params[t || "kilometers"];
+    let r = SamplerUtils.params[t || "kilometers"];
     if (!r) throw new Error("units is invalid");
     return e * r;
   };
 
   SamplerUtils.distanceToRadians = function (e, t) {
     if (void 0 === e || null === e) throw new Error("distance is required");
-    var r = SamplerUtils.params[t || "kilometers"];
+    let r = SamplerUtils.params[t || "kilometers"];
     if (!r) throw new Error("units is invalid");
     return e / r;
   };
@@ -197,7 +197,7 @@ var DXRouteCircelSampler = function () {
     if (t && t.constructor !== Object) throw new Error("properties must be an Object");
     if (r && 4 !== r.length) throw new Error("bbox must be an Array of 4 numbers");
     if (n && -1 === ["string", "number"].indexOf(typeof n)) throw new Error("id must be a number or a string");
-    var o = {
+    let o = {
       type: "Feature",
     };
     return n && (o.id = n), r && (o.bbox = r), (o.properties = t || {}), (o.geometry = e), o;
@@ -210,20 +210,20 @@ var DXRouteCircelSampler = function () {
   };
   SamplerUtils.getCoordFromFeature = function (e) {
     if (!e) throw new Error("obj is required");
-    var t;
+    let t;
     if ((e.length ? (t = e) : e.coordinates ? (t = e.coordinates) : e.geometry && e.geometry.coordinates && (t = e.geometry.coordinates), t))
       return SamplerUtils.getFirstCoordReverse(t), t;
     throw new Error("No valid coordinates");
   };
-  // var d, h = .002,p = 7;
+  // let d, h = .002,p = 7;
   SamplerUtils.calcAngel = function (e, t, r) {
     if ((void 0 === r && (r = {}), !0 === r.final))
       return (function (e, t) {
-        var r = i(t, e);
+        let r = i(t, e);
         return (r = (r + 180) % 360);
       })(e, t);
 
-    var a = SamplerUtils.getCoord(e),
+    let a = SamplerUtils.getCoord(e),
       s = SamplerUtils.getCoord(t),
       u = SamplerUtils.degreesToRadians(a[0]),
       c = SamplerUtils.degreesToRadians(s[0]),
@@ -235,19 +235,19 @@ var DXRouteCircelSampler = function () {
   };
 
   SamplerUtils.diffAngel = function (t, e) {
-    var n = Math.abs(t - e);
+    let n = Math.abs(t - e);
     return n > 180 ? 360 - n : n;
   };
 
   SamplerUtils.addAngel = function (t, e) {
-    var n = t + e;
+    let n = t + e;
     return n > 180 ? (n -= 360) : n < -180 && (n += 360), n;
   };
 
-  // var n = r(20).getCoord,
+  // let n = r(20).getCoord,
   //          o = r(7).radiansToDistance;
   SamplerUtils.geographicsToLocal = function (e, t, r) {
-    var i = Math.PI / 180,
+    let i = Math.PI / 180,
       a = SamplerUtils.getCoord(e),
       s = SamplerUtils.getCoord(t),
       u = i * (s[1] - a[1]),
@@ -258,12 +258,12 @@ var DXRouteCircelSampler = function () {
     return SamplerUtils.radiansToDistance(2 * Math.atan2(Math.sqrt(d), Math.sqrt(1 - d)), r);
   };
 
-  // var n = r(20).getCoord,
+  // let n = r(20).getCoord,
   //          o = r(7),
   //          i = o.point,
   //          a = o.distanceToRadians;
   SamplerUtils.localToGeographics = function (e, t, r, o) {
-    var s = Math.PI / 180,
+    let s = Math.PI / 180,
       u = 180 / Math.PI,
       c = SamplerUtils.getCoord(e),
       f = s * c[0],
@@ -280,18 +280,18 @@ var DXRouteCircelSampler = function () {
     if (!Array.isArray(e)) throw new Error("features must be an Array");
     if (t && 4 !== t.length) throw new Error("bbox must be an Array of 4 numbers");
     if (r && -1 === ["string", "number"].indexOf(typeof r)) throw new Error("id must be a number or a string");
-    var n = {
+    let n = {
       type: "FeatureCollection",
     };
     return r && (n.id = r), t && (n.bbox = t), (n.features = e), n;
   };
 
   SamplerUtils.l = function (e, t) {
-    var r = SamplerUtils.getCoordFromFeature(e),
+    let r = SamplerUtils.getCoordFromFeature(e),
       n = SamplerUtils.getCoordFromFeature(t);
     if (2 !== r.length) throw new Error("<intersects> line1 must only contain 2 coordinates");
     if (2 !== n.length) throw new Error("<intersects> line2 must only contain 2 coordinates");
-    var o = r[0][0],
+    let o = r[0][0],
       i = r[0][1],
       s = r[1][0],
       c = r[1][1],
@@ -303,13 +303,13 @@ var DXRouteCircelSampler = function () {
       v = (d - f) * (i - l) - (h - l) * (o - f),
       y = (s - o) * (i - l) - (c - i) * (o - f);
     if (0 === p) return null;
-    var m = v / p,
+    let m = v / p,
       g = y / p;
     return m >= 0 && m <= 1 && g >= 0 && g <= 1 ? SamplerUtils.toPoint([o + m * (s - o), i + m * (c - i)]) : null;
   };
 
   SamplerUtils.e = function (e, t) {
-    var r = {},
+    let r = {},
       n = [];
     if (
       ("LineString" === e.type && (e = SamplerUtils.toFeature(e)),
@@ -321,15 +321,15 @@ var DXRouteCircelSampler = function () {
         2 === e.geometry.coordinates.length &&
         2 === t.geometry.coordinates.length)
     ) {
-      var u = SamplerUtils.l(e, t);
+      let u = SamplerUtils.l(e, t);
       return u && n.push(u), SamplerUtils.createfeatureCollection(n);
     }
-    // var d = o();
+    // let d = o();
     // return d.load(s(t)), c(s(e), function(e) {
     //  c(d.search(e), function(t) {
-    //      var o = l(e, t);
+    //      let o = l(e, t);
     //      if (o) {
-    //          var i = a(o).join(",");
+    //          let i = a(o).join(",");
     //          r[i] || (r[i] = !0, n.push(o))
     //      }
     //  })
@@ -340,17 +340,17 @@ var DXRouteCircelSampler = function () {
     return t < 0 && (t += 360), t;
   };
   SamplerUtils.normalizeAngel2 = function (e) {
-    var t = e % 360;
+    let t = e % 360;
     return t < 0 && (t += 360), t;
   };
 
-  // var n = r(50),
+  // let n = r(50),
   //  o = r(7).polygon;
-  var xxx = function (e, t, r, i, a) {
+  let xxx = function (e, t, r, i, a) {
     if (!e) throw new Error("center is required");
     if (!t) throw new Error("radius is required");
     (r = r || 64), (a = a || e.properties || {});
-    for (var s = [], u = 0; u < r; u++) s.push(SamplerUtils.localToGeographics(e, t, (360 * u) / r, i).geometry.coordinates);
+    for (let s = [], u = 0; u < r; u++) s.push(SamplerUtils.localToGeographics(e, t, (360 * u) / r, i).geometry.coordinates);
     return s.push(s[0]), o([s], a);
   };
 
@@ -360,33 +360,33 @@ var DXRouteCircelSampler = function () {
     if (void 0 === s || null === s) throw new Error("bearing2 is required");
     if (!t) throw new Error("radius is required");
     u = u || 64;
-    var f = SamplerUtils.normalizeAngel2(r),
+    let f = SamplerUtils.normalizeAngel2(r),
       l = SamplerUtils.normalizeAngel2(s),
       d = e.properties;
     if (f === l) return SamplerUtils.createLineString(xxx(e, t, u, c).geometry.coordinates[0], d);
-    for (var h = f, p = f < l ? l : l + 360, v = h, y = [], m = 0; v < p; )
+    for (let h = f, p = f < l ? l : l + 360, v = h, y = [], m = 0; v < p; )
       y.push(SamplerUtils.localToGeographics(e, t, v, c).geometry.coordinates), (v = h + (360 * ++m) / u);
     return v > p && y.push(SamplerUtils.localToGeographics(e, t, p, c).geometry.coordinates), SamplerUtils.createLineString(y, d);
   };
 
   SamplerUtils.resamplerCorner = function (t, e, n) {
-    var h = 0.002;
-    var a = (function (t, e, n) {
-        var a = SamplerUtils.diffAngel(SamplerUtils.calcAngel(e, t), SamplerUtils.calcAngel(e, n)); //y((0, s.default)(e, t), (0, s.default)(e, n)),
+    let h = 0.002;
+    let a = (function (t, e, n) {
+        let a = SamplerUtils.diffAngel(SamplerUtils.calcAngel(e, t), SamplerUtils.calcAngel(e, n)); //y((0, s.default)(e, t), (0, s.default)(e, n)),
         (o = SamplerUtils.geographicsToLocal(t, e, "kilometres")), (i = SamplerUtils.geographicsToLocal(e, n, "kilometres") / 2), (r = h), (l = o);
         i < l && (l = i);
-        var c = l * Math.tan((a / 360) * 3.14);
+        let c = l * Math.tan((a / 360) * 3.14);
         c < r && (r = c);
         return r;
       })(t, e, n),
       c = (function (t, e, n, a) {
-        var i = SamplerUtils.calcAngel(t, e),
+        let i = SamplerUtils.calcAngel(t, e),
           u = SamplerUtils.calcAngel(e, n),
           c = SamplerUtils.addAngel(i, 90);
         SamplerUtils.diffAngel(c, u) > 90 && (c = SamplerUtils.addAngel(c, 180));
-        var f = SamplerUtils.addAngel(u, 90);
+        let f = SamplerUtils.addAngel(u, 90);
         SamplerUtils.diffAngel(f, SamplerUtils.addAngel(i, 180)) > 90 && (f = SamplerUtils.addAngel(f, 180));
-        var d = SamplerUtils.localToGeographics(t, a, c, "kilometres"),
+        let d = SamplerUtils.localToGeographics(t, a, c, "kilometres"),
           h = SamplerUtils.localToGeographics(e, a, c, "kilometres"),
           p = SamplerUtils.localToGeographics(e, a, f, "kilometres"),
           g = SamplerUtils.localToGeographics(n, a, f, "kilometres"),
@@ -402,12 +402,12 @@ var DXRouteCircelSampler = function () {
       })(t, e, n, a);
 
     if (!c) return SamplerUtils.createLineString([t, e]);
-    var f = (function (t, e) {
-        var n = SamplerUtils.normalizeAngel(t),
+    let f = (function (t, e) {
+        let n = SamplerUtils.normalizeAngel(t),
           a = SamplerUtils.normalizeAngel(e),
           o = !1;
         if ((n > a && n - a < 180) || a - n > 180) {
-          var i = t;
+          let i = t;
           (t = e), (e = i), (o = !0);
         }
         return {
@@ -429,15 +429,15 @@ var DXRouteCircelSampler = function () {
 /////////////////////////////////////////////////////////
 // ResamplerArray
 /////////////////////////////////////////////////////////
-var ResamplerArray = function () {
-  var navi_utils = daximap["DXMapUtils"]["naviMath"];
-  var prototype = ResamplerArray.prototype;
-  var info = this;
+let ResamplerArray = function () {
+  let navi_utils = daximap["DXMapUtils"]["naviMath"];
+  let prototype = ResamplerArray.prototype;
+  let info = this;
   info.array = [];
   info.maxCount = 30;
   prototype.push = function (vec) {
     if (info.array.length === 0) {
-      for (var i = 0; i < info.maxCount; i++) {
+      for (let i = 0; i < info.maxCount; i++) {
         info.array.push([vec[0], vec[1], 0]);
       }
     } else {
@@ -446,8 +446,8 @@ var ResamplerArray = function () {
     }
   };
   prototype.getAverageValue = function () {
-    var newRet = [0, 0, 0];
-    for (var i = 0; i < info.array.length; i++) {
+    let newRet = [0, 0, 0];
+    for (let i = 0; i < info.array.length; i++) {
       newRet[0] += info.array[i][0];
       newRet[1] += info.array[i][1];
     }
@@ -461,24 +461,24 @@ var ResamplerArray = function () {
 /////////////////////////////////////////////////////////
 // SmoothPositionSampler
 /////////////////////////////////////////////////////////
-var SmoothPositionSampler = function (callback) {
-  var navi_utils = daximap["DXMapUtils"]["naviMath"];
-  var targetPose = [0, 0, 0];
-  var targetHeading = 0;
+let SmoothPositionSampler = function (callback) {
+  let navi_utils = daximap["DXMapUtils"]["naviMath"];
+  let targetPose = [0, 0, 0];
+  let targetHeading = 0;
 
-  var targetObj = null;
-  var info = this;
+  let targetObj = null;
+  let info = this;
   info.headingRoute = 0.0;
   info.curPose = [0, 0, 0];
   info.curHeading = 0.0;
   info.floorId = "";
   info.resamplerArray = new ResamplerArray();
-  var curT = 0.0;
+  let curT = 0.0;
   this.curT1 = 0.0;
 
-  var isDirty = false;
+  let isDirty = false;
 
-  var prototype = SmoothPositionSampler.prototype;
+  let prototype = SmoothPositionSampler.prototype;
   prototype.init = function (obj) {
     targetObj = obj;
   };
@@ -486,10 +486,10 @@ var SmoothPositionSampler = function (callback) {
   prototype.setDirty = function (dirty) {
     isDirty = dirty;
   };
-  var quatFrom = [0, 0, 0, 1];
-  var quatTo = [0, 0, 0, 1];
-  var quatCur = [0, 0, 0, 1];
-  var vecEuler = [0, 0, 0];
+  let quatFrom = [0, 0, 0, 1];
+  let quatTo = [0, 0, 0, 1];
+  let quatCur = [0, 0, 0, 1];
+  let vecEuler = [0, 0, 0];
 
   prototype.onRuning = function () {
     if (isDirty === false) return;
@@ -497,18 +497,18 @@ var SmoothPositionSampler = function (callback) {
     if (curT > 1) {
       curT = 1.0;
     }
-    var toPos = targetPose;
-    var fromPos = info.curPose;
-    var dir = [0, 0, 0];
-    var temp = [0, 0, 0];
-    var outPos = [0, 0, 0];
+    let toPos = targetPose;
+    let fromPos = info.curPose;
+    let dir = [0, 0, 0];
+    let temp = [0, 0, 0];
+    let outPos = [0, 0, 0];
     navi_utils.Vector3_lerp(info.curPose, fromPos, toPos, curT);
 
     this.curT1 += 0.2;
     if (this.curT1 > 1) {
       this.curT1 = 1.0;
     }
-    var dif = targetHeading - info.curHeading;
+    let dif = targetHeading - info.curHeading;
 
     if (dif < -180) dif = 360 + dif;
     if (dif > 180) dif = dif - 360;
@@ -543,25 +543,25 @@ var SmoothPositionSampler = function (callback) {
 /////////////////////////////////////////////////////////
 // SmoothViewPositionSampler
 /////////////////////////////////////////////////////////
-var SmoothViewPositionSampler = function () {
-  var navi_utils = daximap["DXMapUtils"]["naviMath"];
-  var targetPose = [0, 0, 0];
-  var targetHeading = 0;
+let SmoothViewPositionSampler = function () {
+  let navi_utils = daximap["DXMapUtils"]["naviMath"];
+  let targetPose = [0, 0, 0];
+  let targetHeading = 0;
 
-  var targetObj = null;
-  var info = this;
+  let targetObj = null;
+  let info = this;
 
   info.curPose = [0, 0, 0];
   info.curHeading = 0.0;
   info.curTilt = 0.0;
   info.floorId = "";
   info.resamplerArray = new ResamplerArray();
-  var curT = 0.0;
+  let curT = 0.0;
   this.curT1 = 0.0;
 
-  var isDirty = false;
+  let isDirty = false;
 
-  var prototype = SmoothViewPositionSampler.prototype;
+  let prototype = SmoothViewPositionSampler.prototype;
   prototype.init = function (obj) {
     targetObj = obj;
   };
@@ -569,10 +569,10 @@ var SmoothViewPositionSampler = function () {
   prototype.setDirty = function (dirty) {
     isDirty = dirty;
   };
-  var quatFrom = [0, 0, 0, 1];
-  var quatTo = [0, 0, 0, 1];
-  var quatCur = [0, 0, 0, 1];
-  var vecEuler = [0, 0, 0];
+  let quatFrom = [0, 0, 0, 1];
+  let quatTo = [0, 0, 0, 1];
+  let quatCur = [0, 0, 0, 1];
+  let vecEuler = [0, 0, 0];
 
   prototype.onRuning = function () {
     if (isDirty === false) return;
@@ -580,19 +580,19 @@ var SmoothViewPositionSampler = function () {
     if (curT > 1) {
       curT = 1.0;
     }
-    var toPos = targetPose;
-    var fromPos = info.curPose;
-    var dir = [0, 0, 0];
-    var temp = [0, 0, 0];
-    var outPos = [0, 0, 0];
+    let toPos = targetPose;
+    let fromPos = info.curPose;
+    let dir = [0, 0, 0];
+    let temp = [0, 0, 0];
+    let outPos = [0, 0, 0];
     navi_utils.Vector3_lerp(info.curPose, fromPos, toPos, curT);
 
     this.curT1 += 0.2;
     if (this.curT1 > 1) {
       this.curT1 = 1.0;
     }
-    var dif = targetHeading - info.curHeading;
-    var caaa = this.curT1;
+    let dif = targetHeading - info.curHeading;
+    let caaa = this.curT1;
 
     if (dif < -180) dif = 360 + dif;
     if (dif > 180) dif = dif - 360;
@@ -602,11 +602,11 @@ var SmoothViewPositionSampler = function () {
     if (info.curHeading > 360) info.curHeading = info.curHeading - 360;
 
     /////////////////////////////////////////////////
-    var newVector = [Math.sin(info.curHeading * DEGREE_TO_RADIAN), Math.cos(info.curHeading * DEGREE_TO_RADIAN), 0];
+    let newVector = [Math.sin(info.curHeading * DEGREE_TO_RADIAN), Math.cos(info.curHeading * DEGREE_TO_RADIAN), 0];
     info.resamplerArray.push(newVector);
-    var retVector = info.resamplerArray.getAverageValue();
+    let retVector = info.resamplerArray.getAverageValue();
     //navi_utils.Vector3_dot(cross, test_vec, line_vec );
-    var headingView = Math.acos(navi_utils.Vector3_dot(retVector, [0, 1, 0])) * RADIAN_TO_DEGREE;
+    let headingView = Math.acos(navi_utils.Vector3_dot(retVector, [0, 1, 0])) * RADIAN_TO_DEGREE;
     if (retVector[0] < 0) {
       headingView = 360 - headingView;
     }
@@ -618,7 +618,7 @@ var SmoothViewPositionSampler = function () {
 
   prototype.onTargetChanged = function (target_pose, target_heading, target_tilt, floorId) {
     targetPose = target_pose;
-    var tempTargetHeading = target_heading;
+    let tempTargetHeading = target_heading;
     if (tempTargetHeading < -180) tempTargetHeading = 360 + tempTargetHeading;
     if (tempTargetHeading > 180) tempTargetHeading = tempTargetHeading - 360;
 
@@ -627,7 +627,7 @@ var SmoothViewPositionSampler = function () {
       this.curT1 = 0;
     }
 
-    var cameraPose = targetObj.getCameraPose();
+    let cameraPose = targetObj.getCameraPose();
     info.curPose[0] = cameraPose["target_lng"];
     info.curPose[1] = cameraPose["target_lat"];
     info.curPose[2] = cameraPose["target_alt"];
@@ -645,26 +645,26 @@ var SmoothViewPositionSampler = function () {
 
 // SmoothPositionRootSampler
 /////////////////////////////////////////////////////////
-var SmoothPositionRootSampler = function () {
-  var navi_utils = daximap["DXMapUtils"]["naviMath"];
-  var targetPose = [0, 0, 0];
-  var targetHeading = 0;
-  var targetPathT = -1;
-  var startPathT = -1;
-  var targetObj = null;
-  var info = this;
+let SmoothPositionRootSampler = function () {
+  let navi_utils = daximap["DXMapUtils"]["naviMath"];
+  let targetPose = [0, 0, 0];
+  let targetHeading = 0;
+  let targetPathT = -1;
+  let startPathT = -1;
+  let targetObj = null;
+  let info = this;
 
   info.curPose = [0, 0, 0];
   info.curHeading = 0.0;
   info.floorId = "";
   info.bdid = "";
   info.PathT = -1;
-  var curT = 0.0;
+  let curT = 0.0;
   this.curT1 = 0.0;
 
-  var isDirty = false;
+  let isDirty = false;
 
-  var prototype = SmoothPositionRootSampler.prototype;
+  let prototype = SmoothPositionRootSampler.prototype;
   prototype.init = function (obj) {
     targetObj = obj;
   };
@@ -672,10 +672,10 @@ var SmoothPositionRootSampler = function () {
   prototype.setDirty = function (dirty) {
     isDirty = dirty;
   };
-  var quatFrom = [0, 0, 0, 1];
-  var quatTo = [0, 0, 0, 1];
-  var quatCur = [0, 0, 0, 1];
-  var vecEuler = [0, 0, 0];
+  let quatFrom = [0, 0, 0, 1];
+  let quatTo = [0, 0, 0, 1];
+  let quatCur = [0, 0, 0, 1];
+  let vecEuler = [0, 0, 0];
 
   prototype.onRuning = function () {
     if (isDirty === false) return;
@@ -687,11 +687,11 @@ var SmoothPositionRootSampler = function () {
       //targetObj.naviCore.
     }
 
-    var toPos = targetPose;
-    var fromPos = info.curPose;
-    var dir = [0, 0, 0];
-    var temp = [0, 0, 0];
-    var outPos = [0, 0, 0];
+    let toPos = targetPose;
+    let fromPos = info.curPose;
+    let dir = [0, 0, 0];
+    let temp = [0, 0, 0];
+    let outPos = [0, 0, 0];
     navi_utils.Vector3_lerp(info.curPose, fromPos, toPos, curT);
 
     //onChangePosition(curPose, info.currentStatus);
@@ -700,9 +700,9 @@ var SmoothPositionRootSampler = function () {
     if (this.curT1 > 1) {
       this.curT1 = 1.0;
     }
-    var dif = targetHeading - info.curHeading;
+    let dif = targetHeading - info.curHeading;
 
-    var caaa = this.curT1;
+    let caaa = this.curT1;
 
     if (dif < -180) dif = 360 + dif;
     if (dif > 180) dif = dif - 360;
@@ -734,8 +734,8 @@ var SmoothPositionRootSampler = function () {
 /////////////////////////////////////////////////////////
 // TimeConditionTrigger
 /////////////////////////////////////////////////////////
-var TimeConditionTrigger = function (triggerTime) {
-  var obj = {};
+let TimeConditionTrigger = function (triggerTime) {
+  let obj = {};
   obj.maxTime = triggerTime;
   obj.timer = null;
   obj.EventTimeTrigger = new EventHandler("timeTrigger");
@@ -752,36 +752,36 @@ var TimeConditionTrigger = function (triggerTime) {
 };
 
 /** 路线站点类型常量 */
-var STATION_TYPE_HEAD = "0"; // 头部站点
-var STATION_TYPE_START = "1"; // 起点站点
-var STATION_TYPE_SEGMENT = "2"; // 路段中间站点
-var STATION_TYPE_SEGMENT_END = "3"; // 路段结束站点
-var STATION_TYPE_CHANGE_FLOOR = "4"; // 楼层切换起始站点
-var STATION_TYPE_CHANGE_FLOOR_END = "5"; // 楼层切换结束站点
-var STATION_TYPE_END = "8"; // 终点站点
-var STATION_TYPE_ACTION_TO_TARGET = "9"; // 到达目标动作站点
-var STATION_TYPE_ACTION = "10"; // 动作站点
+let STATION_TYPE_HEAD = "0"; // 头部站点
+let STATION_TYPE_START = "1"; // 起点站点
+let STATION_TYPE_SEGMENT = "2"; // 路段中间站点
+let STATION_TYPE_SEGMENT_END = "3"; // 路段结束站点
+let STATION_TYPE_CHANGE_FLOOR = "4"; // 楼层切换起始站点
+let STATION_TYPE_CHANGE_FLOOR_END = "5"; // 楼层切换结束站点
+let STATION_TYPE_END = "8"; // 终点站点
+let STATION_TYPE_ACTION_TO_TARGET = "9"; // 到达目标动作站点
+let STATION_TYPE_ACTION = "10"; // 动作站点
 
 /**
  * 导航距离阈值常量（单位：米）
  * 用于判断到达各类站点的距离触发条件
  */
-var endDistance = 0; // 终点触发距离
-var startStationDistance = 0.0; // 起点站点触发距离
-var changeFloorStationDistance = 4; // 楼层切换站点触发距离
-var changeFloorEndStationDistance = 1; // 楼层切换结束站点触发距离
-var segmentEndStationDistance = 0.5; // 路段结束站点触发距离
-var endStationDistance = 6; // 终点站点触发距离
+let endDistance = 0; // 终点触发距离
+let startStationDistance = 0.0; // 起点站点触发距离
+let changeFloorStationDistance = 4; // 楼层切换站点触发距离
+let changeFloorEndStationDistance = 1; // 楼层切换结束站点触发距离
+let segmentEndStationDistance = 0.5; // 路段结束站点触发距离
+let endStationDistance = 6; // 终点站点触发距离
 
 /**
  * 原始路线数据类
  * 存储和管理导航路线的核心数据结构
  * @param {Object} naviCore - 导航核心实例
  */
-var RawRoute = function (naviCore) {
-  var navi_utils = daximap["DXMapUtils"]["naviMath"];
-  var RouteFloorObject = function (route) {
-    var thisObject = this;
+let RawRoute = function (naviCore) {
+  let navi_utils = daximap["DXMapUtils"]["naviMath"];
+  let RouteFloorObject = function (route) {
+    let thisObject = this;
     thisObject.route = route;
     thisObject.extent = [];
     thisObject.renderObjects = [];
@@ -789,22 +789,22 @@ var RawRoute = function (naviCore) {
     thisObject.arrowRenderObjects = [];
     thisObject.stations = [];
 
-    var proto = RouteFloorObject.prototype;
+    let proto = RouteFloorObject.prototype;
     proto.setGeometry = function (geometry) {
       this.geometry = geometry;
-      var routeResampler = thisObject.route.naviCore.routeResampler;
-      var points = [];
+      let routeResampler = thisObject.route.naviCore.routeResampler;
+      let points = [];
       geometry.forEach(function (point) {
         points.push([point["x"], point["y"]]);
       });
-      var smoothRoute = routeResampler.resampler(points)[0];
-      // var smoothRoute = this.smoothRoute;
+      let smoothRoute = routeResampler.resampler(points)[0];
+      // let smoothRoute = this.smoothRoute;
       smoothRoute[0].segment_length = 0;
-      var total_length = 0;
+      let total_length = 0;
       this.smoothRoute = [];
       this.smoothRoute.push({ x: smoothRoute[0][0], y: smoothRoute[0][1], segment_length: 0 });
-      for (var i = 1, len = smoothRoute.length; i < len; i++) {
-        var p1 = smoothRoute[i - 1],
+      for (let i = 1, len = smoothRoute.length; i < len; i++) {
+        let p1 = smoothRoute[i - 1],
           p2 = smoothRoute[i];
         p2.segment_length = navi_utils.getGeodeticCircleDistance({ x: p1[0], y: p1[1] }, { x: p2[0], y: p2[1] });
         this.smoothRoute.push({ x: p2[0], y: p2[1], segment_length: p2.segment_length });
@@ -813,12 +813,12 @@ var RawRoute = function (naviCore) {
       this.smoothRoute.total_length = total_length;
     };
     proto.setVisible = function (bVisible) {
-      var thisObject = this;
+      let thisObject = this;
     };
 
     proto.getCurrentPose = function (t) {
-      var thisObject = this;
-      var curPose = {};
+      let thisObject = this;
+      let curPose = {};
       curPose.headingTilt = [0, 0];
       curPose.floorId = thisObject.floor;
       // thisObject.route.getCurrentPoseInFloor(curPose, thisObject.geometry, t);
@@ -827,14 +827,14 @@ var RawRoute = function (naviCore) {
     };
 
     proto.clear = function (clearBackground) {
-      var thisObject = this;
-      for (var objIndex in thisObject.renderObjects) {
-        var obj = thisObject.renderObjects[objIndex];
+      let thisObject = this;
+      for (let objIndex in thisObject.renderObjects) {
+        let obj = thisObject.renderObjects[objIndex];
         navi_map.deleteObject(obj);
       }
 
-      for (var objIndex in thisObject.arrowRenderObjects) {
-        var obj = thisObject.arrowRenderObjects[objIndex];
+      for (let objIndex in thisObject.arrowRenderObjects) {
+        let obj = thisObject.arrowRenderObjects[objIndex];
         navi_map.deleteObject(obj);
       }
 
@@ -842,15 +842,15 @@ var RawRoute = function (naviCore) {
       thisObject.arrowRenderObjects = [];
       thisObject.stations = [];
       if (clearBackground) {
-        for (var objIndex in thisObject.backgroundRenderObjects) {
-          var obj = thisObject.backgroundRenderObjects[objIndex];
+        for (let objIndex in thisObject.backgroundRenderObjects) {
+          let obj = thisObject.backgroundRenderObjects[objIndex];
           navi_map.deleteObject(obj);
         }
       }
     };
 
     proto.addChildObject = function (ro, isBackground) {
-      var thisObject = this;
+      let thisObject = this;
       if (isBackground) {
         thisObject.backgroundRenderObjects.push(ro);
       } else {
@@ -860,7 +860,7 @@ var RawRoute = function (naviCore) {
     proto.getChildObject = function (key) {};
   };
 
-  var naviRoute = {};
+  let naviRoute = {};
   naviRoute.lastStation = null;
   naviRoute.naviCore = naviCore;
   naviRoute.stations = [];
@@ -897,8 +897,8 @@ var RawRoute = function (naviCore) {
     return naviRoute.floorObjectMap[floorId];
   };
   naviRoute.getFloorObjectGeometry = function (floorId) {
-    var geometrys = [];
-    var floorObjects = naviRoute.floorObjectMap[floorId];
+    let geometrys = [];
+    let floorObjects = naviRoute.floorObjectMap[floorId];
     floorObjects.forEach(function (floorObject) {
       geometrys = geometrys.concat(floorObject.geometry);
     });
@@ -909,8 +909,8 @@ var RawRoute = function (naviCore) {
     if (naviRoute.floorObjectMap[floorId] === undefined) {
       naviRoute.floorObjectMap[floorId] = [];
     }
-    var floorObjects = naviRoute.floorObjectMap[floorId];
-    var floorObject = new RouteFloorObject(this);
+    let floorObjects = naviRoute.floorObjectMap[floorId];
+    let floorObject = new RouteFloorObject(this);
     //floorObject.extent = oldFloorObject.extent;//floorExtent[floorID];
     floorObject.floor = floorId;
     floorObjects.push(floorObject);
@@ -920,15 +920,15 @@ var RawRoute = function (naviCore) {
   };
 
   function getAngle2(start, end) {
-    var diff_x = (end.x - start.x) * 100000,
+    let diff_x = (end.x - start.x) * 100000,
       diff_y = (end.y - start.y) * 100000;
-    var InvLength = 1 / Math.sqrt(diff_x * diff_x + diff_y * diff_y);
-    var vec2 = [diff_x * InvLength, -diff_y * InvLength];
-    var vec1 = [0, 1];
+    let InvLength = 1 / Math.sqrt(diff_x * diff_x + diff_y * diff_y);
+    let vec2 = [diff_x * InvLength, -diff_y * InvLength];
+    let vec1 = [0, 1];
 
     //navi_utils.Vector3_dot = function( vec1, vec2 ) {
-    var dotValue = vec1[0] * vec2[0] + vec1[1] * vec2[1];
-    var angle = (Math.acos(dotValue) / Math.PI) * 180;
+    let dotValue = vec1[0] * vec2[0] + vec1[1] * vec2[1];
+    let angle = (Math.acos(dotValue) / Math.PI) * 180;
 
     if (diff_x < 0) {
       angle = 360 - angle;
@@ -937,39 +937,39 @@ var RawRoute = function (naviCore) {
   }
 
   naviRoute.getCurrentPoseInFloor = function (curPose, geometry, t) {
-    var pos = [geometry[0].x, geometry[0].y, 0];
+    let pos = [geometry[0].x, geometry[0].y, 0];
     if (t > 1) {
       t = 1;
     }
     curPose.pos = pos;
-    var distance = 0;
-    var geolen = geometry.length;
-    var maxIndex = geolen - 1;
-    for (var i = 1; i < geolen; i++) {
-      var cur_segment_length = geometry[i].segment_length;
-      var start_t = distance / geometry.total_length;
+    let distance = 0;
+    let geolen = geometry.length;
+    let maxIndex = geolen - 1;
+    for (let i = 1; i < geolen; i++) {
+      let cur_segment_length = geometry[i].segment_length;
+      let start_t = distance / geometry.total_length;
       distance += cur_segment_length;
-      var end_t = distance / geometry.total_length;
+      let end_t = distance / geometry.total_length;
       // if ((end_t < t) && (t != 1 || i < maxIndex)) {
       if (end_t < t) {
         continue;
       }
       //t < end_t;
-      var cur_t = (t - start_t) / (end_t - start_t);
+      let cur_t = (t - start_t) / (end_t - start_t);
       if (isNaN(cur_t)) {
         cur_t = 0;
       }
-      var temp = [0, 0, 0];
-      var dir_ecef = [0, 0, 0];
-      var a_sphr = [geometry[i - 1].x * DEGREE_TO_RADIAN, geometry[i - 1].y * DEGREE_TO_RADIAN, earthRadius];
-      var b_sphr = [geometry[i].x * DEGREE_TO_RADIAN, geometry[i].y * DEGREE_TO_RADIAN, earthRadius];
-      var a_ecef = [0, 0, 0];
-      var b_ecef = [0, 0, 0];
+      let temp = [0, 0, 0];
+      let dir_ecef = [0, 0, 0];
+      let a_sphr = [geometry[i - 1].x * DEGREE_TO_RADIAN, geometry[i - 1].y * DEGREE_TO_RADIAN, earthRadius];
+      let b_sphr = [geometry[i].x * DEGREE_TO_RADIAN, geometry[i].y * DEGREE_TO_RADIAN, earthRadius];
+      let a_ecef = [0, 0, 0];
+      let b_ecef = [0, 0, 0];
 
-      var up_ecef = [0, 0, 0];
-      var right_ecef = [0, 0, 0];
-      var north_ecef = [0, 0, 0];
-      var test_ecef = [0, 0, 0];
+      let up_ecef = [0, 0, 0];
+      let right_ecef = [0, 0, 0];
+      let north_ecef = [0, 0, 0];
+      let test_ecef = [0, 0, 0];
 
       navi_utils.transformGeographicToECEF(a_ecef, a_sphr);
       navi_utils.transformGeographicToECEF(b_ecef, b_sphr);
@@ -981,7 +981,7 @@ var RawRoute = function (naviCore) {
       navi_utils.Vector3_cross(north_ecef, up_ecef, right_ecef);
       navi_utils.Vector3_normalize(north_ecef, north_ecef);
 
-      var heading = (Math.acos(navi_utils.Vector3_dot(north_ecef, dir_ecef)) / Math.PI) * 180;
+      let heading = (Math.acos(navi_utils.Vector3_dot(north_ecef, dir_ecef)) / Math.PI) * 180;
       navi_utils.Vector3_cross(test_ecef, north_ecef, dir_ecef);
       if (navi_utils.Vector3_dot(up_ecef, test_ecef) > 0) {
         heading = 360 - heading;
@@ -1000,19 +1000,19 @@ var RawRoute = function (naviCore) {
   };
 
   naviRoute.getCurrentPose = function (t) {
-    var curPose = {};
+    let curPose = {};
     curPose.headingTilt = [0, 0];
-    var geo_t = 0;
-    for (var geoIndex = 0; geoIndex < naviRoute.floorObjects.length; geoIndex++) {
-      var floorObject = naviRoute.floorObjects[geoIndex];
-      var geometry = floorObject.smoothRoute; //floorObject.geometry;
-      var start_geo_t = geo_t;
-      var temp_t = geometry.total_length / naviRoute.total_length;
+    let geo_t = 0;
+    for (let geoIndex = 0; geoIndex < naviRoute.floorObjects.length; geoIndex++) {
+      let floorObject = naviRoute.floorObjects[geoIndex];
+      let geometry = floorObject.smoothRoute; //floorObject.geometry;
+      let start_geo_t = geo_t;
+      let temp_t = geometry.total_length / naviRoute.total_length;
       geo_t += temp_t;
       if (t > geo_t) {
         continue;
       }
-      var new_t = (t - start_geo_t) / temp_t;
+      let new_t = (t - start_geo_t) / temp_t;
       curPose.floor = floorObject.floor;
       naviRoute.getCurrentPoseInFloor(curPose, geometry, new_t);
       break;
@@ -1021,16 +1021,16 @@ var RawRoute = function (naviCore) {
   };
 
   naviRoute.snapToNearestPathLine = function (x, y, floorId, result) {
-    var curr = naviCore.route.currentCursor;
+    let curr = naviCore.route.currentCursor;
     if (naviCore.isNavigationPause || curr < 0) {
       curr = 0;
     }
-    var pos_ecef = [0, 0, 0];
-    var pos_sphr = [indicator.pos[0] * DEGREE_TO_RADIAN, indicator.pos[1] * DEGREE_TO_RADIAN, earthRadius];
+    let pos_ecef = [0, 0, 0];
+    let pos_sphr = [indicator.pos[0] * DEGREE_TO_RADIAN, indicator.pos[1] * DEGREE_TO_RADIAN, earthRadius];
     navi_utils.transformGeographicToECEF(pos_ecef, pos_sphr);
 
-    for (var i = curr; i < naviRoute.stations.length; i++) {
-      var station = naviRoute.stations[i];
+    for (let i = curr; i < naviRoute.stations.length; i++) {
+      let station = naviRoute.stations[i];
       if (station.floor !== floorId) continue;
       if (
         station.type === STATION_TYPE_SEGMENT ||
@@ -1039,19 +1039,19 @@ var RawRoute = function (naviCore) {
         station.type === STATION_TYPE_ACTION ||
         station.type === STATION_TYPE_ACTION_TO_TARGET
       ) {
-        var segment = station.segment;
-        for (var j = 0; j < segment.length - 1; j++) {
-          var a_sphr = [segment[j].x * DEGREE_TO_RADIAN, segment[j].y * DEGREE_TO_RADIAN, earthRadius];
-          var b_sphr = [segment[j + 1].x * DEGREE_TO_RADIAN, segment[j + 1].y * DEGREE_TO_RADIAN, earthRadius];
-          var a_ecef = [0, 0, 0];
-          var b_ecef = [0, 0, 0];
-          var root_ecef = [0, 0, 0];
+        let segment = station.segment;
+        for (let j = 0; j < segment.length - 1; j++) {
+          let a_sphr = [segment[j].x * DEGREE_TO_RADIAN, segment[j].y * DEGREE_TO_RADIAN, earthRadius];
+          let b_sphr = [segment[j + 1].x * DEGREE_TO_RADIAN, segment[j + 1].y * DEGREE_TO_RADIAN, earthRadius];
+          let a_ecef = [0, 0, 0];
+          let b_ecef = [0, 0, 0];
+          let root_ecef = [0, 0, 0];
           navi_utils.transformGeographicToECEF(a_ecef, a_sphr);
           navi_utils.transformGeographicToECEF(b_ecef, b_sphr);
-          var tempDistance = navi_utils.pointToLine(pos_ecef, a_ecef, b_ecef, root_ecef);
+          let tempDistance = navi_utils.pointToLine(pos_ecef, a_ecef, b_ecef, root_ecef);
           //todo:需要精细计算具体的距离
           if (result.minDistance > tempDistance) {
-            var B = segment[segment.length - 1];
+            let B = segment[segment.length - 1];
             result.minDistance = tempDistance;
             result.targetDistance = navi_utils.getGeodeticCircleDistance({ x: x, y: y }, B);
             result.index = i;
@@ -1073,22 +1073,22 @@ var RawRoute = function (naviCore) {
   };
 
   naviRoute.getNearestStation = function (indicator, result) {
-    var curr = naviCore.route.currentCursor; //0;
-    // var curr = 0;
+    let curr = naviCore.route.currentCursor; //0;
+    // let curr = 0;
     if (naviCore.isNavigationPause || curr < 0) {
       curr = 0;
     }
-    var indicatorFloorHasRoute = false;
-    for (var i = curr; i < naviRoute.stations.length; i++) {
-      var station = naviRoute.stations[i];
+    let indicatorFloorHasRoute = false;
+    for (let i = curr; i < naviRoute.stations.length; i++) {
+      let station = naviRoute.stations[i];
       if (station.floor !== indicator.floorId || station.type === STATION_TYPE_HEAD) {
         continue;
       }
-      var floorObjectIndex = station.floorObjectIndex;
+      let floorObjectIndex = station.floorObjectIndex;
       indicatorFloorHasRoute = true;
       if (station.type === STATION_TYPE_START) {
-        var position = station.position;
-        var tempDistance = navi_utils.getGeodeticCircleDistance(
+        let position = station.position;
+        let tempDistance = navi_utils.getGeodeticCircleDistance(
           {
             x: indicator.pos[0],
             y: indicator.pos[1],
@@ -1107,7 +1107,7 @@ var RawRoute = function (naviCore) {
           break;
         }
       } else {
-        var endDistance = 0;
+        let endDistance = 0;
         if (
           station.type === STATION_TYPE_ACTION_TO_TARGET ||
           station.type === STATION_TYPE_END ||
@@ -1127,12 +1127,12 @@ var RawRoute = function (naviCore) {
         }
         naviRoute.computeSegmentDis(station, result, endDistance, indicator, i);
         if (i < naviRoute.stations.length - 2 && result.station == station && station.extendType && (result.targetDistance < 1 || station.arrivedTime)) {
-          var nextFloorPos = naviRoute.stations[i + 2].segment[1];
+          let nextFloorPos = naviRoute.stations[i + 2].segment[1];
           if (!station.arrivedTime && station.useTime) {
             station.arrivedTime = Date.now() + station.useTime;
           } else {
-            var pos = station.segment[1];
-            var pt = (Date.now() - station.arrivedTime) / 1000 / station.useTime;
+            let pos = station.segment[1];
+            let pt = (Date.now() - station.arrivedTime) / 1000 / station.useTime;
             if (pt > 1) {
               pt = 1;
             } else if (pt < 1) {
@@ -1156,23 +1156,23 @@ var RawRoute = function (naviCore) {
           station.type === STATION_TYPE_CHANGE_FLOOR ||
           station.type === STATION_TYPE_CHANGE_FLOOR_END
         ) {
-          var isInStation = result.isInStation;
-          var testStation = result.station;
-          var testStation = result.station;
-          var segment = station.segment;
+          let isInStation = result.isInStation;
+          let testStation = result.station;
+          let testStation = result.station;
+          let segment = station.segment;
 
           if (isInStation && testStation !== undefined && result.station.roadInfo !== undefined) {
-            var position = testStation.roadInfo.nearestPt;
-            var B = segment[segment.length - 1];
-            var _tempDistance = navi_utils.getGeodeticCircleDistance(position, B);
-            var _startToBeginPointDistance = testStation.distance - _tempDistance; //
-            var _showDistace = testStation.roadInfo.result.Result["distance"];
-            var _endToBeginPointDistance = _startToBeginPointDistance + _showDistace;
-            var _start = _startToBeginPointDistance / testStation.distance;
-            var _end = _endToBeginPointDistance / testStation.distance;
+            let position = testStation.roadInfo.nearestPt;
+            let B = segment[segment.length - 1];
+            let _tempDistance = navi_utils.getGeodeticCircleDistance(position, B);
+            let _startToBeginPointDistance = testStation.distance - _tempDistance; //
+            let _showDistace = testStation.roadInfo.result.Result["distance"];
+            let _endToBeginPointDistance = _startToBeginPointDistance + _showDistace;
+            let _start = _startToBeginPointDistance / testStation.distance;
+            let _end = _endToBeginPointDistance / testStation.distance;
             _start = Math.min(1, Math.max(_start, 0));
             _end = Math.min(1, Math.max(_end, 0));
-            var _curr = 1 - result.targetDistance / testStation.distance;
+            let _curr = 1 - result.targetDistance / testStation.distance;
             if (_curr > _start && _curr < _end && !station.roadCrossFinished) {
               //&& tempDistance <= endDistance) {
               // khronus modify
@@ -1204,14 +1204,14 @@ var RawRoute = function (naviCore) {
     return false;
   };
   naviRoute.computeSegmentDis = function (station, result, endDistance, indicator, stationIndex) {
-    var pos_ecef = [0, 0, 0];
-    var pos_sphr = [indicator.pos[0] * DEGREE_TO_RADIAN, indicator.pos[1] * DEGREE_TO_RADIAN, earthRadius];
+    let pos_ecef = [0, 0, 0];
+    let pos_sphr = [indicator.pos[0] * DEGREE_TO_RADIAN, indicator.pos[1] * DEGREE_TO_RADIAN, earthRadius];
     navi_utils.transformGeographicToECEF(pos_ecef, pos_sphr);
-    var segment = station.segment;
-    var isInStation = false;
+    let segment = station.segment;
+    let isInStation = false;
     if (!segment || segment.length <= 1) {
-      var position = station.position;
-      var tempDistance = navi_utils.getGeodeticCircleDistance({ x: indicator.pos[0], y: indicator.pos[1] }, { x: position[0], y: position[1] });
+      let position = station.position;
+      let tempDistance = navi_utils.getGeodeticCircleDistance({ x: indicator.pos[0], y: indicator.pos[1] }, { x: position[0], y: position[1] });
       if (tempDistance < endDistance && result.minDistance - tempDistance > 0.001) {
         result.minDistance = tempDistance;
         result.targetDistance = tempDistance;
@@ -1226,20 +1226,20 @@ var RawRoute = function (naviCore) {
         result.pointIndex = station.pointIndex;
       }
     } else {
-      var outDis = 0; //走过的
-      for (var j = 0; j < segment.length - 1; j++) {
-        var a_sphr = [segment[j].x * DEGREE_TO_RADIAN, segment[j].y * DEGREE_TO_RADIAN, earthRadius];
-        var b_sphr = [segment[j + 1].x * DEGREE_TO_RADIAN, segment[j + 1].y * DEGREE_TO_RADIAN, earthRadius];
-        var a_ecef = [0, 0, 0];
-        var b_ecef = [0, 0, 0];
-        var root_ecef = [0, 0, 0];
+      let outDis = 0; //走过的
+      for (let j = 0; j < segment.length - 1; j++) {
+        let a_sphr = [segment[j].x * DEGREE_TO_RADIAN, segment[j].y * DEGREE_TO_RADIAN, earthRadius];
+        let b_sphr = [segment[j + 1].x * DEGREE_TO_RADIAN, segment[j + 1].y * DEGREE_TO_RADIAN, earthRadius];
+        let a_ecef = [0, 0, 0];
+        let b_ecef = [0, 0, 0];
+        let root_ecef = [0, 0, 0];
         navi_utils.transformGeographicToECEF(a_ecef, a_sphr);
         navi_utils.transformGeographicToECEF(b_ecef, b_sphr);
-        var tempDistance = navi_utils.pointToLine(pos_ecef, a_ecef, b_ecef, root_ecef);
+        let tempDistance = navi_utils.pointToLine(pos_ecef, a_ecef, b_ecef, root_ecef);
         // TODO: 需要精细计算具体的距离
         outDis += segment[j].segment_length;
-        var lastDis = 0;
-        for (var m = j + 2; m < segment.length; m++) {
+        let lastDis = 0;
+        for (let m = j + 2; m < segment.length; m++) {
           lastDis += segment[m].segment_length || 0;
         }
         if (result.minDistance == 999999 || result.minDistance - tempDistance >= 0) {
@@ -1269,15 +1269,15 @@ var RawRoute = function (naviCore) {
     return false;
   };
   naviRoute.computeTime = function (route, matchResult, indicator) {
-    var stations = route.stations;
-    var floorId = matchResult.floor;
-    var routeIndex = matchResult.station.floorObjectIndex;
-    var _index = matchResult.index;
-    var floorRouteDis = route.floorObjects[routeIndex].geometry.total_length;
-    var t = 0;
-    var walkedRouteDis = 0;
-    for (var i = 0, len = stations.length; i < len; i++) {
-      var station = stations[i];
+    let stations = route.stations;
+    let floorId = matchResult.floor;
+    let routeIndex = matchResult.station.floorObjectIndex;
+    let _index = matchResult.index;
+    let floorRouteDis = route.floorObjects[routeIndex].geometry.total_length;
+    let t = 0;
+    let walkedRouteDis = 0;
+    for (let i = 0, len = stations.length; i < len; i++) {
+      let station = stations[i];
       if (station.floorObjectIndex == routeIndex && station.distance) {
         if (i < _index) {
           walkedRouteDis += station.distance;
@@ -1294,18 +1294,18 @@ var RawRoute = function (naviCore) {
   };
 
   naviRoute.updateInfo = function (targetDistance, stationsInfo, speakType, callback) {
-    var currentCursor = naviRoute.currentCursor;
+    let currentCursor = naviRoute.currentCursor;
     if (naviCore.naviSpeakType == 2) {
       currentCursor = currentCursor--;
     }
-    var station = naviRoute.stations[currentCursor];
-    var isGray = false;
+    let station = naviRoute.stations[currentCursor];
+    let isGray = false;
     if (naviCore.isSwipe === true) {
       isGray = true;
     }
     naviCore.updateRouteInfo(currentCursor, isGray, targetDistance, station, speakType, callback);
     if (station.type === "0" || station.type === "1") {
-      var data = naviRoute.getLastDistance(0);
+      let data = naviRoute.getLastDistance(0);
       data["speakType"] = speakType;
       naviCore.updateNaviProgressInfo(data);
     }
@@ -1317,22 +1317,22 @@ var RawRoute = function (naviCore) {
       //result.index
       naviRoute.currentCursor = result.index;
     }
-    // var station = naviRoute.stations[naviRoute.currentCursor];
-    var station = naviRoute.stations[result.index];
-    var speedDis = 0;
-    var _distance = 0,
+    // let station = naviRoute.stations[naviRoute.currentCursor];
+    let station = naviRoute.stations[result.index];
+    let speedDis = 0;
+    let _distance = 0,
       _time = 0,
       _data,
       _progress;
     if (station.type === "0" || station.type === "1") {
       _distance = Math.ceil(naviRoute.total_length);
     } else if (station.type === "2" || station.type === "3" || station.type === "8" || station.type === "4" || station.type === "5") {
-      var last = 0;
-      var _station;
-      for (var i = 2; i <= result.index; i++) {
+      let last = 0;
+      let _station;
+      for (let i = 2; i <= result.index; i++) {
         _station = naviRoute.stations[i];
         if (_station.type === "2" || _station.type === "3" || _station.type === "8" || _station.type === "4" || _station.type === "5") {
-          var segment = _station.segment;
+          let segment = _station.segment;
           if (segment.segment_length == undefined && segment) {
             segment.segment_length = 0;
             segment.forEach(function (item) {
@@ -1346,13 +1346,13 @@ var RawRoute = function (naviCore) {
       speedDis -= targetDistance;
       // _distance = Math.ceil(last + targetDistance); // 计算有误
       _distance = Math.ceil(naviRoute.total_length - speedDis);
-      var speedRate = 1 * 0.83 * 1000;
-      for (var i = result.index, len = naviRoute.stations.length; i < len; i++) {
-        var _station = naviRoute.stations[i];
-        var _segment = _station.segment;
+      let speedRate = 1 * 0.83 * 1000;
+      for (let i = result.index, len = naviRoute.stations.length; i < len; i++) {
+        let _station = naviRoute.stations[i];
+        let _segment = _station.segment;
         if (i == result.index) {
-          var compDis = 0;
-          for (var j = _segment.length - 1; j > 0; j--) {
+          let compDis = 0;
+          for (let j = _segment.length - 1; j > 0; j--) {
             if (compDis + _segment[j].segment_length >= targetDistance) {
               _time += ((compDis + _segment[j].segment_length - targetDistance) * speedRate) / _segment[j].speed;
               break;
@@ -1362,7 +1362,7 @@ var RawRoute = function (naviCore) {
             compDis += _segment[j].segment_length;
           }
         } else {
-          for (var j = 1; j < _segment.length; j++) {
+          for (let j = 1; j < _segment.length; j++) {
             _time += (_segment[j].segment_length * speedRate) / _segment[j].speed;
           }
         }
@@ -1375,11 +1375,11 @@ var RawRoute = function (naviCore) {
       _progress = (speedDis / naviRoute.total_length) * 100;
     }
     if (naviRoute.currentCursor == 0 && naviRoute.stations.length) {
-      var _index = naviRoute.stations.length >= 3 ? result.index : naviRoute.stations.length - 1;
+      let _index = naviRoute.stations.length >= 3 ? result.index : naviRoute.stations.length - 1;
       targetDistance = Math.ceil(naviRoute.stations[_index].distance);
     }
     targetDistance = Math.ceil(targetDistance);
-    var disUnit = window["langData"]["meter:distance"] || "米";
+    let disUnit = window["langData"]["meter:distance"] || "米";
     if (this.language == "En") {
       disUnit = " meters ";
     }
@@ -1406,22 +1406,22 @@ var RawRoute = function (naviCore) {
   };
 
   naviRoute.getLastDistance2 = function (targetDistance) {
-    var station = naviRoute.stations[naviRoute.currentCursor];
-    var _distance = 0,
+    let station = naviRoute.stations[naviRoute.currentCursor];
+    let _distance = 0,
       _time = 0,
       _data,
       _progress;
     if (station.type === "0" || station.type === "1") {
       _distance = Math.ceil(naviRoute.total_length);
     } else if (station.type === "2" || station.type === "3" || station.type === "9" || station.type === "7" || station.type === "4" || station.type === "5") {
-      var last = 0;
-      for (var i = naviRoute.currentCursor + 1; i < naviRoute.stations.length; i++) {
+      let last = 0;
+      for (let i = naviRoute.currentCursor + 1; i < naviRoute.stations.length; i++) {
         station = naviRoute.stations[i];
         if (station.type === "2" || station.type === "3" || station.type === "9" || station.type === "7" || station.type === "4" || station.type === "5") {
-          var segment = station.segment;
+          let segment = station.segment;
           if (segment.segment_length == undefined) {
             segment.segment_length = 0;
-            for (var i = 0, len = segment.length; i < len; i++) {
+            for (let i = 0, len = segment.length; i < len; i++) {
               segment.segment_length += segment[i].segment_length || 0;
             }
           }
@@ -1429,13 +1429,13 @@ var RawRoute = function (naviCore) {
         }
       }
       _distance = Math.ceil(last + targetDistance);
-      var speedRate = 1 * 0.83 * 1000;
-      for (var i = result.index, len = naviRoute.stations.length; i < len; i++) {
-        var station = naviRoute.stations[i];
-        var segment = station.segment;
+      let speedRate = 1 * 0.83 * 1000;
+      for (let i = result.index, len = naviRoute.stations.length; i < len; i++) {
+        let station = naviRoute.stations[i];
+        let segment = station.segment;
         if (i == result.index) {
-          var compDis = 0;
-          for (var j = segment.length - 1; j > 0; j--) {
+          let compDis = 0;
+          for (let j = segment.length - 1; j > 0; j--) {
             // compDis+=segment[j].segment_length;
             if (compDis + segment[j].segment_length >= targetDistance) {
               _time += ((compDis + segment[j].segment_length - targetDistance) * speedRate) / segment[j].speed;
@@ -1446,7 +1446,7 @@ var RawRoute = function (naviCore) {
             compDis += segment[j].segment_length;
           }
         } else {
-          for (var j = 1; j < segment.length; j++) {
+          for (let j = 1; j < segment.length; j++) {
             _time += (segment[j].segment_length * speedRate) / segment[j].speed;
           }
         }
@@ -1455,7 +1455,7 @@ var RawRoute = function (naviCore) {
 
     _progress = ((naviRoute.total_length - _distance) / naviRoute.total_length) * 100;
     // _data = { "extraDistance": _distance + (window["langData"]["meter:distance"]||"米"), "extraTime": navi_utils.MillisecondToDate(_time), "extraProgress": _progress, "lastDistance": _distance };
-    var disUnit = window["langData"]["meter:distance"] || "米";
+    let disUnit = window["langData"]["meter:distance"] || "米";
     if (this.language == "En") {
       disUnit = " meters ";
     }
@@ -1476,16 +1476,16 @@ var RawRoute = function (naviCore) {
   };
 
   naviRoute.getFloorShowData = function (floorNum, result) {
-    var info = {};
-    var floorArr = [];
-    var dir = "up";
-    var byway = "";
-    for (var i = 0; i < naviRoute.stations.length; i++) {
-      var station = naviRoute.stations[i];
+    let info = {};
+    let floorArr = [];
+    let dir = "up";
+    let byway = "";
+    for (let i = 0; i < naviRoute.stations.length; i++) {
+      let station = naviRoute.stations[i];
       if (station.type !== "4" && station.type !== "5") continue;
       if (station.type === "4") {
-        var byway = RouteParseHelper.getTypeByIconName(station.angelIcon);
-        var typename = station.angelIcon.split("_");
+        let byway = RouteParseHelper.getTypeByIconName(station.angelIcon);
+        let typename = station.angelIcon.split("_");
 
         if (typename.length == 2) {
           dir = typename[0].split("-")[1];
@@ -1505,9 +1505,9 @@ var RawRoute = function (naviCore) {
       info = {};
     }
 
-    for (var i = 0; i < floorArr.length - 1; i += 2) {
-      var A = floorArr[i];
-      var B = floorArr[i + 1];
+    for (let i = 0; i < floorArr.length - 1; i += 2) {
+      let A = floorArr[i];
+      let B = floorArr[i + 1];
       if (A.floor < floorNum && floorNum < B.floor) {
         result.byWay = A.byWay;
         result.dir = A.dir;
@@ -1517,8 +1517,8 @@ var RawRoute = function (naviCore) {
   };
 
   naviRoute.showArrow = function (index) {
-    for (var i = 2, stationCount = naviRoute.stations.length; i < stationCount; i++) {
-      var station = naviRoute.stations[i];
+    for (let i = 2, stationCount = naviRoute.stations.length; i < stationCount; i++) {
+      let station = naviRoute.stations[i];
       if (station.arrowObject) {
         // station.arrowObject.setVisible(i===index);
         // station.arrowObject.setIsActive(i === index);
@@ -1531,24 +1531,24 @@ var RawRoute = function (naviCore) {
 ///////////////////////////////////////////////////////////////////////////////
 // RawRouteParser
 ///////////////////////////////////////////////////////////////////////////////
-var RawRouteParser = function () {
+let RawRouteParser = function () {
   /**
    * Generate Navi Data （Text and Speak）
    * @param naviRoute
    */
-  var thisObject = {};
-  var station_start_func = RouteParseHelper.station_start_func;
+  let thisObject = {};
+  let station_start_func = RouteParseHelper.station_start_func;
   /**
    * Create Route
    * @returns {{}}
    */
-  var endText = "本次导航结束，欢迎您再次使用室内导航!";
+  let endText = "本次导航结束，欢迎您再次使用室内导航!";
   // if(thisObject.language == "En"){
   //     endText = "You have arrived near your destination. This navigation is over"
   // }
-  var DXMapUtils = daximap["DXMapUtils"];
-  var navi_utils = DXMapUtils["naviMath"];
-  var mapPoiStyle = window["DaxiMap"]["mapPoiStyle"];
+  let DXMapUtils = daximap["DXMapUtils"];
+  let navi_utils = DXMapUtils["naviMath"];
+  let mapPoiStyle = window["DaxiMap"]["mapPoiStyle"];
   thisObject.createRoute = function (naviCore, data, routeState, options) {
     // naviCore.mapAPI._coreMap.clearRouteArrow();
 
@@ -1557,12 +1557,12 @@ var RawRouteParser = function () {
     if (thisObject.language == "En") {
       endText = "You have arrived near your destination. This navigation is over";
     }
-    var naviRoute = RouteParseHelper.createRouteImpl(naviCore);
-    var route = data["route"][0];
-    var path = route["path"];
-    var keyPoints = path["keyPoints"];
+    let naviRoute = RouteParseHelper.createRouteImpl(naviCore);
+    let route = data["route"][0];
+    let path = route["path"];
+    let keyPoints = path["keyPoints"];
     if (data["parm"] && data["parm"]["endPoint"]) {
-      var endPoint = data["parm"]["endPoint"];
+      let endPoint = data["parm"]["endPoint"];
       naviRoute.targetId = endPoint["stopid"];
       naviRoute.targetName = endPoint["dsp"] || endPoint["endCnName"] || endPoint["name"] || window["langData"]["destnation"] || "目的地";
       naviRoute.targetLocal = endPoint["address"] || "";
@@ -1584,12 +1584,12 @@ var RawRouteParser = function () {
     parseStations(naviRoute, path, route["roadCrossData"], thisObject.language);
     if (keyPoints && keyPoints.length) {
       keyPoints.forEach(function (keyPoint) {
-        var floorId = keyPoint["floorId"];
-        var pos = keyPoint["pos"];
-        var iconType = keyPoint["icon"];
-        var floorObject = naviRoute.getFloorObject(floorId);
-        var renderObjects = floorObject[0].renderObjects;
-        var mapAPI = naviCore.mapAPI;
+        let floorId = keyPoint["floorId"];
+        let pos = keyPoint["pos"];
+        let iconType = keyPoint["icon"];
+        let floorObject = naviRoute.getFloorObject(floorId);
+        let renderObjects = floorObject[0].renderObjects;
+        let mapAPI = naviCore.mapAPI;
 
         createIconMarker(mapAPI, renderObjects, floorId, iconType, pos);
       });
@@ -1601,30 +1601,30 @@ var RawRouteParser = function () {
   };
   // drawLine
   thisObject.createLines = function (naviCore, floorId, lineString, routeState, index) {
-    // var naviRoute = thisObject.route;
+    // let naviRoute = thisObject.route;
 
-    var tempArr = lineString.split(";");
-    var pointString = tempArr.join(",0.5;");
+    let tempArr = lineString.split(";");
+    let pointString = tempArr.join(",0.5;");
     pointString += ",0.5";
-    var naviRoute = RouteParseHelper.createRouteImpl(naviCore);
+    let naviRoute = RouteParseHelper.createRouteImpl(naviCore);
     naviRoute.createFloorObject(floorId, index);
-    var floorObjects = naviRoute.getFloorObject(floorId);
+    let floorObjects = naviRoute.getFloorObject(floorId);
     floorObjects.forEach(function (floorObject) {
-      var renderObjects = floorObject.renderObjects;
-      var factory = naviCore.mapAPI.scene.factory;
-      var isVisible = floorId === naviCore.mapAPI.cameraCtrl.getCurrentFloorId();
-      var assetsPath = naviCore.mapAPI.config.assetsPath;
-      var guid = factory.createUUID();
-      var devicePixel = window["devicePixelRatio"];
-      var _width1 = Math.round(6 * devicePixel);
-      var _wrapScale1 = Math.round(4 * devicePixel);
-      var bacl_polyline = factory.createPolyline(guid, guid, pointString, floorId, joinPath(assetsPath, getIconLink("line2")), _width1, _wrapScale1, true);
+      let renderObjects = floorObject.renderObjects;
+      let factory = naviCore.mapAPI.scene.factory;
+      let isVisible = floorId === naviCore.mapAPI.cameraCtrl.getCurrentFloorId();
+      let assetsPath = naviCore.mapAPI.config.assetsPath;
+      let guid = factory.createUUID();
+      let devicePixel = window["devicePixelRatio"];
+      let _width1 = Math.round(6 * devicePixel);
+      let _wrapScale1 = Math.round(4 * devicePixel);
+      let bacl_polyline = factory.createPolyline(guid, guid, pointString, floorId, joinPath(assetsPath, getIconLink("line2")), _width1, _wrapScale1, true);
       bacl_polyline.setVisible(isVisible);
       renderObjects.push(bacl_polyline);
-      var guid = factory.createUUID();
-      var _width2 = Math.round(5 * devicePixel);
-      var _wrapScale2 = Math.round(4 * devicePixel);
-      var polyline = factory.createPolyline(guid, guid, pointString, floorId, joinPath(assetsPath, "images/line_blue.png"), _width2, _wrapScale2, true);
+      let guid = factory.createUUID();
+      let _width2 = Math.round(5 * devicePixel);
+      let _wrapScale2 = Math.round(4 * devicePixel);
+      let polyline = factory.createPolyline(guid, guid, pointString, floorId, joinPath(assetsPath, "images/line_blue.png"), _width2, _wrapScale2, true);
       polyline.setVisible(isVisible);
       renderObjects.push(polyline);
       floorObject.setVisible(isVisible);
@@ -1634,21 +1634,21 @@ var RawRouteParser = function () {
     return naviRoute;
   };
 
-  var generateNaviData = function (naviRoute, minLenSegment, maxSegmentCount, routeState) {
+  let generateNaviData = function (naviRoute, minLenSegment, maxSegmentCount, routeState) {
     // return;
     naviRoute.naviCore.speakListener && naviRoute.naviCore.speakListener.stop();
-    var _distance = Math.ceil(naviRoute.total_length);
-    var time = navi_utils.MillisecondToDate(_distance * 0.83 * 1000, "nosec", thisObject.language);
+    let _distance = Math.ceil(naviRoute.total_length);
+    let time = navi_utils.MillisecondToDate(_distance * 0.83 * 1000, "nosec", thisObject.language);
     if (time == "2分钟") {
       time = "两分钟";
     }
     // get Next Icon
-    var data = { title: "", address: "", angelText: "", distance: 0, currIcon: "", nextIcon: "", type: 0 },
+    let data = { title: "", address: "", angelText: "", distance: 0, currIcon: "", nextIcon: "", type: 0 },
       tempData = null;
-    var stations = naviRoute.stations;
-    for (var i = 1; i < stations.length - 1; i++) {
-      var station = stations[i];
-      var nextStation = stations[i + 1];
+    let stations = naviRoute.stations;
+    for (let i = 1; i < stations.length - 1; i++) {
+      let station = stations[i];
+      let nextStation = stations[i + 1];
       if (
         nextStation.type === "2" ||
         nextStation.type === "3" ||
@@ -1661,16 +1661,16 @@ var RawRouteParser = function () {
       }
     }
     // 遍历 Stations 生成语音和文字
-    var speakText = "";
+    let speakText = "";
 
-    var segmentsData = [];
-    var bdNaviConfig = naviRoute.naviCore.bdNaviConfig;
-    var speakLevel = naviRoute.naviCore.speakLevel;
-    var speakTest = naviRoute.naviCore.speakTest;
-    var bdid = naviRoute.bdid;
-    var minSpeakDistance = naviRoute.naviCore.minSpeakDistance;
+    let segmentsData = [];
+    let bdNaviConfig = naviRoute.naviCore.bdNaviConfig;
+    let speakLevel = naviRoute.naviCore.speakLevel;
+    let speakTest = naviRoute.naviCore.speakTest;
+    let bdid = naviRoute.bdid;
+    let minSpeakDistance = naviRoute.naviCore.minSpeakDistance;
     if (bdNaviConfig[bdid]) {
-      var naviConfig = bdNaviConfig[bdid];
+      let naviConfig = bdNaviConfig[bdid];
       naviConfig["speakLevel"] != undefined ? (speakLevel = naviConfig["speakLevel"]) : "";
       naviConfig["minLenSegment"] != undefined ? (minLenSegment = naviConfig["minLenSegment"]) : "";
       naviConfig["maxSegmentCount"] != undefined ? (maxSegmentCount = naviConfig["maxSegmentCount"]) : "";
@@ -1692,9 +1692,9 @@ var RawRouteParser = function () {
     }
 
     function geneCombineSpeakText(minLenSegment, maxSegmentCount, minSpeakDistance) {
-      for (var i = 0, len = stations.length; i < len; i += 1) {
-        var distance = 0;
-        var station = stations[i];
+      for (let i = 0, len = stations.length; i < len; i += 1) {
+        let distance = 0;
+        let station = stations[i];
         tempData = navi_utils.copyData(data);
         if (thisObject.language == "En") {
           speakText = geneNaviTextEn(naviRoute, station, tempData, minSpeakDistance);
@@ -1706,7 +1706,7 @@ var RawRouteParser = function () {
         // if(i<2){
         //     continue;
         // }
-        var distance = station.distance;
+        let distance = station.distance;
         if (naviRoute.naviCore.speakListener) {
           if (station.type == 0 || station.type == 1) {
             if (naviRoute.naviCore.getIsSimulate()) {
@@ -1716,15 +1716,15 @@ var RawRouteParser = function () {
             }
             continue;
           } else if (station.type == 8) {
-            var endSpeakText = "";
+            let endSpeakText = "";
             if (routeState == undefined || routeState === ROUTE_HAS_TAIL || routeState === ROUTE_HAS_HEAD_TAIL) {
               endSpeakText = naviRoute.naviCore.naviEndSpeakText;
             } else {
               endSpeakText = ""; //本段室内导航结束
             }
-            var dis = Math.ceil(station.distance);
-            // var speakText = "";
-            var speakText = (window["langData"]["zhixing:speak:navi"] || "前方{{distance}}后到达{{targetName}}").replace(
+            let dis = Math.ceil(station.distance);
+            // let speakText = "";
+            let speakText = (window["langData"]["zhixing:speak:navi"] || "前方{{distance}}后到达{{targetName}}").replace(
               "{{targetName}}",
               naviRoute.targetName
             );
@@ -1746,33 +1746,33 @@ var RawRouteParser = function () {
           }
         }
 
-        var curFirst = i;
-        var j = i + 1,
+        let curFirst = i;
+        let j = i + 1,
           count = 0;
 
         while (count < maxSegmentCount && j < len - 1) {
           j = i + 1;
-          var nextStation = stations[j];
+          let nextStation = stations[j];
           if (nextStation.type == 8 || nextStation.type == 5) {
             //|| station.type == 5  nextStation.type == 4 ||
             break;
           }
-          var tempData2 = navi_utils.copyData(data);
+          let tempData2 = navi_utils.copyData(data);
 
           if (thisObject.language == "En") {
-            var speakTextTmp = geneNaviTextEn(naviRoute, nextStation, tempData2, minSpeakDistance);
+            let speakTextTmp = geneNaviTextEn(naviRoute, nextStation, tempData2, minSpeakDistance);
           } else {
-            var speakTextTmp = geneNaviText(naviRoute, nextStation, tempData2, minSpeakDistance);
+            let speakTextTmp = geneNaviText(naviRoute, nextStation, tempData2, minSpeakDistance);
           }
           stations[i].speakText = speakTextTmp;
-          var dis = Math.round(tempData2["distance"] || 0);
+          let dis = Math.round(tempData2["distance"] || 0);
           distance += dis;
           count++;
           i++;
           if (count < maxSegmentCount && dis < minLenSegment) {
             segmentsData.push(tempData2);
             if (speakTextTmp && speakTextTmp != "none") {
-              var concatText = "," + (window["langData"]["after"] || "然后");
+              let concatText = "," + (window["langData"]["after"] || "然后");
               if (thisObject.language == "En") {
                 concatText = " and ";
               }
@@ -1793,7 +1793,7 @@ var RawRouteParser = function () {
           }
         }
 
-        var num = count;
+        let num = count;
         num > 0 ? (station.speakText = speakText) : "";
         if (naviRoute.naviCore.speakListener) {
           naviRoute.naviCore.speakListener.speaking(speakText);
@@ -1806,9 +1806,9 @@ var RawRouteParser = function () {
     }
 
     function geneCombineStationText(minLenSegment, maxSegmentCount, minSpeakDistance) {
-      var _importPoints = cutUpstations(stations, naviRoute);
-      var flag = false;
-      for (var i = 0, j = 0, len = stations.length; i < len; i += 1) {
+      let _importPoints = cutUpstations(stations, naviRoute);
+      let flag = false;
+      for (let i = 0, j = 0, len = stations.length; i < len; i += 1) {
         speakText = "none";
         if (stations[i] == _importPoints[j] && j < _importPoints.length - 1) {
           if (true == flag) {
@@ -1850,9 +1850,9 @@ var RawRouteParser = function () {
     }
 
     function geneNormalSpeaks(minLenSegment, maxSegmentCount, minSpeakDistance) {
-      for (var i = 0, len = stations.length; i < len; i += 1) {
-        var distance = 0;
-        var station = stations[i];
+      for (let i = 0, len = stations.length; i < len; i += 1) {
+        let distance = 0;
+        let station = stations[i];
         tempData = navi_utils.copyData(data);
         tempData.type = station.type;
 
@@ -1873,15 +1873,15 @@ var RawRouteParser = function () {
           continue;
         }
         if (station.type == 5 && i < len - 1 && station.distance < naviRoute.naviCore.minLenSegment) {
-          var nextStation = stations[i + 1];
+          let nextStation = stations[i + 1];
           if (thisObject.language == "En") {
-            var speakText2 = geneNaviTextEn(naviRoute, nextStation, tempData, minSpeakDistance);
+            let speakText2 = geneNaviTextEn(naviRoute, nextStation, tempData, minSpeakDistance);
           } else {
-            var speakText2 = geneNaviText(naviRoute, nextStation, tempData, minSpeakDistance);
+            let speakText2 = geneNaviText(naviRoute, nextStation, tempData, minSpeakDistance);
           }
           if (speakText2) {
             speakText = speakText.replace(".", "");
-            var concatText = "," + (window["langData"]["after"] || "然后");
+            let concatText = "," + (window["langData"]["after"] || "然后");
             speakText += concatText + speakText2;
             naviRoute.naviCore.speakListener.speaking(speakText);
             naviRoute.naviCore.speakListener.speaking("none");
@@ -1892,7 +1892,7 @@ var RawRouteParser = function () {
         station.speakText = speakText;
         naviRoute.naviCore.speakListener.speaking(speakText);
         if (station.type == 8) {
-          var endSpeakText = "";
+          let endSpeakText = "";
           if (routeState == undefined || routeState === ROUTE_HAS_TAIL || routeState === ROUTE_HAS_HEAD_TAIL) {
             endSpeakText = naviRoute.naviCore.naviEndSpeakText;
           } else {
@@ -1907,15 +1907,15 @@ var RawRouteParser = function () {
   };
 
   function cutUpstations(stations, naviRoute) {
-    var importPoints = [],
+    let importPoints = [],
       tempDis = 0,
       preConName,
       preGroupId;
-    var floorObjects = naviRoute.floorObjects;
+    let floorObjects = naviRoute.floorObjects;
 
-    for (var i = 0, len = stations.length; i < len; i++) {
-      var currStation = stations[i];
-      var currType = currStation.type;
+    for (let i = 0, len = stations.length; i < len; i++) {
+      let currStation = stations[i];
+      let currType = currStation.type;
       switch (currType) {
         case "2":
           if (i == 2) {
@@ -1944,10 +1944,10 @@ var RawRouteParser = function () {
   }
 
   /*generate single Navi data*/
-  // var minSpeakDistance = 20;
+  // let minSpeakDistance = 20;
 
   /** 语言配置对象 */
-  var NAVI_TEXT_LANG_CONFIG = {
+  let NAVI_TEXT_LANG_CONFIG = {
     zh: {
       please: "请",
       and: "和",
@@ -1983,7 +1983,7 @@ var RawRouteParser = function () {
    * @param {Object} floorInfo - 楼层信息对象
    * @returns {string}
    */
-  var getFloorName = (floorInfo) => floorInfo["floorCnName"] || floorInfo["flcnname"] || floorInfo["flname"] || floorInfo["floorName"];
+  let getFloorName = (floorInfo) => floorInfo["floorCnName"] || floorInfo["flcnname"] || floorInfo["flname"] || floorInfo["floorName"];
 
   /**
    * 生成导航文本（统一入口）
@@ -1994,21 +1994,21 @@ var RawRouteParser = function () {
    * @param {string} lang - 语言类型 "zh" | "en"
    * @returns {string} 播报文本
    */
-  var geneNaviTextByLang = (naviRoute, station, tempData, minSpeakDistance, lang) => {
-    var config = NAVI_TEXT_LANG_CONFIG[lang] || NAVI_TEXT_LANG_CONFIG.zh;
-    var angelText = "";
-    var speakText = "";
-    var dis;
-    var floorInfo = naviRoute.naviCore.mapAPI._getFloorInfo(naviRoute.bdid, station.floor);
+  let geneNaviTextByLang = (naviRoute, station, tempData, minSpeakDistance, lang) => {
+    let config = NAVI_TEXT_LANG_CONFIG[lang] || NAVI_TEXT_LANG_CONFIG.zh;
+    let angelText = "";
+    let speakText = "";
+    let dis;
+    let floorInfo = naviRoute.naviCore.mapAPI._getFloorInfo(naviRoute.bdid, station.floor);
 
     switch (station.type) {
       case "0": // 头部站点
-        var index = 0;
+        let index = 0;
         angelText = config.please;
         speakText = lang === "zh" ? naviRoute.naviCore.startNaviText : config.please;
-        for (var method in naviRoute.arriveMethods) {
-          var iconClass = method;
-          var methodText = naviRoute.arriveMethods[method];
+        for (let method in naviRoute.arriveMethods) {
+          let iconClass = method;
+          let methodText = naviRoute.arriveMethods[method];
           if (lang === "zh") {
             if (index > 0 && speakText.indexOf(methodText) == -1) {
               angelText += config.and;
@@ -2051,7 +2051,7 @@ var RawRouteParser = function () {
         dis = tempData["distance"];
 
         if (lang === "zh") {
-          var nextText = config.nextText();
+          let nextText = config.nextText();
           if (dis < 5) {
             speakText = "none";
           } else if (dis < minSpeakDistance) {
@@ -2084,7 +2084,7 @@ var RawRouteParser = function () {
         dis = tempData["distance"];
 
         if (lang === "zh") {
-          var nextText = config.nextText();
+          let nextText = config.nextText();
           if (dis < minSpeakDistance) {
             speakText += nextText.replace("{{distance}}", config.reach()).replace(config.concatText(), "").replace("{{action}}", tempData["angelText"]);
           } else {
@@ -2100,7 +2100,7 @@ var RawRouteParser = function () {
         break;
 
       case "4": // 楼层切换起始站点
-        var nextFloor = naviRoute.naviCore.mapAPI._getFloorInfo(naviRoute.bdid, station.nextFloor);
+        let nextFloor = naviRoute.naviCore.mapAPI._getFloorInfo(naviRoute.bdid, station.nextFloor);
         tempData["currIcon"] = station.angelIcon;
         tempData["angelText"] = station.targetName || "";
         tempData["endType"] = RouteParseHelper.directionUpOrDown(station.angelIcon, config.langSuffix || undefined);
@@ -2127,7 +2127,7 @@ var RawRouteParser = function () {
         speakText = `${config.arrived()}${tempData["floorName"]}`;
 
         if (lang === "zh") {
-          var nextText = config.nextText();
+          let nextText = config.nextText();
           if (dis < minSpeakDistance) {
             speakText += ` ${nextText.replace("{{distance}}", "").replace(config.concatText(), "").replace("{{action}}", tempData["angelText"])}`;
           } else {
@@ -2159,13 +2159,13 @@ var RawRouteParser = function () {
   };
 
   /** 生成中文导航文本 */
-  var geneNaviText = (naviRoute, station, tempData, minSpeakDistance) => geneNaviTextByLang(naviRoute, station, tempData, minSpeakDistance, "zh");
+  let geneNaviText = (naviRoute, station, tempData, minSpeakDistance) => geneNaviTextByLang(naviRoute, station, tempData, minSpeakDistance, "zh");
 
   /** 生成英文导航文本 */
-  var geneNaviTextEn = (naviRoute, station, tempData, minSpeakDistance) => geneNaviTextByLang(naviRoute, station, tempData, minSpeakDistance, "en");
+  let geneNaviTextEn = (naviRoute, station, tempData, minSpeakDistance) => geneNaviTextByLang(naviRoute, station, tempData, minSpeakDistance, "en");
 
   /** Level0 导航文本语言配置 */
-  var LEVEL0_NAVI_TEXT_CONFIG = {
+  let LEVEL0_NAVI_TEXT_CONFIG = {
     zh: {
       startTip: () => window["langData"]["currentpos:starttip2:navi"] || "请您从现在位置前往",
       startTip2: () => window["langData"]["currentpos:starttip2:navi"] || "请您从当前位置前往",
@@ -2199,19 +2199,19 @@ var RawRouteParser = function () {
    * @param {string} lang - 语言类型 "zh" | "en"
    * @returns {string} 播报文本
    */
-  var geneLevel0NaviTextByLang = (naviRoute, station1, station2, defaultData, lang) => {
-    var config = LEVEL0_NAVI_TEXT_CONFIG[lang] || LEVEL0_NAVI_TEXT_CONFIG.zh;
-    var tempData1 = navi_utils.copyData(defaultData);
-    var tempData2 = navi_utils.copyData(defaultData);
-    var speakText = "";
-    var machineHeading = naviRoute.naviCore.machineHeading;
-    var position1 = station1.position;
-    var position2 = station2.position;
-    var angel = RouteParseHelper.getAngel(machineHeading, position1[0], position1[1], position2[0], position2[1]);
-    var angelText = RouteParseHelper.getAngelText2(angel, config.langSuffix || undefined);
-    var currentFloorInfo = naviRoute.naviCore.mapAPI._getFloorInfo(naviRoute.bdid, station1.floor);
-    var nextFloorInfo = naviRoute.naviCore.mapAPI._getFloorInfo(naviRoute.bdid, station2.floor);
-    var dis;
+  let geneLevel0NaviTextByLang = (naviRoute, station1, station2, defaultData, lang) => {
+    let config = LEVEL0_NAVI_TEXT_CONFIG[lang] || LEVEL0_NAVI_TEXT_CONFIG.zh;
+    let tempData1 = navi_utils.copyData(defaultData);
+    let tempData2 = navi_utils.copyData(defaultData);
+    let speakText = "";
+    let machineHeading = naviRoute.naviCore.machineHeading;
+    let position1 = station1.position;
+    let position2 = station2.position;
+    let angel = RouteParseHelper.getAngel(machineHeading, position1[0], position1[1], position2[0], position2[1]);
+    let angelText = RouteParseHelper.getAngelText2(angel, config.langSuffix || undefined);
+    let currentFloorInfo = naviRoute.naviCore.mapAPI._getFloorInfo(naviRoute.bdid, station1.floor);
+    let nextFloorInfo = naviRoute.naviCore.mapAPI._getFloorInfo(naviRoute.bdid, station2.floor);
+    let dis;
 
     switch (station1.type) {
       case "2":
@@ -2232,7 +2232,7 @@ var RawRouteParser = function () {
         dis = tempData1["distance"];
 
         if (lang === "zh") {
-          var nextText = config.nextText();
+          let nextText = config.nextText();
           if (dis < minSpeakDistance) {
             speakText += nextText.replace("{{distance}}", config.reach()).replace(config.concatText(), "").replace("{{action}}", tempData1["angelText"]);
           } else {
@@ -2246,7 +2246,7 @@ var RawRouteParser = function () {
           }
         }
 
-        var station2FloorInfo = naviRoute.naviCore.mapAPI._getFloorInfo(naviRoute.bdid, station2.nextFloor);
+        let station2FloorInfo = naviRoute.naviCore.mapAPI._getFloorInfo(naviRoute.bdid, station2.nextFloor);
         tempData2["currIcon"] = station2.angelIcon;
         tempData2["angelText"] = station2.targetName;
         tempData2["endType"] = RouteParseHelper.directionUpOrDown(station2.angelIcon, config.langSuffix || undefined);
@@ -2285,7 +2285,7 @@ var RawRouteParser = function () {
         if (station2.type == 4) {
           speakText += lang === "en" ? `${angelText} ${station2.targetName}` : `${angelText}${station2.targetName}`;
         } else if (station2.type == 8) {
-          var floorName = getFloorName(nextFloorInfo);
+          let floorName = getFloorName(nextFloorInfo);
           if (lang === "zh") {
             speakText += `${floorName}${naviRoute.targetName || station2.targetName || config.destination()}`;
           } else {
@@ -2308,15 +2308,15 @@ var RawRouteParser = function () {
   };
 
   /** 生成 Level0 中文导航文本 */
-  var geneLevel0NaviText = (naviRoute, station1, station2, defaultData) => geneLevel0NaviTextByLang(naviRoute, station1, station2, defaultData, "zh");
+  let geneLevel0NaviText = (naviRoute, station1, station2, defaultData) => geneLevel0NaviTextByLang(naviRoute, station1, station2, defaultData, "zh");
 
   /** 生成 Level0 英文导航文本 */
-  var geneLevel0NaviTextEn = (naviRoute, station1, station2, defaultData) => geneLevel0NaviTextByLang(naviRoute, station1, station2, defaultData, "en");
+  let geneLevel0NaviTextEn = (naviRoute, station1, station2, defaultData) => geneLevel0NaviTextByLang(naviRoute, station1, station2, defaultData, "en");
 
   /** 路线分段角度阈值常量 */
-  var SEGMENT_SPLIT_ANGLE = 32; // 主分段角度阈值（度）
-  var SEGMENT_SPLIT_ANGLE_MIN = 15; // 累计角度时的最小分段角度（度）
-  var MIN_SEGMENT_LENGTH = 1.0; // 最小路段长度（米），小于此值不分段
+  let SEGMENT_SPLIT_ANGLE = 32; // 主分段角度阈值（度）
+  let SEGMENT_SPLIT_ANGLE_MIN = 15; // 累计角度时的最小分段角度（度）
+  let MIN_SEGMENT_LENGTH = 1.0; // 最小路段长度（米），小于此值不分段
 
   /**
    * 解析路线几何数据，生成导航站点
@@ -2326,10 +2326,10 @@ var RawRouteParser = function () {
    * @param {number} floorCount - 总楼层数
    * @param {string} language - 语言类型
    */
-  var parseGeometry = function (naviRoute, info, index, floorCount, language) {
-    var curfloor = info["floor"];
-    var geometry = info["geometry"];
-    var floorObject = naviRoute.createFloorObject(curfloor, index);
+  let parseGeometry = function (naviRoute, info, index, floorCount, language) {
+    let curfloor = info["floor"];
+    let geometry = info["geometry"];
+    let floorObject = naviRoute.createFloorObject(curfloor, index);
 
     floorObject.setGeometry(geometry);
     floorObject.setVisible(false);
@@ -2345,9 +2345,9 @@ var RawRouteParser = function () {
 
     // 计算起点站点的朝向
     if (index === 0) {
-      var Ax = navi_utils.getVector(geometry, 0);
+      let Ax = navi_utils.getVector(geometry, 0);
       DXMapUtils.extendObj(Ax, geometry);
-      var Bx = navi_utils.getVector(geometry, 1);
+      let Bx = navi_utils.getVector(geometry, 1);
       DXMapUtils.extendObj(Bx, geometry);
       naviRoute.stations[1].heading = navi_utils.calcHeading(Ax, Bx);
     }
@@ -2357,11 +2357,11 @@ var RawRouteParser = function () {
 
     // 处理只有两个点的简单路线
     if (geometry.length === 2) {
-      var station = {};
-      var A = navi_utils.getVector(geometry, 0);
-      var B = navi_utils.getVector(geometry, 1);
-      var B_src = geometry[1];
-      var segment = [];
+      let station = {};
+      let A = navi_utils.getVector(geometry, 0);
+      let B = navi_utils.getVector(geometry, 1);
+      let B_src = geometry[1];
+      let segment = [];
 
       station.type = "3";
       station.action = station_start_func;
@@ -2384,7 +2384,7 @@ var RawRouteParser = function () {
 
       B_src.segment_length = B.segment_length = navi_utils.getGeodeticCircleDistance(A, B);
 
-      var C = { x: (A.x + B.x) * 0.5, y: (A.y + B.y) * 0.5 };
+      let C = { x: (A.x + B.x) * 0.5, y: (A.y + B.y) * 0.5 };
       station.arrowSegment = [C, B];
       geometry.total_length = B.segment_length;
       station.distance = geometry.total_length;
@@ -2393,34 +2393,34 @@ var RawRouteParser = function () {
       floorObject.stations.push(station);
     } else {
       // 处理多点路线（3个及以上）
-      var geometry_new = [];
-      for (var kk = 0; kk < geometry.length; kk++) {
-        var tempPt = navi_utils.getVector(geometry, kk);
+      let geometry_new = [];
+      for (let kk = 0; kk < geometry.length; kk++) {
+        let tempPt = navi_utils.getVector(geometry, kk);
         DXMapUtils.extendObj(tempPt, geometry[kk]);
         geometry_new.push(tempPt);
       }
 
-      var segmentArray = [];
-      var segment = [];
+      let segmentArray = [];
+      let segment = [];
       segment.angel = 0;
       segment.segment_length = 0;
       segment.push(navi_utils.getVector(geometry_new, 0));
       segmentArray.push(segment);
-      var sumDir = 0;
+      let sumDir = 0;
 
       // 遍历路径点，根据角度变化分割路段
-      for (var i = 1; i < geometry_new.length - 1; i++) {
-        var A = geometry_new[i - 1];
+      for (let i = 1; i < geometry_new.length - 1; i++) {
+        let A = geometry_new[i - 1];
         DXMapUtils.extendObj(A, geometry_new[i - 1]);
-        var B = geometry_new[i];
+        let B = geometry_new[i];
         DXMapUtils.extendObj(B, geometry_new[i]);
-        var C = geometry_new[i + 1];
+        let C = geometry_new[i + 1];
         DXMapUtils.extendObj(C, geometry_new[i + 1]);
-        var B_src = geometry[i];
-        var angel = navi_utils.calcAngel(A, B, C);
+        let B_src = geometry[i];
+        let angel = navi_utils.calcAngel(A, B, C);
         B_src.segment_length = B.segment_length = navi_utils.getGeodeticCircleDistance(A, B);
 
-        var isSplitSegment = true;
+        let isSplitSegment = true;
 
         // 起点附近短路段不分割
         if (i === 1 && B.segment_length < MIN_SEGMENT_LENGTH) {
@@ -2434,8 +2434,8 @@ var RawRouteParser = function () {
           }
         }
 
-        var diffAngle = Math.abs(angel);
-        var shouldSplit = diffAngle > SEGMENT_SPLIT_ANGLE || (Math.abs(sumDir + angel) >= SEGMENT_SPLIT_ANGLE && diffAngle >= SEGMENT_SPLIT_ANGLE_MIN);
+        let diffAngle = Math.abs(angel);
+        let shouldSplit = diffAngle > SEGMENT_SPLIT_ANGLE || (Math.abs(sumDir + angel) >= SEGMENT_SPLIT_ANGLE && diffAngle >= SEGMENT_SPLIT_ANGLE_MIN);
 
         if (shouldSplit && isSplitSegment) {
           segment.push(B);
@@ -2457,11 +2457,11 @@ var RawRouteParser = function () {
       }
 
       // 处理最后一个点
-      var A = geometry_new[geometry_new.length - 2];
+      let A = geometry_new[geometry_new.length - 2];
       DXMapUtils.extendObj(A, geometry_new[geometry_new.length - 2]);
-      var B = geometry_new[geometry_new.length - 1];
+      let B = geometry_new[geometry_new.length - 1];
       DXMapUtils.extendObj(B, geometry_new[geometry_new.length - 1]);
-      var B_src = geometry[geometry.length - 1];
+      let B_src = geometry[geometry.length - 1];
       B_src.segment_length = B.segment_length = navi_utils.getGeodeticCircleDistance(A, B);
       segment.push(B);
       segment.next_pt = B;
@@ -2471,9 +2471,9 @@ var RawRouteParser = function () {
       // 根据分段数量创建站点
       if (segmentArray.length === 1) {
         // 单段路线：直接创建终点站点
-        var segment = segmentArray[0];
-        var angelDisp = RouteParseHelper.getAngelText(segment.angel, language);
-        var newStation = {
+        let segment = segmentArray[0];
+        let angelDisp = RouteParseHelper.getAngelText(segment.angel, language);
+        let newStation = {
           type: "8",
           floorObjectIndex: index,
           floor: curfloor,
@@ -2492,7 +2492,7 @@ var RawRouteParser = function () {
           newStation.angel = segment.angel;
           newStation.angelIcon = angelDisp.angelIcon;
           newStation.angelText = angelDisp.angelText;
-          var _data = segment[segment.length - 1];
+          let _data = segment[segment.length - 1];
           if (_data["extendType"]) {
             newStation.extendType = _data["extendType"];
             newStation.useTime = _data["useTime"];
@@ -2502,9 +2502,9 @@ var RawRouteParser = function () {
         newStation.targetName = RouteParseHelper.getTargetName(info, language, naviRoute);
         newStation.distance = segment.segment_length;
 
-        var tempA = segment[segment.length - 2];
-        var curB = segment[segment.length - 1];
-        var tempC = segment.next_pt;
+        let tempA = segment[segment.length - 2];
+        let curB = segment[segment.length - 1];
+        let tempC = segment.next_pt;
         newStation.arrowSegment = [tempA, curB, tempC];
 
         naviRoute.stations.push(newStation);
@@ -2512,8 +2512,8 @@ var RawRouteParser = function () {
         floorObject.stations.push(newStation);
       } else {
         // 多段路线：依次创建中间站点和终点站点
-        for (var i = 0; i < segmentArray.length - 1; i++) {
-          var segment = segmentArray[i];
+        for (let i = 0; i < segmentArray.length - 1; i++) {
+          let segment = segmentArray[i];
           if (!segment.segment_length) {
             segment.segment_length = 0;
             segment.forEach((item) => {
@@ -2524,7 +2524,7 @@ var RawRouteParser = function () {
             continue;
           }
 
-          var newStation = {
+          let newStation = {
             type: "2",
             floorObjectIndex: index,
             floor: curfloor,
@@ -2542,7 +2542,7 @@ var RawRouteParser = function () {
           }
           calcArrowSegment(newStation, newStation.segment);
 
-          var angelDisp = RouteParseHelper.getAngelText(segment.angel, language);
+          let angelDisp = RouteParseHelper.getAngelText(segment.angel, language);
           newStation.angel = segment.angel;
           newStation.angelIcon = angelDisp.angelIcon;
           newStation.angelText = angelDisp.angelText;
@@ -2554,9 +2554,9 @@ var RawRouteParser = function () {
         }
 
         // 创建最后一个站点（终点或路段结束）
-        var segment = segmentArray[segmentArray.length - 1];
-        var angelDisp = RouteParseHelper.getAngelText(segment.angel, language);
-        var newStation = {
+        let segment = segmentArray[segmentArray.length - 1];
+        let angelDisp = RouteParseHelper.getAngelText(segment.angel, language);
+        let newStation = {
           type: "8",
           floorObjectIndex: index,
           floor: curfloor,
@@ -2576,7 +2576,7 @@ var RawRouteParser = function () {
           newStation.angelIcon = `icon-${info.endIconType}`;
           newStation.angel = 0;
           newStation.angelText = `${window["langData"]["navi:daoda"] || "到达"}${newStation.targetName}`;
-          var _data = segment[segment.length - 1];
+          let _data = segment[segment.length - 1];
           if (_data["extendType"]) {
             newStation.extendType = _data["extendType"];
             newStation.useTime = _data["useTime"];
@@ -2594,7 +2594,7 @@ var RawRouteParser = function () {
 
     // 非最后一层时添加楼层切换站点
     if (index !== floorCount - 1) {
-      var newStation = {
+      let newStation = {
         type: "4",
         floorObjectIndex: index,
         floor: curfloor,
@@ -2619,35 +2619,35 @@ var RawRouteParser = function () {
    * @param newStation
    * @param segment
    */
-  var calcArrowTail = function (newStation, segment) {
-    var maxTailLength = 10;
+  let calcArrowTail = function (newStation, segment) {
+    let maxTailLength = 10;
     if (segment.segment_length < maxTailLength) {
       //newStation.arrowSegment = segment;
-      for (var i = 0; i < segment.length; i++) {
+      for (let i = 0; i < segment.length; i++) {
         newStation.arrowSegment.push(segment[i]);
       }
     } else {
-      var curPointArray = [];
-      var curLength = 0;
+      let curPointArray = [];
+      let curLength = 0;
       curPointArray.push(segment[segment.length - 1]);
-      for (var i = segment.length - 1; i > 0; i--) {
-        var curB = segment[i];
+      for (let i = segment.length - 1; i > 0; i--) {
+        let curB = segment[i];
         if (curB.segment_length + curLength >= maxTailLength) {
-          var tempA = segment[i - 1];
-          var tempA_v = [tempA.x, tempA.y, 0];
-          var curB_v = [curB.x, curB.y, 0];
-          var tempResult = [0, 0, 0];
+          let tempA = segment[i - 1];
+          let tempA_v = [tempA.x, tempA.y, 0];
+          let curB_v = [curB.x, curB.y, 0];
+          let tempResult = [0, 0, 0];
           navi_utils.slerp(tempResult, curB_v, tempA_v, (maxTailLength - curLength) / curB.segment_length);
-          var tempAA = { x: tempResult[0], y: tempResult[1] };
+          let tempAA = { x: tempResult[0], y: tempResult[1] };
           curPointArray.push(tempAA);
           break;
         } else {
-          var tempA = segment[i - 1];
+          let tempA = segment[i - 1];
           curPointArray.push(tempA);
         }
         curLength += curB.segment_length;
       }
-      for (var i = curPointArray.length - 1; i >= 0; i--) {
+      for (let i = curPointArray.length - 1; i >= 0; i--) {
         newStation.arrowSegment.push(curPointArray[i]);
       }
     }
@@ -2658,11 +2658,11 @@ var RawRouteParser = function () {
    * @param newStation
    * @param segment
    */
-  var calcArrowHead = function (newStation, segment) {
-    var minHeaderLength = 1;
-    var maxHeaderLength = 10;
-    var next_pt = segment.next_pt;
-    var headerLength = next_pt.segment_length;
+  let calcArrowHead = function (newStation, segment) {
+    let minHeaderLength = 1;
+    let maxHeaderLength = 10;
+    let next_pt = segment.next_pt;
+    let headerLength = next_pt.segment_length;
     if (next_pt.segment_length <= minHeaderLength) {
       headerLength = minHeaderLength;
     } else if (next_pt.segment_length <= maxHeaderLength && next_pt.segment_length > minHeaderLength) {
@@ -2670,17 +2670,17 @@ var RawRouteParser = function () {
     } else {
       headerLength = maxHeaderLength;
     }
-    var curB = segment[segment.length - 1];
-    var tempA_v = [next_pt.x, next_pt.y, 0];
-    var curB_v = [curB.x, curB.y, 0];
-    var tempResult = [0, 0, 0];
+    let curB = segment[segment.length - 1];
+    let tempA_v = [next_pt.x, next_pt.y, 0];
+    let curB_v = [curB.x, curB.y, 0];
+    let tempResult = [0, 0, 0];
     if (next_pt.segment_length === 0) {
       navi_utils.slerp(tempResult, curB_v, tempA_v, headerLength);
     } else {
       navi_utils.slerp(tempResult, curB_v, tempA_v, headerLength / next_pt.segment_length);
     }
 
-    var tempAA = { x: tempResult[0], y: tempResult[1] };
+    let tempAA = { x: tempResult[0], y: tempResult[1] };
     newStation.arrowSegment.push(tempAA);
   };
 
@@ -2689,7 +2689,7 @@ var RawRouteParser = function () {
    * @param newStation
    * @param segment
    */
-  var calcArrowSegment = function (newStation, segment) {
+  let calcArrowSegment = function (newStation, segment) {
     calcArrowTail(newStation, segment);
     calcArrowHead(newStation, segment);
   };
@@ -2699,15 +2699,15 @@ var RawRouteParser = function () {
    * @param iconType
    * @returns {string}
    */
-  var getIconLink = function (iconType) {
+  let getIconLink = function (iconType) {
     return "images/" + iconType + ".png";
   };
-  var joinPath = function (path1, path2) {
-    var args = arguments;
-    var url = "";
+  let joinPath = function (path1, path2) {
+    let args = arguments;
+    let url = "";
     args.length > 0 ? (url = args[0] || "") : "";
-    for (var i = 1; i < args.length; i++) {
-      var _path = args[i];
+    for (let i = 1; i < args.length; i++) {
+      let _path = args[i];
       if (url.slice(-1) != "/") {
         url += "/";
       }
@@ -2720,10 +2720,10 @@ var RawRouteParser = function () {
     return url;
   };
 
-  var createArrow = function (naviRoute, info, routeIndex) {
-    var floorId = info["floor"];
-    var floorObjects = naviRoute.getFloorObject(floorId);
-    var floorObject = null;
+  let createArrow = function (naviRoute, info, routeIndex) {
+    let floorId = info["floor"];
+    let floorObjects = naviRoute.getFloorObject(floorId);
+    let floorObject = null;
     floorObjects.forEach(function (item) {
       if (routeIndex == item.routeIndex) {
         floorObject = item;
@@ -2732,27 +2732,27 @@ var RawRouteParser = function () {
     if (!floorObject) {
       return;
     }
-    var factory = naviRoute.naviCore.mapAPI._coreMap.factory;
-    var mapSDK = naviRoute.naviCore.mapAPI._coreMap._mapSDK;
-    var routeResampler = naviRoute.naviCore.routeResampler;
-    for (var ii = 0; ii < info.stationArray.length; ii++) {
-      var station = info.stationArray[ii];
-      var geometry = station.segment;
+    let factory = naviRoute.naviCore.mapAPI._coreMap.factory;
+    let mapSDK = naviRoute.naviCore.mapAPI._coreMap._mapSDK;
+    let routeResampler = naviRoute.naviCore.routeResampler;
+    for (let ii = 0; ii < info.stationArray.length; ii++) {
+      let station = info.stationArray[ii];
+      let geometry = station.segment;
       geometry = station.arrowSegment;
-      var arrowLines = [];
-      for (var i = 0; i < geometry.length; i++) {
+      let arrowLines = [];
+      for (let i = 0; i < geometry.length; i++) {
         arrowLines.push([geometry[i].x, geometry[i].y]);
       }
-      var arrow_geometry2 = routeResampler.resampler(arrowLines);
+      let arrow_geometry2 = routeResampler.resampler(arrowLines);
       if (arrow_geometry2.length > 0) {
         arrow_geometry2 = arrow_geometry2[0];
       } else {
         return;
       }
 
-      var guid = factory.createUUID();
-      var assetsPath = naviRoute.naviCore.mapAPI.config.assetsPath;
-      var arrow = factory.createArrow(
+      let guid = factory.createUUID();
+      let assetsPath = naviRoute.naviCore.mapAPI.config.assetsPath;
+      let arrow = factory.createArrow(
         guid,
         guid,
         mapSDK,
@@ -2769,14 +2769,14 @@ var RawRouteParser = function () {
       floorObject.arrowRenderObjects.push(arrow);
     }
   };
-  var createIconMarker = function (mapAPI, renderObjects, floorId, iconType, position) {
-    var assetsPath = mapAPI.config.assetsPath;
-    var imageUrl = joinPath(assetsPath, mapPoiStyle.image);
-    var factory = mapAPI.scene.factory;
-    var guid = factory.createUUID();
-    var range = mapPoiStyle.poiRangeList[iconType];
-    var marker = factory.createRouteMarker(guid, guid, position.x, position.y, 1, floorId, imageUrl, imageUrl, range, range);
-    var isVisible = mapAPI.cameraCtrl.getCurrentFloorId() == floorId;
+  let createIconMarker = function (mapAPI, renderObjects, floorId, iconType, position) {
+    let assetsPath = mapAPI.config.assetsPath;
+    let imageUrl = joinPath(assetsPath, mapPoiStyle.image);
+    let factory = mapAPI.scene.factory;
+    let guid = factory.createUUID();
+    let range = mapPoiStyle.poiRangeList[iconType];
+    let marker = factory.createRouteMarker(guid, guid, position.x, position.y, 1, floorId, imageUrl, imageUrl, range, range);
+    let isVisible = mapAPI.cameraCtrl.getCurrentFloorId() == floorId;
     marker.setVisible(isVisible);
     renderObjects.push(marker);
     return marker;
@@ -2787,13 +2787,13 @@ var RawRouteParser = function () {
    * @param path
    * @param roadCorssData
    */
-  var parseStations = function (naviRoute, path, roadCorssData, language) {
+  let parseStations = function (naviRoute, path, roadCorssData, language) {
     if (path["naviInfoList"].length == 0) return;
-    var curFloor = path["naviInfoList"][0]["floor"];
+    let curFloor = path["naviInfoList"][0]["floor"];
 
     // xxxx在四楼北侧，请步行和乘坐电梯前往
     {
-      var station = {};
+      let station = {};
       station.type = "0";
       station.action = station_start_func;
       station.position = [path["start"]["x"], path["start"]["y"]];
@@ -2804,7 +2804,7 @@ var RawRouteParser = function () {
       naviRoute.stations.push(station);
     }
     {
-      var station = {};
+      let station = {};
       station.type = "1";
       station.action = station_start_func;
       station.position = [path["start"]["x"], path["start"]["y"]];
@@ -2815,16 +2815,16 @@ var RawRouteParser = function () {
     }
     //////////////////////////////////////////////
     // Path数据
-    var naviInfoList = path["naviInfoList"].slice();
+    let naviInfoList = path["naviInfoList"].slice();
     if (naviInfoList.length === 0) return;
     naviRoute.total_length = 0;
 
-    var length = naviInfoList.length;
+    let length = naviInfoList.length;
     // 为友谊医院做楼梯或扶梯中间路线忽略
-    var _startFloor = naviInfoList[0]["floor"];
-    var _endFloor = naviInfoList[length - 1]["floor"];
-    for (var i = 0; i < naviInfoList.length; i++) {
-      var info = naviInfoList[i];
+    let _startFloor = naviInfoList[0]["floor"];
+    let _endFloor = naviInfoList[length - 1]["floor"];
+    for (let i = 0; i < naviInfoList.length; i++) {
+      let info = naviInfoList[i];
       if (i + 1 < length) {
         info.nextFloor = naviInfoList[i + 1]["floor"];
       }
@@ -2833,8 +2833,8 @@ var RawRouteParser = function () {
     }
     naviRoute.targetFloorCnName = "" + info.floor || "";
     naviRoute.naviInfoList = naviInfoList;
-    for (var i = 0; i < naviInfoList.length; i++) {
-      var info = naviInfoList[i];
+    for (let i = 0; i < naviInfoList.length; i++) {
+      let info = naviInfoList[i];
       createArrow(naviRoute, info, i);
     }
   };
@@ -2844,11 +2844,11 @@ var RawRouteParser = function () {
    * @param mergeRouteList
    * @returns {*}
    */
-  var mergeRoute = function (mergeRouteList) {
-    var length = mergeRouteList.length;
+  let mergeRoute = function (mergeRouteList) {
+    let length = mergeRouteList.length;
     if (length < 3) return length;
-    var type = mergeRouteList[0]["action"];
-    for (var i = 1; i < mergeRouteList.length - 1; i++) {
+    let type = mergeRouteList[0]["action"];
+    for (let i = 1; i < mergeRouteList.length - 1; i++) {
       if (mergeRouteList[i]["action"] === type) {
         mergeRouteList.splice(i, 1);
         i--;
@@ -2863,12 +2863,12 @@ var RawRouteParser = function () {
    * @param _startFloor
    * @param _endFloor
    */
-  var mergeStation = function (naviRoute, _startFloor, _endFloor) {
+  let mergeStation = function (naviRoute, _startFloor, _endFloor) {
     _startFloor = parseInt(_startFloor);
     _endFloor = parseInt(_endFloor);
-    for (var i = 0; i < naviRoute.stations.length; i++) {
-      var station = naviRoute.stations[i];
-      var _num = station.floor + 1;
+    for (let i = 0; i < naviRoute.stations.length; i++) {
+      let station = naviRoute.stations[i];
+      let _num = station.floor + 1;
       if (_num !== _startFloor && _num !== _endFloor) {
         if (station.type !== "4" && station.type !== "5") {
           naviRoute.stations.splice(i, 1);
@@ -2883,19 +2883,19 @@ var RawRouteParser = function () {
    * @param naviRoute
    * @param roadResult
    */
-  var attachRoadCrossStations = function (naviRoute, roadResult) {
+  let attachRoadCrossStations = function (naviRoute, roadResult) {
     if (!roadResult) return;
-    var result = roadResult["CrossImageResult"];
+    let result = roadResult["CrossImageResult"];
     if (!result) return;
-    var roadCrossArray = [];
+    let roadCrossArray = [];
 
-    var returnValue = null;
-    var length = result.length;
-    for (var i = 0; i < length; i++) {
-      var fl = result[i];
+    let returnValue = null;
+    let length = result.length;
+    for (let i = 0; i < length; i++) {
+      let fl = result[i];
       if (fl === null) continue;
-      var len = fl["Result"].length;
-      for (var j = 0; j < len; j++) {
+      let len = fl["Result"].length;
+      for (let j = 0; j < len; j++) {
         floorObj = {};
         floorObj.Result = null;
         floorObj.floor = fl["floor"];
@@ -2910,20 +2910,20 @@ var RawRouteParser = function () {
     }
 
     function pointToSegment(point, segment, intersectResult) {
-      var pos_ecef = [0, 0, 0];
-      var pos_sphr = [point.x * DEGREE_TO_RADIAN, point.y * DEGREE_TO_RADIAN, earthRadius];
+      let pos_ecef = [0, 0, 0];
+      let pos_sphr = [point.x * DEGREE_TO_RADIAN, point.y * DEGREE_TO_RADIAN, earthRadius];
       navi_utils.transformGeographicToECEF(pos_ecef, pos_sphr);
-      var tempResult = { minDistance: Infinity, nearestPt: undefined };
-      var retVal = false;
-      for (var j = 0; j < segment.length - 1; j++) {
-        var a_sphr = [segment[j].x * DEGREE_TO_RADIAN, segment[j].y * DEGREE_TO_RADIAN, earthRadius];
-        var b_sphr = [segment[j + 1].x * DEGREE_TO_RADIAN, segment[j + 1].y * DEGREE_TO_RADIAN, earthRadius];
-        var a_ecef = [0, 0, 0];
-        var b_ecef = [0, 0, 0];
-        var root_ecef = [0, 0, 0];
+      let tempResult = { minDistance: Infinity, nearestPt: undefined };
+      let retVal = false;
+      for (let j = 0; j < segment.length - 1; j++) {
+        let a_sphr = [segment[j].x * DEGREE_TO_RADIAN, segment[j].y * DEGREE_TO_RADIAN, earthRadius];
+        let b_sphr = [segment[j + 1].x * DEGREE_TO_RADIAN, segment[j + 1].y * DEGREE_TO_RADIAN, earthRadius];
+        let a_ecef = [0, 0, 0];
+        let b_ecef = [0, 0, 0];
+        let root_ecef = [0, 0, 0];
         navi_utils.transformGeographicToECEF(a_ecef, a_sphr);
         navi_utils.transformGeographicToECEF(b_ecef, b_sphr);
-        var tempDistance = navi_utils.pointToLine(pos_ecef, a_ecef, b_ecef, root_ecef);
+        let tempDistance = navi_utils.pointToLine(pos_ecef, a_ecef, b_ecef, root_ecef);
         if (tempDistance < tempResult.minDistance) {
           navi_utils.transformECEFToGeographic(root_ecef, root_ecef);
           root_ecef[0] *= RADIAN_TO_DEGREE;
@@ -2943,16 +2943,16 @@ var RawRouteParser = function () {
     }
 
     function pointToRoute(roadCrossObject, route, intersectResult) {
-      var length = route.stations.length;
-      var pt = { x: roadCrossObject.position[0], y: roadCrossObject.position[1] };
+      let length = route.stations.length;
+      let pt = { x: roadCrossObject.position[0], y: roadCrossObject.position[1] };
 
-      var retVal = false;
-      for (var i = 0; i < length; i++) {
-        var station = naviRoute.stations[i];
+      let retVal = false;
+      for (let i = 0; i < length; i++) {
+        let station = naviRoute.stations[i];
         if (!station.segment || station.segment.length == 0 || (station.type !== "2" && station.type !== "3" && station.type !== "8" && station.type !== "5"))
           continue;
         if (station.floor !== roadCrossObject.floor) continue;
-        var tempResult = { minDistance: Infinity, nearestPt: undefined };
+        let tempResult = { minDistance: Infinity, nearestPt: undefined };
         if (pointToSegment(pt, station.segment, tempResult)) {
           if (tempResult.minDistance < intersectResult.minDistance) {
             intersectResult.minDistance = tempResult.minDistance;
@@ -2965,11 +2965,11 @@ var RawRouteParser = function () {
       return retVal;
     }
 
-    for (var x = 0; x < roadCrossArray.length; x++) {
-      var roadCrossObject = roadCrossArray[x];
-      var retResult = { minDistance: Infinity, nearestPt: undefined, station: undefined };
+    for (let x = 0; x < roadCrossArray.length; x++) {
+      let roadCrossObject = roadCrossArray[x];
+      let retResult = { minDistance: Infinity, nearestPt: undefined, station: undefined };
       if (pointToRoute(roadCrossObject, naviRoute, retResult)) {
-        var roadInfo = {};
+        let roadInfo = {};
         roadInfo.nearestPt = retResult.nearestPt;
         roadInfo.result = roadCrossObject;
         retResult.station.roadInfo = roadInfo;
@@ -2983,9 +2983,9 @@ var RawRouteParser = function () {
 //////////////////////////////////////////////////////////
 // RouteParseHelper
 //////////////////////////////////////////////////////////
-var RouteParseHelper = (function () {
-  var thisObject = {};
-  var navi_utils = daximap["DXMapUtils"]["naviMath"];
+let RouteParseHelper = (function () {
+  let thisObject = {};
+  let navi_utils = daximap["DXMapUtils"]["naviMath"];
 
   thisObject.setlocationToSystem = function (e) {};
 
@@ -2999,9 +2999,9 @@ var RouteParseHelper = (function () {
     if (language == "En") {
       return thisObject.parseArriveMethodsByEn(arriveMethods, path);
     }
-    var naviInfoList = path["naviInfoList"];
-    for (var i = 0; i < naviInfoList.length; i++) {
-      var info = naviInfoList[i];
+    let naviInfoList = path["naviInfoList"];
+    for (let i = 0; i < naviInfoList.length; i++) {
+      let info = naviInfoList[i];
       if (info["action"] === "0x03") {
         arriveMethods["out_down_dt"] =
           arriveMethods["out_up_dt"] =
@@ -3040,9 +3040,9 @@ var RouteParseHelper = (function () {
     arriveMethods["icon_bx"] = window["langData"]["walk:bingxing"] || "步行";
   };
   thisObject.parseArriveMethodsByEn = function (arriveMethods, path) {
-    var naviInfoList = path["naviInfoList"];
-    for (var i = 0; i < naviInfoList.length; i++) {
-      var info = naviInfoList[i];
+    let naviInfoList = path["naviInfoList"];
+    for (let i = 0; i < naviInfoList.length; i++) {
+      let info = naviInfoList[i];
       if (info["action"] === "0x03") {
         arriveMethods["icon-zhiti"] = " Take the elevator ";
       } else if (info["action"] === "0x04") {
@@ -3064,26 +3064,26 @@ var RouteParseHelper = (function () {
    * @param path
    */
   thisObject.parseIconType = function (path) {
-    var naviInfoList = path["naviInfoList"];
+    let naviInfoList = path["naviInfoList"];
     if (naviInfoList.length > 0);
-    var currinfo = naviInfoList[0];
-    var lastInfo = currinfo;
+    let currinfo = naviInfoList[0];
+    let lastInfo = currinfo;
     currinfo.startIconType = "start";
-    for (var i = 1; i < naviInfoList.length; i++) {
+    for (let i = 1; i < naviInfoList.length; i++) {
       lastInfo = currinfo;
       currinfo = naviInfoList[i];
-      var prevFloorNum = navi_utils.getRealFloorNumbyFloorId(lastInfo["floor"]);
-      var currFloorNum = navi_utils.getRealFloorNumbyFloorId(currinfo["floor"]);
+      let prevFloorNum = navi_utils.getRealFloorNumbyFloorId(lastInfo["floor"]);
+      let currFloorNum = navi_utils.getRealFloorNumbyFloorId(currinfo["floor"]);
       if (prevFloorNum < currFloorNum) {
-        var iconType = thisObject.getIconTypeInfo(lastInfo["action"]);
+        let iconType = thisObject.getIconTypeInfo(lastInfo["action"]);
         lastInfo.endIconType = "up_" + iconType;
         currinfo.startIconType = "out_up_" + iconType;
       } else if (prevFloorNum > currFloorNum) {
-        var iconType = thisObject.getIconTypeInfo(lastInfo["action"]);
+        let iconType = thisObject.getIconTypeInfo(lastInfo["action"]);
         lastInfo.endIconType = "down_" + iconType;
         currinfo.startIconType = "out_down_" + iconType;
       } else if (prevFloorNum == currFloorNum) {
-        var iconType = thisObject.getIconTypeInfo(lastInfo["action"]);
+        let iconType = thisObject.getIconTypeInfo(lastInfo["action"]);
         lastInfo.endIconType = "down_" + iconType;
         currinfo.startIconType = "out_down_" + iconType;
       }
@@ -3202,8 +3202,8 @@ var RouteParseHelper = (function () {
   };
 
   thisObject.getDirByIconName = function (type) {
-    var dir = "up";
-    var typename = type.split("_");
+    let dir = "up";
+    let typename = type.split("_");
     if (typename.length == 2) {
       dir = typename[0].split("-")[1];
     } else {
@@ -3255,7 +3255,7 @@ var RouteParseHelper = (function () {
   };
 
   thisObject.createEndStation = function (segment, curFloor, index, endIconType) {
-    var newStation = {
+    let newStation = {
       type: "8",
       floorObjectIndex: index,
       floor: curfloor,
@@ -3279,7 +3279,7 @@ var RouteParseHelper = (function () {
     if (language == "En") {
       return thisObject.getAngelTextEn(angel);
     }
-    var outData = {};
+    let outData = {};
     if (angel === -99999) {
       outData.angelText = window["langData"]["walk:along:route:navi"] || "延路线步行";
       outData.angelIcon = "icon-zhixing";
@@ -3308,7 +3308,7 @@ var RouteParseHelper = (function () {
     return outData;
   };
   thisObject.getAngelTextEn = function (angel) {
-    var outData = {};
+    let outData = {};
     if (angel === -99999) {
       outData.angelText = "Walk along the route";
       outData.angelIcon = "icon-zhixing";
@@ -3337,12 +3337,12 @@ var RouteParseHelper = (function () {
     return outData;
   };
   thisObject.getAngelText2 = function (angel, language) {
-    // var outData = {};
+    // let outData = {};
     if (language == "En") {
       return thisObject.getAngelText2En(angel);
     }
     angel > 180 ? (angel -= 360) : angel < -180 ? (angel += 360) : "";
-    var angelText = "";
+    let angelText = "";
     if (angel <= -120) {
       angelText = window["langData"]["leftback:navi"] || "左后方";
     } else if (angel <= -60 && angel > -120) {
@@ -3362,9 +3362,9 @@ var RouteParseHelper = (function () {
     return angelText;
   };
   thisObject.getAngelText2En = function (angel) {
-    // var outData = {};
+    // let outData = {};
     angel > 180 ? (angel -= 360) : angel < -180 ? (angel += 360) : "";
-    var angelText = "";
+    let angelText = "";
     if (angel <= -120) {
       angelText = "left rear";
     } else if (angel <= -60 && angel > -120) {
@@ -3408,10 +3408,10 @@ var RouteParseHelper = (function () {
   thisObject.convertPathCoords = function (naviCore, path) {
     return;
     naviCore.convertCoords(path.start);
-    for (var i = 0; i < path.naviInfoList.length; i++) {
-      var info = path.naviInfoList[i];
-      var geometry = info["geometry"];
-      for (var j = 0; j < geometry.length; j++) {
+    for (let i = 0; i < path.naviInfoList.length; i++) {
+      let info = path.naviInfoList[i];
+      let geometry = info["geometry"];
+      for (let j = 0; j < geometry.length; j++) {
         naviCore.convertCoords(geometry[j]);
       }
     }
@@ -3419,16 +3419,16 @@ var RouteParseHelper = (function () {
   };
 
   thisObject.matchInnerIndex = function (naviCore, path) {
-    var naviInfoList = path["naviInfoList"];
-    var naviListlen = naviInfoList.length;
-    var locationMap = naviCore.locatingMap;
+    let naviInfoList = path["naviInfoList"];
+    let naviListlen = naviInfoList.length;
+    let locationMap = naviCore.locatingMap;
     if (locationMap === undefined) return;
 
-    for (var i = 0; i < naviListlen; i++) {
-      var info = naviInfoList[i];
-      var innerIndex = -1;
-      for (var key in locationMap) {
-        var item = locationMap[key];
+    for (let i = 0; i < naviListlen; i++) {
+      let info = naviInfoList[i];
+      let innerIndex = -1;
+      for (let key in locationMap) {
+        let item = locationMap[key];
         if (item["floorId"] == info.floor) {
           innerIndex = parseInt(item["locationIndex"]);
           return 1;
@@ -3442,18 +3442,18 @@ var RouteParseHelper = (function () {
 
   //lishuang 2016-1-08
   thisObject.fileterSameLayerData = function (path) {
-    var naviInfoList = path["naviInfoList"];
-    var naviListlen = naviInfoList.length;
-    for (var i = 0; i < naviListlen; i++) {
-      var info = naviInfoList[i];
-      var geometry = info["geometry"];
+    let naviInfoList = path["naviInfoList"];
+    let naviListlen = naviInfoList.length;
+    for (let i = 0; i < naviListlen; i++) {
+      let info = naviInfoList[i];
+      let geometry = info["geometry"];
       //  lishuang 2016 -1-27 filter one set cons same layer path
-      var len = geometry.length;
-      var filter = false;
-      var startCONID = geometry[0]["con_id"];
-      var endCONID = geometry[len - 1]["con_id"];
+      let len = geometry.length;
+      let filter = false;
+      let startCONID = geometry[0]["con_id"];
+      let endCONID = geometry[len - 1]["con_id"];
       if (startCONID && startCONID == endCONID) {
-        var tmpPath = naviInfoList.splice(i, 1);
+        let tmpPath = naviInfoList.splice(i, 1);
         i--;
         naviListlen--;
         //filter = true;
@@ -3461,8 +3461,8 @@ var RouteParseHelper = (function () {
         //    geometry.splice(0,1);
         //    len--;
         //}
-        for (var j = 0; j < len; j++) {
-          var conId = geometry[j]["con_id"];
+        for (let j = 0; j < len; j++) {
+          let conId = geometry[j]["con_id"];
           if (startCONID != conId) {
             geometry.splice(j, 1);
             len--;
@@ -3487,8 +3487,8 @@ var RouteParseHelper = (function () {
 //////////////////////////////////////////////////////////
 // NavigationOperatorExcutant
 //////////////////////////////////////////////////////////
-var NavigationOperatorExcutant = function () {
-  var info = {};
+let NavigationOperatorExcutant = function () {
+  let info = {};
   info.operatorQueue = [];
   info.cursor = -1;
   info.isPause = false;
@@ -3499,7 +3499,7 @@ var NavigationOperatorExcutant = function () {
       info.isPause = false;
       info.cursor = 0;
       info.lastTime = 0;
-      var operator = info.operatorQueue[info.cursor];
+      let operator = info.operatorQueue[info.cursor];
       operator.onStart(curTime);
     }
   };
@@ -3508,7 +3508,7 @@ var NavigationOperatorExcutant = function () {
     if (info.isPause === true) return 0;
     if (info.cursor === -1) return 0;
     if (info.cursor >= info.operatorQueue.length) return -1;
-    var operator = info.operatorQueue[info.cursor];
+    let operator = info.operatorQueue[info.cursor];
     operator.onRuning(curTime);
     if (operator.isFinished()) {
       info.cursor++;
@@ -3550,11 +3550,11 @@ var NavigationOperatorExcutant = function () {
   return info;
 };
 
-var NavigationOperator = function () {
-  var thisObject = this;
+let NavigationOperator = function () {
+  let thisObject = this;
   thisObject.naviCore = null;
   thisObject.isEnd = false;
-  var prototype = NavigationOperator.prototype;
+  let prototype = NavigationOperator.prototype;
   prototype.init = function (naviCore) {
     this.naviCore = naviCore;
     this.isEnd = false;
@@ -3570,9 +3570,9 @@ var NavigationOperator = function () {
   };
 };
 
-var FloorSegmentOperator = function (naviCore, fl, language) {
+let FloorSegmentOperator = function (naviCore, fl, language) {
   NavigationOperator.call(this);
-  var thisObject = this;
+  let thisObject = this;
   thisObject.naviCore = naviCore;
   thisObject.locationCore = naviCore.locationCore;
   thisObject.indicator = naviCore.indicator;
@@ -3585,37 +3585,37 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
   thisObject.totalTime = thisObject.route_length / thisObject.speed;
   thisObject.interval = 0.2 * thisObject.speedScale;
 
-  var prototype = FloorSegmentOperator.prototype;
+  let prototype = FloorSegmentOperator.prototype;
   prototype.setSpeedScale = function (speedScale) {
     this.interval = 0.2 * speedScale;
   };
   prototype.onFinish = function (tick) {
-    var thisObject = this;
-    var pose = thisObject.floorObject.getCurrentPose(1);
+    let thisObject = this;
+    let pose = thisObject.floorObject.getCurrentPose(1);
     if (thisObject.naviCore.usingLineHeading === false) {
-      var headingView = 0;
+      let headingView = 0;
     }
     thisObject.indicator.setPositionDirect(pose.pos[0], pose.pos[1], pose.floorId, pose.heading, true, headingView);
     thisObject.finishOperator();
   };
   prototype.onStart = function (tick) {
-    var thisObject = this;
-    var pose = thisObject.floorObject.getCurrentPose(0);
+    let thisObject = this;
+    let pose = thisObject.floorObject.getCurrentPose(0);
     if (thisObject.naviCore.usingLineHeading === false) {
-      var headingView = 0;
+      let headingView = 0;
     }
     thisObject.indicator.setPositionDirect(pose.pos[0], pose.pos[1], pose.floorId, pose.heading, true, headingView);
   };
   prototype.onRuning = function (tick) {
     try {
-      var thisObject = this;
+      let thisObject = this;
       thisObject.curTime += thisObject.interval;
-      var t = thisObject.curTime / thisObject.totalTime;
+      let t = thisObject.curTime / thisObject.totalTime;
       if (thisObject.curTime >= thisObject.totalTime) {
         thisObject.onFinish();
       }
-      var pose = thisObject.floorObject.getCurrentPose(t);
-      var random_pos = false;
+      let pose = thisObject.floorObject.getCurrentPose(t);
+      let random_pos = false;
       if (random_pos === true && t < 0.95) {
         xOffset += Math.random() * 5 - 2.5;
         yOffset += Math.random() * 5 - 2.5;
@@ -3625,7 +3625,7 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
         pose.pos[1] += 0.000001 * yOffset;
       }
 
-      var angelOffset = pose.headingTilt[0];
+      let angelOffset = pose.headingTilt[0];
       e = { code: 220 };
       e.heading = angelOffset;
       e.pathDir = pose.headingTilt[0];
@@ -3638,17 +3638,17 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
   };
 
   function onChangePositionInNavi(e) {
-    var pose = { pos: [e.location.x, e.location.y, 0], pathDir: e.pathDir, heading: e.location.a, floorId: e.location.z };
+    let pose = { pos: [e.location.x, e.location.y, 0], pathDir: e.pathDir, heading: e.location.a, floorId: e.location.z };
 
-    var indicator = thisObject.naviCore.indicator;
+    let indicator = thisObject.naviCore.indicator;
     if (indicator === null) return;
-    var isNavigating = true;
+    let isNavigating = true;
     // Set Indicator Position
-    var lng = pose.pos[0];
-    var lat = pose.pos[1];
-    var curfloorId = pose.floorId;
-    var headingView = pose.heading;
-    var usingLineHeading = thisObject.naviCore.usingLineHeading;
+    let lng = pose.pos[0];
+    let lat = pose.pos[1];
+    let curfloorId = pose.floorId;
+    let headingView = pose.heading;
+    let usingLineHeading = thisObject.naviCore.usingLineHeading;
     //if(usingLineHeading === false){
     //    headingView = thisObject.naviCore.naviHeading || 0;
     //}
@@ -3656,12 +3656,12 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
     if (thisObject.isNavigatePause !== true) {
       tempDistanceI = 0;
 
-      var args = { route: thisObject.naviCore.route, result: null, indicator: indicator };
+      let args = { route: thisObject.naviCore.route, result: null, indicator: indicator };
       args.result = { minDistance: 999999, targetDistance: 0, index: -1 };
       if (args.route.getNearestStation(pose, args.result)) {
         // 距终点信息
-        var data = args.route.getLastDistance(args.result.targetDistance, args.result);
-        var nearPt = [args.result.nearestPt.x, args.result.nearestPt.y];
+        let data = args.route.getLastDistance(args.result.targetDistance, args.result);
+        let nearPt = [args.result.nearestPt.x, args.result.nearestPt.y];
 
         if (args.result.minDistance < 1) {
           //thisObject.naviCore.correctDistance) {
@@ -3691,13 +3691,13 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
     }
   }
 
-  var tempDistance = 0,
+  let tempDistance = 0,
     tempDistanceI = 0,
     stageTotalDis = 0;
-  var isReachEndPoint = false;
+  let isReachEndPoint = false;
 
   function Fire_onIndicator_ShowCrossImage(args) {
-    var result = args.result;
+    let result = args.result;
 
     if (result.roadResult !== undefined) {
       result.roadResult["bdid"] = args.route.bdid;
@@ -3707,10 +3707,10 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
     }
   }
   function getMsg(tempDistance, curStation) {
-    var str = (window["langData"]["navi:speak:auto:regx"] || "方{{(S*)}}米").replace("{{(S*)}}", "(S*)");
-    var updateReg = new RegExp(str); ///方(\S*)米/;
+    let str = (window["langData"]["navi:speak:auto:regx"] || "方{{(S*)}}米").replace("{{(S*)}}", "(S*)");
+    let updateReg = new RegExp(str); ///方(\S*)米/;
     if (curStation.speakText) {
-      var substr = curStation.speakText.match(updateReg);
+      let substr = curStation.speakText.match(updateReg);
       if (substr != null) {
         substr = curStation.speakText.replace(substr[1], tempDistance);
       }
@@ -3724,7 +3724,7 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
     return "";
   }
   // function speakChangeFloor(route,speakListener,tempDistance,curStation,nextStation){
-  //     var msg = getMsg(tempDistance,curStation);
+  //     let msg = getMsg(tempDistance,curStation);
   //     msg = msg ? msg +(window["langData"]["after"]|| "然后 "):'';
   //     msg += speakListener.getSpeakText(route.currentCursor+1);
   //     speakListener.speakNow(msg,null,null);
@@ -3732,24 +3732,24 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
 
   // }
   function Fire_onIndicator_UpdateInfo(args, data, language) {
-    var result = args.result;
-    var route = args.route;
-    var naviCore = thisObject.naviCore;
-    var speakListener = naviCore.speakListener;
+    let result = args.result;
+    let route = args.route;
+    let naviCore = thisObject.naviCore;
+    let speakListener = naviCore.speakListener;
     if (result.index == -1) {
       return;
     }
-    // var grayRoutePoints = args.result.grayRoutePoints;
+    // let grayRoutePoints = args.result.grayRoutePoints;
     //grayRoutePoints
     // if(grayRoutePoints.length){
-    var grayT = args.result.walkedRouteRatio;
+    let grayT = args.result.walkedRouteRatio;
     data["grayT"] = grayT;
     data["floorId"] = result.floor;
     // naviCore.mapAPI._coreMap.setPolylineGrayData(args.result.floor,grayT,grayRoutePoints);
     // }
-    var nextStation;
-    var stations = route.stations;
-    var curStation = stations[route.currentCursor];
+    let nextStation;
+    let stations = route.stations;
+    let curStation = stations[route.currentCursor];
 
     if (stations.length > route.currentCursor + 1 && stations[route.currentCursor + 1].type == 3) {
       nextStation = stations[route.currentCursor + 1];
@@ -3771,9 +3771,9 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
         // naviPositionChanged
         //距离较长时语音重复播报
 
-        var speakText = curStation.speakText;
+        let speakText = curStation.speakText;
         if (curStation.type == 3 && tempDistance < 11 && stations.length > route.currentCursor + 1) {
-          var nextStation = stations[route.currentCursor + 1];
+          let nextStation = stations[route.currentCursor + 1];
           data["angelText"] = nextStation.speakText;
           if (curStation.speaked) {
             return;
@@ -3784,14 +3784,14 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
             data["stationSpeakText"] = speakText;
           }
         } else {
-          var speakDistanceParam = naviCore.speakDistanceParam;
+          let speakDistanceParam = naviCore.speakDistanceParam;
           if (speakDistanceParam) {
-            var totalDisArray = speakDistanceParam["totalDisArray"];
-            var speakDisArray = speakDistanceParam["speakDisArray"];
+            let totalDisArray = speakDistanceParam["totalDisArray"];
+            let speakDisArray = speakDistanceParam["speakDisArray"];
 
-            for (var i = 0; i < totalDisArray.length; i++) {
+            for (let i = 0; i < totalDisArray.length; i++) {
               if (stageTotalDis >= totalDisArray[i] && tempDistance <= speakDisArray[i]) {
-                var msg = "";
+                let msg = "";
                 if (stageTotalDis >= 50 && tempDistance > 30) {
                   if (language == "En") {
                     msg = "Go Straight ahead";
@@ -3810,7 +3810,7 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
                     if (speakListener) {
                       msg = speakListener.updateMsgFinal();
                     } else {
-                      var substr = thisObject.textQueue[thisObject.cursor].match(thisObject.updateReg);
+                      let substr = thisObject.textQueue[thisObject.cursor].match(thisObject.updateReg);
                       if (substr != null) {
                         substr = thisObject.textQueue[thisObject.cursor].replace(substr[1], "");
                         msg = substr;
@@ -3831,7 +3831,7 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
           } else {
             /*if (stageTotalDis >= 32 && tempDistance <= 16) {
                             if(speakListener){
-                                var msg = speakListener.updateMsg(tempDistance,naviCore.minSpeakDistance);
+                                let msg = speakListener.updateMsg(tempDistance,naviCore.minSpeakDistance);
                                 speakListener.speakNow(msg,null,null);
 
                             }else{
@@ -3848,7 +3848,7 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
                         }*/
             if (nextStation && tempDistance + nextStation.distance < naviCore.changeFloorTipDis && !nextStation.speaked) {
               speakChangeFloor(route, speakListener, tempDistance, curStation, nextStation);
-              // var msg = getMsg(tempDistance,curStation);
+              // let msg = getMsg(tempDistance,curStation);
               // msg = msg ? msg +(window["langData"]["after"]|| "然后 "):'';
               // msg += speakListener.getSpeakText(route.currentCursor+1);
               // if(curStation.speaked){
@@ -3890,12 +3890,12 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
         //naviCore.naviTipInfo.updateDistance(result.targetDistance);
         // naviPositionChanged
         //距离较长时语音重复播报
-        var stations = route.stations;
-        var curStation = stations[route.currentCursor];
-        var speakText = curStation.speakText;
+        let stations = route.stations;
+        let curStation = stations[route.currentCursor];
+        let speakText = curStation.speakText;
 
         if (curStation.type == 3 && tempDistance < 7 && stations.length > route.currentCursor + 1) {
-          var nextStation = stations[route.currentCursor + 1];
+          let nextStation = stations[route.currentCursor + 1];
           data["angelText"] = nextStation.speakText;
           // if(curStation.speaked){
           //     return;
@@ -3906,17 +3906,17 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
             data["stationSpeakText"] = speakText;
           }
         } else {
-          var speakDistanceParam = naviCore.speakDistanceParam || {
+          let speakDistanceParam = naviCore.speakDistanceParam || {
             totalDisArray: [200, 150, 100, 60, 40, 15],
             speakDisArray: [180, 140, 90, 50, 30, 10],
           };
           if (speakDistanceParam) {
-            var totalDisArray = speakDistanceParam["totalDisArray"];
-            var speakDisArray = speakDistanceParam["speakDisArray"];
+            let totalDisArray = speakDistanceParam["totalDisArray"];
+            let speakDisArray = speakDistanceParam["speakDisArray"];
 
-            for (var i = 0; i < totalDisArray.length; i++) {
+            for (let i = 0; i < totalDisArray.length; i++) {
               if (stageTotalDis >= totalDisArray[i] && tempDistance <= speakDisArray[i]) {
-                var msg = "";
+                let msg = "";
                 if (stageTotalDis >= 50 && tempDistance > 30) {
                   if (language == "En") {
                     msg = "Go Straight ahead";
@@ -3935,7 +3935,7 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
                     if (speakListener) {
                       msg = speakListener.updateMsgFinal();
                     } else {
-                      var substr = thisObject.textQueue[thisObject.cursor].match(thisObject.updateReg);
+                      let substr = thisObject.textQueue[thisObject.cursor].match(thisObject.updateReg);
                       if (substr != null) {
                         substr = thisObject.textQueue[thisObject.cursor].replace(substr[1], "");
                         msg = substr;
@@ -3953,14 +3953,14 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
           } else {
             if (stageTotalDis >= 32 && tempDistance <= 16) {
               if (speakListener) {
-                var msg = speakListener.updateMsg(tempDistance, naviCore.minSpeakDistance);
+                let msg = speakListener.updateMsg(tempDistance, naviCore.minSpeakDistance);
                 speakListener.speakNow(msg, null, null);
               } else {
                 msg = getMsg(tempDistance, curStation);
               }
               stageTotalDis = 0;
             } else if (nextStation && tempDistance + nextStation.distance < naviCore.changeFloorTipDis && !nextStation.speaked) {
-              var msg = getMsg(tempDistance, curStation);
+              let msg = getMsg(tempDistance, curStation);
               msg = msg ? msg + (window["langData"]["after"] || "然后 ") : "";
               msg += speakListener.getSpeakText(route.currentCursor + 1);
               if (curStation.speaked) {
@@ -3980,16 +3980,16 @@ var FloorSegmentOperator = function (naviCore, fl, language) {
 FloorSegmentOperator.prototype = Object.create(NavigationOperator.prototype);
 FloorSegmentOperator.prototype.constructor = FloorSegmentOperator;
 
-var FloorChangeOperator = function (naviCore, station, language) {
+let FloorChangeOperator = function (naviCore, station, language) {
   NavigationOperator.call(this);
-  var thisObject = this;
+  let thisObject = this;
   thisObject.naviCore = naviCore;
   thisObject.station = station;
   thisObject.callBack = null;
-  var navi_utils = daximap["DXMapUtils"]["naviMath"];
-  var prototype = FloorChangeOperator.prototype;
+  let navi_utils = daximap["DXMapUtils"]["naviMath"];
+  let prototype = FloorChangeOperator.prototype;
   prototype.onStart = function (tick) {
-    var thisObject = this;
+    let thisObject = this;
     if (thisObject.naviCore.isStairsShow() === false) {
       thisObject.playStairsAnimation(
         thisObject.station.floor,
@@ -4004,26 +4004,26 @@ var FloorChangeOperator = function (naviCore, station, language) {
   };
 
   prototype.onPlayStairFinished = function () {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.finishOperator();
   };
   prototype.showFloorAmTimer = null;
   prototype.playStairsAnimation = function (startFloorId, endFloorId, iconName, interval, callback) {
-    var thisObject = this;
-    var start = navi_utils.getRealFloorNumbyFloorId(startFloorId);
-    var end = navi_utils.getRealFloorNumbyFloorId(endFloorId);
-    var span = end - start;
-    var curr = start;
+    let thisObject = this;
+    let start = navi_utils.getRealFloorNumbyFloorId(startFloorId);
+    let end = navi_utils.getRealFloorNumbyFloorId(endFloorId);
+    let span = end - start;
+    let curr = start;
 
-    var way = RouteParseHelper.getTargetNameByIconName(iconName, language);
-    var type = RouteParseHelper.getTypeByIconName(iconName, language);
-    var dir = RouteParseHelper.getDirByIconName(iconName, language);
+    let way = RouteParseHelper.getTargetNameByIconName(iconName, language);
+    let type = RouteParseHelper.getTypeByIconName(iconName, language);
+    let dir = RouteParseHelper.getDirByIconName(iconName, language);
     thisObject.callBack = callback;
 
-    var temp = null;
-    // var _timer = null;
+    let temp = null;
+    // let _timer = null;
     thisObject.naviCore.floorChangerShow(true);
-    var showFloorAm = function (num) {
+    let showFloorAm = function (num) {
       if (curr == end) {
         temp = dir + "_out";
       } else {
@@ -4076,16 +4076,16 @@ var FloorChangeOperator = function (naviCore, station, language) {
 FloorChangeOperator.prototype = Object.create(NavigationOperator.prototype);
 FloorChangeOperator.prototype.constructor = FloorChangeOperator;
 
-var FloorChangeEndOperator = function (naviCore, station) {
+let FloorChangeEndOperator = function (naviCore, station) {
   NavigationOperator.call(this);
-  var thisObject = this;
+  let thisObject = this;
   thisObject.naviCore = naviCore;
   thisObject.station = station;
 
-  var prototype = FloorChangeEndOperator.prototype;
+  let prototype = FloorChangeEndOperator.prototype;
   prototype.onStart = function (tick) {
-    var thisObject = this;
-    var _timer = null;
+    let thisObject = this;
+    let _timer = null;
     _timer = window.setTimeout(function () {
       window.clearTimeout(_timer);
       thisObject.isEnd = true;
@@ -4095,13 +4095,13 @@ var FloorChangeEndOperator = function (naviCore, station) {
 FloorChangeEndOperator.prototype = Object.create(NavigationOperator.prototype);
 FloorChangeEndOperator.prototype.constructor = FloorChangeEndOperator;
 
-var FloorEndOperator = function (naviCore, station) {
+let FloorEndOperator = function (naviCore, station) {
   NavigationOperator.call(this);
-  var thisObject = this;
+  let thisObject = this;
   thisObject.naviCore = naviCore;
   thisObject.station = station;
 
-  var prototype = FloorEndOperator.prototype;
+  let prototype = FloorEndOperator.prototype;
   prototype.onStart = function (tick) {};
   prototype.isFinished = function () {
     return thisObject.isEnd;
@@ -4113,12 +4113,12 @@ FloorEndOperator.prototype.constructor = FloorEndOperator;
 //////////////////////////////////////////////////////////
 // LocationSimulator
 //////////////////////////////////////////////////////////
-var LocationSimulator = function (language) {
-  var thisObject = this;
+let LocationSimulator = function (language) {
+  let thisObject = this;
   thisObject.naviCore = null;
   thisObject.isPause = false;
   thisObject.animationController = null;
-  var prototype = LocationSimulator.prototype;
+  let prototype = LocationSimulator.prototype;
   prototype.init = function (core) {
     thisObject.naviCore = core;
     thisObject.animationController = window["DaxiMap"]["AnimationController"]();
@@ -4126,7 +4126,7 @@ var LocationSimulator = function (language) {
   };
 
   prototype.setPause = function (pVal) {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.isPause = pVal;
     if (!pVal) {
       thisObject.animationController.start(null, true);
@@ -4134,12 +4134,12 @@ var LocationSimulator = function (language) {
   };
 
   prototype.setType = function (pVal) {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.simulateType = pVal;
   };
 
   prototype.pause = function () {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.isPause = true;
   };
 
@@ -4149,25 +4149,25 @@ var LocationSimulator = function (language) {
   };
 
   prototype.stop = function () {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.isPause = true;
 
     thisObject.animationController.clearListeners();
     thisObject.animationController.stop();
   };
 
-  var xOffset = 0; //Math.random() * 7 - 3.5;
-  var yOffset = 0; // Math.random() * 7 - 3.5;
-  var angelOffset = 0;
-  var e = { code: 220 };
+  let xOffset = 0; //Math.random() * 7 - 3.5;
+  let yOffset = 0; // Math.random() * 7 - 3.5;
+  let angelOffset = 0;
+  let e = { code: 220 };
 
   prototype.start = function (callback) {
     if (callback === undefined) callback = locationCB;
     // thisObject.naviCore.indicator.setSimulate(true);
     thisObject.naviCore.indicator.setVisible(true);
-    var locationDispacherFunc = function () {
-      var pose = thisObject.naviCore.getLocationPose();
-      var random_pos = false;
+    let locationDispacherFunc = function () {
+      let pose = thisObject.naviCore.getLocationPose();
+      let random_pos = false;
       if (random_pos === true) {
         xOffset += Math.random() * 0.5 - 0.25;
         yOffset += Math.random() * 0.5 - 0.25;
@@ -4189,17 +4189,17 @@ var LocationSimulator = function (language) {
     thisObject.animationController.start(null, true);
   };
 
-  var locationCB = function (e) {
+  let locationCB = function (e) {
     if (parseInt(e.code) !== 220) return;
     // RouteParseHelper.setlocationToSystem(e);
-    var pose = { pos: [e.location.x, e.location.y, 0], pathDir: e.pathDir, heading: e.location.a, floorId: e.location.z };
+    let pose = { pos: [e.location.x, e.location.y, 0], pathDir: e.pathDir, heading: e.location.a, floorId: e.location.z };
 
-    var indicator = thisObject.naviCore.indicator;
+    let indicator = thisObject.naviCore.indicator;
     if (indicator === null) return;
     // Set Indicator Position
-    var lng = pose.pos[0];
-    var lat = pose.pos[1];
-    var curfloorId = pose.floorId;
+    let lng = pose.pos[0];
+    let lat = pose.pos[1];
+    let curfloorId = pose.floorId;
     indicator.setPositionDirect(lng, lat, curfloorId, pose.heading, true);
   };
 };
@@ -4207,21 +4207,21 @@ var LocationSimulator = function (language) {
 //////////////////////////////////////////////////////////
 // RawRouteSimulator
 //////////////////////////////////////////////////////////
-var RawRouteSimulator = function (language) {
+let RawRouteSimulator = function (language) {
   LocationSimulator.call(this);
 
-  var thisObject = this;
+  let thisObject = this;
   thisObject.startTime = null;
   thisObject.routeDistance = 0;
   thisObject.operatorController = NavigationOperatorExcutant();
 
-  var prototype = RawRouteSimulator.prototype;
+  let prototype = RawRouteSimulator.prototype;
   prototype.start = function () {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.startTime = new Date().getTime();
     thisObject.routeDistance = 0;
     thisObject.isPause = false;
-    var naviDispacherFunc = function () {
+    let naviDispacherFunc = function () {
       if (thisObject.isPause === false) {
         try {
           if (thisObject.operatorController.run(0) === -1) {
@@ -4235,8 +4235,8 @@ var RawRouteSimulator = function (language) {
       }
     };
 
-    var route = thisObject.naviCore.route;
-    var pose = route.getCurrentPose(0);
+    let route = thisObject.naviCore.route;
+    let pose = route.getCurrentPose(0);
     thisObject.naviCore.indicator._setMapPositionOnly(route.bdid, pose.floor, pose.pos[0], pose.pos[1]);
     thisObject.naviCore.indicator._setPositionOnly(pose.pos[0], pose.pos[1], route.bdid, pose.floor, pose.headingTilt[0], 0);
 
@@ -4251,29 +4251,29 @@ var RawRouteSimulator = function (language) {
   };
 
   prototype.pause = function () {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.isPause = true;
     thisObject.operatorController.pause();
     thisObject.animationController.setPause(true);
   };
   prototype.resume = function () {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.isPause = false;
     thisObject.operatorController.resume();
     thisObject.animationController.setPause(false);
   };
   prototype.stop = function () {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.operatorController.clear();
     thisObject.animationController.clearListeners();
     thisObject.animationController.stop();
     // thisObject.naviCore.indicator.setSimulate(false);
 
-    var locationManager = thisObject.naviCore.locationManager;
+    let locationManager = thisObject.naviCore.locationManager;
     locationManager._stopMatchRoute();
-    var locState = locationManager._getLocationState();
+    let locState = locationManager._getLocationState();
     if (locState == DaxiMap["LocationState"]["LOCATED"]) {
-      var myPos = locationManager._getMyPositionInfo();
+      let myPos = locationManager._getMyPositionInfo();
       thisObject.naviCore.indicator._setPositionOnly(myPos["position"][0], myPos["position"][1], myPos["bdid"], myPos["floorId"], myPos["direction"]);
     } else {
       thisObject.naviCore.indicator.setVisible(false);
@@ -4285,10 +4285,10 @@ var RawRouteSimulator = function (language) {
 
   function onNavigationFinished() {
     //todo:通过事件方式发布，方便调用
-    var spendsTime = ~~(thisObject.naviCore.route.total_length * 0.83); //Math.floor((new Date().getTime() - thisObject.startTime) / 1000);
-    var minutes = Math.floor(spendsTime / 60);
-    var seconds = spendsTime % 60;
-    var msg = window["langData"]["taketime:navi"] || "用时",
+    let spendsTime = ~~(thisObject.naviCore.route.total_length * 0.83); //Math.floor((new Date().getTime() - thisObject.startTime) / 1000);
+    let minutes = Math.floor(spendsTime / 60);
+    let seconds = spendsTime % 60;
+    let msg = window["langData"]["taketime:navi"] || "用时",
       minutesUnit = window["langData"]["minute"] || "分钟",
       secUnit = window["langData"]["second"] || "秒 ",
       disUnit = window["langData"]["meter:distance"] || "米",
@@ -4305,18 +4305,18 @@ var RawRouteSimulator = function (language) {
 
   prototype.parseRoute = function (route, language) {
     thisObject.operatorController.clear();
-    var floorCount = route.floorObjects.length;
+    let floorCount = route.floorObjects.length;
     floorCount > 0 ? (thisObject.routeDistance = Math.round(route.floorObjects[0].route.total_length)) : 0;
-    for (var floorIndex = 0; floorIndex < floorCount; floorIndex++) {
-      var floorObject = route.floorObjects[floorIndex];
-      var operator = new FloorSegmentOperator(thisObject.naviCore, floorObject, language);
+    for (let floorIndex = 0; floorIndex < floorCount; floorIndex++) {
+      let floorObject = route.floorObjects[floorIndex];
+      let operator = new FloorSegmentOperator(thisObject.naviCore, floorObject, language);
       thisObject.operatorController.add(operator);
 
       if (floorIndex !== floorCount - 1) {
-        var operator = new FloorChangeOperator(thisObject.naviCore, floorObject.stations[floorObject.stations.length - 1], language);
+        let operator = new FloorChangeOperator(thisObject.naviCore, floorObject.stations[floorObject.stations.length - 1], language);
         thisObject.operatorController.add(operator);
       } else {
-        var operator = new FloorEndOperator(thisObject.naviCore, floorObject.stations[floorObject.stations.length - 1], language);
+        let operator = new FloorEndOperator(thisObject.naviCore, floorObject.stations[floorObject.stations.length - 1], language);
         thisObject.operatorController.add(operator);
       }
     }
@@ -4328,13 +4328,13 @@ RawRouteSimulator.prototype.constructor = RawRouteSimulator;
 //////////////////////////////////////////////////////////
 // RawRouteController
 //////////////////////////////////////////////////////////
-var RawRouteController = function (language) {
-  var disMaxReNavi = 20;
-  var AOAdisMaxReNavi = 20;
-  var timesMaxReNavi = 15000;
-  var AOAtimesMaxReNavi = 15000;
-  var timesMaxWrongWay = 14000;
-  var thisObject = this;
+let RawRouteController = function (language) {
+  let disMaxReNavi = 20;
+  let AOAdisMaxReNavi = 20;
+  let timesMaxReNavi = 15000;
+  let AOAtimesMaxReNavi = 15000;
+  let timesMaxWrongWay = 14000;
+  let thisObject = this;
   thisObject.language = language;
   thisObject.naviCore = null;
   thisObject.isPause = false;
@@ -4351,8 +4351,8 @@ var RawRouteController = function (language) {
   thisObject.AOAtimesMaxReNaviDef = AOAtimesMaxReNavi;
   thisObject.timesMaxWrongWayDef = timesMaxWrongWay;
 
-  var navi_utils = daximap["DXMapUtils"]["naviMath"];
-  var prototype = RawRouteController.prototype;
+  let navi_utils = daximap["DXMapUtils"]["naviMath"];
+  let prototype = RawRouteController.prototype;
   prototype.init = function (core) {
     disMaxReNavi = core.restartRoute;
     AOAdisMaxReNavi = core.AOArestartRoute || disMaxReNavi;
@@ -4372,7 +4372,7 @@ var RawRouteController = function (language) {
   };
 
   prototype.setPause = function (pVal) {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.isPause = pVal;
   };
   prototype.getPause = function () {
@@ -4380,23 +4380,23 @@ var RawRouteController = function (language) {
   };
 
   prototype.pause = function () {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.isPause = true;
   };
 
   prototype.resume = function () {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.isPause = false;
   };
 
   prototype.parseRoute = function () {};
 
   prototype.start = function (callback) {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.startTime = new Date().getTime();
     thisObject.RenavigationTrigger.reset();
     if (callback === undefined) callback = watchCB;
-    var route = thisObject.naviCore.route;
+    let route = thisObject.naviCore.route;
     if (route) {
       thisObject.routeDistance = parseInt(route.total_length);
     } else {
@@ -4404,12 +4404,12 @@ var RawRouteController = function (language) {
     }
 
     thisObject.naviCore.locationManager._on("onLocationChanged", callback);
-    // var loc = thisObject.naviCore.locationManager._getMyPositionInfo();
+    // let loc = thisObject.naviCore.locationManager._getMyPositionInfo();
     // callback(null,loc);
   };
 
   prototype.setType = function (pVal) {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.simulateType = pVal;
   };
 
@@ -4417,16 +4417,16 @@ var RawRouteController = function (language) {
    * Stop Navigate
    */
   prototype.stop = function () {
-    var thisObject = this;
+    let thisObject = this;
     clearFloorAmTimer();
     thisObject.naviCore.locationManager._off("onLocationChanged", watchCB);
-    var locationManager = thisObject.naviCore.locationManager;
+    let locationManager = thisObject.naviCore.locationManager;
     locationManager._stopMatchRoute();
     // thisObject.naviCore.locationManager.locationManager.removeWatchLocationEvent(watchCB);
   };
 
   //定位监视
-  var watchCB = function (sender, e) {
+  let watchCB = function (sender, e) {
     //isIndoorAreaGPS
     if (e["bdid"] && e["floorId"]) {
       thisObject.navigateCB(e);
@@ -4435,11 +4435,11 @@ var RawRouteController = function (language) {
     }
   };
 
-  var lastBleUpdateTimeStamp = 0;
+  let lastBleUpdateTimeStamp = 0;
   prototype.navigateCB = function (e) {
-    var thisObject = this;
-    var offsetPos = [0, 0];
-    var pose = { pos: [], headingTilt: [], floor: 0, real_pos: [], target_pos: [] };
+    let thisObject = this;
+    let offsetPos = [0, 0];
+    let pose = { pos: [], headingTilt: [], floor: 0, real_pos: [], target_pos: [] };
     pose.pos[0] = e["position"][0] + offsetPos[0];
     pose.pos[1] = e["position"][1] + offsetPos[1];
     pose.pos[2] = e["floorNum"];
@@ -4458,10 +4458,10 @@ var RawRouteController = function (language) {
       pose.target_pos[1] = e["target_pos"]["y"];
       pose.target_pos[2] = 0;
     }
-    var floorInfo = thisObject.naviCore.mapAPI._getFloorInfo(e["bdid"], pose.floorId);
+    let floorInfo = thisObject.naviCore.mapAPI._getFloorInfo(e["bdid"], pose.floorId);
 
     if (thisObject.naviCore.getIsSimulate()) {
-      var loc = {
+      let loc = {
         floorCnName: floorInfo ? floorInfo["floorCnName"] : "",
         floorName: floorInfo ? floorInfo["floorName"] : "",
         floorNum: e["floorNum"],
@@ -4472,7 +4472,7 @@ var RawRouteController = function (language) {
       thisObject.naviCore.locationManager.locationManager.set(loc);
     }
 
-    var mapStatus = thisObject.naviCore.getNaviStatus();
+    let mapStatus = thisObject.naviCore.getNaviStatus();
 
     if (mapStatus === STATE_NAVIGATE || mapStatus === STATE_NAVIGATE_PAUSE) {
       // || mapStatus === STATE_NAVIGATE_END
@@ -4482,16 +4482,16 @@ var RawRouteController = function (language) {
     }
   };
 
-  var tempDistance = 0,
+  let tempDistance = 0,
     tempDistanceI = 0,
     stageTotalDis = 0;
 
   function onNavigationFinished() {
     //todo:通过事件方式发布，方便调用
-    var spendsTime = Math.floor((new Date().getTime() - thisObject.startTime) / 1000);
-    var minutes = Math.floor(spendsTime / 60);
-    var seconds = spendsTime % 60;
-    var msg = window["langData"]["taketime:navi"] || "用时",
+    let spendsTime = Math.floor((new Date().getTime() - thisObject.startTime) / 1000);
+    let minutes = Math.floor(spendsTime / 60);
+    let seconds = spendsTime % 60;
+    let msg = window["langData"]["taketime:navi"] || "用时",
       minutesUnit = window["langData"]["minute"] || "分钟",
       secUnit = window["langData"]["second"] || "秒 ",
       disUnit = window["langData"]["meter:distance"] || "米",
@@ -4505,8 +4505,8 @@ var RawRouteController = function (language) {
     thisObject.cleanVirtualLine();
   }
 
-  var RenavigationConditionTrigger = function () {
-    var obj = {};
+  let RenavigationConditionTrigger = function () {
+    let obj = {};
     obj.lastTimeInMilli = new Date().getTime();
     obj.outLineCount = 0;
     obj.CheckIsNeedReNavigation = function (args, distance) {
@@ -4514,8 +4514,8 @@ var RawRouteController = function (language) {
         timesMaxReNavi = AOAtimesMaxReNavi;
       }
       //if(distance <= 10 ) return false;
-      var timestamp = new Date().getTime();
-      var diff = timestamp - obj.lastTimeInMilli;
+      let timestamp = new Date().getTime();
+      let diff = timestamp - obj.lastTimeInMilli;
       //lastTimeInMilli = timestamp;
       if (diff > timesMaxReNavi && obj.outLineCount > timesMaxReNavi / 1000) {
         //10   && obj.outLineCount > timesMaxReNavi/1000
@@ -4534,14 +4534,14 @@ var RawRouteController = function (language) {
     return obj;
   };
 
-  var WrongWayConditionTrigger = function () {
-    var obj = {};
+  let WrongWayConditionTrigger = function () {
+    let obj = {};
     obj.lastTimeInMilli = new Date().getTime();
     obj.outLineCount = 0;
     obj.CheckIsNeed = function (args, distance) {
       //if(distance <= 10 ) return false;
-      var timestamp = new Date().getTime();
-      var diff = timestamp - obj.lastTimeInMilli;
+      let timestamp = new Date().getTime();
+      let diff = timestamp - obj.lastTimeInMilli;
       //lastTimeInMilli = timestamp;
       if (diff > timesMaxWrongWay && obj.outLineCount > 5) {
         obj.outLineCount = 0;
@@ -4559,8 +4559,8 @@ var RawRouteController = function (language) {
   };
 
   function Fire_onIndicator_OutOfTheRoute(args) {
-    var result = args.result;
-    var reNavigationText = window["langData"]["torequest:route:deviate:tip"] || "您已偏离导航,正在为您重新规划路线";
+    let result = args.result;
+    let reNavigationText = window["langData"]["torequest:route:deviate:tip"] || "您已偏离导航,正在为您重新规划路线";
     if (language == "En") {
       reNavigationText = "navigating for you!";
     }
@@ -4575,23 +4575,23 @@ var RawRouteController = function (language) {
   }
 
   function Fire_onIndicator_ChangeFloors(args, interval, language) {
-    var result = args.result;
+    let result = args.result;
     interval = interval || 1000;
 
     //    真实导航过程显示换层动画
     if (result.floor && result.nextFloor) {
-      var startFloorId = result.floor;
-      var endFloorId = result.nextFloor;
+      let startFloorId = result.floor;
+      let endFloorId = result.nextFloor;
       if (startFloorId != endFloorId) {
-        //var thisObject = this;
-        var start = navi_utils.getRealFloorNumbyFloorId(startFloorId);
-        var end = navi_utils.getRealFloorNumbyFloorId(endFloorId);
+        //let thisObject = this;
+        let start = navi_utils.getRealFloorNumbyFloorId(startFloorId);
+        let end = navi_utils.getRealFloorNumbyFloorId(endFloorId);
 
-        var curr = start;
-        var way = RouteParseHelper.getTargetNameByIconName(iconName, language);
-        var type = RouteParseHelper.getTypeByIconName(iconName, language);
-        var dir = RouteParseHelper.getDirByIconName(iconName, language);
-        var changeFloorData = thisObject.changeFloorData;
+        let curr = start;
+        let way = RouteParseHelper.getTargetNameByIconName(iconName, language);
+        let type = RouteParseHelper.getTypeByIconName(iconName, language);
+        let dir = RouteParseHelper.getDirByIconName(iconName, language);
+        let changeFloorData = thisObject.changeFloorData;
         if (changeFloorData["startFloor"] == startFloorId && changeFloorData["endFloor"] == endFloorId && dir == changeFloorData["direction"]) {
           return;
         } else {
@@ -4607,8 +4607,8 @@ var RawRouteController = function (language) {
           };
           thisObject.naviCore.floorChangerShow(true);
           thisObject.naviCore.setFloorChangeData(changeFloorData);
-          var temp = null;
-          var showFloorAm = function (num) {
+          let temp = null;
+          let showFloorAm = function (num) {
             if (curr == end) {
               temp = dir + "_out";
             } else {
@@ -4662,7 +4662,7 @@ var RawRouteController = function (language) {
   }
 
   function Fire_onIndicator_ShowCrossImage(args) {
-    var result = args.result;
+    let result = args.result;
 
     if (result.roadResult !== undefined) {
       result.roadResult["bdid"] = args.route.bdid;
@@ -4674,9 +4674,9 @@ var RawRouteController = function (language) {
     }
   }
   function getMsg(tempDistance, curStation) {
-    var updateReg = /方(\S*)米/;
+    let updateReg = /方(\S*)米/;
     if (curStation.speakText) {
-      var substr = curStation.speakText.match(updateReg);
+      let substr = curStation.speakText.match(updateReg);
       if (substr != null) {
         substr = curStation.speakText.replace(substr[1], tempDistance);
       }
@@ -4689,7 +4689,7 @@ var RawRouteController = function (language) {
     return "";
   }
   function speakChangeFloor(route, speakListener, tempDistance, curStation, nextStation) {
-    var msg = getMsg(tempDistance, curStation);
+    let msg = getMsg(tempDistance, curStation);
     msg = msg ? msg + (window["langData"]["after"] || "然后 ") : "";
     msg += speakListener.getSpeakText(route.currentCursor + 1);
     if (nextStation.speaked) {
@@ -4699,22 +4699,22 @@ var RawRouteController = function (language) {
     nextStation.speaked = true;
   }
   function Fire_onIndicator_UpdateInfo(args, data, language) {
-    var result = args.result;
-    var route = args.route;
-    var naviCore = thisObject.naviCore;
-    var speakListener = naviCore.speakListener;
+    let result = args.result;
+    let route = args.route;
+    let naviCore = thisObject.naviCore;
+    let speakListener = naviCore.speakListener;
     if (result.index == -1) {
       return;
     }
-    // var grayRoutePoints = args.result.grayRoutePoints;
+    // let grayRoutePoints = args.result.grayRoutePoints;
     //grayRoutePoints
     // if(grayRoutePoints.length){
-    var grayT = args.result.walkedRouteRatio;
+    let grayT = args.result.walkedRouteRatio;
     data["grayT"] = grayT;
     data["floorId"] = result.floor;
-    var stations = route.stations;
-    var curStation = stations[route.currentCursor];
-    var nextStation;
+    let stations = route.stations;
+    let curStation = stations[route.currentCursor];
+    let nextStation;
     // if(curStation.speaked){
     //     return;
     // }
@@ -4737,11 +4737,11 @@ var RawRouteController = function (language) {
         //naviCore.naviTipInfo.updateDistance(result.targetDistance);
         // naviPositionChanged
         //距离较长时语音重复播报
-        var stations = route.stations;
-        var curStation = stations[route.currentCursor];
-        var speakText = curStation.speakText;
+        let stations = route.stations;
+        let curStation = stations[route.currentCursor];
+        let speakText = curStation.speakText;
         if (curStation.type == 3 && tempDistance < 8 && stations.length > route.currentCursor + 1) {
-          var nextStation = stations[route.currentCursor + 1];
+          let nextStation = stations[route.currentCursor + 1];
           data["angelText"] = nextStation.speakText;
           if (speakListener) {
             speakListener.speakNext(route.currentCursor + 1);
@@ -4749,14 +4749,14 @@ var RawRouteController = function (language) {
             data["stationSpeakText"] = speakText;
           }
         } else {
-          var speakDistanceParam = naviCore.speakDistanceParam;
+          let speakDistanceParam = naviCore.speakDistanceParam;
           if (speakDistanceParam) {
-            var totalDisArray = speakDistanceParam["totalDisArray"];
-            var speakDisArray = speakDistanceParam["speakDisArray"];
+            let totalDisArray = speakDistanceParam["totalDisArray"];
+            let speakDisArray = speakDistanceParam["speakDisArray"];
 
-            for (var i = 0; i < totalDisArray.length; i++) {
+            for (let i = 0; i < totalDisArray.length; i++) {
               if (stageTotalDis >= totalDisArray[i] && tempDistance <= speakDisArray[i]) {
-                var msg = "";
+                let msg = "";
                 if (stageTotalDis >= 50 && tempDistance > 30) {
                   if (language == "En") {
                     msg = "Go Straight ahead";
@@ -4775,7 +4775,7 @@ var RawRouteController = function (language) {
                     if (speakListener) {
                       msg = speakListener.updateMsgFinal();
                     } else {
-                      var substr = thisObject.textQueue[thisObject.cursor].match(thisObject.updateReg);
+                      let substr = thisObject.textQueue[thisObject.cursor].match(thisObject.updateReg);
                       if (substr != null) {
                         substr = thisObject.textQueue[thisObject.cursor].replace(substr[1], "");
                         msg = substr;
@@ -4796,7 +4796,7 @@ var RawRouteController = function (language) {
           } else {
             if (stageTotalDis >= 32 && tempDistance <= 16) {
               if (speakListener) {
-                var msg = speakListener.updateMsg(tempDistance, naviCore.minSpeakDistance);
+                let msg = speakListener.updateMsg(tempDistance, naviCore.minSpeakDistance);
                 speakListener.speakNow(msg, null, null);
               } else {
                 msg = getMsg(tempDistance, curStation);
@@ -4804,7 +4804,7 @@ var RawRouteController = function (language) {
               stageTotalDis = 0;
             } else if (nextStation && tempDistance + nextStation.distance < naviCore.changeFloorTipDis && !nextStation.speaked) {
               speakChangeFloor(route, speakListener, tempDistance, curStation, nextStation);
-              // var msg = getMsg(tempDistance,curStation);
+              // let msg = getMsg(tempDistance,curStation);
               // msg = msg ? msg +(window["langData"]["after"]|| "然后 "):'';
               // msg += speakListener.getSpeakText(route.currentCursor+1);
               // speakListener.speakNow(msg,null,null);
@@ -4862,11 +4862,11 @@ var RawRouteController = function (language) {
         //naviCore.naviTipInfo.updateDistance(result.targetDistance);
         // naviPositionChanged
         //距离较长时语音重复播报
-        var stations = route.stations;
-        var curStation = stations[route.currentCursor];
-        var speakText = curStation.speakText;
+        let stations = route.stations;
+        let curStation = stations[route.currentCursor];
+        let speakText = curStation.speakText;
         if (curStation.type == 3 && tempDistance < 8 && stations.length > route.currentCursor + 1) {
-          var nextStation = stations[route.currentCursor + 1];
+          let nextStation = stations[route.currentCursor + 1];
           data["angelText"] = nextStation.speakText;
           if (speakListener && !nextStation.speaked) {
             speakListener.speakNext(route.currentCursor + 1);
@@ -4875,14 +4875,14 @@ var RawRouteController = function (language) {
             data["stationSpeakText"] = speakText;
           }
         } else {
-          var speakDistanceParam = naviCore.speakDistanceParam;
+          let speakDistanceParam = naviCore.speakDistanceParam;
           if (speakDistanceParam) {
-            var totalDisArray = speakDistanceParam["totalDisArray"];
-            var speakDisArray = speakDistanceParam["speakDisArray"];
+            let totalDisArray = speakDistanceParam["totalDisArray"];
+            let speakDisArray = speakDistanceParam["speakDisArray"];
 
-            for (var i = 0; i < totalDisArray.length; i++) {
+            for (let i = 0; i < totalDisArray.length; i++) {
               if (stageTotalDis >= totalDisArray[i] && tempDistance <= speakDisArray[i]) {
-                var msg = "";
+                let msg = "";
                 if (stageTotalDis >= 50 && tempDistance > 30) {
                   if (language == "En") {
                     msg = "Go Straight ahead";
@@ -4901,7 +4901,7 @@ var RawRouteController = function (language) {
                     if (speakListener) {
                       msg = speakListener.updateMsgFinal();
                     } else {
-                      var substr = thisObject.textQueue[thisObject.cursor].match(thisObject.updateReg);
+                      let substr = thisObject.textQueue[thisObject.cursor].match(thisObject.updateReg);
                       if (substr != null) {
                         substr = thisObject.textQueue[thisObject.cursor].replace(substr[1], "");
                         msg = substr;
@@ -4922,7 +4922,7 @@ var RawRouteController = function (language) {
           } else {
             if (stageTotalDis >= 32 && tempDistance <= 16) {
               if (speakListener) {
-                var msg = speakListener.updateMsg(tempDistance, naviCore.minSpeakDistance);
+                let msg = speakListener.updateMsg(tempDistance, naviCore.minSpeakDistance);
                 speakListener.speakNow(msg, null, null);
               } else {
                 msg = getMsg(tempDistance, curStation);
@@ -4930,7 +4930,7 @@ var RawRouteController = function (language) {
               stageTotalDis = 0;
             } else if (nextStation && tempDistance + nextStation.distance < naviCore.changeFloorTipDis && !nextStation.speaked) {
               speakChangeFloor(route, speakListener, tempDistance, curStation, nextStation);
-              // var msg = getMsg(tempDistance,curStation);
+              // let msg = getMsg(tempDistance,curStation);
               // msg = msg ? msg +(window["langData"]["after"]|| "然后 "):'';
               // msg += speakListener.getSpeakText(route.currentCursor+1);
               // speakListener.speakNow(msg,null,null);
@@ -4945,17 +4945,17 @@ var RawRouteController = function (language) {
   }
 
   function Fire_OnIndicator_NaviEnd(args, lastDisData) {
-    var result = args.result;
-    var naviCore = thisObject.naviCore;
-    var endDist = naviCore.endNaviDistance || endNaviDistance;
-    var lastDistance = lastDisData["lastDistance"];
+    let result = args.result;
+    let naviCore = thisObject.naviCore;
+    let endDist = naviCore.endNaviDistance || endNaviDistance;
+    let lastDistance = lastDisData["lastDistance"];
     if (lastDistance < 0) {
       return;
     }
 
-    var restDistance = result.targetDistance;
-    var naviEndType = naviCore.naviEndType;
-    var lastStation = args.route.stations[args.route.stations.length - 1];
+    let restDistance = result.targetDistance;
+    let naviEndType = naviCore.naviEndType;
+    let lastStation = args.route.stations[args.route.stations.length - 1];
     if (lastStation.floor != result.floor) {
       return;
     }
@@ -4980,7 +4980,7 @@ var RawRouteController = function (language) {
   }
 
   function getHeadingDiff(heading1, heading2) {
-    var diff = heading1 - heading2;
+    let diff = heading1 - heading2;
     if (diff > 180) {
       // 355,1
       diff = heading2 + 360 - heading1;
@@ -4993,12 +4993,12 @@ var RawRouteController = function (language) {
     return diff;
   }
   prototype.getCurrentFloorTarget = function () {
-    var route = this.naviCore.route;
-    var currentCursor = route.currentCursor;
-    var stations = route.stations;
-    for (var i = currentCursor, len = stations.length; i < len; i++) {
+    let route = this.naviCore.route;
+    let currentCursor = route.currentCursor;
+    let stations = route.stations;
+    for (let i = currentCursor, len = stations.length; i < len; i++) {
       if (stations[i]["type"] == 4) {
-        var pos = stations[i].position;
+        let pos = stations[i].position;
         return { x: pos[0], y: pos[1] };
       }
       if (stations[i]["type"] == 8) {
@@ -5038,47 +5038,47 @@ var RawRouteController = function (language) {
     this.virtualLine = null;
   };
   prototype.onChangePositionInNavi = function (pose, status, language, duration) {
-    var thisObject = this;
-    var curfloorId = pose.floorId;
-    var indicator = thisObject.naviCore.indicator;
-    var usingLineHeading = thisObject.naviCore.usingLineHeading;
-    var duration = thisObject.naviCore.getIsSimulate() ? 0 : duration || 500;
-    var headingView = pose.heading;
+    let thisObject = this;
+    let curfloorId = pose.floorId;
+    let indicator = thisObject.naviCore.indicator;
+    let usingLineHeading = thisObject.naviCore.usingLineHeading;
+    let duration = thisObject.naviCore.getIsSimulate() ? 0 : duration || 500;
+    let headingView = pose.heading;
     if (usingLineHeading === false) {
       headingView = thisObject.naviCore.naviHeading || 0;
     }
     if (thisObject.indicator !== null) {
       // Set Indicator Position
-      var lng = pose.pos[0];
-      var lat = pose.pos[1];
-      var realPt = pose.real_pos;
-      var distanceMin = 0;
+      let lng = pose.pos[0];
+      let lat = pose.pos[1];
+      let realPt = pose.real_pos;
+      let distanceMin = 0;
       // if(pose.pos[2]!=pose.real_pos["z"]){
       //    distanceMin = disMaxReNavi+1;
       // }
       distanceMin = Math.max(navi_utils.getGeodeticCircleDistanceVector(pose.pos, [realPt["x"], realPt["y"]]), distanceMin);
-      // var distanceMin = navi_utils.getGeodeticCircleDistanceVector(pose.pos, realPt);
-      var args = { route: thisObject.naviCore.route, result: null, indicator: thisObject.indicator, pose: pose };
+      // let distanceMin = navi_utils.getGeodeticCircleDistanceVector(pose.pos, realPt);
+      let args = { route: thisObject.naviCore.route, result: null, indicator: thisObject.indicator, pose: pose };
       args.result = { minDistance: 999999, targetDistance: 0, index: -1 };
-      var heading = pose.heading;
+      let heading = pose.heading;
       if (args.route.getNearestStation(pose, args.result)) {
         //如果定位中抓取点成功
-        //var nearPt = [args.result.nearestPt.x, args.result.nearestPt.y];
+        //let nearPt = [args.result.nearestPt.x, args.result.nearestPt.y];
         // 距终点信息
         if (args.result.station.extendType == 1 && args.result.minDistance == 0) {
           distanceMin = 0;
         }
-        var lng = pose.pos[0],
+        let lng = pose.pos[0],
           lat = pose.pos[1];
-        var data = args.route.getLastDistance(args.result.targetDistance, args.result);
+        let data = args.route.getLastDistance(args.result.targetDistance, args.result);
 
-        var headingView = pose.heading;
-        var headingDiff = getHeadingDiff(headingView, args.result.heading);
+        let headingView = pose.heading;
+        let headingDiff = getHeadingDiff(headingView, args.result.heading);
         if (headingDiff < 45) {
           headingView = args.result.heading;
         }
 
-        var headingRoute = args.result.heading;
+        let headingRoute = args.result.heading;
         if (usingLineHeading) {
           headingView = headingRoute;
           pose.heading = headingRoute;
@@ -5098,9 +5098,9 @@ var RawRouteController = function (language) {
             disMaxReNavi = thisObject.AOAdisMaxReNaviDef;
           }
         }
-        var toLineMinDis = args.result.minDistance;
+        let toLineMinDis = args.result.minDistance;
         args.result.currentTarget = thisObject.getCurrentFloorTarget();
-        var flid = args.result.floor;
+        let flid = args.result.floor;
         if (distanceMin <= disMaxReNavi && toLineMinDis <= disMaxReNavi) {
           if (args.result.nearestPt) {
             lng = args.result.nearestPt.x;
@@ -5164,13 +5164,52 @@ var RawRouteController = function (language) {
   };
 
   prototype.onChangePositionInFree = function (pose, status) {
-    var thisObject = this;
-    var indicator = thisObject.naviCore.indicator;
+    let thisObject = this;
+    let indicator = thisObject.naviCore.indicator;
     if (indicator === null) return;
     // Set Indicator Position
-    var lng = pose.pos[0];
-    var lat = pose.pos[1];
-    var curfloorId = pose.floorId;
+    let lng = pose.pos[0];
+    let lat = pose.pos[1];
+    let curfloorId = pose.floorId;
     indicator.setPositionSmooth(lng, lat, curfloorId, pose.heading, undefined, pose.real_pos, 0);
   };
+};
+
+// ES6 模块导出
+export {
+  STATE_NAVIGATE,
+  STATE_FULLVIEW,
+  STATE_SHOWPOI,
+  STATE_NAVIGATE_END,
+  STATE_NAVIGATE_PAUSE,
+  STATE_SHOWROUTE,
+  BEFORE_STAGECHANGE_SPEAK,
+  STAGECHANGING_SPEAK,
+  DXRouteCircelSampler,
+  ResamplerArray,
+  SmoothPositionSampler,
+  SmoothViewPositionSampler,
+  SmoothPositionRootSampler,
+  TimeConditionTrigger,
+  STATION_TYPE_HEAD,
+  STATION_TYPE_START,
+  STATION_TYPE_SEGMENT,
+  STATION_TYPE_SEGMENT_END,
+  STATION_TYPE_CHANGE_FLOOR,
+  STATION_TYPE_CHANGE_FLOOR_END,
+  STATION_TYPE_END,
+  STATION_TYPE_ACTION_TO_TARGET,
+  STATION_TYPE_ACTION,
+  RawRoute,
+  RawRouteParser,
+  RouteParseHelper,
+  NavigationOperatorExcutant,
+  NavigationOperator,
+  FloorSegmentOperator,
+  FloorChangeOperator,
+  FloorChangeEndOperator,
+  FloorEndOperator,
+  LocationSimulator,
+  RawRouteSimulator,
+  RawRouteController
 };

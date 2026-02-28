@@ -7,7 +7,6 @@ const scriptPath = document.currentScript.src;
 window.daxiMapSDKProjPath = scriptPath.slice(0, scriptPath.lastIndexOf("/") + 1);
 window.langData = {};
 
-(function (global) {
   const daximap = (global.DaxiMap = global.DaxiMap || {});
 
   function getScriptPath() {
@@ -576,7 +575,7 @@ window.langData = {};
       return this._coreMap.getPadding();
     };
     proto._setViewMode = function (viewMode) {
-      var tilt = 0;
+      let tilt = 0;
       if (viewMode == "2d") {
         tilt = 10;
       }
@@ -1654,4 +1653,7 @@ window.langData = {};
     Follow: DXUserTrackingModeFollow,
     FollowWithHeading: DXUserTrackingModeFollowWithHeading,
   };
-})(window);
+
+// ES6 模块导出
+export { daximap as default };
+export const DaxiMap = daximap;
