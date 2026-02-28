@@ -9,7 +9,17 @@ global.router = null;
 global.config = null;
 
 // 模拟 Zepto
-global.$ = () => ({});
+global.$ = jest.fn(() => ({
+  on: jest.fn(),
+  off: jest.fn(),
+  html: jest.fn(),
+  show: jest.fn(),
+  hide: jest.fn(),
+  find: jest.fn(() => ({
+    on: jest.fn(),
+    off: jest.fn(),
+  })),
+}));
 global.Zepto = {};
 
 // 模拟 CryptoJS
@@ -54,13 +64,16 @@ global.fetch = jest.fn(() =>
 
 // 模拟 URL 参数
 const mockUrlParams = new URLSearchParams();
-Object.defineProperty(global, "location", {
-  value: {
-    search: "",
-    href: "http://localhost:3000/index.html",
-  },
-  writable: true,
-});
+if (!global.location) {
+  Object.defineProperty(global, "location", {
+    value: {
+      search: "",
+      href: "http://localhost:3000/index.html",
+    },
+    writable: true,
+    configurable: true,
+  });
+}
 
 // 辅助函数：设置 URL 参数
 global.setMockUrlParams = (params) => {

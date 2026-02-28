@@ -108,7 +108,7 @@
                 function (data) {
                   const keyword = decodeURIComponent(data["keyword"]);
                   if (keyword) {
-                    const data = {;
+                    const data = {
                       method: "showPois",
                       keyword: keyword,
                       bdid: bdid,
@@ -173,7 +173,7 @@
         },
 
         onSelectItemDetail: function (sender, e) {
-          const args = {;
+          const args = {
             method: "showPoiDetail",
             data: {
               poiInfo: e,
@@ -222,7 +222,7 @@
             }
           }
 
-          const args = {;
+          const args = {
             method: "takeToThere",
             endPoint: e,
             startPoint: startPoint, // 定位起点信息
@@ -349,7 +349,7 @@
       for (var poiIndex in data) {
         const poiInfo = data[poiIndex];
         bdid = poiInfo["bdid"] || "";
-        const markerOption = {;
+        const markerOption = {
           featureId: poiInfo["poiId"],
           id: poiInfo["poiId"],
           bdid: poiInfo["bdid"],
@@ -391,7 +391,7 @@
     // 打开PoiDetailPage 或者去showPoiDetail
     openPoiDetailPage: function (data) {
       const params = this.params;
-      const command = {;
+      const command = {
         method: "showPoiDetail",
         data: { poiInfo: data, defStartPoint: params["defStartPoint"] || "" },
       };
@@ -416,7 +416,7 @@
         lat = bdInfo["center"][1];
       }
 
-      const stateParams = {;
+      const stateParams = {
         method: "openSearchPage",
         data: {
           bdid: bdid,

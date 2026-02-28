@@ -19,7 +19,7 @@ console.log("[App] 大希智能导游 v1.0.0");
 /**
  * 应用启动函数
  */
-async function bootstrap() {
+function bootstrap() {
   console.log("[App] Bootstrap started");
 
   try {

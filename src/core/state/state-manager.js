@@ -89,7 +89,7 @@ export class StateManager {
    * @param {Function|Object} updater - 状态更新器
    * @returns {Promise<Object>} 返回更新后的状态
    */
-  async setStateAsync(updater) {
+  setStateAsync(updater) {
     return new Promise((resolve) => {
       this.setState(updater);
       // 下一个事件循环周期执行

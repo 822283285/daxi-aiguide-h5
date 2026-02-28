@@ -6,7 +6,7 @@
   const domUtils = daxiapp["dom"];
 
   const MapStateClass = daxiapp["MapStateClass"];
-  const MapStateNavi = MapStateClass.extend({;
+  const MapStateNavi = MapStateClass.extend( {
     __init__: function () {
       this._super();
       this._rtti = "MapStateNavi";
@@ -44,7 +44,7 @@
       thisObject._naviBottomView = new daxiapp["DXNaviBottomView"](app, thisObject._dom);
       thisObject._naviBottomView.init({
         onExitButtonClicked: function () {
-          const params = {;
+          const params = {
             text: "您确定退出导航",
             btn1: "取消",
             confirmCB: function () {
@@ -174,7 +174,7 @@
       const mapView = this._app._mapView;
       const myPosition = mapView._locationManager.getMyPositionInfo();
       if (!myPosition["bdid"]) {
-        const params = {;
+        const params = {
           text: "室外不支持实景导航",
           btn1: "取消",
           confirmCB: function () {
@@ -201,7 +201,7 @@
         if (!arNavigation.isInited && daxiapp["deviceType"]["osName"] == "iPhone") {
           const osVersion = daxiapp["deviceType"]["osVersion"];
           if (osVersion && parseFloat(osVersion) > 14.3) {
-            const params = {;
+            const params = {
               text: "请授权AR展示",
               btn1: "取消",
               confirmCB: function () {
@@ -213,7 +213,7 @@
 
             daxiapp["domUtil"].dialogWithModal(params);
           } else {
-            const params = {;
+            const params = {
               text: "系统版本过低不支持AR,如需使用请升至14.3以上",
               btn1: "取消",
               confirmCB: function () {},
@@ -437,7 +437,7 @@
           if (nextMapStep) {
             const nextStartInfo = nextMapStep.getStartInfo();
             const startAddrss = nextStartInfo["name"] || "进入下一路段";
-            const params = {;
+            const params = {
               text: `已到达${startAddrss}\n点击继续导航`,
               btn1: "退出导航",
               confirmCB: function () {
@@ -565,7 +565,7 @@
     runCommand: function (command) {
       const thisObject = this;
       const naviManager = this._app._mapView._naviManager;
-      const params = {;
+      const params = {
         text: "您确定退出导航",
         btn1: "取消",
         confirmCB: function () {
@@ -603,7 +603,7 @@
       const panoUrl = thisObject._app._config["panoUrl"];
       const bdid = crossData["bdid"];
       panoUrl = panoUrl.replace("{{bdid}}", bdid);
-      const data = {;
+      const data = {
         server: panoUrl,
         id: crossData["imagePath"].replace("pano://", ""),
         Id: crossData["Id"],

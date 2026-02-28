@@ -6,7 +6,6 @@ export default {
   testPathIgnorePatterns: [
     "/node_modules/",
     "/dist/",
-    "/app/",
     "/map_sdk/",
     "/jsbridge/",
   ],
@@ -14,14 +13,14 @@ export default {
   // 覆盖率配置
   collectCoverageFrom: [
     "src/**/*.js",
+    "app/**/*.js",
     "!src/**/*.test.js",
+    "!app/**/*.test.js",
     "!**/node_modules/**",
     "!**/dist/**",
-    "!**/app/**",
     "!**/map_sdk/**",
     "!**/jsbridge/**",
     "!**/public/**",
-    "!**/legacy/**",
   ],
 
   // 覆盖率阈值
@@ -64,9 +63,6 @@ export default {
   // 详细输出
   verbose: true,
 
-  // 颜色输出
-  colors: true,
-
   // 缓存
   cache: true,
 
@@ -79,5 +75,6 @@ export default {
   // ES 模块支持
   transformIgnorePatterns: [
     "/node_modules/(?!(zepto|crypto-js)/)",
+    "/app/navi_app/shouxihu/js/.*\\.js$",
   ],
 };

@@ -217,6 +217,12 @@ import { other } from "@domain/other";
 
 - `docs/reports/health-check.md` - 健康检查报告
 
+### 现代化改造文档
+
+- `../../TRANSFORMATION_SUMMARY.md` - JS 文件现代化改造总结
+- `../../MODERNIZATION_COMPLETE.md` - 改造完成报告（2026-03-01）
+- `tests/unit/legacy/` - 旧模块单元测试目录
+
 ---
 
 ## 🎯 当前状态
@@ -224,19 +230,31 @@ import { other } from "@domain/other";
 ### Phase 1: 基础设施搭建
 
 - ✅ **Phase 1.1**: 目录结构创建 - **完成**
-- 🔄 **Phase 1.2**: 配置文件创建 - **进行中**
-- ⏳ **Phase 1.3**: 模块入口文件 - **待开始**
-- ⏳ **Phase 1.4**: 核心层迁移 - **待开始**
-- ⏳ **Phase 1.5**: 验证 - **待开始**
+- ✅ **Phase 1.2**: 配置文件创建 - **完成**
+- ✅ **Phase 1.3**: 模块入口文件 - **完成**
+- ✅ **Phase 1.4**: 核心层迁移 - **完成**
+- ✅ **Phase 1.5**: 验证 - **完成**
+
+### Phase 2: 代码现代化改造
+
+- ✅ **Phase 2.1**: var→const/let 转换 - **完成**
+- ✅ **Phase 2.2**: ES6 模块导出 - **完成**
+- ✅ **Phase 2.3**: 单元测试添加 - **完成**
+- ✅ **Phase 2.4**: 文档更新 - **完成**
+
+**改造详情**: 参见 [`../../MODERNIZATION_COMPLETE.md`](../../MODERNIZATION_COMPLETE.md)
 
 ### 下一步
 
-安装依赖并验证：
+1. 在开发环境验证改造后的代码
+2. 运行完整测试套件
+3. 考虑 TypeScript 迁移
 
 ```bash
 pnpm install
 pnpm dev
 pnpm test
+pnpm test:coverage
 ```
 
 ---

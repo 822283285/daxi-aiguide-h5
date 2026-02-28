@@ -13,19 +13,21 @@
  * const timestamp = signMd5Utils.getTimestamp();
  *
  * // 或者使用全局对象（浏览器环境）
- * const sign = window.signMd5Utils.getSign(url, params);
+ * const sign = windowAdapter.signMd5Utils.getSign(url, params);
  */
+
+import { windowAdapter } from "@/legacy/window-adapter.js";
 
 // 导入 MD5 库（如果项目已引入 crypto-js，使用 crypto-js）
 let MD5Lib = null;
 
 // 尝试从不同来源获取 MD5 实现
-if (typeof window !== "undefined") {
+if (windowAdapter.isBrowser) {
   // 浏览器环境
-  if (window.CryptoJS && window.CryptoJS.MD5) {
-    MD5Lib = (str) => CryptoJS.MD5(str).toString();
-  } else if (window.MD5) {
-    MD5Lib = window.MD5;
+  if (windowAdapter.CryptoJS && windowAdapter.CryptoJS.MD5) {
+    MD5Lib = (str) => windowAdapter.CryptoJS.MD5(str).toString();
+  } else if (windowAdapter.MD5) {
+    MD5Lib = windowAdapter.MD5;
   }
 }
 
@@ -196,9 +198,9 @@ class SignMd5Utils {
 export default SignMd5Utils;
 
 // 浏览器全局导出
-if (typeof window !== "undefined") {
-  window.signMd5Utils = SignMd5Utils;
-  console.log("[signMd5Utils] 已挂载到 window.signMd5Utils");
+if (windowAdapter.isBrowser) {
+  windowAdapter.signMd5Utils = SignMd5Utils;
+  console.log("[signMd5Utils] 已挂载到 windowAdapter.signMd5Utils");
 }
 
 // CommonJS 导出

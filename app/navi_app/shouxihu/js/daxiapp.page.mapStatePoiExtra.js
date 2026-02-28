@@ -23,7 +23,7 @@ const MapStatePoiExtra = (function (Class) {;
         },
         onSearchViewSearchBtnClicked: function (sender, e) {
           console.log("onSearchViewSearchBtnClicked:" + e);
-          const args = {;
+          const args = {
             method: "openSearchPage",
           };
           app.mapStateManager.pushState("MapStateBrowse", args);

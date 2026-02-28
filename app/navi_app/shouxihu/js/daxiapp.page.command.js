@@ -95,7 +95,7 @@
           thisObject.btn_playAudio = dxDom.find(api._dom, ".btn_playAudio");
           thisObject.btn_closeAudio = dxDom.find(api._dom, ".btn_closeAudio");
           thisObject.btn_playAudio.on("click", function () {
-            const data = {;
+            const data = {
               type: "postEventToMiniProgram",
               id: api._params["userId"],
               methodToMiniProgram: `method=resumePlay&bdid=${api._params.bdid}&token=${api._params.token}`,
@@ -172,7 +172,7 @@
           data,
           function (data) {
             if (data["code"] == 1 && data["result"].length) {
-              const param = {;
+              const param = {
                 method: "showPois",
                 arealType: "indoor",
                 results: data["result"],
@@ -259,7 +259,7 @@
         lat = command["position"][1];
       }
       if (lon && lat) {
-        const data = {;
+        const data = {
           method: "openPoiDetailPage",
           data: {
             bdid: poiInfo["bdid"],
@@ -329,7 +329,7 @@
       const startName = command["startName"] || "起点";
       const startAddress = command["startAddress"] || "";
       const startPoseMode = command["startPosMode"] || "";
-      const startPoint = {;
+      const startPoint = {
         bdid: startbdid,
         floorId: startFloorId,
         lon: startLon,
@@ -348,7 +348,7 @@
       const targetAddress = command["targetAddress"] || "";
       const targetPoseMode = command["targetPosMode"] || "";
       const deptids = command["deptids"] || command["targetID"];
-      const targetPoint = {;
+      const targetPoint = {
         bdid: targetbdid,
         floorId: targetFloorId,
         lon: targetLon,
@@ -358,7 +358,7 @@
         posMode: targetPoseMode,
         floorName: targetFloorName,
       };
-      const param = {;
+      const param = {
         method: "takeToThere",
         endPoint: targetPoint,
         startPoint: startPoint, //定位起点信息
@@ -497,7 +497,7 @@
       const url = sharePosServer[sharePosServer.length - 1] == "/" ? sharePosServer + "postPosition" : sharePosServer + "/postPosition";
 
       const locPosition = api._mapView._locationManager.getMyPositionInfo();
-      const data = {;
+      const data = {
         userId: userInfo["userId"] || "",
         userName: userInfo["userName"] || "",
         avatarUrl: userInfo["avatarUrl"] || "",
@@ -576,7 +576,7 @@
           if (stateManager.getPageCount() == 1) {
             if (api.jsBridge && api.jsBridge["realGoBack"]) {
               if (!thisObject.exitMapModal) {
-                const params = {;
+                const params = {
                   text: "您确定退出地图",
                   btn1: "取消",
                   confirmCB: function () {
@@ -776,7 +776,7 @@
       const openid = api._params.userId || api._params.userid;
       const merchantCode = api._params.merchantCode || "";
       const nickname = "微信用户";
-      const data = {;
+      const data = {
         openid: AES.encrypt(openid),
         nickname: AES.encrypt(nickname),
         mchNo: merchantCode,

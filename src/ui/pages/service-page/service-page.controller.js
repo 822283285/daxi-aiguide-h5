@@ -3,6 +3,7 @@
  * 客服、帮助、反馈等服务功能
  */
 import { BasePageController } from "../../controllers/base-page-controller.js";
+import { windowAdapter } from "@/legacy/window-adapter.js";
 
 /**
  * @class ServicePageController
@@ -79,7 +80,7 @@ export class ServicePageController extends BasePageController {
   /**
    * 加载服务数据
    */
-  async loadServiceData() {
+  loadServiceData() {
     try {
       // TODO: 调用 API 加载服务数据
       console.log("[ServicePage] Data loaded");
@@ -115,16 +116,16 @@ export class ServicePageController extends BasePageController {
           
           <div class="service-list">
             ${this.serviceItems
-              .map(
-                (item) => `
+    .map(
+      (item) => `
               <div class="service-item" data-action="${item.action}">
                 <div class="service-icon">${item.icon}</div>
                 <div class="service-name">${item.name}</div>
                 <div class="service-arrow">›</div>
               </div>
             `
-              )
-              .join("")}
+    )
+    .join("")}
           </div>
           
           <div class="service-hotlines">
@@ -174,24 +175,24 @@ export class ServicePageController extends BasePageController {
    */
   handleServiceAction(action) {
     switch (action) {
-      case "chat":
-        this.openChat();
-        break;
-      case "call":
-        this.makeCall();
-        break;
-      case "faq":
-        this.navigateTo("FAQPage");
-        break;
-      case "feedback":
-        this.navigateTo("FeedbackPage");
-        break;
-      case "complaint":
-        this.navigateTo("ComplaintPage");
-        break;
-      case "about":
-        this.navigateTo("AboutPage");
-        break;
+    case "chat":
+      this.openChat();
+      break;
+    case "call":
+      this.makeCall();
+      break;
+    case "faq":
+      this.navigateTo("FAQPage");
+      break;
+    case "feedback":
+      this.navigateTo("FeedbackPage");
+      break;
+    case "complaint":
+      this.navigateTo("ComplaintPage");
+      break;
+    case "about":
+      this.navigateTo("AboutPage");
+      break;
     }
   }
 
@@ -210,7 +211,7 @@ export class ServicePageController extends BasePageController {
   makeCall() {
     console.log("[ServicePage] Making call...");
     // TODO: 实现电话拨打功能
-    window.location.href = "tel:400-XXX-XXXX";
+    windowAdapter.location.href = "tel:400-XXX-XXXX";
   }
 
   /**

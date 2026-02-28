@@ -6,12 +6,14 @@
  * @version 2.1
  */
 
-const isBrowser = typeof window !== "undefined";
+import { windowAdapter } from "@/legacy/window-adapter.js";
+
+const isBrowser = windowAdapter.isBrowser;
 let axiosInstance = null;
 
 if (isBrowser) {
-  if (window.axios) {
-    axiosInstance = window.axios.create();
+  if (windowAdapter.axios) {
+    axiosInstance = windowAdapter.axios.create();
   } else {
     console.error("[Request] 未找到 axios，请确保已引入 axios 库");
   }
@@ -46,7 +48,7 @@ let signMd5Utils = null;
 
 function getUrlParam(name) {
   if (!isBrowser) return null;
-  const url = window.location.href.split("#")[0];
+  const url = windowAdapter.location.href.split("#")[0];
   const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`);
   const query = url.split("?")[1] || "";
   const result = query.match(reg);
@@ -55,17 +57,17 @@ function getUrlParam(name) {
 
 function getAppParamsFromUrl() {
   return {
-    token: getUrlParam("token") || window.getParam?.("token") || "",
+    token: getUrlParam("token") || windowAdapter.getParam?.("token") || "",
     bdid:
       getUrlParam("bdid") ||
-      window.getParam?.("bdid") ||
+      windowAdapter.getParam?.("bdid") ||
       getUrlParam("buildingId") ||
-      window.getParam?.("buildingId") ||
+      windowAdapter.getParam?.("buildingId") ||
       getUrlParam("poiid") ||
-      window.getParam?.("poiid") ||
+      windowAdapter.getParam?.("poiid") ||
       "",
-    userId: getUrlParam("userId") || window.getParam?.("userId") || "",
-    appId: getUrlParam("appId") || window.getParam?.("appId") || "",
+    userId: getUrlParam("userId") || windowAdapter.getParam?.("userId") || "",
+    appId: getUrlParam("appId") || windowAdapter.getParam?.("appId") || "",
   };
 }
 
@@ -102,7 +104,7 @@ function requestLog(type, options) {
   }
 }
 
-async function requestInterceptor(config) {
+function requestInterceptor(config) {
   config.startTime = Date.now();
   config.headers = { ...DEFAULT_CONFIG.headers, ...(config.headers || {}) };
   if (config.needSign !== false && signMd5Utils) {
@@ -123,7 +125,7 @@ async function requestInterceptor(config) {
   return config;
 }
 
-async function responseInterceptor(response) {
+function responseInterceptor(response) {
   const config = response.config;
   const duration = Date.now() - config.startTime;
   if (config.showLog !== false) {
@@ -148,7 +150,7 @@ async function responseInterceptor(response) {
   throw error;
 }
 
-async function errorInterceptor(error) {
+function errorInterceptor(error) {
   const config = error.config;
   const duration = Date.now() - (config.startTime || Date.now());
   if (config?.showLog !== false) {
@@ -224,9 +226,9 @@ async function init(config) {
     if (!config) {
       console.log("[Request] 自动初始化...");
       console.log("[Request] 检查依赖:", {
-        "window.axios": typeof window.axios !== "undefined" ? "✓" : "✗",
-        "window.CryptoJS": typeof window.CryptoJS !== "undefined" ? "✓" : "✗",
-        "window.signMd5Utils": typeof window.signMd5Utils !== "undefined" ? "✓" : "✗",
+        "windowAdapter.axios": windowAdapter.axios ? "✓" : "✗",
+        "windowAdapter.CryptoJS": windowAdapter.CryptoJS ? "✓" : "✗",
+        "windowAdapter.signMd5Utils": windowAdapter.signMd5Utils ? "✓" : "✗",
       });
 
       const remoteConfig = await initFromRemoteConfig();
@@ -237,7 +239,7 @@ async function init(config) {
         userApiUrl: remoteConfig.userApiUrl,
         appParams: urlParams,
         secret: remoteConfig.secret,
-        signUtils: window.signMd5Utils || null,
+        signUtils: windowAdapter.signMd5Utils || null,
       };
 
       if (!config.signUtils) {
@@ -292,17 +294,17 @@ async function request(options) {
   if (!axiosInstance) throw new Error("[Request] axios 未初始化");
   const config = { ...DEFAULT_CONFIG, ...options };
   try {
-    return await axiosInstance.request(config);
+    return axiosInstance.request(config);
   } catch (error) {
     console.error("[Request] 请求失败:", error);
     throw error;
   }
 }
 
-async function get(url, params = {}, config = {}) {
+function get(url, params = {}, config = {}) {
   return request({ ...config, url, method: "GET", params });
 }
-async function post(url, data = {}, config = {}) {
+function post(url, data = {}, config = {}) {
   return request({ ...config, url, method: "POST", data });
 }
 
@@ -316,8 +318,8 @@ function getAppParams() {
 function getAppConfig() {
   return { ...appConfig };
 }
-async function getRemoteConfig() {
-  return await initFromRemoteConfig();
+function getRemoteConfig() {
+  return initFromRemoteConfig();
 }
 
 export {
@@ -333,8 +335,8 @@ export {
   axiosInstance,
 };
 
-if (isBrowser && window) {
-  window.DaxiRequest = {
+if (isBrowser) {
+  windowAdapter.daxiRequest = {
     init,
     request,
     get,

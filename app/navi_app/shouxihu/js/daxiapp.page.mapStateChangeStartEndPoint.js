@@ -22,7 +22,7 @@
       thisObject._headerView = new daxiapp["DXSearchComponent"](app, thisObject._dom);
       thisObject._headerView.init({
         onSearchViewBackBtnClicked: function (sender, e) {
-          const command = {;
+          const command = {
             retVal: "Cancel",
           };
           app._stateManager.invokeCallback("selectPointCallback", command);
@@ -49,13 +49,13 @@
         onMyPostionBtnClicked: function (sender, e) {
           const locInfo = app._mapView._locationManager["getMyPositionInfo"]();
           const pointType = thisObject.pointType;
-          const command = {;
+          const command = {
             retVal: "OK",
             method: "startEndPointChanged",
             data: { pointType: pointType },
           };
           const pos = locInfo["position"];
-          const pointInfo = {;
+          const pointInfo = {
             lon: pos[0],
             lat: pos[1],
             floorId: locInfo["floorId"],
@@ -74,7 +74,7 @@
         },
         onMapSelectPointBtnClicked: function (sender, e) {
           const pointType = thisObject.pointType;
-          const command = {;
+          const command = {
             retVal: "OK",
             method: "SelectMapPoint",
             data: { pointType: pointType },
@@ -89,7 +89,7 @@
             if (selectPointResult.retVal == "OK") {
               app._stateManager.invokeCallback("selectPointCallback", selectPointResult);
             } else {
-              const command = {;
+              const command = {
                 retVal: "Cancel",
               };
               app._stateManager.invokeCallback("selectPointCallback", command);
@@ -108,7 +108,7 @@
         thisObject._comboxListPanel.init({
           onListItemClicked: function (sender, e) {
             const pointType = thisObject.pointType;
-            const command = {;
+            const command = {
               retVal: "OK",
               method: "startEndPointChanged",
               data: {
@@ -131,7 +131,7 @@
       thisObject._history.init({
         onListItemClicked: function (sender, e) {
           const pointType = thisObject.pointType;
-          const command = {;
+          const command = {
             retVal: "OK",
             method: "startEndPointChanged",
             data: {
@@ -157,7 +157,7 @@
       thisObject._resulView.init({
         onListItemClicked: function (sender, e) {
           const pointType = thisObject.pointType;
-          const command = {;
+          const command = {
             retVal: "OK",
             data: {
               pointType: pointType,
@@ -180,7 +180,7 @@
         },
         onTakeToThere: function (sender, e) {
           const pointType = thisObject.pointType;
-          const command = {;
+          const command = {
             retVal: "OK",
             method: "startEndPointChanged",
             data: {

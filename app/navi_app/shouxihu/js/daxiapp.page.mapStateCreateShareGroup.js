@@ -45,7 +45,7 @@
                 const sharePosServer = thisObject.sharePosServer;
                 const url = sharePosServer[sharePosServer.length-1] == "/"? (sharePosServer+ "createGroup") : (sharePosServer+ "/createGroup");
                 const locPosition = thisObject.params.locPosition;
-                const data = {;
+                const data = {
                     "userId":userInfo["userId"]||"",
                     "userName":userInfo["userName"]||"",
                     "avatarUrl":userInfo["avatarUrl"]||'',
@@ -78,7 +78,7 @@
                 const sharePosServer = thisObject.sharePosServer;
                 const url = sharePosServer[sharePosServer.length-1] == "/"? (sharePosServer+ "postPosition") : (sharePosServer+ "/postPosition");
                 const locPosition = thisObject.params.locPosition;
-                const data = {;
+                const data = {
                     "userId":userInfo["userId"]||"",
                     "userName":userInfo["userName"]||"",
                     "avatarUrl":userInfo["avatarUrl"]||'',

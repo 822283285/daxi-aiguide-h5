@@ -119,7 +119,7 @@ export async function updateUserInfo(options = {}) {
 /**
  * 注册用户
  */
-export async function registerUser(openid, username = "匿名用户", avatarUrl) {
+export function registerUser(openid, username = "匿名用户", avatarUrl) {
   return updateUserInfo({ username, avatarUrl, openid });
 }
 

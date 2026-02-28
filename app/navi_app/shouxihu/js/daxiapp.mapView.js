@@ -31,7 +31,7 @@ const MapView = function (app, container, options) {;
         downloader = null;
       }
     }
-    const mapConfig = {;
+    const mapConfig = {
       token: params["token"] || "11da506a647aae682d208c5c5bb43098", //开发者Token
       appName: "daxiapp", //开发者应用名称
       baseMapPath: window["mapSDKPath"] + "map/",
@@ -522,7 +522,7 @@ const MapView = function (app, container, options) {;
         if (building["icon"] && icon.indexOf("http") == -1 && icon.indexOf("./") == -1 && icon.indexOf(".") != -1) {
           icon = "./images/" + icon;
         }
-        const markerOption = {;
+        const markerOption = {
           featureId: bdid,
           id: bdid,
           lon: center[0],
@@ -572,7 +572,7 @@ const MapView = function (app, container, options) {;
       // 当定位更新的时候更新LocationMarker的位置
 
       locationManager["on"]("onLocationChanged", function (sender, e) {
-        const loc = {;
+        const loc = {
           lng: e["position"][0],
           lat: e["position"][1],
           real_pos: e["real_pos"],
@@ -772,7 +772,7 @@ const MapView = function (app, container, options) {;
     // }
     //讲解和导航播报同时播放时语音会停止，把播放状态传给小程序端做处理
     audioDom.on("ended", function (e) {
-      const data = {;
+      const data = {
         type: "postEventToMiniProgram",
         id: app._params["userId"],
         methodToMiniProgram: "naviSpeakerStatus=ended",
@@ -782,7 +782,7 @@ const MapView = function (app, container, options) {;
       console.log("ended", e);
     });
     audioDom.on("play", function (e) {
-      const data = {;
+      const data = {
         type: "postEventToMiniProgram",
         id: app._params["userId"],
         methodToMiniProgram: "naviSpeakerStatus=play",
@@ -792,7 +792,7 @@ const MapView = function (app, container, options) {;
       console.log("play", e);
     });
     audioDom.on("pause", function (e) {
-      const data = {;
+      const data = {
         type: "postEventToMiniProgram",
         id: app._params["userId"],
         methodToMiniProgram: "naviSpeakerStatus=pause",
@@ -1085,7 +1085,7 @@ const MapView = function (app, container, options) {;
     thisObject._dom.hide();
   };
   thisObject.pushState = function (restorePos) {
-    const state = {;
+    const state = {
       restorePos: restorePos,
     };
 
@@ -1123,7 +1123,7 @@ const MapView = function (app, container, options) {;
 
     if (state.restorePos) {
       if (state.lon != 0 && state.lat != 0) {
-        const loc = {;
+        const loc = {
           lon: state.lon,
           lat: state.lat,
           heading: state.heading,
@@ -1223,7 +1223,7 @@ const MapView = function (app, container, options) {;
     });
 
     // 存储图层对象引用
-    const layerObjects = {;
+    const layerObjects = {
       hand: null,
       road: null,
       satellite: null,
@@ -1234,7 +1234,7 @@ const MapView = function (app, container, options) {;
     const handLayers = getHandLayersFromScene(mapSDK);
     if (handLayers.length > 0) {
       // 手绘图层已存在，复用已有的图层对象
-      const handLayerObj = {;
+      const handLayerObj = {
         _layers: handLayers,
       };
       handLayerObj.setVisible = function (visible) {
@@ -1301,7 +1301,7 @@ const MapView = function (app, container, options) {;
     }
 
     // 根据当前图层类型控制可见性
-    const updateLayerVisibility = function (currentLayer) {;
+    const updateLayerVisibility = function (currentLayer) {
       // 先隐藏所有图层
       for (var key in layerObjects) {
         const layer = layerObjects[key];

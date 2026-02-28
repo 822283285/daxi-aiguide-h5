@@ -58,7 +58,7 @@
       thisObject._naviBottomView = new daxiapp["DXNaviBottomView"](app, thisObject._dom);
       thisObject._naviBottomView.init({
         onExitButtonClicked: function () {
-          const params = {;
+          const params = {
             text: "您确定退出导航",
             btn1: "取消",
             confirmCB: function () {
@@ -297,7 +297,7 @@
           const isFinished = route.isLastSegment();
           if (isFinished || !route.getNextOutDoorIndoorChangeStep()) {
             // var startAddrss = currentMapStep["name"]||"目的地";
-            const params = {;
+            const params = {
               text: "暂不支持室外模拟导航" + "\n剩余都为室外路线,模拟导航即将结束",
               btn1: "退出导航",
               btn2: "确定",
@@ -325,7 +325,7 @@
           if (nextMapStep) {
             const nextStartInfo = nextMapStep.getStartInfo();
             const startAddrss = nextStartInfo["name"] || "进入下一路段";
-            const params = {;
+            const params = {
               text: "暂不支持室外模拟导航" + "\n是否切换下一段导航",
               btn1: "退出导航",
               btn2: "切换",
@@ -431,7 +431,7 @@
     runCommand: function (command) {
       const thisObject = this;
       const naviManager = this._app._mapView._naviManager;
-      const params = {;
+      const params = {
         text: "您确定退出导航",
         btn1: "取消",
         confirmCB: function () {
@@ -473,7 +473,7 @@
           const panoUrl = thisObject._app._config["panoUrl"];
           const bdid = crossData["bdid"];
           panoUrl = panoUrl.replace("{{bdid}}", bdid);
-          const data = {;
+          const data = {
             server: panoUrl,
             id: crossData["imagePath"].replace("pano://", ""),
             Id: crossData["Id"],

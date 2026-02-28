@@ -157,7 +157,7 @@ export const DaxiApp = window.DaxiApp || {};
       window.rawParams = params;
 
       // 参数配置表（type: string/int/float/bool, defaultValue, alias: 别名数组）
-      const paramConfig = {;
+      const paramConfig = {
         // 基础参数
         method: { type: "string", defaultValue: "initPage" },
         buildingId: { type: "string", alias: ["poiid", "bdid"], defaultValue: "B000A11DAN" },
@@ -458,12 +458,12 @@ export const DaxiApp = window.DaxiApp || {};
       script.type = "text/javascript";
 
       // 绑定加载完成事件
-      const onLoadComplete = () => {;
+      const onLoadComplete = () => {
         callback && callback();
       };
 
       // 绑定加载失败事件
-      const onLoadError = (e) => {;
+      const onLoadError = (e) => {
         console.error("Script load failed:", url, e);
         failedCB && failedCB(e);
       };
@@ -543,7 +543,7 @@ let url, onSuccess, onFailed;
      * @param {Function} [callbackFn] 初始化完成回调
      */
     thisObject.initCordova = (platform, callbackFn) => {
-      const platformPaths = {;
+      const platformPaths = {
         android: "../dependency/android/cordova.js",
         ios: "../dependency/ios/cordova.js",
       };
@@ -643,7 +643,7 @@ let url, onSuccess, onFailed;
       }
 
       // 数据字段配置 { key: 字段名, path: 坐标路径, isPoint: 是否为点坐标 }
-      const fieldConfigs = [;
+      const fieldConfigs = [
         {
           key: "geofences",
           path: (f) => {
@@ -1009,7 +1009,7 @@ let url, onSuccess, onFailed;
 
         // 解析响应数据
         const contentType = xhr.getResponseHeader("Content-Type") || "";
-        const result;
+        let result;
 
         try {
           if (contentType.indexOf("xml") !== -1 && xhr.responseXML) {
@@ -1070,7 +1070,7 @@ let url, onSuccess, onFailed;
      * @param {Object} [data] 附加数据
      */
     thisObject.addRecord = (eventName, data) => {
-      const doRecord = () => {;
+      const doRecord = () => {
         const config = thisObject.recordList[eventName];
         if (!config || !window.hwa) return;
 
@@ -1269,7 +1269,7 @@ let url, onSuccess, onFailed;
         tick();
       };
 
-      const modal = {;
+      const modal = {
         visible: false,
 
         /**
@@ -1292,7 +1292,7 @@ let url, onSuccess, onFailed;
             this.destroy();
           }
 
-          const options = {;
+          const options = {
             text: params.text || "",
             detail: params.detail || "",
             img: params.img || "",
@@ -1522,7 +1522,7 @@ let url, onSuccess, onFailed;
      * @returns {number[]} 结果向量
      */
     Vector3.transformNormal = (retVal, vec, mat) => {
-      const x = vec[0],;
+      const x = vec[0],
         y = vec[1],
         z = vec[2];
       retVal[0] = x * mat[0] + y * mat[4] + z * mat[8];
@@ -1770,7 +1770,7 @@ let url, onSuccess, onFailed;
      * @param { Matrix } m2  input matrix2;
      */
     Matrix.multiply = (retVal, m1, m2) => {
-      const M00 = m1[0],;
+      const M00 = m1[0],
         M01 = m1[1],
         M02 = m1[2],
         M03 = m1[3],
@@ -2031,7 +2031,7 @@ let url, onSuccess, onFailed;
     Matrix.rotateAxis = (retVal, from, to, angel) => {};
 
     Matrix.fromQuaternion = (retVal, q) => {
-      const x = q[0],;
+      const x = q[0],
         y = q[1],
         z = q[2],
         w = q[3];
@@ -2297,7 +2297,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vecIn - 输入的地理坐标 [longitude, latitude, radius]（弧度制）
      */
     navi_utils.transformGeographicToECEF = (vecOut, vecIn) => {
-      const longitude = vecIn[0],;
+      const longitude = vecIn[0],
         latitude = vecIn[1],
         radius = vecIn[2];
       const cos_lat = radius * Math.cos(latitude);
@@ -2312,7 +2312,7 @@ let url, onSuccess, onFailed;
      * @param {number[]} vecIn - 输入的 ECEF 坐标 [x, y, z]
      */
     navi_utils.transformECEFToGeographic = (vecOut, vecIn) => {
-      const x = vecIn[0],;
+      const x = vecIn[0],
         y = vecIn[1],
         z = vecIn[2];
       const ret_z = Math.sqrt(x * x + y * y + z * z);
@@ -2409,7 +2409,7 @@ let url, onSuccess, onFailed;
       const tailWidth = len * tailWidthFactor;
       const neckWidth = PlotUtils.distance(neckLeft, neckRight);
       const widthDif = (tailWidth - neckWidth) / 2;
-      const tempLen = 0,;
+      const tempLen = 0,
         leftBodyPnts = [],
         rightBodyPnts = [];
       for (let i = 1; i < points.length - 1; i++) {
@@ -2510,7 +2510,7 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {number[]} vecIn - ECEF坐标系下的参考点位置向量 [x, y, z]
      */
     navi_utils.matrixECEFToENU = (matOut, vecIn) => {
-      const vec_x = [0, 0, 0],;
+      const vec_x = [0, 0, 0],
         vec_y = [0, 0, 0],
         vec_z = navi_utils.Vector3_copy(vecIn);
       const s_unit_z = [0, 0, 1];
@@ -2769,11 +2769,11 @@ let neckWidth = 0.5; //headHeight * neckWidthFactor;
      * @param {number} t - 插值系数 [0, 1]
      */
     navi_utils.Quaternion_slerp = (retVal, q1, q2, t) => {
-      const x1 = q1[0],;
+      const x1 = q1[0],
         y1 = q1[1],
         z1 = q1[2],
         w1 = q1[3];
-      const x2 = q2[0],;
+      const x2 = q2[0],
         y2 = q2[1],
         z2 = q2[2],
         w2 = q2[3];
@@ -2820,10 +2820,10 @@ let x3, y3, z3, w3;
      * @param {number} z - 绕 Z 轴旋转角度（弧度）
      */
     navi_utils.Quaternion_fromEuler = (retVal, x, y, z) => {
-      const c1 = Math.cos(y * 0.5),;
+      const c1 = Math.cos(y * 0.5),
         c2 = Math.cos(z * 0.5),
         c3 = Math.cos(x * 0.5);
-      const s1 = Math.sin(y * 0.5),;
+      const s1 = Math.sin(y * 0.5),
         s2 = Math.sin(z * 0.5),
         s3 = Math.sin(x * 0.5);
       retVal[3] = c1 * c2 * c3 - s1 * s2 * s3;
@@ -2838,11 +2838,11 @@ let x3, y3, z3, w3;
      * @param {number[]} q - 四元数 [x, y, z, w]
      */
     navi_utils.Quaternion_toEuler = (retVal, q) => {
-      const qx = q[0],;
+      const qx = q[0],
         qy = q[1],
         qz = q[2],
         qw = q[3];
-      const qx2 = qx * qx,;
+      const qx2 = qx * qx,
         qy2 = qy * qy,
         qz2 = qz * qz;
       const test = qx * qy + qz * qw;
@@ -2872,7 +2872,7 @@ let x3, y3, z3, w3;
      * @returns {number} 距离（米）
      */
     navi_utils.getGeodeticCircleDistance = (vec1, vec2) => {
-      const dis =;
+      const dis =
         navi_utils.getGeodeticCircleRadians(vec1.x * DEGREE_TO_RADIAN, vec1.y * DEGREE_TO_RADIAN, vec2.x * DEGREE_TO_RADIAN, vec2.y * DEGREE_TO_RADIAN) *
         earthRadius;
       return isNaN(dis) ? 0 : dis;
@@ -2885,7 +2885,7 @@ let x3, y3, z3, w3;
      * @returns {number} 距离（米）
      */
     navi_utils.getGeodeticCircleDistanceSecond = (vec1, vec2) => {
-      const dis =;
+      const dis =
         navi_utils.getGeodeticCircleRadians(vec1.x * SECOND_TO_RADIAN, vec1.y * SECOND_TO_RADIAN, vec2.x * SECOND_TO_RADIAN, vec2.y * SECOND_TO_RADIAN) *
         earthRadius;
       return isNaN(dis) ? 0 : dis;
@@ -2898,7 +2898,7 @@ let x3, y3, z3, w3;
      * @returns {number} 距离（米）
      */
     navi_utils.getGeodeticCircleDistanceVector = (vec1, vec2) => {
-      const dis =;
+      const dis =
         navi_utils.getGeodeticCircleRadians(vec1[0] * DEGREE_TO_RADIAN, vec1[1] * DEGREE_TO_RADIAN, vec2[0] * DEGREE_TO_RADIAN, vec2[1] * DEGREE_TO_RADIAN) *
         earthRadius;
       return isNaN(dis) ? 0 : dis;
@@ -2911,7 +2911,7 @@ let x3, y3, z3, w3;
      * @returns {number} 距离（米）
      */
     navi_utils.getGeodeticCircleDistanceVectorSecond = (vec1, vec2) => {
-      const dis =;
+      const dis =
         navi_utils.getGeodeticCircleRadians(vec1[0] * SECOND_TO_RADIAN, vec1[1] * SECOND_TO_RADIAN, vec2[0] * SECOND_TO_RADIAN, vec2[1] * SECOND_TO_RADIAN) *
         earthRadius;
       return isNaN(dis) ? 0 : dis;
@@ -2954,10 +2954,10 @@ let x3, y3, z3, w3;
       const a_sphr = [a.x * DEGREE_TO_RADIAN, a.y * DEGREE_TO_RADIAN, earthRadius];
       const b_sphr = [b.x * DEGREE_TO_RADIAN, b.y * DEGREE_TO_RADIAN, earthRadius];
       const c_sphr = [c.x * DEGREE_TO_RADIAN, c.y * DEGREE_TO_RADIAN, earthRadius];
-      const a_ecef = [0, 0, 0],;
+      const a_ecef = [0, 0, 0],
         b_ecef = [0, 0, 0],
         c_ecef = [0, 0, 0];
-      const e1 = [0, 0, 0],;
+      const e1 = [0, 0, 0],
         e2 = [0, 0, 0];
       navi_utils.transformGeographicToECEF(a_ecef, a_sphr);
       navi_utils.transformGeographicToECEF(b_ecef, b_sphr);
@@ -2967,7 +2967,7 @@ let x3, y3, z3, w3;
       navi_utils.Vector3_normalize(e1, e1);
       navi_utils.Vector3_normalize(e2, e2);
       const angle = Math.acos(navi_utils.Vector3_dot(e1, e2)) * RADIAN_TO_DEGREE;
-      const right = [0, 0, 0],;
+      const right = [0, 0, 0],
         upNormal = [0, 0, 0];
       navi_utils.Vector3_normalize(upNormal, b_ecef);
       navi_utils.Vector3_cross(right, e2, e1);
@@ -2984,10 +2984,10 @@ let x3, y3, z3, w3;
       const a_sphr = [b.x * DEGREE_TO_RADIAN, (b.y + 1) * DEGREE_TO_RADIAN, earthRadius];
       const b_sphr = [b.x * DEGREE_TO_RADIAN, b.y * DEGREE_TO_RADIAN, earthRadius];
       const c_sphr = [c.x * DEGREE_TO_RADIAN, c.y * DEGREE_TO_RADIAN, earthRadius];
-      const a_ecef = [0, 0, 0],;
+      const a_ecef = [0, 0, 0],
         b_ecef = [0, 0, 0],
         c_ecef = [0, 0, 0];
-      const e1 = [0, 0, 0],;
+      const e1 = [0, 0, 0],
         e2 = [0, 0, 0];
       navi_utils.transformGeographicToECEF(a_ecef, a_sphr);
       navi_utils.transformGeographicToECEF(b_ecef, b_sphr);
@@ -2997,7 +2997,7 @@ let x3, y3, z3, w3;
       navi_utils.Vector3_normalize(e1, e1);
       navi_utils.Vector3_normalize(e2, e2);
       const angle = Math.acos(navi_utils.Vector3_dot(e1, e2)) * RADIAN_TO_DEGREE;
-      const right = [0, 0, 0],;
+      const right = [0, 0, 0],
         upNormal = [0, 0, 0];
       navi_utils.Vector3_normalize(upNormal, b_ecef);
       navi_utils.Vector3_cross(right, e2, e1);
@@ -3026,7 +3026,7 @@ let x3, y3, z3, w3;
      * @returns {number} 最短距离
      */
     navi_utils.minDistance = (point, v1, v2) => {
-      const p_v1 = [0, 0, 0],;
+      const p_v1 = [0, 0, 0],
         p_v2 = [0, 0, 0],
         dir = [0, 0, 0];
       navi_utils.Vector3_sub(p_v1, point, v1);
@@ -3063,7 +3063,7 @@ let x3, y3, z3, w3;
       segmentArray.push(segment);
 
       if (geometry_new.length === 2) {
-        const A = geometry_new[0],;
+        const A = geometry_new[0],
           B = geometry_new[1];
         geometry[1].segment_length = B.segment_length = navi_utils.getGeodeticCircleDistance(A, B);
         geometry.total_length = B.segment_length;
@@ -3099,7 +3099,7 @@ let A = geometry_new[i - 1],
           }
           geometry.total_length += B.segment_length;
         }
-        const A = geometry_new[geometry_new.length - 2],;
+        const A = geometry_new[geometry_new.length - 2],
           B = geometry_new[geometry_new.length - 1];
         geometry[geometry.length - 1].segment_length = B.segment_length = navi_utils.getGeodeticCircleDistance(A, B);
         segment.push(B);
@@ -3123,10 +3123,10 @@ let A = geometry_new[i - 1],
       const pos_sphr = [checkPosition[0] * DEGREE_TO_RADIAN, checkPosition[1] * DEGREE_TO_RADIAN, earthRadius];
       const a_sphr = [segment0[0] * DEGREE_TO_RADIAN, segment0[1] * DEGREE_TO_RADIAN, earthRadius];
       const b_sphr = [segment1[0] * DEGREE_TO_RADIAN, segment1[1] * DEGREE_TO_RADIAN, earthRadius];
-      const pos_ecef = [0, 0, 0],;
+      const pos_ecef = [0, 0, 0],
         a_ecef = [0, 0, 0],
         b_ecef = [0, 0, 0];
-      const root_ecef = [0, 0, 0],;
+      const root_ecef = [0, 0, 0],
         root_sphr = [0, 0, 0];
       navi_utils.transformGeographicToECEF(pos_ecef, pos_sphr);
       navi_utils.transformGeographicToECEF(a_ecef, a_sphr);
@@ -3174,7 +3174,7 @@ let A = geometry_new[i - 1],
      * @returns {number} 点到线段的距离
      */
     navi_utils.pointToLine = (point, p1, p2, proot) => {
-      const p_v1 = [0, 0, 0],;
+      const p_v1 = [0, 0, 0],
         p_v2 = [0, 0, 0],
         dir = [0, 0, 0];
       navi_utils.Vector3_sub(p_v1, point, p1);
@@ -3230,7 +3230,7 @@ let A = geometry_new[i - 1],
      * @returns {number} 1
      */
     navi_utils.point2line = (p, p1, p2, Q) => {
-      const a = p2[0] - p1[0],;
+      const a = p2[0] - p1[0],
         b = p2[1] - p1[1],
         c = p2[2] - p1[2];
       const A = a * p[0] + b * p[1] + c * p[2];
@@ -3312,7 +3312,7 @@ let A = geometry_new[i - 1],
     navi_utils.slerp = (retVal, a, b, t) => {
       const a_sphr = [a[0] * DEGREE_TO_RADIAN, a[1] * DEGREE_TO_RADIAN, earthRadius];
       const b_sphr = [b[0] * DEGREE_TO_RADIAN, b[1] * DEGREE_TO_RADIAN, earthRadius];
-      const a_ecef = [0, 0, 0],;
+      const a_ecef = [0, 0, 0],
         b_ecef = [0, 0, 0];
       navi_utils.transformGeographicToECEF(a_ecef, a_sphr);
       navi_utils.transformGeographicToECEF(b_ecef, b_sphr);
@@ -3330,7 +3330,7 @@ let A = geometry_new[i - 1],
      * @returns {{center_x: number, center_y: number, angel: number, distance: number}} 中心和视距信息
      */
     navi_utils.calcCenterAndDistance = (geometry) => {
-      const minx = Infinity,;
+      const minx = Infinity,
         miny = Infinity,
         maxx = -Infinity,
         maxy = -Infinity;
@@ -3345,7 +3345,7 @@ let A = geometry_new[i - 1],
       const camera_viewportHeight = 3;
       const camera_frustum_fovy = Math.PI * 0.25;
       const tempScale = Math.tan(camera_frustum_fovy * 0.5) / (camera_viewportHeight * 0.5);
-      const maxTileWidth =;
+      const maxTileWidth =
         navi_utils.getGeodeticCircleRadians(minx * DEGREE_TO_RADIAN, miny * DEGREE_TO_RADIAN, maxx * DEGREE_TO_RADIAN, maxy * DEGREE_TO_RADIAN) *
         earthRadius *
         0.5;
@@ -3523,11 +3523,11 @@ let A = geometry_new[i - 1],
     };
 
     // 线段相交检测常量
-    const LLR_NOT_INTERSECT = 0,;
+    const LLR_NOT_INTERSECT = 0,
       LLR_INTERSECT = 1;
-    const LLR_INTERSECT_POINT_A = 2,;
+    const LLR_INTERSECT_POINT_A = 2,
       LLR_INTERSECT_POINT_B = 3;
-    const LLR_INTERSECT_POINT_C = 4,;
+    const LLR_INTERSECT_POINT_C = 4,
       LLR_INTERSECT_POINT_D = 5;
 
     /**
@@ -3621,7 +3621,7 @@ let A = geometry_new[i - 1],
           const retVal = navi_utils.lineLineIntersect(vecLine1.point, vecLine2.point, polygon[j], polygon[(j + 1) % polygon.length], intersect_point, 1e-8);
           if (retVal !== 0) {
             const distance = navi_utils.getGeodeticCircleDistanceVector(intersect_point, vecLine1.point);
-            const intersectPt;
+            let intersectPt;
             if (distance < 0.1) {
               intersectPt = point0;
             } else if (Math.abs(distance - totalDistance) < 0.1) {
@@ -3701,7 +3701,7 @@ let A = geometry_new[i - 1],
       const t2 = t * t;
       const t4 = t2 * t2;
       const l = lambda - lambda0;
-      const l2 = l * l,;
+      const l2 = l * l,
         l3 = l2 * l,
         l4 = l3 * l,
         l5 = l4 * l,
@@ -3800,7 +3800,7 @@ let A = geometry_new[i - 1],
      * @returns {number} 距离
      */
     PlotUtils.distance = (pnt1, pnt2) => {
-      const dx = pnt1[0] - pnt2[0],;
+      const dx = pnt1[0] - pnt2[0],
         dy = pnt1[1] - pnt2[1];
       return Math.sqrt(dx * dx + dy * dy);
     };
@@ -3936,7 +3936,7 @@ let A = geometry_new[i - 1],
      */
     PlotUtils.getCubicValue = (t, startPnt, cPnt1, cPnt2, endPnt) => {
       t = Math.max(Math.min(t, 1), 0);
-      const tp = 1 - t,;
+      const tp = 1 - t,
         t2 = t * t,
         t3 = t2 * t,
         tp2 = tp * tp,
@@ -3995,13 +3995,13 @@ let A = geometry_new[i - 1],
       let bisectorNormalRight, bisectorNormalLeft;
 
       if (dist > P.Constants.ZERO_TOLERANCE) {
-        const uX = normal[0] / dist,;
+        const uX = normal[0] / dist,
           uY = normal[1] / dist;
         const d1 = PlotUtils.distance(pnt1, pnt2);
         const d2 = PlotUtils.distance(pnt2, pnt3);
         const isClockWise = PlotUtils.isClockWise(pnt1, pnt2, pnt3);
         const sign = isClockWise ? 1 : -1;
-        const dt1 = t * d1,;
+        const dt1 = t * d1,
           dt2 = t * d2;
         bisectorNormalRight = [pnt2[0] - sign * dt1 * uY, pnt2[1] + sign * dt1 * uX];
         bisectorNormalLeft = [pnt2[0] + sign * dt2 * uY, pnt2[1] - sign * dt2 * uX];
@@ -4020,12 +4020,12 @@ let A = geometry_new[i - 1],
      * @returns {number[]} 法向量
      */
     PlotUtils.getNormal = (pnt1, pnt2, pnt3) => {
-      const dX1 = pnt1[0] - pnt2[0],;
+      const dX1 = pnt1[0] - pnt2[0],
         dY1 = pnt1[1] - pnt2[1];
       const d1 = Math.sqrt(dX1 * dX1 + dY1 * dY1);
       dX1 /= d1;
       dY1 /= d1;
-      const dX2 = pnt3[0] - pnt2[0],;
+      const dX2 = pnt3[0] - pnt2[0],
         dY2 = pnt3[1] - pnt2[1];
       const d2 = Math.sqrt(dX2 * dX2 + dY2 * dY2);
       dX2 /= d2;
@@ -4050,7 +4050,7 @@ let A = geometry_new[i - 1],
 
       const points = [];
       for (i = 0; i < controlPoints.length - 1; i++) {
-        const pnt1 = controlPoints[i],;
+        const pnt1 = controlPoints[i],
           pnt2 = controlPoints[i + 1];
         points.push(pnt1);
 
@@ -4068,7 +4068,7 @@ let A = geometry_new[i - 1],
      * @returns {number[]} 控制点坐标
      */
     PlotUtils.getLeftMostControlPoint = (controlPoints) => {
-      const pnt1 = controlPoints[0],;
+      const pnt1 = controlPoints[0],
         pnt2 = controlPoints[1],
         pnt3 = controlPoints[2];
       const normalRight = PlotUtils.getBisectorNormals(0, pnt1, pnt2, pnt3)[0];
@@ -4077,15 +4077,15 @@ let A = geometry_new[i - 1],
       let controlX, controlY;
       if (dist > P.Constants.ZERO_TOLERANCE) {
         const mid = PlotUtils.mid(pnt1, pnt2);
-        const pX = pnt1[0] - mid[0],;
+        const pX = pnt1[0] - mid[0],
           pY = pnt1[1] - mid[1];
         const n = 2.0 / PlotUtils.distance(pnt1, pnt2);
-        const nX = -n * pY,;
+        const nX = -n * pY,
           nY = n * pX;
-        const a11 = nX * nX - nY * nY,;
+        const a11 = nX * nX - nY * nY,
           a12 = 2 * nX * nY,
           a22 = nY * nY - nX * nX;
-        const dX = normalRight[0] - mid[0],;
+        const dX = normalRight[0] - mid[0],
           dY = normalRight[1] - mid[1];
         controlX = mid[0] + a11 * dX + a12 * dY;
         controlY = mid[1] + a12 * dX + a22 * dY;
@@ -4103,7 +4103,7 @@ let A = geometry_new[i - 1],
      */
     PlotUtils.getRightMostControlPoint = (controlPoints) => {
       const count = controlPoints.length;
-      const pnt1 = controlPoints[count - 3],;
+      const pnt1 = controlPoints[count - 3],
         pnt2 = controlPoints[count - 2],
         pnt3 = controlPoints[count - 1];
       const normalLeft = PlotUtils.getBisectorNormals(0, pnt1, pnt2, pnt3)[1];
@@ -4112,15 +4112,15 @@ let A = geometry_new[i - 1],
       let controlX, controlY;
       if (dist > P.Constants.ZERO_TOLERANCE) {
         const mid = PlotUtils.mid(pnt2, pnt3);
-        const pX = pnt3[0] - mid[0],;
+        const pX = pnt3[0] - mid[0],
           pY = pnt3[1] - mid[1];
         const n = 2.0 / PlotUtils.distance(pnt2, pnt3);
-        const nX = -n * pY,;
+        const nX = -n * pY,
           nY = n * pX;
-        const a11 = nX * nX - nY * nY,;
+        const a11 = nX * nX - nY * nY,
           a12 = 2 * nX * nY,
           a22 = nY * nY - nX * nX;
-        const dX = normalLeft[0] - mid[0],;
+        const dX = normalLeft[0] - mid[0],
           dY = normalLeft[1] - mid[1];
         controlX = mid[0] + a11 * dX + a12 * dY;
         controlY = mid[1] + a12 * dX + a22 * dY;
@@ -4141,7 +4141,7 @@ let A = geometry_new[i - 1],
       const bezierPoints = [];
       const n = points.length - 1;
       for (let t = 0; t <= 1; t += 0.01) {
-        const x = 0,;
+        const x = 0,
           y = 0;
         for (let index = 0; index <= n; index++) {
           const factor = PlotUtils.getBinomialFactor(n, index);
@@ -4195,7 +4195,7 @@ let A = geometry_new[i - 1],
       const m = points.length - 3;
       for (let i = 0; i <= m; i++) {
         for (let t = 0; t <= 1; t += 0.05) {
-          const x = 0,;
+          const x = 0,
             y = 0;
           for (let k = 0; k <= 2; k++) {
             const factor = PlotUtils.getQuadricBSplineFactor(k, t);
@@ -4285,7 +4285,7 @@ let A = geometry_new[i - 1],
    * @class DXDownloader
    * @param {Object} [map] - 地图对象（保留参数）
    */
-  const DXDownloader = (map) => {;
+  const DXDownloader = (map) => {
     const proto = DXDownloader.prototype;
 
     /**
@@ -4368,7 +4368,7 @@ let A = geometry_new[i - 1],
    * @property {Function} messageHandle - 消息处理函数
    */
   DaxiApp["createCrossDomainBridge"] = (window) => {
-    const thisObject = {;
+    const thisObject = {
       signalHandler: {},
       targetWindow: undefined,
       targetDomain: "",
@@ -4449,16 +4449,16 @@ let A = geometry_new[i - 1],
        * @param {MessageEvent} e - 消息事件
        */
       messageHandle: (e) => {
-        const realEvent = e["originalEvent"] || e,;
+        const realEvent = e["originalEvent"] || e,
           data = realEvent["data"],
           swin = realEvent["source"],
-          origin = realEvent["origin"],
-          protocol;
+          origin = realEvent["origin"];
+        let protocol;
         try {
           protocol = typeof data === "string" ? JSON.parse(data) : data;
 
           if (thisObject.signalHandler[protocol["signal"]]) {
-            const result = thisObject.signalHandler[protocol["signal"]]["call"](null, protocol["data"], {;
+            const result = thisObject.signalHandler[protocol["signal"]]["call"](null, protocol["data"], {
               swin: swin,
               origin: origin,
               callback: protocol["callback"],
@@ -4493,7 +4493,7 @@ let A = geometry_new[i - 1],
    * @param {Object} options - 配置选项
    * @param {string} options.token - 搜索令牌
    */
-  const MapSearch = (options) => {;
+  const MapSearch = (options) => {
     const thisObject = this;
     thisObject._token = options ? options.token : "";
     thisObject._downloader = null;
@@ -4526,7 +4526,7 @@ let A = geometry_new[i - 1],
      * @param {Function} failedFn - 失败回调函数
      */
     proto["query"] = (options, successFn, failedFn) => {
-      const searchOptions = {;
+      const searchOptions = {
         token: options["token"] || thisObject._token,
         ct: options["count"] || 200,
         bdid: options["bdid"],
@@ -4875,6 +4875,5 @@ let A = geometry_new[i - 1],
     };
   })();
 
-// Export DXUtils
-export { DXUtils };
+// Export default
 export default DaxiApp;

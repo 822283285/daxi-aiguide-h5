@@ -94,7 +94,7 @@
           thisObject._app._mapView._locationBtnCtrl.setUserTrackingMode(DaxiMap.UserTrackingMode.None);
         },
         onTakeToThere: function (sender, e) {
-          const args = {;
+          const args = {
             method: "takeToThere",
             endPoint: e,
           };
@@ -218,7 +218,7 @@
       const url = sharePosServer[sharePosServer.length - 1] == "/" ? sharePosServer + "postPosition" : sharePosServer + "/postPosition";
       const userId = params["userId"];
       const location = thisObject._app._mapView._locationManager["getMyPositionInfo"]();
-      const data = {;
+      const data = {
         userId: userId,
         groupId: groupId,
         token: token,
@@ -243,7 +243,7 @@
             const count = members.length + 1;
             const dom = thisObject._dom;
             dom.find(".members_count")["text"](count);
-            const selfInfo = {;
+            const selfInfo = {
               noRoute: true,
               id: userId,
               poiId: userId,
@@ -261,7 +261,7 @@
             const list = [];
             members.forEach(function (member) {
               const avatarUrl = member["avatarUrl"];
-              const item = {;
+              const item = {
                 id: member["userId"],
                 poiId: member["userId"],
                 text: member["userName"],

@@ -9,6 +9,7 @@
 
 // 导入请求封装（自动初始化）
 import { get, post, getAppParams } from "./request.js";
+import { windowAdapter } from "@/legacy/window-adapter.js";
 
 // 导入各模块 API
 import userApi from "./modules/user.js";
@@ -49,11 +50,11 @@ async function initApi(config) {
 }
 
 // 浏览器环境：自动挂载到全局
-if (typeof window !== "undefined") {
-  const oldApi = window.DaxiApp?.api;
+if (windowAdapter.isBrowser) {
+  const oldApi = windowAdapter.daxiApp?.api;
 
-  window.DaxiApp = window.DaxiApp || {};
-  window.DaxiApp.api = {
+  windowAdapter.daxiApp = windowAdapter.daxiApp || {};
+  windowAdapter.daxiApp.api = {
     ...apiModules,
     initApi,
 

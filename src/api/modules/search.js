@@ -76,7 +76,7 @@ export async function getHotWords(options = {}) {
  * // 获取搜索建议
  * const suggestions = await searchApi.getSuggestions('博物馆');
  */
-export async function getSuggestions(keyword, options = {}) {
+export function getSuggestions(keyword, options = {}) {
   if (!keyword) {
     console.warn("[SearchAPI] getSuggestions: keyword 为空");
     throw new Error("搜索关键字不能为空");

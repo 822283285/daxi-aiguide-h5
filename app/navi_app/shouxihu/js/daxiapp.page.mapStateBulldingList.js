@@ -21,7 +21,7 @@
       thisObject._headerView = new daxiapp["DXHeaderComponent"](app, thisObject._dom);
       thisObject._headerView.init({
         onBackBtnClicked: function (sender, e) {
-          const command = {;
+          const command = {
             ret: "Cancel",
           };
           app._stateManager.invokeCallback("openBuildingCallback", command);
@@ -45,7 +45,7 @@
       thisObject._buildingListView = new daxiapp["DXBuildingListComponent"](app, thisObject._disWrapper);
       thisObject._buildingListView.init({
         onStationClicked: function (sender, e) {
-          const command = {;
+          const command = {
             retVal: "OK",
             method: "changeBuilding",
           };

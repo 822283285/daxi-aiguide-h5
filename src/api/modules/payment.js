@@ -85,7 +85,7 @@ export async function cacheTokenAndBDID(options = {}) {
  * // 获取支付状态
  * const status = await paymentApi.getPayStatus({ orderId: 'order123' });
  */
-export async function getPayStatus(options = {}) {
+export function getPayStatus(options = {}) {
   const { orderId } = options;
 
   if (!orderId) {

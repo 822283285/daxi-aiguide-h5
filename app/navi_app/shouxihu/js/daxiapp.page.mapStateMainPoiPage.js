@@ -53,13 +53,13 @@
         thisObject._searchView = new SearchViewCtor(app, thisObject._wrapper);
         thisObject._searchView.init({
           onSearchViewBackBtnClicked: function () {
-            const command = {;
+            const command = {
               ret: "Cancel",
             };
             app._stateManager.invokeCallback("selectPoiCallback", command);
           },
           onSearchViewSearchBtnClicked: function () {
-            const searchResultArgs = {;
+            const searchResultArgs = {
               method: "openSearchPage",
               data: thisObject.params,
             };
@@ -82,7 +82,7 @@
         thisObject._commonPoiView = new CommonPoiViewCtor(app, thisObject._mainContainerDom);
         thisObject._commonPoiView.init({
           onItemBtnClicked: function (_sender, data) {
-            const args = {;
+            const args = {
               method: "openSearchPage",
               retVal: "OK",
               data: data,
@@ -98,7 +98,7 @@
         thisObject._poiTypeListView = new PoiTypeListViewCtor(app, thisObject._mainContainerDom);
         thisObject._poiTypeListView.init({
           onItemBtnClicked: function (_sender, data) {
-            const args = {;
+            const args = {
               retVal: "OK",
               data: data,
             };
@@ -194,7 +194,7 @@
         }
       },
       openSearchPage: function () {
-        const args = {;
+        const args = {
           method: "openSearchPage",
           data: this.params,
         };

@@ -63,7 +63,7 @@
           const segments = currentRouteSegments["segments"];
           const data = segments[thisObject.routeIndex];
           if (thisObject.routeIndex == segments.length - 1 && data["routetype"] != 3) {
-            const params = {;
+            const params = {
               text: "暂不支持室外模拟导航",
               confirmCB: function () {
                 // nextToRouteSegment();
@@ -243,7 +243,7 @@
     // Other Method
     ///////////////////////////////////////////////
     startNavigation: function () {
-      const data = {;
+      const data = {
         method: "startNavigation",
         startPoint: this._startPoint,
         endPoint: this._endPoint,
@@ -253,7 +253,7 @@
     },
 
     startSimulate: function () {
-      const data = {;
+      const data = {
         method: "startSimulate",
         startPoint: this._startPoint,
         endPoint: this._endPoint,
@@ -281,7 +281,7 @@
       data["floorId"] = floorId;
       data["position"] = [pos["lon"], pos["lat"]];
 
-      const command = {;
+      const command = {
         method: "openChangeStartEndPointPage",
         data: data,
       };

@@ -63,7 +63,7 @@
                             startPoint["posMode"] = "myPosition";
                         }
                     }
-                    const args = {;
+                    const args = {
                         method:"takeToThere",
                         endPoint:e,
                         startPoint:startPoint//定位起点信息
@@ -158,7 +158,7 @@
             const command = thisObject._app._params;
             const userId = command.userId;
             const time = new Date().getTime();
-            const data = {;
+            const data = {
                 "userId": userId,
                 "ftId": poiInfo["poiId"],
                 "name": poiInfo["name"],

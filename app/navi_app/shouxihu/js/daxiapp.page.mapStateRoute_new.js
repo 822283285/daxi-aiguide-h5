@@ -104,7 +104,7 @@
       thisObject._currentRoute = null;
       thisObject._startPoint = { lon: 0, lat: 0, bdid: "", floorId: "", name: "", address: "", floorName: "" };
       thisObject._endPoint = { lon: 0, lat: 0, bdid: "", floorId: "", name: "", address: "", floorName: "" };
-      const routeParams = {;
+      const routeParams = {
         strategys: (app._config["route"] && app._config["route"]["strategys"]) || {},
       };
       if (routeParams["strategys"] && routeParams["strategys"]["indoor"]) {
@@ -436,7 +436,7 @@
       this.dxRouteManager = null;
     },
     startNavigation: function (params) {
-      const data = {;
+      const data = {
         method: "startNavigation",
         startPoint: this._startPoint,
         endPoint: this._endPoint,
@@ -452,7 +452,7 @@
     },
 
     startSimulate: function (params) {
-      const data = {;
+      const data = {
         method: "startSimulate",
         startPoint: this._startPoint,
         endPoint: this._endPoint,
@@ -482,7 +482,7 @@
       data["floorId"] = floorId;
       data["position"] = [pos["lon"], pos["lat"]];
 
-      const command = {;
+      const command = {
         method: "openChangeStartEndPointPage",
         data: data,
       };
@@ -607,7 +607,7 @@
         setIdType(startPoint, transittype);
         setIdType(endPoint, transittype);
         const bdid = startPoint["bdid"] || endPoint["bdid"] || "";
-        const params = {;
+        const params = {
           startPoint: startPoint,
           endPoint: endPoint,
           token: thisObject._token,
@@ -666,7 +666,7 @@
         transittype = transittype == undefined ? 0 : transittype;
         setIdType(startPoint, transittype);
         const bdid = startPoint["bdid"] || "";
-        const params = {;
+        const params = {
           startPoint: startPoint,
           token: thisObject._token,
           bdid: bdid,
@@ -755,7 +755,7 @@
               item["endpoint"]["cname"] = flInfo["cname"];
             }
             const name = getBuildingTypeName(thisObject._app._config, false);
-            const segmentInfo = {;
+            const segmentInfo = {
               startPoint: item["startpoint"],
               endPoint: item["endpoint"],
               name: item["name"] || (item["routetype"] != 3 ? name : ""),

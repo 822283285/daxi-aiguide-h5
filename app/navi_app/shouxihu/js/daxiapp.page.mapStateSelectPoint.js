@@ -24,7 +24,7 @@
             thisObject._headerView = new daxiapp["DXHeaderWithTipComponent"](app,thisObject._dom);
             thisObject._headerView.init({
                 onBackBtnClicked:function(sender, e){
-                    const command = {;
+                    const command = {
                         "ret" : "Cancel",
                     };
                     app._stateManager.invokeCallback("selectMapPointCallback", command);
@@ -51,7 +51,7 @@
                     mapSDK["easeTo"](e);
                 },
                 onTakeToThere: function(sender, e){
-                    const command = {;
+                    const command = {
                         retVal:"OK",
                         method:"selectPointCallback",
                         data:{
@@ -106,7 +106,7 @@
             params["url"] = searchConf["url"];
 
             thisObject._markerComponent.animate("markertip_animation");
-            const myPosInfo = {;
+            const myPosInfo = {
                 "poiId":daxiapp["utils"].createUUID(),
                 "bdid": params["bdid"],
                 "floorId":params["floorId"],
@@ -136,7 +136,7 @@
             };
             for(var poiIndex in data){ //.forEach(function(poiInfo){
                 const poiInfo = data[poiIndex];
-                const markerOption = {;
+                const markerOption = {
                     "featureId":poiInfo["poiId"],
                     "bdid":poiInfo["bdid"],
                     "lon":poiInfo["lon"],

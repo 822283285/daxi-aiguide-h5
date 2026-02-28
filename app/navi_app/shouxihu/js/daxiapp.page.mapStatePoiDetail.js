@@ -34,7 +34,7 @@
           if (bdid) {
             arealType = "indoor";
           }
-          const args = {;
+          const args = {
             method: "openSearchPage",
             data: {
               bdid: bdid,
@@ -68,7 +68,7 @@
           if (bdid) {
             arealType = "indoor";
           }
-          const args = {;
+          const args = {
             method: "openSearchPage",
             data: {
               bdid: bdid,
@@ -118,7 +118,7 @@
               startPoint["posMode"] = "myPosition";
             }
           }
-          const args = {;
+          const args = {
             method: "takeToThere",
             endPoint: e,
             startPoint: startPoint, //定位起点信息
@@ -225,7 +225,7 @@
         floorName = floorInfo["flname"];
         floorCnName = floorInfo["flcnname"];
       }
-      const args = {;
+      const args = {
         method: "openPoiDetailPage",
         data: {
           bdid: bdid,
@@ -258,7 +258,7 @@
     showMarker: function (poiInfo) {
       const thisObject = this;
       thisObject.clearAllRenderObject();
-      const markerOption = {;
+      const markerOption = {
         featureId: poiInfo["featureId"],
         lon: poiInfo["lon"],
         lat: poiInfo["lat"],

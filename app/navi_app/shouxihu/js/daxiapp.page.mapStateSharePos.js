@@ -322,7 +322,7 @@
         const poiInfo = data[poiIndex];
         bdid = poiInfo["bdid"] || "";
         poiInfo["poiId"] = poiInfo["poiId"] || poiInfo["poiid"];
-        const markerOption = {;
+        const markerOption = {
           featureId: poiInfo["poiId"],
           id: poiInfo["poiId"],
           bdid: poiInfo["bdid"],
@@ -461,7 +461,7 @@
 
             if (!params["keyword"]) {
               //地图选点位置
-              const selcPosInfo = {;
+              const selcPosInfo = {
                 poiId: DXMapUtils.createUUID(),
                 bdid: params["bdid"],
                 floorId: params["floorId"],
@@ -476,7 +476,7 @@
               //地图选点位置
               const position = posInfo["position"];
               if (position[0]) {
-                const myPosInfo = {;
+                const myPosInfo = {
                   poiId: DXMapUtils.createUUID(),
                   bdid: posInfo["bdid"],
                   floorId: posInfo["floorId"],

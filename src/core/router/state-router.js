@@ -283,9 +283,9 @@ export class StateRouter {
    * 替换当前页面（不保留历史）
    * @param {string} pageName - 页面名称
    * @param {Object} params - 参数
-   * @returns {Promise<boolean>} 是否成功
+   * @returns {boolean} 是否成功
    */
-  async replace(pageName, params = {}) {
+  replace(pageName, params = {}) {
     const history = this.appState.getState().pageHistory || [];
 
     // 移除当前页

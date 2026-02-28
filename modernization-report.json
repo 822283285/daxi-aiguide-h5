@@ -1,0 +1,130 @@
+[
+  {
+    "updated": false,
+    "reason": "no-var",
+    "file": "app/navi_app/shouxihu/js/app-init.js"
+  },
+  {
+    "updated": false,
+    "reason": "no-var",
+    "file": "app/navi_app/shouxihu/js/bootstrap-loader.js"
+  },
+  {
+    "updated": false,
+    "reason": "no-var",
+    "file": "app/navi_app/shouxihu/js/daxiapp.api.js"
+  },
+  {
+    "updated": false,
+    "reason": "syntax-error",
+    "error": "Identifier 'defaultBdid' has already been declared",
+    "file": "app/navi_app/shouxihu/js/daxiapp.mapView.js"
+  },
+  {
+    "updated": true,
+    "dryRun": true,
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.command.js"
+  },
+  {
+    "updated": false,
+    "reason": "syntax-error",
+    "error": "Identifier 'bdid' has already been declared",
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.favorite.js"
+  },
+  {
+    "updated": true,
+    "dryRun": true,
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateBulldingList.js"
+  },
+  {
+    "updated": false,
+    "reason": "syntax-error",
+    "error": "Identifier 'params' has already been declared",
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateChangeStartEndPoint.js"
+  },
+  {
+    "updated": true,
+    "dryRun": true,
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateCreateShareGroup.js"
+  },
+  {
+    "updated": true,
+    "dryRun": true,
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateGroupShare.js"
+  },
+  {
+    "updated": true,
+    "dryRun": true,
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateMainPoiPage.js"
+  },
+  {
+    "updated": false,
+    "reason": "syntax-error",
+    "error": "Identifier 'mapView' has already been declared",
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateNavi.js"
+  },
+  {
+    "updated": false,
+    "reason": "syntax-error",
+    "error": "Identifier 'mapView' has already been declared",
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStatePoi.js"
+  },
+  {
+    "updated": true,
+    "dryRun": true,
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStatePoiDetail.js"
+  },
+  {
+    "updated": true,
+    "dryRun": true,
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStatePoiExtra.js"
+  },
+  {
+    "updated": true,
+    "dryRun": true,
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateRoute.js"
+  },
+  {
+    "updated": true,
+    "dryRun": true,
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateRoute_new.js"
+  },
+  {
+    "updated": false,
+    "reason": "no-var",
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateSearchPage.js"
+  },
+  {
+    "updated": false,
+    "reason": "syntax-error",
+    "error": "Identifier 'params' has already been declared",
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateSelectPoint.js"
+  },
+  {
+    "updated": false,
+    "reason": "syntax-error",
+    "error": "Identifier 'mapView' has already been declared",
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateSharePos.js"
+  },
+  {
+    "updated": false,
+    "reason": "syntax-error",
+    "error": "Identifier 'mapView' has already been declared",
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.mapStateSimulateNavi.js"
+  },
+  {
+    "updated": true,
+    "dryRun": true,
+    "file": "app/navi_app/shouxihu/js/daxiapp.page.voiceListener.js"
+  },
+  {
+    "updated": false,
+    "reason": "no-var",
+    "file": "app/navi_app/shouxihu/js/dxapi.app.js"
+  },
+  {
+    "updated": false,
+    "reason": "no-var",
+    "file": "app/navi_app/shouxihu/js/runtime-config.js"
+  }
+]

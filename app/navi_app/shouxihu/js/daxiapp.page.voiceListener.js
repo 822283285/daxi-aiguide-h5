@@ -43,7 +43,7 @@
                         return;
                     }
                     const keyword = args["keyword"];
-                    const data = {;
+                    const data = {
                         "method" :"showPois",
                         "keyword":keyword
                     };
@@ -176,7 +176,7 @@
                 }
             }
             // 室外的搜索都已当前地图位置搜索，如果想按照的
-            const data = {;
+            const data = {
                 "bdid":bdid,
                 "token":token,
                 "floorId":floorId,

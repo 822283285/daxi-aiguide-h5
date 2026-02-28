@@ -5,6 +5,8 @@
  * @created 2026-02-26
  */
 
+import { windowAdapter } from "@/legacy/window-adapter.js";
+
 /**
  * MD5 加密类
  * 基于标准的 MD5 算法实现
@@ -39,8 +41,8 @@ class MD5 {
 export default MD5;
 
 // 浏览器全局导出
-if (typeof window !== "undefined") {
-  window.MD5 = MD5;
+if (windowAdapter.isBrowser) {
+  windowAdapter.MD5 = MD5;
 }
 
 // CommonJS 导出

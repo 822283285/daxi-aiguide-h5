@@ -79,7 +79,7 @@ export class HomePageController extends BasePageController {
   /**
    * 加载首页数据
    */
-  async loadHomeData() {
+  loadHomeData() {
     try {
       // TODO: 调用 API 加载数据
       // const response = await fetch('/api/home');

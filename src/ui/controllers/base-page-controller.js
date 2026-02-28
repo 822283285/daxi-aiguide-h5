@@ -38,36 +38,36 @@ export class BasePageController {
   /**
    * 页面创建时调用（生命周期）
    * @param {Object} params - 页面参数
-   * @returns {Promise<void>|void}
+   * @returns {void}
    */
-  async onCreate(params) {
+  onCreate(params) {
     console.log(`[Page] onCreate: ${this.pageName}`, params);
     this.isCreated = true;
   }
 
   /**
    * 页面显示时调用（生命周期）
-   * @returns {Promise<void>|void}
+   * @returns {void}
    */
-  async onShow() {
+  onShow() {
     console.log(`[Page] onShow: ${this.pageName}`);
     this.isVisible = true;
   }
 
   /**
    * 页面隐藏时调用（生命周期）
-   * @returns {Promise<void>|void}
+   * @returns {void}
    */
-  async onHide() {
+  onHide() {
     console.log(`[Page] onHide: ${this.pageName}`);
     this.isVisible = false;
   }
 
   /**
    * 页面销毁时调用（生命周期）
-   * @returns {Promise<void>|void}
+   * @returns {void}
    */
-  async onDestroy() {
+  onDestroy() {
     console.log(`[Page] onDestroy: ${this.pageName}`);
     this.isCreated = false;
     this.isVisible = false;
@@ -114,12 +114,12 @@ export class BasePageController {
    * @param {Object} params - 参数
    * @returns {Promise<boolean>} 是否成功
    */
-  async navigateTo(pageName, params = {}) {
+  navigateTo(pageName, params = {}) {
     if (!this.router) {
       console.error("[Page] Router not initialized");
       return false;
     }
-    return await this.router.navigate(pageName, params);
+    return this.router.navigate(pageName, params);
   }
 
   /**
@@ -153,12 +153,12 @@ export class BasePageController {
    * @param {Object} params - 参数
    * @returns {Promise<boolean>} 是否成功
    */
-  async replaceCurrent(pageName, params = {}) {
+  replaceCurrent(pageName, params = {}) {
     if (!this.router) {
       console.error("[Page] Router not initialized");
       return false;
     }
-    return await this.router.replace(pageName, params);
+    return this.router.replace(pageName, params);
   }
 
   /**
