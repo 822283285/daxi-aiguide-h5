@@ -5,7 +5,7 @@
  * @created 2026-02-26
  */
 
-import { get, getAppParams } from "../request.js";
+import { get, getAppParams, ensureInitialized } from "../request.js";
 
 /**
  * 获取当前用户参数
