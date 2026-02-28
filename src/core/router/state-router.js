@@ -1,7 +1,7 @@
 /**
  * 基于状态的路由管理器
  * 通过监听 appState.currentPage 变化来切换页面
- * 
+ *
  * @class StateRouter
  */
 export class StateRouter {
@@ -138,7 +138,7 @@ export class StateRouter {
       this.currentController = new ControllerClass({
         container: this.container,
         router: this,
-        params: params,
+        params,
       });
 
       this.currentParams = params;

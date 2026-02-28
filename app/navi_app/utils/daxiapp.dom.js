@@ -1,8 +1,8 @@
 (function (global, $) {
-  var daxiapp = (global["DaxiApp"] = global["DaxiApp"] || {});
-  var strLength = function (str) {
-    var totalCount = 0;
-    for (var i = 0; i < str.length; i++) {
+  const daxiapp = (global["DaxiApp"] = global["DaxiApp"] || {});
+  const strLength = function (str) {;
+    const totalCount = 0;
+    for (let i = 0; i < str.length; i++) {
       if (!str.charAt(i).match(/[u0391-uFFE5]/)) {
         if (str.charAt(i) === "(" || str.charAt(i) === ")") {
           totalCount++;
@@ -20,17 +20,17 @@
       return;
     }
     Handlebars["registerHelper"]("text_list", function (items, options) {
-      var start = "<ul class='text-items'>";
-      var end = "</ul>";
-      var str = "",
+      const start = "<ul class='text-items'>";
+      const end = "</ul>";
+      const str = "",;
         poi = "",
         keyword = "",
         style = "",
         type = "",
         name = "",
         sort = "";
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
         if (i % 4 === 0) {
           if (i !== 0) {
             str += end;
@@ -44,35 +44,27 @@
         sort = item["sort"] || "1";
         filter = item["filter"] || "";
         style = "";
-        var length = strLength(name);
+        const length = strLength(name);
         if (name && length > 12) {
           style = "style='font-size:10px '";
         }
         str +=
-          "<li data-keyword='" +
-          keyword +
-          "' data-sort='" +
+          `<li data-keyword='${keyword}' data-sort='` +
           sort +
-          "' data-poi='" +
-          poi +
-          "' data-type='" +
+          `' data-poi='${poi}' data-type='` +
           type +
-          "' data-filter='" +
-          filter +
-          "'  data-value='" +
+          `' data-filter='${filter}'  data-value='` +
           name +
-          "' " +
-          style +
-          ">" +
+          `' ${style}>` +
           name +
           "</li>";
       }
       return str + end;
     });
     Handlebars["registerHelper"]("text_list1", function (items, options) {
-      var start = "<div class='text-items-wrapper'><ul class='text-items'>";
-      var end = "</ul></div>";
-      var str = "",
+      const start = "<div class='text-items-wrapper'><ul class='text-items'>";
+      const end = "</ul></div>";
+      const str = "",;
         poi = "",
         keyword = "",
         style = "",
@@ -80,8 +72,8 @@
         name = "",
         sort = "";
       str += start;
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
 
         poi = item["poiId"] || item["result"] || "";
         keyword = item["keyword"] || item["info"] || "";
@@ -95,21 +87,13 @@
         //     style = "style='font-size:10px '";
         // }
         str +=
-          "<li data-keyword='" +
-          keyword +
-          "' data-sort='" +
+          `<li data-keyword='${keyword}' data-sort='` +
           sort +
-          "' data-poi='" +
-          poi +
-          "' data-type='" +
+          `' data-poi='${poi}' data-type='` +
           type +
-          "' data-filter='" +
-          filter +
-          "'  data-value='" +
+          `' data-filter='${filter}'  data-value='` +
           name +
-          "' " +
-          style +
-          ">" +
+          `' ${style}>` +
           name +
           "</li>";
       }
@@ -121,9 +105,9 @@
       if (!items) {
         return "";
       }
-      var start = "<ul class='main-icon-list'>";
-      var end = "</ul>";
-      var str = "",
+      const start = "<ul class='main-icon-list'>";
+      const end = "</ul>";
+      const str = "",;
         poi = "",
         keyword = "",
         name = "",
@@ -131,8 +115,8 @@
         type = "",
         sort = "";
 
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
         if (i % 5 === 0) {
           if (i !== 0) {
             str += end;
@@ -147,21 +131,13 @@
         sort = item["sort"] || "1";
 
         str +=
-          "<li data-keyword='" +
-          keyword +
-          "' data-sort='" +
+          `<li data-keyword='${keyword}' data-sort='` +
           sort +
-          "' data-poi='" +
-          poi +
-          "' data-type='" +
+          `' data-poi='${poi}' data-type='` +
           type +
-          "' data-value='" +
-          name +
-          "' class='" +
+          `' data-value='${name}' class='` +
           icon +
-          "'>" +
-          name +
-          "</li>";
+          `'>${name}</li>`;
       }
       return str + end;
     });
@@ -169,7 +145,7 @@
       if (!items) {
         return "";
       }
-      var str = "",
+      const str = "",;
         poi = "",
         keyword = "",
         name = "",
@@ -178,8 +154,8 @@
         type = "",
         sort = "";
 
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
 
         poi = item["result"] || "";
         keyword = item["keyword"] || "";
@@ -192,33 +168,33 @@
         sort = item["sort"] || "1";
 
         str +=
-          "<li data-keyword='" + keyword + "' data-sort='" + sort + "' data-poi='" + poi + "' data-type='" + type + "' data-value='" + name + "' class='item'>";
+          `<li data-keyword='${keyword}' data-sort='${sort}' data-poi='${poi}' data-type='${type}' data-value='${name}' class='item'>`;
         if (icon_font) {
-          str += "<span class='icons " + icon_font + "'></span><span class='name'>" + name + "</span>";
+          str += `<span class='icons ${icon_font}'></span><span class='name'>${name}</span>`;
         } else if (icon_image) {
           if (window["dxMapPath"]) {
-            icon_image = window["dxMapPath"] + "/" + icon_image;
+            icon_image = `${window["dxMapPath"]}/${icon_image}`;
           }
           if (online_source) {
-            var rootPath = dataRootPath.replace("{{filename}}", icon_image);
-            str += "<span class='image-icon' style='background-image:url(" + rootPath + ")' > </span><span class='name'>" + name + "</span>";
+            const rootPath = dataRootPath.replace("{{filename}}", icon_image);
+            str += `<span class='image-icon' style='background-image:url(${rootPath})' > </span><span class='name'>${name}</span>`;
           } else {
-            str += "<span class='image-icon' style='background-image:url(" + icon_image + ")' > </span><span class='name'>" + name + "</span>";
+            str += `<span class='image-icon' style='background-image:url(${icon_image})' > </span><span class='name'>${name}</span>`;
           }
         }
         str += "</li>";
       }
       // var main_icon_hbs = "<ul class='main-icon-list'>{{#each items}}<li data-keyword='{{keyword}}' data-sort='{{sort}}' data-poi='{{#poi}}' data-type='{{type}}' data-value='{{name}}' ><span {{#if icon}}class='icon-font {{icon}}'{{else}} class='image-icon' style='background-image:url('{{image-icon}}')'{{/if}}  style='background'></span><span class='name'>{{name}}</span></li>{{/each}}</ul>";
-      var start = "<ul class='main-icon-list'>";
-      var end = "</ul>";
+      const start = "<ul class='main-icon-list'>";
+      const end = "</ul>";
 
-      return start + str + end;
+      return `${start}${str}${end}`;
     });
     Handlebars["registerHelper"]("icon_list3", function (items, options) {
       if (!items) {
         return "";
       }
-      var str = "",
+      const str = "",;
         poi = "",
         keyword = "",
         name = "",
@@ -229,8 +205,8 @@
         sort = "",
         category = "";
 
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
 
         poi = item["result"] || "";
         keyword = item["keyword"] || "";
@@ -246,55 +222,44 @@
         category = item["category"] || "";
 
         str +=
-          "<li data-types='" +
-          types +
-          "' data-keyword='" +
+          `<li data-types='${types}' data-keyword='` +
           keyword +
-          "' data-sort='" +
-          sort +
-          "' data-poi='" +
+          `' data-sort='${sort}' data-poi='` +
           poi +
-          "'data-bdid='" +
-          bdid +
-          "' data-type='" +
-          type +
-          "' data-value='" +
-          name +
-          "' data-category='" +
-          category +
-          "' class='item'>";
+          `'data-bdid='${bdid}' data-type='` +
+          `${type}' data-value='${name}' data-category='${category}' class='item'>`;
         if (icon_font) {
-          str += "<span class='icons " + icon_font + "'></span>";
+          str += `<span class='icons ${icon_font}'></span>`;
         } else if (icon_image) {
           if (window["dxMapPath"]) {
-            icon_image = window["dxMapPath"] + "/" + icon_image;
+            icon_image = `${window["dxMapPath"]}/${icon_image}`;
           }
           if (online_source) {
-            var rootPath = dataRootPath.replace("{{filename}}", icon_image);
-            str += "<span class='image-icon' style='background-image:url(" + rootPath + ")' > </span>";
+            const rootPath = dataRootPath.replace("{{filename}}", icon_image);
+            str += `<span class='image-icon' style='background-image:url(${rootPath})' > </span>`;
           } else {
-            str += "<span class='image-icon' style='background-image:url(" + icon_image + ")' > </span>";
+            str += `<span class='image-icon' style='background-image:url(${icon_image})' > </span>`;
           }
         }
-        str += "<span class='name'>" + (name || types) + "</span></li>";
+        str += `<span class='name'>${name || types}</span></li>`;
       }
-      var start = "<ul class='main-icon-list'>";
-      var end = "</ul>";
+      const start = "<ul class='main-icon-list'>";
+      const end = "</ul>";
 
-      return start + str + end;
+      return `${start}${str}${end}`;
     });
     Handlebars["registerHelper"]("text_list2", function (items, scenetype, options) {
-      var start = "<ul>";
-      var end = "</ul>";
-      var str = "",
+let start = "<ul>";
+let end = "</ul>";
+      const str = "",;
         poi = "",
         keyword = "",
         style = "",
         type = "",
         name = "",
         sort = "";
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
         if (i % 4 === 0) {
           if (i !== 0) {
             str += end;
@@ -308,37 +273,27 @@
         sort = item["sort"] || "1";
         filter = item["filter"] || "";
         style = "";
-        var length = strLength(name);
+        const length = strLength(name);
         if (name && length > 12) {
           style = "style='font-size:10px '";
         }
         str +=
-          "<li data-keyword='" +
-          keyword +
-          "' data-sort='" +
+          `<li data-keyword='${keyword}' data-sort='` +
           sort +
-          "' data-poi='" +
-          poi +
-          "' data-type='" +
+          `' data-poi='${poi}' data-type='` +
           type +
-          "' data-filter='" +
-          filter +
-          "' data-scene='" +
+          `' data-filter='${filter}' data-scene='` +
           scenetype +
-          "'  data-value='" +
-          name +
-          "' " +
+          `'  data-value='${name}' ` +
           style +
-          ">" +
-          name +
-          "</li>";
+          `>${name}</li>`;
       }
       return str + end;
     });
     Handlebars["registerHelper"]("text_list3", function (items, scenetype, options) {
-      var start = "<ul class='detail_textListContainer'>";
-      var end = "</ul>";
-      var str = "",
+      const start = "<ul class='detail_textListContainer'>";
+      const end = "</ul>";
+      const str = "",;
         poi = "",
         keyword = "",
         style = "",
@@ -351,8 +306,8 @@
         time = "",
         emcees = "",
         speeches = "";
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
         if (i % 4 === 0) {
           if (i !== 0) {
             str += end;
@@ -373,26 +328,18 @@
         speeches = item["detailInfo"] ? item["detailInfo"]["speeches"] : "";
 
         style = "";
-        var length = strLength(name);
+        const length = strLength(name);
         if (name && length > 12) {
           style = "style='font-size:10px '";
         }
         str +=
-          "<li class='sublist_container' data-keyword='" +
-          keyword +
-          "' data-sort='" +
+          `<li class='sublist_container' data-keyword='${keyword}' data-sort='` +
           sort +
-          "' data-poi='" +
-          poi +
-          "' data-type='" +
+          `' data-poi='${poi}' data-type='` +
           type +
-          "' data-filter='" +
-          filter +
-          "' data-scene='" +
+          `' data-filter='${filter}' data-scene='` +
           scenetype +
-          "'  data-value='" +
-          name +
-          "' " +
+          `'  data-value='${name}' ` +
           style +
           ">" +
           "<p class='subline'> <span class=''>" +
@@ -401,29 +348,25 @@
           "</span> <span>" +
           species +
           (species ? ": " : "") +
-          "</span> <span>" +
-          name +
-          "</span></p>" +
-          "<p class='subline columns2'> <span>会议室: " +
-          address +
-          "</span> <span>时间: " +
+          `</span> <span>${name}</span></p>` +
+          `<p class='subline columns2'> <span>会议室: ${address}</span> <span>时间: ` +
           time +
           "</span></p>";
         if (emcees) {
-          str += "<p class='emcees'>主持人: " + emcees.join("  ") + "</p>";
+          str += `<p class='emcees'>主持人：${emcees.join("  ")}</p>`;
         }
         if (speeches) {
-          str += "<p class='speeches'>演讲人: " + speeches.join("  ") + "</p>";
+          str += `<p class='speeches'>演讲人：${speeches.join("  ")}</p>`;
         }
 
         str += "</li>";
       }
-      return str + end;
+      return `${str}${end}`;
     });
     Handlebars["registerHelper"]("text_list4", function (items, options) {
-      var start = "<div class='text-items-wrapper'><ul class='text-items'>";
-      var end = "</ul></div>";
-      var str = "",
+      const start = "<div class='text-items-wrapper'><ul class='text-items'>";
+      const end = "</ul></div>";
+      const str = "",;
         poi = "",
         keyword = "",
         style = "",
@@ -434,8 +377,8 @@
         types = "",
         result = "";
       str += start;
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
 
         poi = item["poiId"] || item["result"] || "";
         keyword = item["keyword"] || item["info"] || "";
@@ -448,37 +391,25 @@
         result = item["result"] || "";
         style = "";
         str +=
-          "<li data-result='" +
-          result +
-          "' data-keyword='" +
+          `<li data-result='${result}' data-keyword='` +
           keyword +
-          "' data-sort='" +
-          sort +
-          "' data-poi='" +
+          `' data-sort='${sort}' data-poi='` +
           poi +
-          "' data-type='" +
-          type +
-          "' data-types='" +
+          `' data-type='${type}' data-types='` +
           types +
-          "' data-filter='" +
-          filter +
-          "'  data-value='" +
+          `' data-filter='${filter}'  data-value='` +
           name +
-          "' " +
-          style +
-          ">" +
+          `' ${style}>` +
           name +
-          "<span>" +
-          address +
-          "</span></li>";
+          `<span>${address}</span></li>`;
       }
 
       return str + end;
     });
     Handlebars["registerHelper"]("text_list5", function (items, scenetype, options) {
-      var str = "<ul class='detail_textListContainer'>";
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      const str = "<ul class='detail_textListContainer'>";
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
         str +=
           "<li class='sublist_container'>" +
           "<p class='subline clearfix'> <span class='fl'>" +
@@ -486,11 +417,11 @@
           "</span><span class='fr'>" +
           item.type +
           "</span></p>";
-        for (var j = 0; j < item.list.length; j++) {
-          var con = item.list[j];
-          str += "<div class='boxs' data-poi='" + con.poiId + "'>";
-          str += "<div class='name'>《" + con.name + "》</div>";
-          str += "<div class='company clearfix'><span class='time'>" + con.time + "</span><span class='comname'>" + con.company + "</span></div>";
+        for (let j = 0; j < item.list.length; j++) {
+          const con = item.list[j];
+          str += `<div class='boxs' data-poi='${con.poiId}'>`;
+          str += `<div class='name'>${con.name}</div>`;
+          str += `<div class='company clearfix'><span class='time'>${con.time}</span><span class='comname'>${con.company}</span></div>`;
           str += "</div>";
         }
 
@@ -500,12 +431,12 @@
       return str;
     });
     Handlebars["registerHelper"]("department_list", function (items, options) {
-      var str = '<div class="left"><div>';
-      items.forEach(function (item, index) {
+      const str = '<div class="left"><div>';
+      items.forEach((item, index) => {
         if (index == 0) {
-          str += '<div class="active">' + item.title + "</div>";
+          str += `<div class="active">${item.title}</div>`;
         } else {
-          str += "<div>" + item.title + "</div>";
+          str += `<div>${item.title}</div>`;
         }
       });
       str += '</div></div><div class="right">';
@@ -515,23 +446,14 @@
         } else {
           str += '<div class="sub-genres-collection">';
         }
-        item.list.forEach(function (i) {
+        item.list.forEach((i) => {
           str += "<div>";
-          str += '<div class="sub-collection-title">' + i.floor + "</div>";
+          str += `<div class="sub-collection-title">${i.floor}</div>`;
           str += '<div class="sub-collection-content">';
-          i.pois.forEach(function (j) {
+          i.pois.forEach((j) => {
             str +=
-              '<div class="sub-tag" data-keyword="' +
-              (j.keyword || "") +
-              '" data-poi="' +
-              ((j.result && j.result.join(",")) || "") +
-              '" data-type="' +
-              j.type +
-              '" data-address="' +
-              j.address +
-              '">' +
-              j.name +
-              "</div>";
+              `<div class="sub-tag" data-keyword="${j.keyword || ""}" data-poi="${(j.result && j.result.join(",")) || ""}" data-type="${j.type}" data-address="${j.address}">` +
+              `${j.name}</div>`;
           });
           str += "</div></div>";
         });
@@ -544,9 +466,9 @@
       if (!items) {
         return "";
       }
-      var start = "<ul class='main-icon-list'>";
-      var end = "</ul>";
-      var str = "",
+      const start = "<ul class='main-icon-list'>";
+      const end = "</ul>";
+      const str = "",;
         poi = "",
         keyword = "",
         name = "",
@@ -554,8 +476,8 @@
         type = "",
         sort = "";
 
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
         if (i % 4 === 0) {
           if (i !== 0) {
             str += end;
@@ -570,21 +492,13 @@
         sort = item["sort"] || "1";
 
         str +=
-          "<li data-keyword='" +
-          keyword +
-          "' data-sort='" +
+          `<li data-keyword='${keyword}' data-sort='` +
           sort +
-          "' data-poi='" +
-          poi +
-          "' data-type='" +
+          `' data-poi='${poi}' data-type='` +
           type +
-          "' data-scene='" +
-          scenetype +
-          "' data-value='" +
+          `' data-scene='${scenetype}' data-value='` +
           name +
-          "' class='" +
-          icon +
-          "'>" +
+          `' class='${icon}'>` +
           name +
           "</li>";
       }
@@ -594,17 +508,17 @@
       if (!items) {
         return "";
       }
-      var start = '<ul class="hot_station_list" data-capital="hotStations">';
-      var end = "</ul>";
-      var str = '<p class="hot_title" >' + items["title"] + "</p>",
+      const start = '<ul class="hot_station_list" data-capital="hotStations">';
+      const end = "</ul>";
+      const str = `<p class="hot_title" >${items["title"]}</p>`,;
         bdid = "",
         cn_name = "",
         cat = "",
         citycode = "",
         address = "";
 
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
         if (i % 3 === 0) {
           if (i !== 0) {
             str += end;
@@ -619,17 +533,11 @@
         address = item["address"] || "1";
 
         str +=
-          "<li class='station' data-bdid='" +
-          bdid +
-          "' data-cn_name='" +
+          `<li class='station' data-bdid='${bdid}' data-cn_name='` +
           cn_name +
-          "' data-citycode='" +
-          citycode +
-          "' data-address='" +
+          `' data-citycode='${citycode}' data-address='` +
           address +
-          "'>" +
-          cn_name +
-          "</li>";
+          `'>${cn_name}</li>`;
       }
       return str + end;
     });
@@ -637,17 +545,17 @@
       if (!items) {
         return "";
       }
-      var start = '<ul class="hot_station_list" >';
-      var end = "</ul>";
-      var str = '<p class="hot_title capital" >' + items["title"] + "</p>",
+      const start = '<ul class="hot_station_list" >';
+      const end = "</ul>";
+      const str = `<p class="hot_title capital" >${items["title"]}</p>`,;
         bdid = "",
         cn_name = "",
         cat = "",
         citycode = "",
         address = "";
       str += start;
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
         bdid = item["bdid"] || "";
         cn_name = item["cn_name"] || "";
         name = item["name"] || "";
@@ -657,17 +565,11 @@
         str +=
           "<li class='station'" +
           (item["enable"] != true ? " disable" : "") +
-          " data-bdid='" +
-          bdid +
-          "' data-cn_name='" +
+          ` data-bdid='${bdid}' data-cn_name='` +
           cn_name +
-          "' data-citycode='" +
-          citycode +
-          "' data-address='" +
+          `' data-citycode='${citycode}' data-address='` +
           address +
-          "'>" +
-          cn_name +
-          "</li>";
+          `'>${cn_name}</li>`;
       }
       return str + end;
     });
@@ -675,31 +577,31 @@
       if (!icons_list_datas) {
         return "";
       }
-      var resultstr = "<div class='tabView-container'>";
-      var end = "</div>";
-      var tabsStr = "<ul class='tabView-tabs'>";
-      var tabViewsStr = "<div class='tabView-content'>";
-      for (var j = 0, len = icons_list_datas.length; j < len; j++) {
-        var icon_list_data = icons_list_datas[j];
-        var commonPoisItems = icon_list_data["commonPois"];
-        var poiTypeListItems = icon_list_data["poiTypeList"];
-        var title = icon_list_data["title"];
-        var poi_type = icon_list_data["type"];
-        tabsStr += "<li class='tab" + (j == 0 ? " active" : "") + "' data-target='icon_tabView" + j + "'>" + title + "</li>";
+      const resultstr = "<div class='tabView-container'>";
+      const end = "</div>";
+      const tabsStr = "<ul class='tabView-tabs'>";
+      const tabViewsStr = "<div class='tabView-content'>";
+      for (let j = 0, len = icons_list_datas.length; j < len; j++) {
+        const icon_list_data = icons_list_datas[j];
+        const commonPoisItems = icon_list_data["commonPois"];
+        const poiTypeListItems = icon_list_data["poiTypeList"];
+        const title = icon_list_data["title"];
+        const poi_type = icon_list_data["type"];
+        tabsStr += `<li class='tab${j == 0 ? " active" : ""}' data-target='icon_tabView${j}'>${title}</li>`;
 
-        var str = "<div class='icon-tabView" + (j == 0 ? " active" : "") + "' id='icon_tabView" + j + "'>";
-        var poi = "",
+        const str = `<div class='icon-tabView${j == 0 ? " active" : ""}' id='icon_tabView${j}'>`;
+        const poi = "",;
           keyword = "",
           name = "",
           icon = "",
           type = "",
           sort = "";
 
-        var _start = "<ul class='tabView-icon-list'>";
-        var _end = "</ul>";
+        const _start = "<ul class='tabView-icon-list'>";
+        const _end = "</ul>";
 
-        for (var i = 0, l = commonPoisItems.length; i < l; i++) {
-          var item = commonPoisItems[i];
+        for (let i = 0, l = commonPoisItems.length; i < l; i++) {
+          const item = commonPoisItems[i];
           if (i % 4 === 0) {
             if (i !== 0) {
               str += _end;
@@ -714,121 +616,85 @@
           sort = item["sort"] || "1";
 
           str +=
-            "<li data-keyword='" +
-            keyword +
-            "' data-sort='" +
-            sort +
-            "' data-poi='" +
-            poi +
-            "' data-type='" +
-            type +
-            "' data-value='" +
-            name +
-            "' data-poi-type='" +
-            poi_type +
-            "' class='" +
-            icon +
-            " " +
-            poi_type +
-            "'>" +
-            name +
-            "</li>";
+            `<li data-keyword='${keyword}' data-sort='${sort}' data-poi='${poi}' data-type='${type}' data-value='${name}' data-poi-type='${poi_type}' class='${icon} ${poi_type}'>${name}</li>`;
         }
         str += "</div>";
-        tabViewsStr += str + _end;
+        tabViewsStr += `${str}${_end}`;
       }
       tabsStr += "</ul>";
       tabViewsStr += "</div>";
-      resultstr += tabsStr + tabViewsStr + end;
+      resultstr += `${tabsStr}${tabViewsStr}${end}`;
       return resultstr;
 
       // return str+end;
     });
 
     Handlebars["registerHelper"]("autocomplete_list", function (items, options) {
-      var start = "<ul class='autocomplete_list'>";
-      var end = "</ul>";
+      const start = "<ul class='autocomplete_list'>";
+      const end = "</ul>";
 
-      var str = "",
+      const str = "",;
         poi = "",
         keyword = "",
         name = "";
       str += start;
-      var extendInfo = items["extendInfo"];
-      for (var i = 0, l = items.length; i < l; i++) {
-        var item = items[i];
+      const extendInfo = items["extendInfo"];
+      for (let i = 0, l = items.length; i < l; i++) {
+        const item = items[i];
         poi = item["id"] || item["poiId"] || "";
         keyword = item["keyword"] || item["focus"] || "";
-        var lon = item["lon"] || item["x"] || "",
+        const lon = item["lon"] || item["x"] || "",;
           lat = item["lat"] || item["y"] || "",
           text = item["text"] || "",
           floorId = item["floorId"] || "",
           distance = item["distance"] || "";
-        var floorName = item["floorName"] || "";
-        var address = item["address"] || "";
-        var type = item["type"] || "2";
-        var dataType = item["dataType"] || 1;
-        var bdid = item["bdid"] || "";
-        var distanceDes = item["distanceDes"] || "";
-        var viewType = item["viewType"] || "";
-        var extenddata = item["data"];
-        var itemType = item["itemType"] || "";
+        const floorName = item["floorName"] || "";
+        const address = item["address"] || "";
+        const type = item["type"] || "2";
+        const dataType = item["dataType"] || 1;
+        const bdid = item["bdid"] || "";
+        const distanceDes = item["distanceDes"] || "";
+        const viewType = item["viewType"] || "";
+        const extenddata = item["data"];
+        const itemType = item["itemType"] || "";
         extenddata ? (extenddata = JSON.stringify(extenddata)) : "";
         if (distance && distance["localDescription"]) {
           distance = distance["localDescription"];
         }
-        var reg = new RegExp(keyword, "gi");
-        name = (text && text.trim()) || keyword; //.replace(reg, "<mark>" + keyword + "</mark>");
+        const reg = new RegExp(keyword, "gi");
+        name = (text && text.trim()) || keyword; //.replace(reg, `<mark>${keyword}</mark>`);
         reg = null;
         str +=
           "<li class='" +
           (lon && lat ? "icon-mypos" : "icon-search1") +
-          " item' data-id='" +
-          poi +
-          "' data-keyword='" +
+          ` item' data-id='${poi}' data-keyword='` +
           (text || keyword) +
-          "' data-bdid='" +
-          bdid +
-          "' data-lon='" +
+          `' data-bdid='${bdid}' data-lon='` +
           lon +
-          "' data-lat='" +
-          lat +
-          "' data-address='" +
+          `' data-lat='${lat}' data-address='` +
           address +
-          "' data-text='" +
-          text +
-          "' data-floorId='" +
+          `' data-text='${text}' data-floorId='` +
           floorId +
-          "' data-floorName='" +
-          floorName +
-          "' data-type='" +
+          `' data-floorName='${floorName}' data-type='` +
           type +
-          "' data-viewtype='" +
-          viewType +
-          "' data-datatype='" +
+          `' data-viewtype='${viewType}' data-datatype='` +
           dataType +
           "' data-distance='" +
           distance +
-          (extenddata ? "' data-extenddata='" + extenddata + "'" : "") +
-          (item["detailed"] ? "' data-detailed='" + item["detailed"] + "'" : "") +
-          (item["category"] ? "' data-category='" + item["category"] + "'" : "") +
-          "'>" +
-          "<div class='wrapper'>" +
-          "<p class='text title'>" +
-          name +
-          "</p>" +
+          (extenddata ? `' data-extenddata='${extenddata}'` : "") +
+          (item["detailed"] ? ` data-detailed='${item["detailed"]}'` : "") +
+          (item["category"] ? ` data-category='${item["category"]}'` : "") +
+          `><div class='wrapper'><p class='text title'>${name}</p>` +
           (itemType != "keyword"
-            ? "<p class='detail_info'>" +
+            ? `<p class='detail_info'>` +
               (!items["hideDistance"]
                 ? distanceDes != undefined
-                  ? "<span class='distance'>" + distanceDes + "</span>"
+                  ? `<span class='distance'>${distanceDes}</span>`
                   : distance
-                    ? "<span class='distance'>" + distance + "</span>"
+                    ? `<span class='distance'>${distance}</span>`
                     : ""
                 : "") +
-              " <span class='address'>" +
-              address +
-              "</span></p>"
+              ` <span class='address'>${address}</span></p>`
             : "") +
           "</div>" +
           (itemType != "keyword" && bdid && extendInfo && item["detailed"] == "2"
@@ -882,7 +748,7 @@
         throw new Error('helper "gt" needs 2 arguments');
       }
       if (text.length > right) {
-        text = text.slice(0, 70) + "...";
+        text = `${text.slice(0, 70)}...`;
       }
       return text;
       // return options["fn"](this);
@@ -927,12 +793,12 @@
       return parseInt(value) + 1;
     });
   })();
-  var DXDom = (function ($) {
-    var thisObject = {};
+  const DXDom = (function ($) {;
+    const thisObject = {};
     thisObject.lastClickTime = new Date().getTime();
     thisObject.isFastClick = function (event) {
-      var currentClickTime = new Date().getTime();
-      var isFastClick = false;
+      const currentClickTime = new Date().getTime();
+      const isFastClick = false;
       if (currentClickTime - thisObject.lastClickTime < 500) {
         isFastClick = true;
       }
@@ -975,9 +841,9 @@
       return dom["children"](nodeName);
     };
     thisObject.template = function (templateDom, json, dom) {
-      var text = templateDom["html"]();
-      var template = Handlebars.compile(text);
-      var html = template(json);
+      const text = templateDom["html"]();
+      const template = Handlebars.compile(text);
+      const html = template(json);
       if (dom === undefined) {
         return html;
       }
@@ -986,8 +852,8 @@
     };
 
     thisObject.templateText = function (text, json, dom) {
-      var template = Handlebars.compile(text);
-      var html = template(json);
+      const template = Handlebars.compile(text);
+      const html = template(json);
       if (dom === undefined) {
         return html;
       }
@@ -1062,9 +928,9 @@
     };
 
     thisObject.getData = function (type, dom) {
-      var _data = null;
-      var dataSet = dom.dataset;
-      var _type = parseInt(dataSet["type"] || 0) || dataSet["type"] || 0,
+      const _data = null;
+      const dataSet = dom.dataset;
+      const _type = parseInt(dataSet["type"] || 0) || dataSet["type"] || 0,;
         // DXKJ-706 点击东南西北四个出站口西显示“null” dom.getAttribute("data-keyword") || dom.getAttribute("data-text") 没有该属性时返回null ||“” 处理避免null值
         // DXKJ-700 搜索框搜30个1，然后点击历史记录，搜索文本发生变化 zepto $(dom).data("keyword") 获取纯数字的过长返回的是科学计数法并且字符串会转数字类型
         keyword = dom.getAttribute("data-keyword") || dom.getAttribute("data-text") || dom.getAttribute("data-value") || "", //$(dom).data('keyword')||$(dom).data('text'),
@@ -1074,16 +940,16 @@
         (lon = parseFloat(dataSet["lon"] || 0)),
         (lat = parseFloat(dataSet["lat"] || 0)),
         (distance = dataSet["distance"]),
-        (floorId = (dataSet["floorid"] || "") + ""),
+        (floorId = dataSet["floorid"] || ""),
         (floorName = dataSet["floorname"] || ""),
         (floorCnName = dataSet["floorcnname"] || ""),
         (dataType = parseInt($(dom).data("datatype") || 0)), // || dataSet['datatype'] || 11,
         (source = dataSet["scene"] || dataSet["source"]),
-        (value = (dom.getAttribute("data-value") || "") + ""),
+        (value = dom.getAttribute("data-value") || ""),
         (sort = dataSet["sort"]),
         (poi_type = dataSet["poi-type"]),
         (types = dataSet["types"]),
-        (_id = (dataSet["id"] || dataSet["poi"] || "") + ""),
+        (_id = dataSet["id"] || dataSet["poi"] || ""),
         (filter = dataSet["filter"]),
         (viewType = dataSet["viewtype"] || ""),
         (text = dom.getAttribute("data-text") || keyword),
@@ -1212,7 +1078,7 @@
       if (!delay) {
         delay = 2000;
       }
-      var $info = $("#__msg_info");
+      const $info = $("#__msg_info");
       if ($info.length == 0) {
         $info = $('<div id="__msg_info"><div></div></div>');
         $info["css"]({
@@ -1259,10 +1125,10 @@
     };
 
     thisObject.getTemp = (function () {
-      var tempList = {};
-      var getTemplate = function (url, callback) {
+      const tempList = {};
+      const getTemplate = function (url, callback) {;
         if (tempList[url] === undefined) {
-          var page_templates = config.get("user_define_templates");
+          const page_templates = config.get("user_define_templates");
           if (page_templates) {
             text = page_templates[url];
             if (text) {
@@ -1288,23 +1154,23 @@
     })();
 
     thisObject.getTempToRender = function (url, data, renderFunction) {
-      var rendObj = (function (url, data, renderFunction) {
-        var isFirst = true,
+      const rendObj = (function (url, data, renderFunction) {;
+        const isFirst = true,;
           temp = "",
           _url = url,
           _data = data,
           _renderFunction = renderFunction;
 
-        var render = function () {
-          var renderTemplate = function (text, data) {
-            var template = Handlebars.compile(text);
-            var tempData = null;
+        const render = function () {;
+          const renderTemplate = function (text, data) {;
+            const template = Handlebars.compile(text);
+            const tempData = null;
             if ($["isFunction"](data)) {
               tempData = _data.apply(null);
             } else {
               tempData = _data;
             }
-            var html = template(tempData);
+            const html = template(tempData);
             _renderFunction(html);
           };
           if (isFirst) {
@@ -1323,12 +1189,12 @@
     };
 
     thisObject.hideInfo = function () {
-      var $info = $("#__msg_info");
+      const $info = $("#__msg_info");
       $info["hide"]();
     };
 
     thisObject.showMask = function (opaque, isClear) {
-      var $info = $("#__mask_info_1");
+      const $info = $("#__mask_info_1");
       if ($info.length == 0) {
         $info = $('<div id="__mask_info_1"></div>');
         $info["css"]({
@@ -1352,7 +1218,7 @@
     };
 
     thisObject.hideMask = function () {
-      var $info = $("#__mask_info_1");
+      const $info = $("#__mask_info_1");
       if ($info.length !== 0) {
         $info["hide"]();
         return true;
@@ -1361,7 +1227,7 @@
     };
 
     thisObject.showMask2 = function (opaque, isClear) {
-      var $info = $("#__mask_info_2");
+      const $info = $("#__mask_info_2");
       if ($info.length == 0) {
         $info = $('<div id="__mask_info_2"></div>');
         $info["css"]({
@@ -1385,7 +1251,7 @@
     };
 
     thisObject.hideMask2 = function () {
-      var $info = $("#__mask_info_2");
+      const $info = $("#__mask_info_2");
       if ($info.length !== 0) {
         $info["hide"]();
         return true;
@@ -1419,9 +1285,9 @@
       }, 200);
     };
     thisObject.goTop = (function ($) {
-      var thisObj = {};
-      var ontap = false;
-      var ishide = null;
+      const thisObj = {};
+      const ontap = false;
+      const ishide = null;
       thisObj.bind = function (myScroll) {
         thisObj.hide();
         myScroll["on"](
@@ -1481,7 +1347,7 @@
       function innerAnimation() {
         obj.find("header")["animate"](
           {
-            left: -offset + "px",
+            left: `${-offset}px`,
           },
           animateTime,
           "ease-in-out",
@@ -1489,7 +1355,7 @@
         mainObj.length &&
           mainObj["animate"](
             {
-              left: -offset + "px",
+              left: `${-offset}px`,
             },
             animateTime,
             "ease-in-out",
@@ -1508,11 +1374,11 @@
       if (offset == 0) {
         if (animation) {
           obj.find("header")["css"]({
-            left: -global.innerWidth + "px",
+            left: `${-global.innerWidth}px`,
           });
           mainObj.length &&
             mainObj["css"]({
-              left: -global.innerWidth + "px",
+              left: `${-global.innerWidth}px`,
             });
         }
         // else {
@@ -1525,7 +1391,7 @@
     };
     thisObject.hideAnimat = function (obj, animation, callback) {
       //向右侧隐藏传递animation 为 true
-      var mainId = obj["attr"]("id"); //.split("_")[0] + "_main";
+let mainId = obj["attr"]("id"); //.split("_")[0] + "_main";
 
       animateTime = thisObject.animateTime;
       if (animation) {
@@ -1537,8 +1403,8 @@
     };
     thisObject.showAnimate = function (obj, animation, callback) {
       //向左侧显示传递animation 为 true
-      var mainId = obj["attr"]("id"); //.split("_")[0] + "_main";
-      var animateTime = thisObject.animateTime;
+let mainId = obj["attr"]("id"); //.split("_")[0] + "_main";
+      const animateTime = thisObject.animateTime;
       if (animation) {
         thisObject.divAnimation(obj, obj, mainId, animation, 0, animateTime, callback);
       } else {
@@ -1562,7 +1428,7 @@
     };
 
     thisObject.showmsgbox = function (callback, msg, btnName1, btnName2, callback1) {
-      var $info = $("#__wifiMsgbox_info");
+      const $info = $("#__wifiMsgbox_info");
       if (msg === undefined) {
         msg = "需要开启蓝牙和Wifi";
       }
@@ -1573,9 +1439,7 @@
       thisObject.showMask();
       if ($info.length == 0) {
         $info = $(
-          ' <div id="__wifiMsgbox_info"><ul><li>' +
-            msg +
-            '</li><li class="showMessageBox_normal_button">' +
+          ` <div id="__wifiMsgbox_info"><ul><li>${msg}</li><li class="showMessageBox_normal_button">` +
             btnName1 +
             '</li><li class="clearfix showMessageBox_highlight_button">' +
             btnName2 +
@@ -1609,14 +1473,14 @@
 
         $("body").append($info);
       }
-      var text = $info.find("li")["eq"](0)["html"]();
+      const text = $info.find("li")["eq"](0)["html"]();
       if (text !== msg) {
         $info.find("li")["eq"](0)["html"](msg);
       }
       $info["show"]();
       $info.find("li")["eq"](1)["off"]("click");
       $info.find("li")["eq"](2)["off"]("click");
-      var hide = function () {
+      const hide = function () {;
         $info["hide"]();
         thisObject.hideMask();
       };
@@ -1637,7 +1501,7 @@
     };
 
     thisObject.showNotifyMsgBox = function (callback, msg, btnName1) {
-      var $info = $("#__wifiMsgbox_info");
+      const $info = $("#__wifiMsgbox_info");
       if (msg === undefined) {
         msg = "";
       }
@@ -1646,7 +1510,7 @@
       $info = "";
       thisObject.showMask();
       if ($info.length == 0) {
-        $info = $(' <div id="__wifiMsgbox_info"><ul><li>' + msg + '</li><li class="clearfix showNotifyBox_highlight_button">' + btnName1 + "</li></ul></div>");
+        $info = $(` <div id="__wifiMsgbox_info"><ul><li>${msg}</li><li class="clearfix showNotifyBox_highlight_button">${btnName1}</li></ul></div>`);
         $info["css"]({
           position: "absolute",
           width: "70%",
@@ -1675,13 +1539,13 @@
 
         $("body").append($info);
       }
-      var text = $info.find("li")["eq"](0)["html"]();
+      const text = $info.find("li")["eq"](0)["html"]();
       if (text !== msg) {
         $info.find("li")["eq"](0)["html"](msg);
       }
       $info["show"]();
       $info.find("li")["eq"](1)["off"]("click");
-      var hide = function () {
+      const hide = function () {;
         $info["hide"]();
         thisObject.hideMask();
       };
@@ -1694,8 +1558,8 @@
         });
     };
     thisObject.showmsgbox2 = function (callback, msg, btnName1, btnName2, routeOptions, callback1) {
-      var defaultStrategy = command["strategy"] || config.get("defaultStrategy") || "0";
-      var $info = $("#__wifiMsgbox_info");
+      const defaultStrategy = command["strategy"] || config.get("defaultStrategy") || "0";
+      const $info = $("#__wifiMsgbox_info");
       if (msg === undefined) {
         msg = "需要开启蓝牙和Wifi";
       }
@@ -1704,14 +1568,12 @@
       if ($info.length > 0 && $info["css"]("display") !== "none") return;
       thisObject.showMask();
       if ($info.length == 0) {
-        var str = ' <div id="__wifiMsgbox_info"><ul><li>' + msg + "</li>";
+        const str = ` <div id="__wifiMsgbox_info"><ul><li>${msg}</li>`;
         str += '<li class="radios"><form class="routeOptions">';
-        for (var key in routeOptions) {
-          var text = routeOptions[key];
+        for (let key in routeOptions) {
+          const text = routeOptions[key];
           str +=
-            '<div class="form-group radios_list_c1"><input type="radio" name="routeType" class="radioclass" value="' +
-            key +
-            '" /><label for="' +
+            `<div class="form-group radios_list_c1"><input type="radio" name="routeType" class="radioclass" value="${key}" /><label for="` +
             text +
             '">' +
             text +
@@ -1721,9 +1583,7 @@
         str += "</form>";
 
         str +=
-          '<li class="showMessageBox_normal_button btn1">' +
-          btnName1 +
-          '</li><li class="clearfix showMessageBox_highlight_button btn2">' +
+          `<li class="showMessageBox_normal_button btn1">${btnName1}</li><li class="clearfix showMessageBox_highlight_button btn2">` +
           btnName2 +
           "</li></ul></div>";
         $info = $(str);
@@ -1759,31 +1619,31 @@
           "font-size": "2.56em", //20150529 cheng.li
         });
         $info
-          .find("input[value='" + defaultStrategy + "']")
+          .find(`input[value='${defaultStrategy}']`)
           ["attr"]("checked", true)
           ["parent"]()
           ["addClass"]("selected");
         $("body").append($info);
       }
-      var text = $info.find("li")["eq"](0)["html"]();
+      const text = $info.find("li")["eq"](0)["html"]();
       if (text !== msg) {
         $info.find("li")["eq"](0)["html"](msg);
       }
       $info["show"]();
       $info.find("li")["off"]("click");
       $info.find("li")["off"]("tap");
-      var hide = function () {
+      const hide = function () {;
         $info["hide"]();
         thisObject.hideMask();
       };
       $info.find("li.btn1")["on"]("click", function (e) {
         hide();
-        var strategy = $(".radios_list_c1 input[checked]")["val"]();
+        const strategy = $(".radios_list_c1 input[checked]")["val"]();
         callback1 && callback1(strategy);
       });
       $info.find("li.btn2")["on"]("click", function (e) {
         hide();
-        var strategy = $(".radios_list_c1 input[checked]")["val"]();
+let strategy = $(".radios_list_c1 input[checked]")["val"]();
         callback && callback(strategy);
       });
       $info["on"]("click", ".radios_list_c1", function (event) {
@@ -1822,14 +1682,12 @@
       $("#__wifiMsgbox_info")["hide"]();
     };
     thisObject.confirmDialog = (function () {
-      var tishiPngPath = (window["dxMapPath"] ? window["dxMapPath"] + "/" : "./") + "images/tishi.png";
-      var templateHbs =
+      const tishiPngPath = window["dxMapPath"] ? `${window["dxMapPath"]}/` : "./" + "images/tishi.png";
+      const templateHbs =;
         '<div class="dialog-container confirm" id="confirm-container">' +
-        '<div class="mask"><div class="dialog-wrapper"><img class="tip-image" src="' +
-        tishiPngPath +
-        '" style="width:48%;"><p class="title">{{title}}</p><p class="operation">{{#if hasCancel}}<span class="cancel">{{cancelText}}</span> {{/if}}<span class="commit">{{#if confirmText}}{{confirmText}}{{else}}确定{{/if}}</span> </p></div>' +
+        `<div class="mask"><div class="dialog-wrapper"><img class="tip-image" src="${tishiPngPath}" style="width:48%;"><p class="title">{{title}}</p><p class="operation">{{#if hasCancel}}<span class="cancel">{{cancelText}}</span> {{/if}}<span class="commit">{{#if confirmText}}{{confirmText}}{{else}}确定{{/if}}</span> </p></div>` +
         "</div></div>";
-      var _that = {};
+      const _that = {};
       _that.show = function (data, $dom) {
         $("#confirm-container")["remove"]();
         if (typeof $dom == "string") {
@@ -1837,7 +1695,7 @@
         } else if (!$dom) {
           $dom = $("body");
         }
-        var $parent = $("<div></div>");
+        const $parent = $("<div></div>");
         thisObject.templateText(templateHbs, data, $parent);
         $dom["append"]($parent);
         $dom["find"](".tip-image")["css"]({
@@ -1859,7 +1717,7 @@
       return _that;
     })();
     thisObject.loadingMask = (function () {
-      var loadingHtml =
+      const loadingHtml =;
         '<div class="tip_mask" id="tip_mask"><span class="navi_loading" style="background-image: url(\'./../common_imgs/loading.gif\');"></span></div>';
       return {
         add: function () {
@@ -1883,9 +1741,9 @@
       };
     })();
     thisObject.notifyComponent = (function () {
-      var __contentHtml = ""; //'<div class="tip_mask" id="tip_mask"><span class="navi_loading"></span></div>';
-      var __notifyId = "";
-      var __component;
+let __contentHtml = ""; //'<div class="tip_mask" id="tip_mask"><span class="navi_loading"></span></div>';
+      const __notifyId = "";
+      const __component;
       return {
         add: function (contentHtml, selector, hideTimeLater) {
           __notifyId = selector;
@@ -1933,7 +1791,7 @@
       };
     })();
     thisObject.showTips = function (msg, msg2, callback) {
-      var $info = $("#tipsMsgbox");
+      const $info = $("#tipsMsgbox");
       if (!msg) {
         msg = "请开启蓝牙开关";
       }
@@ -1943,9 +1801,7 @@
       if ($info.length > 0 && $info["css"]("display") !== "none") return;
       if ($info.length == 0) {
         $info = $(
-          ' <div id="tipsMsgbox"><span class="tipsMsg1">' +
-            msg +
-            '</span><span class="tipsMsg2">' +
+          ` <div id="tipsMsgbox"><span class="tipsMsg1">${msg}</span><span class="tipsMsg2">` +
             msg2 +
             '</span><span class="close"><i class="icon_gb-delete2"></i></span></div>',
         );
@@ -1969,7 +1825,7 @@
       }
       $info["show"]();
       $info.find(".close")["off"]("click");
-      var hide = function () {
+      const hide = function () {;
         $info["hide"]();
       };
       $info.find(".close")["on"]("click", function (e) {
@@ -1981,11 +1837,11 @@
       });
     };
     thisObject.hideTops = function () {
-      var $info = $("#tipsMsgbox");
+      const $info = $("#tipsMsgbox");
       $info.hide();
     };
     thisObject.showInputConfirm = function (callback, cancle, btnName1) {
-      var $info = $("#_inputConfirm_info");
+      const $info = $("#_inputConfirm_info");
       btnName1 = btnName1 || "确定";
       if ($info.length > 0 && $info["css"]("display") !== "none") return;
       thisObject.showMask2();
@@ -2005,12 +1861,12 @@
 
       $info["show"]();
       $info.find(".btn_confirm")["off"]("click");
-      var hide = function () {
+      const hide = function () {;
         $info["hide"]();
         thisObject.hideMask2();
       };
       $info.find(".btn_confirm")["on"]("click", function (e) {
-        var val = $info.find("input").val();
+        const val = $info.find("input").val();
         callback && callback(val);
       });
       $info.find(".btn_cancel")["on"]("click", function (e) {
@@ -2018,14 +1874,14 @@
       });
     };
     thisObject.hideInputConfirm = function () {
-      var $info = $("#_inputConfirm_info");
+      const $info = $("#_inputConfirm_info");
       $info["hide"]();
       thisObject.hideMask2();
     };
     return thisObject;
   })($);
   daxiapp["domUtil"] = (function () {
-    var thisObject = {};
+    const thisObject = {};
     thisObject.notices = [];
     thisObject.dialogInstances = [];
     thisObject.dialogWithModalInstances = [];
@@ -2036,17 +1892,17 @@
      * @returns
      */
     thisObject.createDom = function (params, parentNode) {
-      var tagName = params["tagName"];
-      var attrs = params["attrs"];
-      var children = params["children"];
-      var text = params["text"];
-      var dom = document.createElement(tagName);
-      var events = params["events"];
-      for (var key in attrs) {
+      const tagName = params["tagName"];
+      const attrs = params["attrs"];
+      const children = params["children"];
+      const text = params["text"];
+      const dom = document.createElement(tagName);
+      const events = params["events"];
+      for (let key in attrs) {
         dom.setAttribute(key, attrs[key]);
       }
       if (text) {
-        var textNode = document.createTextNode(text);
+        const textNode = document.createTextNode(text);
         dom.appendChild(textNode);
       }
       if (children) {
@@ -2069,9 +1925,9 @@
       return dom;
     };
     thisObject.createLoading = function () {
-      var that = {};
-      var domBody = document.body;
-      var parentStyle =
+      const that = {};
+      const domBody = document.body;
+      const parentStyle =;
         "background: rgb(0,0,0,0.8);position: absolute;top: 0px;bottom: 0px;left: 0px;right: 0px;z-index: 999;padding: 0px;margin: 0px;text-align: center;";
       that.dom = thisObject.createDom(
         {
@@ -2116,28 +1972,28 @@
 
     thisObject.tipNotice = function (text, showTime, closeCallback, styleOptions) {
       // var domId = "notice"+(new Date().getTime()%10000);
-      var that = {};
-      //var domStr = '<p class="toice"><span class="content">'+text+'</span></p>';
-      var domBody = document.body;
-      var style =
+      const that = {};
+      //var domStr = `<p class="toice"><span class="content">${text}</span></p>`;
+      const domBody = document.body;
+      const style =;
         "position:absolute;z-index:20;bottom:60%;text-align: center;font-size:18x;left:50%;border-radius:6px;transform: translateX(-50%);background: rgba(255,255,255,0.5);padding: 10px;display: inline-block;box-sizing: border-box;width: 60%;";
       if (styleOptions) {
-        for (var key in styleOptions) {
+        for (let key in styleOptions) {
           if (key != "subStyle") {
-            style += key + ":" + styleOptions[key] + ";";
+            style += `${key}:${styleOptions[key]};`;
           }
         }
       }
-      var subSytle = {};
-      var subStyleStr = "";
+      const subSytle = {};
+      const subStyleStr = "";
       if (styleOptions && styleOptions["subStyle"]) {
-        var _subStyle = styleOptions["subStyle"];
-        for (var key2 in _subStyle) {
+        const _subStyle = styleOptions["subStyle"];
+        for (let key2 in _subStyle) {
           subSytle[key2] = _subStyle[key2];
         }
       }
-      for (var key in subSytle) {
-        subStyleStr += key + ":" + subSytle[key] + ";";
+      for (let key in subSytle) {
+        subStyleStr += `${key}:${subSytle[key]};`;
       }
 
       that.dom = thisObject.createDom(
@@ -2199,13 +2055,13 @@
     thisObject.createMessageDom = function (text, styleOptions, closeCB, extendChildren, parentDom) {
       parentDom = parentDom || document.body;
       //padding: 15px 10px;
-      var style = "position:absolute;z-index:100;margin:0 auto;bottom:40%;width:100%;text-align: center;z-index: 100; font-size: 1.2rem;";
+let style = "position:absolute;z-index:100;margin:0 auto;bottom:40%;width:100%;text-align: center;z-index: 100; font-size: 1.2rem;";
       if (styleOptions) {
-        for (var key in styleOptions) {
+        for (let key in styleOptions) {
           style += key + ":" + styleOptions[key] + ";";
         }
       }
-      var domArr = [
+      const domArr = [;
         {
           tagName: "span",
           attrs: {
@@ -2244,7 +2100,7 @@
       } else if (extendChildren) {
         domArr.push(extendChildren);
       }
-      var dom = thisObject.createDom(
+      const dom = thisObject.createDom(;
         {
           tagName: "div",
           attrs: {
@@ -2269,7 +2125,7 @@
     };
 
     thisObject.tipMessage = function (text, showTime, closeCallback, styleOptions) {
-      var that = {};
+      const that = {};
       // var domBody = document.body;
       that.dom = thisObject.createMessageDom(text, styleOptions, function () {
         closeCallback && closeCallback();
@@ -2301,13 +2157,13 @@
       }
     };
     thisObject.geneDialogdom = function (params, domBody, that, parentDom) {
-      var text = params["text"],
+      const text = params["text"],;
         confirmCB = params["confirmCB"],
         cancelCB = params["cancelCB"],
         cancelBtnText = params["btn1"] || "",
         comfirmBtnText = params["btn2"] || "确定",
         styleOptions = params["style"];
-      var contentInfo = {
+      const contentInfo = {;
         tagName: "p",
         attrs: {
           class: "dialogWrapper",
@@ -2317,7 +2173,7 @@
       };
 
       if (cancelBtnText) {
-        var cancelContent = {
+        const cancelContent = {;
           tagName: "span",
           text: cancelBtnText,
           attrs: {
@@ -2337,7 +2193,7 @@
         contentInfo["children"].push(cancelContent);
       }
       if (confirmCB || params["btn2"]) {
-        var comfirmContent = {
+        const comfirmContent = {;
           tagName: "span",
           text: comfirmBtnText,
           attrs: {
@@ -2368,8 +2224,8 @@
       return thisObject.createMessageDom(text, styleOptions, cancelCB, contentInfo, domBody);
     };
     thisObject.dialog = function (params) {
-      var that = {};
-      var domBody = document.body;
+      const that = {};
+      const domBody = document.body;
 
       that.dom = thisObject.geneDialogdom(params, domBody, that, domBody);
       if (params["content"]) {
@@ -2399,9 +2255,9 @@
       return that;
     };
     thisObject.dialogWithModal = function (params) {
-      var that = {};
-      var domBody = document.body;
-      var wrapper = {
+      const that = {};
+      const domBody = document.body;
+      const wrapper = {;
         tagName: "div",
         attrs: {
           class: "wrapper",
@@ -2430,12 +2286,12 @@
       return that;
     };
     thisObject.createListView = function (params, parentDom, update) {
-      var confirmCB = params["confirmCB"],
+      const confirmCB = params["confirmCB"],;
         cancelCB = params["cancelCB"],
         onItemSelected = params["onItemSelected"];
-      var list = params["list"];
+      const list = params["list"];
       styleOptions = params["style"];
-      var contentInfo = {
+      const contentInfo = {;
         tagName: "ul",
         attrs: {
           class: "component_list",
@@ -2445,7 +2301,7 @@
         children: [],
       };
       list.forEach(function (item) {
-        var itemDom = {
+        const itemDom = {;
           tagName: "li",
           attrs: {
             class: "component_item",
@@ -2461,14 +2317,14 @@
             },
           ],
         };
-        for (var key in item) {
+        for (let key in item) {
           if (item[key] != undefined && key != "text") {
             itemDom["attrs"]["data" + "-" + key] = item[key];
           }
         }
         contentInfo["children"].push(itemDom);
       });
-      var wrapperInfo = {
+      const wrapperInfo = {;
         tagName: "div",
         attrs: {
           class: "content",
@@ -2483,9 +2339,9 @@
       }
     };
     thisObject.listViewWithModal = function (params) {
-      var that = {};
-      var domBody = document.body;
-      var wrapper = {
+      const that = {};
+      const domBody = document.body;
+      const wrapper = {;
         tagName: "div",
         attrs: {
           class: "wrapper",

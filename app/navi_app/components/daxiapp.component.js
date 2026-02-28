@@ -1,7 +1,7 @@
-(function (global) {
-  var daxiapp = (global["DaxiApp"] = global["DaxiApp"] || {});
-  var domUtils = daxiapp["dom"];
-  var dxUtils = daxiapp["utils"];
+// ES6 Module - DaxiApp Components
+const daxiapp = window.DaxiApp = window.DaxiApp || {};
+const domUtils = daxiapp["dom"];
+const dxUtils = daxiapp["utils"];
 
   /**
    * 从DOM元素获取POI基础数据（公共方法）
@@ -10320,7 +10320,7 @@
   daxiapp["DXBuildingStationSelectorView"] = daxiapp["DXBuildingListComponent"] = DXBuildingStationSelectorView;
 
   /**  */
-  var DXFullIframeComponent = function (app, parentObject) {
+  const DXFullIframeComponent = function (app, parentObject) {
     const that = this;
     that._app = app;
     that.parentObj = parentObject;
@@ -10386,7 +10386,7 @@
   };
   daxiapp.DXFullIframeComponent = DXFullIframeComponent;
 
-  var DXFullIframeWithCloseComponent = function (app, parentObject) {
+  const DXFullIframeWithCloseComponent = function (app, parentObject) {
     const that = this;
     that._app = app;
     that.parentObj = parentObject;
@@ -10462,7 +10462,7 @@
   };
   daxiapp.DXFullIframeWithCloseComponent = daxiapp.DXFullIframeComponent2 = DXFullIframeWithCloseComponent;
 
-  var DXImageGalleryComponent = function (app, parentObject) {
+  const DXImageGalleryComponent = function (app, parentObject) {
     const that = this;
     that._app = app;
     that.parentObj = parentObject;
@@ -10695,7 +10695,7 @@
   };
   daxiapp.DXImageGalleryComponent = daxiapp.DXImageListComponent = DXImageGalleryComponent;
 
-  var DXIframeComponent = function (app, parentObject, options) {
+  const DXIframeComponent = function (app, parentObject, options) {
     const that = this;
     that._app = app;
     that.parentObj = parentObject;
@@ -12052,4 +12052,105 @@
     return that;
   };
   daxiapp.DXClinicProcessDetailView = daxiapp.DXClinicProcessDetailComponent = DXClinicProcessDetailView;
-})(window);
+
+// ES6 Module Exports
+export {
+  DXFullIframeComponent,
+  DXFullIframeWithCloseComponent,
+  DXImageGalleryComponent,
+  DXIframeComponent,
+  DXHotWordListPanelView,
+  DXTransferRoutePlannerView,
+  DXStationServiceSearchView,
+  DXRouteStepsDetailView,
+  DXTicketRoutePlannerView,
+  DXToggleSwitchView,
+  DXVoiceSearchView2,
+  DXClinicProcessListView,
+  DXClinicProcessDetailView,
+};
+
+// ES6 Module Exports
+export {
+  DXButtonComponent,
+  DXImageBtnComponent,
+  DXIconBtnComponent,
+  DXIconTextBtnComponent,
+  DXListComponent,
+  DXListWithShadowComponent,
+  DXButtonListComboxView,
+  DXButtonListPanelView,
+  DXButtonListPanelView2,
+  DXButtonListPanelView3,
+  DXSearchViewComponent,
+  DXSearchViewComponent2,
+  DXSearchViewComponent3,
+  DXSearchViewComponent4,
+  DXTopSearchComponent,
+  DXSearchViewComponent5,
+  DXSearchViewComponentWithBuilding,
+  DXVoiceSearchViewComponent,
+  DXSearchComponent,
+  DXSearchComponent2,
+  DXSearchComponent3,
+  DXSearchComponent4,
+  DXSearchComponent5,
+  DXSearchComponent6,
+  DXSearchComponent7,
+  DXFooterNaviComponent,
+  DXFooterNaviComponent2,
+  DXHospitalViewComponent,
+  DXAroundViewComponent,
+  DXFeedbackComponent,
+  DXRoteComponent,
+  DXHeaderComponent,
+  DXPoiShortcutView,
+  DXListBase,
+  DXPoiResultView,
+  DXPoiDetialView,
+  DXPoiDetialView2,
+  DXPoiDetialView3,
+  DXRouteSelectorHeaderView,
+  DXRouteSelectorHeaderView2,
+  DXRouteSelectorHeaderView3,
+  DXRouteSelectorHeaderView4,
+  DXRouteSelectorHeaderView5,
+  DXRouteTransitListView,
+  DXCommonPOIViewComponent,
+  DXCommonPOIViewComponent2,
+  DXDepartmentViewComponent,
+  DXFavoriteViewComponent,
+  DXFankuiViewComponent,
+  DXPoiDetailViewComponent,
+  DXIndexIconComponent,
+  DXPayViewComponent,
+  DXPayResultViewComponent,
+  DXAboutViewComponent,
+  DXPoiTypeListViewComponent,
+  DXPoiTypeListViewComponent2,
+  DXEXSHViewComponent,
+  DXSelectPointOptionComponent,
+  DXSelectPointOptionComponent2,
+  DXHistoryListComponent,
+  DXHistoryListComponent2,
+  DXHotSearchComponent,
+  DXSelectPoiListComponent,
+  NoResultTipComponent,
+  LoadingComponent,
+  DXHeaderWithTipComponent,
+  DXImageComponent,
+  DXPoiResultView2,
+  DXPoiResultView3,
+  DXPoiResultView4,
+  DXMetroResultView,
+  DXMetroDetailView,
+  DXBusResultView,
+  DXBusDetailView,
+  DXNaviTipView,
+  DXTouristNaviInfo,
+  DXNaviBottomView,
+  DXNaviEndInfoView,
+  DXBuildingListComponent,
+  DXFullIframeComponent,
+  DXIframeComponent,
+};

@@ -1,1 +1,5 @@
-export{MapStatePOIController,createMapStatePOI,registerMapStatePOI}from"./map-state-p-o-i.controller.js"
+export {
+  MapStatePOIController,
+  createMapStatePOI,
+  registerMapStatePOI,
+} from "./map-state-p-o-i.controller.js";

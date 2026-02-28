@@ -1,11 +1,11 @@
 (function (global) {
   "use strict";
-  var daxiapp = global["DaxiApp"] || {};
-  var daximap = window["DaxiMap"] || {};
-  var DXMapUtils = daximap["DXMapUtils"];
-  var domUtils = daxiapp["dom"];
-  var MapStateClass = daxiapp["MapStateClass"];
-  var MapStateSimulateNavi = MapStateClass.extend({
+  const daxiapp = global["DaxiApp"] || {};
+  const daximap = window["DaxiMap"] || {};
+  const DXMapUtils = daximap["DXMapUtils"];
+  const domUtils = daxiapp["dom"];
+  const MapStateClass = daxiapp["MapStateClass"];
+  const MapStateSimulateNavi = MapStateClass.extend({;
     __init__: function () {
       this._super();
       this._rtti = "MapStateSimulateNavi";
@@ -13,14 +13,14 @@
 
     initialize: function (app, container) {
       this._super(app, container);
-      var thisObject = this;
+      const thisObject = this;
       // var app  = thisObject._app;
-      var basicMap_html = '<div id="simulate_navi_page" class="navi_page"></div>';
+      const basicMap_html = '<div id="simulate_navi_page" class="navi_page"></div>';
       domUtils.append(thisObject._container, basicMap_html);
       thisObject._dom = domUtils.find(thisObject._container, "#simulate_navi_page");
       thisObject._bdid = "";
       thisObject.navigationView;
-      var naviManager = app._mapView._naviManager;
+      const naviManager = app._mapView._naviManager;
       thisObject._naviEndInfoView = new daxiapp["DXNaviEndInfoView"](app, thisObject._dom);
       thisObject._naviEndInfoView.init({
         onCloseButtonClicked: function () {
@@ -29,9 +29,9 @@
           thisObject._naviEndInfoView.hide();
         },
         showPano: function (panoData) {
-          var mapView = app._mapView;
-          var mapStateBrowse = app._stateManager.getMapState("MapStateBrowse");
-          var poiInfo = mapView._mapSDK["getPoiInfoById"](panoData["id"], panoData["bdid"]);
+          const mapView = app._mapView;
+          const mapStateBrowse = app._stateManager.getMapState("MapStateBrowse");
+          const poiInfo = mapView._mapSDK["getPoiInfoById"](panoData["id"], panoData["bdid"]);
           poiInfo && mapView._panoUtil.openPanoPage(poiInfo);
         },
       });
@@ -58,7 +58,7 @@
       thisObject._naviBottomView = new daxiapp["DXNaviBottomView"](app, thisObject._dom);
       thisObject._naviBottomView.init({
         onExitButtonClicked: function () {
-          var params = {
+          const params = {;
             text: "您确定退出导航",
             btn1: "取消",
             confirmCB: function () {
@@ -108,7 +108,7 @@
       thisObject._floorChangeView.hide();
       naviManager.addFloorChangeListener(function (sender, data) {
         if (thisObject.visible) {
-          var imageUrl = "./images/";
+          const imageUrl = "./images/";
           switch (data.type) {
             case "futi":
               imageUrl += "escalator_";
@@ -143,7 +143,7 @@
       this.show(false);
     },
     createRoute: function (routeData) {
-      var dxRouteManager = new daximap["DXRouteManager"]();
+      const dxRouteManager = new daximap["DXRouteManager"]();
       dxRouteManager["initialize"](this._app._mapView._mapSDK);
       if (routeData["route"]) {
         dxRouteManager["setRouteDatas"]([routeData]);
@@ -156,15 +156,15 @@
       this._super(args);
       this.params = daxiapp["utils"].copyData(args);
       if (!args) return;
-      var thisObject = this;
-      var mapView = this._app._mapView;
+      const thisObject = this;
+      const mapView = this._app._mapView;
       mapView.setTopViewHeight(80);
       mapView.setBottomViewHeight(60);
       mapView._locationBtnCtrl.setUserTrackingMode(daximap["UserTrackingMode"]["FollowWithHeading"]);
       // mapView._userLocationMarker.setUserTrackingMode(daximap["UserTrackingMode"]["FollowWithHeading"]);
-      var naviManager = mapView._naviManager;
-      var routeData = naviManager.getSelectedRouteData();
-      var routeOverlay = new daximap["DXRouteOverlay"]();
+      const naviManager = mapView._naviManager;
+      const routeData = naviManager.getSelectedRouteData();
+      const routeOverlay = new daximap["DXRouteOverlay"]();
       routeOverlay.initialize(thisObject._app._mapView._mapSDK, routeData);
       routeOverlay.addToMap();
       thisObject._renderObjects.push(routeOverlay);
@@ -174,7 +174,7 @@
       thisObject._naviTipView.show();
       thisObject._naviTipView.setNaviState("navigating");
 
-      var route = naviManager.getSelectedRoute();
+      const route = naviManager.getSelectedRoute();
       thisObject.navigationState = "navigating";
       naviManager.registerCallback({
         onCalculateRouteSuccess: function (e) {
@@ -280,24 +280,24 @@
         },
       });
       function nextToRouteSegment(data) {
-        var isFinished = route.isLastSegment();
+        const isFinished = route.isLastSegment();
         if (isFinished) {
           thisObject.onNavigationFinished(args, data);
         } else {
-          var nextSegmentIndex = route.getNextOutDoorIndoorChangeStepIndex();
+          const nextSegmentIndex = route.getNextOutDoorIndoorChangeStepIndex();
           route.activeStep(nextSegmentIndex);
           showViewByRouteSegment(data);
         }
       }
       function showViewByRouteSegment() {
-        var currentMapStep = route.getCurrentMapStep();
+        const currentMapStep = route.getCurrentMapStep();
         if (currentMapStep.getTripMode() == 3) {
           thisObject.showIndoorNaviComponent();
         } else {
-          var isFinished = route.isLastSegment();
+          const isFinished = route.isLastSegment();
           if (isFinished || !route.getNextOutDoorIndoorChangeStep()) {
             // var startAddrss = currentMapStep["name"]||"目的地";
-            var params = {
+            const params = {;
               text: "暂不支持室外模拟导航" + "\n剩余都为室外路线,模拟导航即将结束",
               btn1: "退出导航",
               btn2: "确定",
@@ -321,11 +321,11 @@
             }
             return;
           }
-          var nextMapStep = route.getNextOutDoorIndoorChangeStep();
+          const nextMapStep = route.getNextOutDoorIndoorChangeStep();
           if (nextMapStep) {
-            var nextStartInfo = nextMapStep.getStartInfo();
-            var startAddrss = nextStartInfo["name"] || "进入下一路段";
-            var params = {
+            const nextStartInfo = nextMapStep.getStartInfo();
+            const startAddrss = nextStartInfo["name"] || "进入下一路段";
+            const params = {;
               text: "暂不支持室外模拟导航" + "\n是否切换下一段导航",
               btn1: "退出导航",
               btn2: "切换",
@@ -352,7 +352,7 @@
       thisObject._naviTipView.setSpeed(1);
     },
     showIndoorNaviComponent: function () {
-      var thisObject = this;
+      const thisObject = this;
       if (thisObject._naviTipView) {
         thisObject._naviTipView.show();
       }
@@ -365,7 +365,7 @@
       }
     },
     onNavigationFinished: function (args, data) {
-      var thisObject = this;
+      const thisObject = this;
       if (thisObject._naviTipView) {
         thisObject._naviTipView.hide();
       }
@@ -376,7 +376,7 @@
         thisObject._naviEndInfoView.updateData(args["startPoint"], args["endPoint"], 100, 20, data["msg"]);
         thisObject._naviEndInfoView.show();
       }
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.setTopViewHeight(66);
       mapView.setBottomViewHeight(140);
       thisObject.setUserTrackingModeToNone();
@@ -385,9 +385,9 @@
       thisObject.navigationState = "finished";
     },
     setUserTrackingModeToNone: function () {
-      var mapView = this._app._mapView;
-      var locationManager = mapView._locationManager;
-      var locState = locationManager["getLocationState"]();
+      const mapView = this._app._mapView;
+      const locationManager = mapView._locationManager;
+      const locState = locationManager["getLocationState"]();
       if (locState == daximap["LocationState"]["LOCATED"]) {
         mapView._locationBtnCtrl.setUserTrackingMode(daximap["UserTrackingMode"]["None"]);
       } else {
@@ -396,14 +396,14 @@
     },
     onHideByPushStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView._mapSDK["clearPolylineGrayData"]();
       DXClearLineArrowVisitor(mapView._mapSDK["getRootScene"]()).visit();
     },
 
     onShowByPopStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.setTopViewHeight(66);
       mapView.setBottomViewHeight(60);
       mapView._mapSDK["clearPolylineGrayData"]();
@@ -418,9 +418,9 @@
       DXClearLineArrowVisitor(mapView._mapSDK["getRootScene"]()).visit();
     },
     exitNavi: function () {
-      var app = this._app;
+      const app = this._app;
       if (this.navigationState == "finished") {
-        var naviManager = app._mapView._naviManager;
+        const naviManager = app._mapView._naviManager;
         naviManager.exitNavi();
         app._mapStateManager.goBack();
       } else {
@@ -429,9 +429,9 @@
     },
     // Run Command
     runCommand: function (command) {
-      var thisObject = this;
-      var naviManager = this._app._mapView._naviManager;
-      var params = {
+      const thisObject = this;
+      const naviManager = this._app._mapView._naviManager;
+      const params = {;
         text: "您确定退出导航",
         btn1: "取消",
         confirmCB: function () {
@@ -453,16 +453,16 @@
       }
     },
     showCross: function (crossData) {
-      var thisObject = this;
+      const thisObject = this;
       //显示路口放大图
       if (crossData) {
         //打开路口放大图
         if (crossData["imagePath"].indexOf("pano://") != -1) {
           if (!thisObject._app.crossPano) {
-            var baseUrl = window.location.href;
+            const baseUrl = window.location.href;
             baseUrl = baseUrl.substr(0, baseUrl.lastIndexOf("/") + 1);
-            var panoBaseUrl = window["panoPath"] || "../pano/index.html";
-            var targetDomain = baseUrl + panoBaseUrl;
+            const panoBaseUrl = window["panoPath"] || "../pano/index.html";
+            const targetDomain = baseUrl + panoBaseUrl;
             thisObject._app.crossPano = new daxiapp["DXIframeComponent"](thisObject._app, thisObject._app._dom, {
               link: targetDomain,
               id: "crossRoadPanoIfr",
@@ -470,10 +470,10 @@
             });
             thisObject._app.crossPano.init();
           }
-          var panoUrl = thisObject._app._config["panoUrl"];
-          var bdid = crossData["bdid"];
+          const panoUrl = thisObject._app._config["panoUrl"];
+          const bdid = crossData["bdid"];
           panoUrl = panoUrl.replace("{{bdid}}", bdid);
-          var data = {
+          const data = {;
             server: panoUrl,
             id: crossData["imagePath"].replace("pano://", ""),
             Id: crossData["Id"],
@@ -483,7 +483,7 @@
           };
           thisObject._app.crossPano.show();
           thisObject._app.crossPano.postMessage("loadPano", data);
-          var mapSDK = thisObject._app._mapView._mapSDK;
+          const mapSDK = thisObject._app._mapView._mapSDK;
 
           mapSDK["setPadding"]({ top: window.innerHeight * 0.5 });
         }
@@ -492,7 +492,7 @@
     hideCross: function () {
       //隐藏路口放大图
       this._app.crossPano && this._app.crossPano.hide();
-      var mapSDK = this._app._mapView._mapSDK;
+      const mapSDK = this._app._mapView._mapSDK;
 
       mapSDK["setPadding"]({ top: 50 });
     },

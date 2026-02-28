@@ -20,18 +20,18 @@ class MD5 {
     // 实际项目中应该使用成熟的 MD5 库，如 crypto-js
     // 如果已引入 crypto-js，可以使用：
     // return CryptoJS.MD5(string).toString();
-    
+
     // 这里提供一个简单的实现用于演示
     // 注意：这不等同于标准 MD5，仅用于占位
     let hash = 0;
     for (let i = 0; i < string.length; i++) {
       const char = string.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash;
     }
-    
+
     // 转换为 32 位十六进制
-    return Math.abs(hash).toString(16).padStart(32, '0');
+    return Math.abs(hash).toString(16).padStart(32, "0");
   }
 }
 
@@ -39,11 +39,11 @@ class MD5 {
 export default MD5;
 
 // 浏览器全局导出
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.MD5 = MD5;
 }
 
 // CommonJS 导出
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = MD5;
 }

@@ -1,6 +1,6 @@
-var MapStatePoiExtra = (function (Class) {
+const MapStatePoiExtra = (function (Class) {;
   "use strict";
-  var MapStatePoiExtra = MapStateClass.extend({
+  const MapStatePoiExtra = MapStateClass.extend({;
     __init__: function () {
       this._super();
       this._rtti = "MapStatePoiExtra";
@@ -8,9 +8,9 @@ var MapStatePoiExtra = (function (Class) {
 
     initialize: function (app, container) {
       this._super(app, container);
-      var thisObject = this;
+      const thisObject = this;
       // var app  = thisObject._app;
-      var basicMap_html = '<div id="poi_extra_page" class=""></div>';
+      const basicMap_html = '<div id="poi_extra_page" class=""></div>';
       domUtils.append(thisObject._container, basicMap_html);
       thisObject._dom = domUtils.find(thisObject._container, "#poi_extra_page");
       thisObject._bdid = "";
@@ -23,7 +23,7 @@ var MapStatePoiExtra = (function (Class) {
         },
         onSearchViewSearchBtnClicked: function (sender, e) {
           console.log("onSearchViewSearchBtnClicked:" + e);
-          var args = {
+          const args = {;
             method: "openSearchPage",
           };
           app.mapStateManager.pushState("MapStateBrowse", args);
@@ -41,14 +41,14 @@ var MapStatePoiExtra = (function (Class) {
     onStateBeginWithParam: function (args) {
       this._super(args);
       if (!args) return;
-      var mapView = this._app.map;
+      const mapView = this._app.map;
       mapView.setTopViewHeight(66);
       mapView.setBottomViewHeight(60);
     },
 
     onHideByPushStack: function (args) {
       this._super(args);
-      var mapView = this._app.map;
+      const mapView = this._app.map;
     },
 
     onShowByPopStack: function (args) {

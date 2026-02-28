@@ -1,13 +1,13 @@
-var MapView = function (app, container, options) {
-  var daximap = window["DaxiMap"] || {};
+const MapView = function (app, container, options) {;
+  const daximap = window["DaxiMap"] || {};
 
-  var daxiapp = window["DaxiApp"];
-  var domUtils = daxiapp["dom"];
-  var DxDomUtil = daxiapp["domUtil"];
-  var EventHandlerManager = daxiapp["EventHandlerManager"];
-  var DXMapUtils = daximap["DXMapUtils"];
-  var naviMath = daxiapp["naviMath"];
-  var thisObject = {};
+  const daxiapp = window["DaxiApp"];
+  const domUtils = daxiapp["dom"];
+  const DxDomUtil = daxiapp["domUtil"];
+  const EventHandlerManager = daxiapp["EventHandlerManager"];
+  const DXMapUtils = daximap["DXMapUtils"];
+  const naviMath = daxiapp["naviMath"];
+  const thisObject = {};
   thisObject.parentObj = container;
   thisObject._topContainers = [];
   thisObject._bottomContainers = [];
@@ -17,21 +17,21 @@ var MapView = function (app, container, options) {
   thisObject["extendCtrlBtns"] = [];
   thisObject.currBuildingInfo = null;
 
-  var basicMap_html = `<div id="Container1" class="map_container"><!--地图容器--></div>`;
+  const basicMap_html = `<div id="Container1" class="map_container"><!--地图容器--></div>`;
   domUtils.html(container, basicMap_html);
   thisObject._dom = domUtils.find(container, ".map_container");
   function initMap(container) {
-    var params = app._params;
-    var downloader = app.downloader;
+    const params = app._params;
+    const downloader = app.downloader;
     if (!downloader) {
-      var platform = params["platform"];
+      const platform = params["platform"];
       if (platform == "android" || platform == "ios" || platform == "android_web" || platform == "ios_web") {
         downloader = new DXNativeDownloader(app.jsBridge);
       } else {
         downloader = null;
       }
     }
-    var mapConfig = {
+    const mapConfig = {;
       token: params["token"] || "11da506a647aae682d208c5c5bb43098", //开发者Token
       appName: "daxiapp", //开发者应用名称
       baseMapPath: window["mapSDKPath"] + "map/",
@@ -50,17 +50,17 @@ var MapView = function (app, container, options) {
       mapConfig["defaultZoomLevel"] = app._config["defaultZoomLevel"];
     }
 
-    var mapSDK = new daximap["Map"]("Container1", mapConfig);
-    var postLocRes = params.postLocRes || app._config["postLocRes"];
-    var ctrlLocByUser = params.ctrlLocByUser;
-    var userId = params.userId;
-    var userName = params.userName;
-    var deviceType = params.device;
+    const mapSDK = new daximap["Map"]("Container1", mapConfig);
+    const postLocRes = params.postLocRes || app._config["postLocRes"];
+    const ctrlLocByUser = params.ctrlLocByUser;
+    const userId = params.userId;
+    const userName = params.userName;
+    const deviceType = params.device;
     if (postLocRes && !deviceType && params["unique_deviceno"]) {
       deviceType = daximap["browser"] + (daximap["deviceType"]["isAndroid"] ? "android" : "ios") + (new Date().getTime() % 10000);
     }
 
-    var sessionKey = params.sessionKey;
+    const sessionKey = params.sessionKey;
 
     if (typeof app._config["location"] == "object") {
       locOptions = app._config["location"];
@@ -84,9 +84,9 @@ var MapView = function (app, container, options) {
       locType: params["locType"],
       locPath: mapConfig["locPath"],
     });
-    var locationManager = new daximap["LocationManager"](locOptions);
+    const locationManager = new daximap["LocationManager"](locOptions);
     thisObject.listenUserchangedOnce = function (e) {
-      var hash;
+      const hash;
       if (typeof data == "string") {
         hash = data;
       } else {
@@ -98,7 +98,7 @@ var MapView = function (app, container, options) {
           if (hash[0] == "#") {
             hash = decodeURIComponent(hash.slice(1));
           }
-          var paramArray = hash.split("|");
+          const paramArray = hash.split("|");
           if (paramArray.indexOf("userchanged=true") != -1 || paramArray.indexOf("userchanged=userback") != -1) {
             thisObject.userChangedCallback && thisObject.userChangedCallback();
           }
@@ -115,9 +115,9 @@ var MapView = function (app, container, options) {
     };
     mapSDK["on"]("loadComplete", function (sender, bdListData) {
       // 默认启用 3D 地形效果
-      var terrainConfig = app._config["terrainConfig"];
+      const terrainConfig = app._config["terrainConfig"];
       if (terrainConfig !== false && terrainConfig !== "false") {
-        var terrainUrl = daxiapp.utils.addProjectUrl("/appConfig/terrain.json");
+        const terrainUrl = daxiapp.utils.addProjectUrl("/appConfig/terrain.json");
         mapSDK["enableTerrainWithHillshade"]({
           terrainJsonUrl: terrainUrl,
           exaggeration: terrainConfig?.exaggeration || 1,
@@ -143,7 +143,7 @@ var MapView = function (app, container, options) {
           "align-items": "center",
         },
       });
-      var bottomLeftNode = thisObject.bottomLeftCompsWrapper["getDom"]();
+      const bottomLeftNode = thisObject.bottomLeftCompsWrapper["getDom"]();
 
       // 爆炸图按钮
       if (app._config["showExplodedView"] == true || app._config["showExplodedView"] == "true") {
@@ -161,7 +161,7 @@ var MapView = function (app, container, options) {
             border: "1px solid #bfbfbf",
           },
           onClick: function () {
-            var enable = !mapSDK["getExplodedView"]();
+            const enable = !mapSDK["getExplodedView"]();
             mapSDK["setExplodedView"](enable, app._config["explodedConfig"] || { tilt: 60 });
             enable && setUserTrackingMode();
           },
@@ -191,7 +191,7 @@ var MapView = function (app, container, options) {
           y: -52,
         },
         onClick: function () {
-          var defaultHeading = 0;
+          const defaultHeading = 0;
           mapSDK["setHeading"](defaultHeading);
           setUserTrackingMode();
         },
@@ -247,7 +247,7 @@ var MapView = function (app, container, options) {
           "align-items": "center",
         },
       });
-      var bRCompsWrapperNode = thisObject.bottomRightCompsWrapper["getDom"]();
+      const bRCompsWrapperNode = thisObject.bottomRightCompsWrapper["getDom"]();
 
       // 初始化图层切换控件
       thisObject._initLayerSwitchControl(mapSDK, bRCompsWrapperNode, setUserTrackingMode);
@@ -266,19 +266,19 @@ var MapView = function (app, container, options) {
             color: "#26c9d5",
           },
           onClick: function () {
-            var myPositionInfo = locationManager.getMyPositionInfo();
-            var inBuilding = thisObject._toBuildingCtrl.getData("inBuilding");
+            const myPositionInfo = locationManager.getMyPositionInfo();
+            const inBuilding = thisObject._toBuildingCtrl.getData("inBuilding");
             if (thisObject.currBuildingInfo && !inBuilding) {
               setUserTrackingMode();
-              var bdInfo = thisObject.currBuildingInfo["bdInfo"];
-              var center = bdInfo["center"];
-              var zoom = bdInfo["mapZoom"] || bdInfo["zoomLevel"] || bdInfo["zoom"] || 18;
+              const bdInfo = thisObject.currBuildingInfo["bdInfo"];
+              const center = bdInfo["center"];
+              const zoom = bdInfo["mapZoom"] || bdInfo["zoomLevel"] || bdInfo["zoom"] || 18;
               // var defHeading = bdInfo["defaultHeading"];
-              var heading = mapSDK.getHeading();
+              const heading = mapSDK.getHeading();
               // var tilt = bdInfo["defaultTilt"]||0;
               mapSDK["easeTo"]({ lon: center[0], lat: center[1], zoom: zoom, heading: heading, duration: 1000 });
             } else {
-              var pos = myPositionInfo.position;
+              const pos = myPositionInfo.position;
               if (pos[0]) {
                 thisObject._locationBtnCtrl["setUserTrackingMode"](daximap["UserTrackingMode"]["FollowWithHeading"]);
               }
@@ -326,7 +326,7 @@ var MapView = function (app, container, options) {
       });
       // 创建定位状态控件
       imageUrl = "./images/gps_deactive.png";
-      var myPosInfo = locationManager["getMyPositionInfo"]();
+      const myPosInfo = locationManager["getMyPositionInfo"]();
       if (myPosInfo["position"][0]) {
         imageUrl = myPosInfo["locType"] == "GPS" ? "./images/gps_active.png" : "./images/ble_active.png";
       }
@@ -355,9 +355,9 @@ var MapView = function (app, container, options) {
           width: 36,
           height: 36,
           onClick: function () {
-            var token = app._params["token"] || "";
-            var bdid = (thisObject.currBuildingInfo && thisObject.currBuildingInfo.bdid) || "";
-            var locVersion = app._config.useLocator || "daxionemap";
+            const token = app._params["token"] || "";
+            const bdid = (thisObject.currBuildingInfo && thisObject.currBuildingInfo.bdid) || "";
+            const locVersion = app._config.useLocator || "daxionemap";
             locationManager["startSendLog"](
               { userId: userId, userName: userName, bdid: bdid, token: token, locVersion: locVersion, deviceType: deviceType, ctrlLocByUser: ctrlLocByUser },
               function (data) {
@@ -398,19 +398,19 @@ var MapView = function (app, container, options) {
       thisObject.indoorLocated = false;
       // 初始状态 控件设值
       locationManager["setBuildingsData"](bdListData);
-      var config = app._config;
-      var centerPos = config["defaultCenter"];
-      var building = null;
-      var defaultBdid = app._params["buildingId"] || app._config["buildingId"];
+      const config = app._config;
+      const centerPos = config["defaultCenter"];
+      const building = null;
+      const defaultBdid = app._params["buildingId"] || app._config["buildingId"];
       if (defaultBdid) {
         if (app._params["lon"] && app._params["lat"]) {
           centerPos = { lon: app._params["lon"], lat: app._params["lat"] };
         }
-        var filelist = bdListData["list"];
+        const filelist = bdListData["list"];
         for (var i = 0, len = filelist.length; i < len; i++) {
           if (filelist[i]["bdid"] == defaultBdid) {
-            var bdInfo = filelist[i];
-            var pos = bdInfo["location"].split(",").map(function (item) {
+            const bdInfo = filelist[i];
+            const pos = bdInfo["location"].split(",").map(function (item) {;
               return Number(item);
             });
             centerPos = { lon: pos[0], lat: pos[1] };
@@ -421,16 +421,16 @@ var MapView = function (app, container, options) {
       }
 
       if (centerPos) {
-        var zoom = mapConfig["zoom"] || mapConfig["defaultZoomLevel"];
-        var heading = mapConfig["heading"] || 0;
-        var tilt = mapConfig["tilt"] || 0;
+        const zoom = mapConfig["zoom"] || mapConfig["defaultZoomLevel"];
+        const heading = mapConfig["heading"] || 0;
+        const tilt = mapConfig["tilt"] || 0;
         if (building) {
-          var mapZoom = building["mapZoom"] || building["mapLevel"];
+          const mapZoom = building["mapZoom"] || building["mapLevel"];
           zoom = mapZoom || zoom;
           heading = heading || building["defaultHeading"];
           tilt = tilt || building["defaultTilt"];
         }
-        var params = { lon: centerPos["lon"], lat: centerPos["lat"], zoom: zoom };
+        const params = { lon: centerPos["lon"], lat: centerPos["lat"], zoom: zoom };
         if (heading) {
           params["heading"] = heading;
         }
@@ -443,20 +443,20 @@ var MapView = function (app, container, options) {
         config.bdid ? (params["bdid"] = defaultBdid) : "";
         mapSDK["jumpTo"](params);
       } else {
-        var bdInfo = bdListData["list"][0];
-        var pos = bdInfo["location"].split(",").map(function (item) {
+        const bdInfo = bdListData["list"][0];
+        const pos = bdInfo["location"].split(",").map(function (item) {;
           return Number(item);
         });
 
-        var zoom = bdInfo["mapZoom"] || bdInfo["zoomLevel"] || Math.round(mapConfig["defaultZoomLevel"] + 0.1);
+        const zoom = bdInfo["mapZoom"] || bdInfo["zoomLevel"] || Math.round(mapConfig["defaultZoomLevel"] + 0.1);
         mapSDK["jumpTo"]({ lon: pos[0], lat: pos[1], zoom: zoom });
       }
 
       options && options["callback"] && options["callback"](mapSDK);
-      var defaultBdid = app._params["buildingId"] || app._config["buildingId"];
+      const defaultBdid = app._params["buildingId"] || app._config["buildingId"];
       if (defaultBdid) {
         //指明bdid 就没有选building的逻辑了
-        var followLoc = app._params["followLoc"] || app._config["followLoc"];
+        const followLoc = app._params["followLoc"] || app._config["followLoc"];
         if (followLoc == true) {
           if (locationManager["getLocationState"]() == DaxiMap["LocationState"]["LOCATED"]) {
             thisObject._locationBtnCtrl["setUserTrackingMode"](daximap["UserTrackingMode"]["Follow"]);
@@ -468,8 +468,8 @@ var MapView = function (app, container, options) {
       }
       // 选择building
       // bdListData
-      var bdInitType = (app._config["bdInitType"] = app._config["bdInitType"] || 1);
-      var location = app._config["location"];
+      const bdInitType = (app._config["bdInitType"] = app._config["bdInitType"] || 1);
+      const location = app._config["location"];
       if (bdInitType != 3 && (!location || location["disableGPS"] != true)) {
         //3当前定位结果 跟随状态
         setTimeout(function () {
@@ -492,8 +492,8 @@ var MapView = function (app, container, options) {
       }
     });
     thisObject.updateLocViewStatus = function (inBuilding) {
-      var myPosInfo = thisObject._locationManager.getMyPositionInfo();
-      var pos = myPosInfo.position;
+      const myPosInfo = thisObject._locationManager.getMyPositionInfo();
+      const pos = myPosInfo.position;
       if (inBuilding) {
         thisObject._toBuildingCtrl.setData("inBuilding", true);
         thisObject._toBuildingCtrl.updateIcon("icon-buxing");
@@ -509,20 +509,20 @@ var MapView = function (app, container, options) {
     };
     function initBuildingsLayer(buildings, mapSDK) {
       thisObject.buildingLayer = new daximap["DXSceneMarkerLayer"]();
-      var markers = [];
-      var onMarkerClick = function (marker) {
+      const markers = [];
+      const onMarkerClick = function (marker) {;
         mapSDK["jumpTo"]({ lon: marker["lon"], lat: marker["lat"], zoom: marker["defaultZoom"] });
       };
       buildings.forEach(function (building) {
-        var bdid = building["bdid"];
-        var center = building["location"].split(",").map(function (item) {
+        const bdid = building["bdid"];
+        const center = building["location"].split(",").map(function (item) {;
           return parseFloat(item);
         });
-        var icon = building["icon"] || "./images/normal_stop.png";
+        const icon = building["icon"] || "./images/normal_stop.png";
         if (building["icon"] && icon.indexOf("http") == -1 && icon.indexOf("./") == -1 && icon.indexOf(".") != -1) {
           icon = "./images/" + icon;
         }
-        var markerOption = {
+        const markerOption = {;
           featureId: bdid,
           id: bdid,
           lon: center[0],
@@ -550,14 +550,14 @@ var MapView = function (app, container, options) {
       });
     }
     function initializeUserLocationMarker() {
-      var locationBtnCtrl = thisObject._locationBtnCtrl;
-      var userLocationMarker = new daximap["UserLocationMarker"](mapSDK);
-      var myPosInfo = locationManager["getMyPositionInfo"]();
-      var naviConfig = app._config["naviConfig"] || {};
-      var showLevel = naviConfig["realPosLevel"] || 0;
-      var minDistance = naviConfig["minDistance"] || 0;
+      const locationBtnCtrl = thisObject._locationBtnCtrl;
+      const userLocationMarker = new daximap["UserLocationMarker"](mapSDK);
+      const myPosInfo = locationManager["getMyPositionInfo"]();
+      const naviConfig = app._config["naviConfig"] || {};
+      const showLevel = naviConfig["realPosLevel"] || 0;
+      const minDistance = naviConfig["minDistance"] || 0;
       userLocationMarker.setRealLevel(showLevel, minDistance);
-      var locationState = locationManager["getLocationState"]();
+      const locationState = locationManager["getLocationState"]();
       if (myPosInfo["position"][0]) {
         userLocationMarker.setLocation({
           lng: myPosInfo.position[0],
@@ -572,7 +572,7 @@ var MapView = function (app, container, options) {
       // 当定位更新的时候更新LocationMarker的位置
 
       locationManager["on"]("onLocationChanged", function (sender, e) {
-        var loc = {
+        const loc = {;
           lng: e["position"][0],
           lat: e["position"][1],
           real_pos: e["real_pos"],
@@ -584,9 +584,9 @@ var MapView = function (app, container, options) {
         if (!thisObject.indoorLocated) {
           // 首次室内定位成功
           thisObject.indoorLocated = true;
-          var locationBdlist = app._config["location"] && app._config["location"]["bdlist"];
-          var currentMapSate = app._stateManager.getCurrentStateName();
-          var bdid = app._params["bdid"] || app._params["buildingId"] || app._config["bdid"];
+          const locationBdlist = app._config["location"] && app._config["location"]["bdlist"];
+          const currentMapSate = app._stateManager.getCurrentStateName();
+          const bdid = app._params["bdid"] || app._params["buildingId"] || app._config["bdid"];
           if ((!bdid || bdid == e["bdid"]) && locationBdlist?.[e["bdid"]]?.["loactedMapZoom"]) {
             if (currentMapSate == "MapStateBrowse") {
               mapSDK.jumpTo({ bdid: e["bdid"], floorId: e["floorId"], lon: loc["lng"], lat: loc["lat"], zoom: locationBdlist[e["bdid"]]["loactedMapZoom"] });
@@ -596,15 +596,15 @@ var MapView = function (app, container, options) {
           }
         }
 
-        var userTrackingMode = thisObject._locationBtnCtrl["getUserTrackingMode"]();
-        var bdInitType = (app._config["bdInitType"] = app._config["bdInitType"] || 1);
-        var followLoc = app._params["followLoc"] || app._config["followLoc"];
+        const userTrackingMode = thisObject._locationBtnCtrl["getUserTrackingMode"]();
+        const bdInitType = (app._config["bdInitType"] = app._config["bdInitType"] || 1);
+        const followLoc = app._params["followLoc"] || app._config["followLoc"];
         if (userTrackingMode == daximap["UserTrackingMode"]["Unknown"]) {
           if (followLoc == true || bdInitType == 3 || (bdInitType == 2 && thisObject.indoorLocated)) {
             thisObject._locationBtnCtrl["setUserTrackingMode"](daximap["UserTrackingMode"]["Follow"]);
           }
         }
-        var naviStatus = thisObject._naviManager["getNaviStatus"]();
+        const naviStatus = thisObject._naviManager["getNaviStatus"]();
         if (naviStatus != 0 && naviStatus != 4 && naviStatus != 3) {
           userLocationMarker.setLocation(loc);
         }
@@ -630,9 +630,9 @@ var MapView = function (app, container, options) {
           // if(thisObject.initCheckedBuilding){
           locationBtnCtrl["setUserTrackingMode"](daximap["UserTrackingMode"]["None"]);
         } else {
-          var userTrackingMode = thisObject._locationBtnCtrl["getUserTrackingMode"]();
-          var bdInitType = (app._config["bdInitType"] = app._config["bdInitType"] || 1);
-          var followLoc = app._params["followLoc"] || app._config["followLoc"];
+          const userTrackingMode = thisObject._locationBtnCtrl["getUserTrackingMode"]();
+          const bdInitType = (app._config["bdInitType"] = app._config["bdInitType"] || 1);
+          const followLoc = app._params["followLoc"] || app._config["followLoc"];
           if (userTrackingMode == daximap["UserTrackingMode"]["Unknown"] && (followLoc == true || bdInitType == 3)) {
             // thisObject._locationBtnCtrl["setUserTrackingMode"](daximap["UserTrackingMode"]["Follow"]);
             locationBtnCtrl["onLocationStateChanged"](locationState);
@@ -647,8 +647,8 @@ var MapView = function (app, container, options) {
 
       // 当按钮点击的时候，如果没有定位或者定位失败，则重新定位，否则切换按钮图标状态
       locationBtnCtrl["on"]("onClick", function (sender) {
-        var myPosInfo = thisObject._locationManager["getMyPositionInfo"]();
-        var pos = myPosInfo["position"];
+        const myPosInfo = thisObject._locationManager["getMyPositionInfo"]();
+        const pos = myPosInfo["position"];
         if (!pos[0] || !pos[1]) {
           //alert("定位信号弱,请到");
           return;
@@ -663,7 +663,7 @@ var MapView = function (app, container, options) {
 
       // 当定位按钮图标状态发生变化的时候，修改userLocationMarker的跟随状态
       locationBtnCtrl["on"]("onUserTrackingModeChanged", function (sender, mode) {
-        var bdid = userLocationMarker.getBDID(),
+        const bdid = userLocationMarker.getBDID(),;
           floorId = userLocationMarker.getFloorId(),
           heading = userLocationMarker.getHeading();
         userLocationMarker["setUserTrackingMode"](mode);
@@ -714,7 +714,7 @@ var MapView = function (app, container, options) {
     // 当室内场景可见时，显示楼层控件，如果没有可以显示的室内场景，隐藏楼层控件
     mapSDK["on"]("onIndoorBuildingActive", function (sender, building) {
       if (building) {
-        var bdid = building["bdid"];
+        const bdid = building["bdid"];
         locationManager["changeBuilding"](bdid);
         thisObject.setCurrIndoorBuilding(building);
         thisObject._floorCtrl && thisObject._floorCtrl["updateMap"](building);
@@ -723,8 +723,8 @@ var MapView = function (app, container, options) {
         }
         if (thisObject._mulityFloorCtrl) {
           thisObject._mulityFloorCtrl["setVisible"](true);
-          var arr = thisObject._floorCtrl["getPosition"]();
-          var height = thisObject._floorCtrl["getHeight"]();
+          const arr = thisObject._floorCtrl["getPosition"]();
+          const height = thisObject._floorCtrl["getHeight"]();
           thisObject._mulityFloorCtrl["setPosition"](arr[0], arr[1] + height + 10);
         }
         if (thisObject.currBuilding != building) {
@@ -747,13 +747,13 @@ var MapView = function (app, container, options) {
     thisObject._mapSDK = mapSDK;
     thisObject._locationManager = locationManager;
     thisObject._search = new DaxiMap["Search"](mapSDK);
-    var _config = app._config;
+    const _config = app._config;
     // init speakListener
-    var speakServerUrl = _config.speakServerUrl || "";
-    var canSpeak = _config.canSpeak != false ? true : false;
+    const speakServerUrl = _config.speakServerUrl || "";
+    const canSpeak = _config.canSpeak != false ? true : false;
     //Container, id, baiduAudioToken,language,speakServerUrl,canSpeak
 
-    var speakListener = new DaxiMap["SpeakListener"]({
+    const speakListener = new DaxiMap["SpeakListener"]({;
       containerDom: container,
       id: "speakSynthesizer",
       baiduAudioToken: "",
@@ -763,7 +763,7 @@ var MapView = function (app, container, options) {
     });
     speakListener.init();
     thisObject._speakListener = speakListener;
-    var audioDom = $("#speakSynthesizer");
+    const audioDom = $("#speakSynthesizer");
     // if(window["DeviceMotionEvent"]["requestPermission"]){//针对ios语音播报
     document.body.addEventListener("click", function () {
       speakListener.triggerPlay();
@@ -772,7 +772,7 @@ var MapView = function (app, container, options) {
     // }
     //讲解和导航播报同时播放时语音会停止，把播放状态传给小程序端做处理
     audioDom.on("ended", function (e) {
-      var data = {
+      const data = {;
         type: "postEventToMiniProgram",
         id: app._params["userId"],
         methodToMiniProgram: "naviSpeakerStatus=ended",
@@ -782,7 +782,7 @@ var MapView = function (app, container, options) {
       console.log("ended", e);
     });
     audioDom.on("play", function (e) {
-      var data = {
+      const data = {;
         type: "postEventToMiniProgram",
         id: app._params["userId"],
         methodToMiniProgram: "naviSpeakerStatus=play",
@@ -792,7 +792,7 @@ var MapView = function (app, container, options) {
       console.log("play", e);
     });
     audioDom.on("pause", function (e) {
-      var data = {
+      const data = {;
         type: "postEventToMiniProgram",
         id: app._params["userId"],
         methodToMiniProgram: "naviSpeakerStatus=pause",
@@ -803,7 +803,7 @@ var MapView = function (app, container, options) {
     });
 
     // init NavigationManager
-    var naviManager = new DaxiMap["NavigationManager"](thisObject._mapSDK);
+    const naviManager = new DaxiMap["NavigationManager"](thisObject._mapSDK);
     //app._config
     if (_config["route"] && _config["route"]["url"]) {
       _config["navi"] && (_config["navi"]["routeUrl"] = _config["route"]["url"]);
@@ -829,11 +829,11 @@ var MapView = function (app, container, options) {
     return thisObject.currBuildingInfo;
   };
   thisObject.getUserDetailInfo = function (userInfo, successCB, failedCB) {
-    var userServerUrl = app._config["user"]["userServerUrl"];
-    var appId = app._params["appId"] || app._config["appId"],
+    const userServerUrl = app._config["user"]["userServerUrl"];
+    const appId = app._params["appId"] || app._config["appId"],;
       userId = userInfo["userId"],
       secret = app._params["secret"] || "";
-    var url = userServerUrl + "/get?t=" + new Date().getTime();
+    const url = userServerUrl + "/get?t=" + new Date().getTime();
     if (!appId || !secret || !userId) {
       return;
     }
@@ -844,7 +844,7 @@ var MapView = function (app, container, options) {
       "json",
       function (result) {
         if (result.success && result.result) {
-          var data = result.result;
+          const data = result.result;
           for (var key in data) {
             userInfo[key] = data[key];
           }
@@ -869,11 +869,11 @@ var MapView = function (app, container, options) {
       thisObject._locationBtnCtrl["setUserTrackingMode"](daximap["UserTrackingMode"]["None"]);
       return;
     }
-    var locationManager = thisObject._locationManager;
-    var localInfo = locationManager["getMyPositionInfo"]();
-    var point = app._mapView._mapSDK["getPosition"]();
-    var lon = localInfo.position[0] || point["lon"];
-    var lat = localInfo.position[1] || point["lat"];
+    const locationManager = thisObject._locationManager;
+    const localInfo = locationManager["getMyPositionInfo"]();
+    const point = app._mapView._mapSDK["getPosition"]();
+    const lon = localInfo.position[0] || point["lon"];
+    const lat = localInfo.position[1] || point["lat"];
     const geodecodeSuccessFn = (geodata) => {
       const citycode = geodata.citycode;
 
@@ -1039,7 +1039,7 @@ var MapView = function (app, container, options) {
   };
   ((thisObject.getAllSceneList = function (bdid) {
     // if (bdid == "B000A11DMZ") return;
-    var thisObject = this;
+    const thisObject = this;
     // var app = this._app;
     if (!thisObject.visitingBDInfo || thisObject.visitingBDInfo["bdid"] != bdid) {
       thisObject.visitingBDInfo = {
@@ -1074,7 +1074,7 @@ var MapView = function (app, container, options) {
         this.visitingBDInfo["visitedCount"] = count;
       }
       if (this._sceneStateBtn) {
-        var dom = document.getElementById("visitedCount");
+        const dom = document.getElementById("visitedCount");
         dom && (dom["textContent"] = count);
       }
     }));
@@ -1085,11 +1085,11 @@ var MapView = function (app, container, options) {
     thisObject._dom.hide();
   };
   thisObject.pushState = function (restorePos) {
-    var state = {
+    const state = {;
       restorePos: restorePos,
     };
 
-    var cameraPose = thisObject._mapSDK["cameraPose"]();
+    const cameraPose = thisObject._mapSDK["cameraPose"]();
     state.lon = cameraPose["lon"];
     state.lat = cameraPose["lat"];
     state.heading = cameraPose["heading"];
@@ -1099,7 +1099,7 @@ var MapView = function (app, container, options) {
     state.zoomLevel = thisObject._mapSDK["getZoom"]();
     state.topViewHeight = thisObject._topViewHeight;
     state.bottomViewHeight = thisObject._bottomViewHeight;
-    var stateName = app._stateManager.getCurrentStateName();
+    const stateName = app._stateManager.getCurrentStateName();
     if (stateName == "MapStateAutoPlayExhibit") {
       thisObject._userCtrl && thisObject._userCtrl["setVisible"](false);
       thisObject._locationStateCtrl && thisObject._locationStateCtrl["setVisible"](false);
@@ -1109,12 +1109,12 @@ var MapView = function (app, container, options) {
   };
 
   thisObject.popState = function () {
-    var stateName = app._stateManager.getCurrentStateName();
+    const stateName = app._stateManager.getCurrentStateName();
     if (stateName != "MapStateAutoPlayExhibit") {
       thisObject._userCtrl && thisObject._userCtrl["setVisible"](true);
       thisObject._locationStateCtrl && thisObject._locationStateCtrl["setVisible"](true);
     }
-    var state = thisObject._viewStateStack.pop();
+    const state = thisObject._viewStateStack.pop();
     if (!state) return;
     if (state.topViewHeight != thisObject._topViewHeight || state.bottomViewHeight != thisObject._bottomViewHeight) {
       thisObject.setTopViewHeight(state.topViewHeight);
@@ -1123,7 +1123,7 @@ var MapView = function (app, container, options) {
 
     if (state.restorePos) {
       if (state.lon != 0 && state.lat != 0) {
-        var loc = {
+        const loc = {;
           lon: state.lon,
           lat: state.lat,
           heading: state.heading,
@@ -1163,13 +1163,13 @@ var MapView = function (app, container, options) {
    * @returns {Array} 手绘图层对象数组
    */
   function getHandLayersFromScene(mapSDK) {
-    var handLayers = [];
+    const handLayers = [];
     try {
-      var scene = mapSDK._coreMap._scene;
+      const scene = mapSDK._coreMap._scene;
       if (scene && scene.children) {
         function findWMTSLayers(children) {
           for (var i = 0; i < children.length; i++) {
-            var child = children[i];
+            const child = children[i];
             if (child && child._rtti === "DXMapBoxWMTSLayer") {
               handLayers.push(child);
             }
@@ -1198,7 +1198,7 @@ var MapView = function (app, container, options) {
    * @param {Function} setUserTrackingMode 设置定位跟踪模式函数
    */
   thisObject._initLayerSwitchControl = function (mapSDK, parentNode, setUserTrackingMode) {
-    var daximap = window["DaxiMap"] || {};
+    const daximap = window["DaxiMap"] || {};
 
     // 默认启用图层切换 (enableLayerSwitch 默认为 true)
     if (app._config["enableLayerSwitch"] === false || app._config["enableLayerSwitch"] === "false") {
@@ -1206,7 +1206,7 @@ var MapView = function (app, container, options) {
     }
 
     // 默认图层为手绘图 (defaultMapLayer 默认为 "hand")
-    var defaultLayer = app._config["defaultMapLayer"] || "hand";
+    const defaultLayer = app._config["defaultMapLayer"] || "hand";
 
     // 创建图层切换控件
     thisObject._layerSwitchCtrl = new daximap["LayerSwitchControl"](mapSDK, {
@@ -1223,7 +1223,7 @@ var MapView = function (app, container, options) {
     });
 
     // 存储图层对象引用
-    var layerObjects = {
+    const layerObjects = {;
       hand: null,
       road: null,
       satellite: null,
@@ -1231,10 +1231,10 @@ var MapView = function (app, container, options) {
     };
 
     // 获取已有的手绘图层 (从场景中复用已加载的 wmtsLayer)
-    var handLayers = getHandLayersFromScene(mapSDK);
+    const handLayers = getHandLayersFromScene(mapSDK);
     if (handLayers.length > 0) {
       // 手绘图层已存在，复用已有的图层对象
-      var handLayerObj = {
+      const handLayerObj = {;
         _layers: handLayers,
       };
       handLayerObj.setVisible = function (visible) {
@@ -1250,8 +1250,8 @@ var MapView = function (app, container, options) {
       layerObjects.hand = handLayerObj;
     } else if (app._config["handLayerConfig"]) {
       // 如果场景中还没有手绘图层，尝试使用配置创建
-      var handLayerConfig = app._config["handLayerConfig"];
-      var handLayer = new daximap["DXMapBoxWMTSLayer"]();
+      const handLayerConfig = app._config["handLayerConfig"];
+      const handLayer = new daximap["DXMapBoxWMTSLayer"]();
       handLayer["initialize"](mapSDK, {
         tiles: handLayerConfig.tiles || [],
         layerType: "raster",
@@ -1266,7 +1266,7 @@ var MapView = function (app, container, options) {
 
     // 创建高德道路图层
     if (app._config["enableGaodeRoad"] !== false) {
-      var roadLayer = new daximap["DXMapBoxGaodeLayer"]();
+      const roadLayer = new daximap["DXMapBoxGaodeLayer"]();
       roadLayer["initialize"](mapSDK, {
         layerType: "road",
         layerName: "roadLayer",
@@ -1278,7 +1278,7 @@ var MapView = function (app, container, options) {
 
     // 创建高德卫星图层
     if (app._config["enableGaodeSatellite"] !== false) {
-      var satelliteLayer = new daximap["DXMapBoxGaodeLayer"]();
+      const satelliteLayer = new daximap["DXMapBoxGaodeLayer"]();
       satelliteLayer["initialize"](mapSDK, {
         layerType: "satellite",
         layerName: "satelliteLayer",
@@ -1290,7 +1290,7 @@ var MapView = function (app, container, options) {
 
     // 创建高德混合图层
     if (app._config["enableGaodeHybrid"] !== false) {
-      var hybridLayer = new daximap["DXMapBoxGaodeLayer"]();
+      const hybridLayer = new daximap["DXMapBoxGaodeLayer"]();
       hybridLayer["initialize"](mapSDK, {
         layerType: "hybrid",
         layerName: "hybridLayer",
@@ -1301,16 +1301,16 @@ var MapView = function (app, container, options) {
     }
 
     // 根据当前图层类型控制可见性
-    var updateLayerVisibility = function (currentLayer) {
+    const updateLayerVisibility = function (currentLayer) {;
       // 先隐藏所有图层
       for (var key in layerObjects) {
-        var layer = layerObjects[key];
+        const layer = layerObjects[key];
         if (layer && typeof layer.setVisible === "function") {
           layer.setVisible(false);
         }
       }
       // 显示当前图层
-      var currentLayerObj = layerObjects[currentLayer];
+      const currentLayerObj = layerObjects[currentLayer];
       if (currentLayerObj && typeof currentLayerObj.setVisible === "function") {
         currentLayerObj.setVisible(true);
       }
@@ -1318,7 +1318,7 @@ var MapView = function (app, container, options) {
 
     // 初始化时隐藏除默认外的所有图层
     for (var key in layerObjects) {
-      var layer = layerObjects[key];
+      const layer = layerObjects[key];
       if (key !== defaultLayer && layer && typeof layer.setVisible === "function") {
         layer.setVisible(false);
       }

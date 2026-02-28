@@ -1,1 +1,5 @@
-export{MapStateRouteController,createMapStateRoute,registerMapStateRoute}from"./map-state-route.controller.js"
+export {
+  MapStateRouteController,
+  createMapStateRoute,
+  registerMapStateRoute,
+} from "./map-state-route.controller.js";

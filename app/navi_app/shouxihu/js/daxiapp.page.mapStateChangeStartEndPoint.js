@@ -1,9 +1,9 @@
 (function (global) {
   "use strict";
-  var daxiapp = global["DaxiApp"] || {};
-  var domUtils = daxiapp["dom"];
-  var MapStateClass = daxiapp["MapStateClass"];
-  var MapStateChangeStartEndPoint = MapStateClass.extend({
+  const daxiapp = global["DaxiApp"] || {};
+  const domUtils = daxiapp["dom"];
+  const MapStateClass = daxiapp["MapStateClass"];
+  const MapStateChangeStartEndPoint = MapStateClass.extend({;
     __init__: function () {
       this._super();
       this._rtti = "MapStateChangeStartEndPoint";
@@ -11,18 +11,18 @@
 
     initialize: function (app, container) {
       this._super(app, container);
-      var thisObject = this;
+      const thisObject = this;
       thisObject.token = app._config.token || app._params.token || "";
       thisObject._bdid = "";
       // var app  = thisObject._app;
-      var basicMap_html = '<div id="change_start_end_point_page" class="dx_full_frame_container"></div>';
+      const basicMap_html = '<div id="change_start_end_point_page" class="dx_full_frame_container"></div>';
       domUtils.append(thisObject._container, basicMap_html);
       thisObject._dom = domUtils.find(thisObject._container, "#change_start_end_point_page");
 
       thisObject._headerView = new daxiapp["DXSearchComponent"](app, thisObject._dom);
       thisObject._headerView.init({
         onSearchViewBackBtnClicked: function (sender, e) {
-          var command = {
+          const command = {;
             retVal: "Cancel",
           };
           app._stateManager.invokeCallback("selectPointCallback", command);
@@ -34,28 +34,28 @@
           // 搜索
           thisObject.searchPoi(text);
           thisObject.addHistory({ keyword: text });
-          var historyData = thisObject.getHistoryData()["historyList"];
+          const historyData = thisObject.getHistoryData()["historyList"];
           thisObject._history.updateData(historyData);
         },
       });
       // <div class="search_display_wrapper
-      var searchWraperhtml =
+      const searchWraperhtml =;
         '<div class="main_content" style="position: relative;flex-grow: 1;"><div class="wrapper" style="height:100%;display:flex;flex-direction: column;"></div></div>';
       domUtils.append(thisObject._dom, searchWraperhtml);
-      var mainContentdom = domUtils.find(thisObject._dom, ".main_content .wrapper");
+      const mainContentdom = domUtils.find(thisObject._dom, ".main_content .wrapper");
       // 我的位置 地图选点selecteOption
       thisObject._selectPointType = new daxiapp["DXSelectPointOptionComponent"](app, mainContentdom);
       thisObject._selectPointType.init({
         onMyPostionBtnClicked: function (sender, e) {
-          var locInfo = app._mapView._locationManager["getMyPositionInfo"]();
-          var pointType = thisObject.pointType;
-          var command = {
+          const locInfo = app._mapView._locationManager["getMyPositionInfo"]();
+          const pointType = thisObject.pointType;
+          const command = {;
             retVal: "OK",
             method: "startEndPointChanged",
             data: { pointType: pointType },
           };
-          var pos = locInfo["position"];
-          var pointInfo = {
+          const pos = locInfo["position"];
+          const pointInfo = {;
             lon: pos[0],
             lat: pos[1],
             floorId: locInfo["floorId"],
@@ -73,8 +73,8 @@
           app._stateManager.invokeCallback("selectPointCallback", command);
         },
         onMapSelectPointBtnClicked: function (sender, e) {
-          var pointType = thisObject.pointType;
-          var command = {
+          const pointType = thisObject.pointType;
+          const command = {;
             retVal: "OK",
             method: "SelectMapPoint",
             data: { pointType: pointType },
@@ -84,12 +84,12 @@
           } else {
             command.data["endPoint"] = e;
           }
-          var page = app._stateManager.pushState("MapStateSelectPoint", command);
+          const page = app._stateManager.pushState("MapStateSelectPoint", command);
           page._once("selectMapPointCallback", function (sender, selectPointResult) {
             if (selectPointResult.retVal == "OK") {
               app._stateManager.invokeCallback("selectPointCallback", selectPointResult);
             } else {
-              var command = {
+              const command = {;
                 retVal: "Cancel",
               };
               app._stateManager.invokeCallback("selectPointCallback", command);
@@ -107,8 +107,8 @@
         thisObject._comboxListPanel = new daxiapp["DXComboxListPanelView"](app, thisObject._disWrapper);
         thisObject._comboxListPanel.init({
           onListItemClicked: function (sender, e) {
-            var pointType = thisObject.pointType;
-            var command = {
+            const pointType = thisObject.pointType;
+            const command = {;
               retVal: "OK",
               method: "startEndPointChanged",
               data: {
@@ -130,8 +130,8 @@
       thisObject._history = new daxiapp["DXHistoryListComponent"](app, thisObject._disWrapper);
       thisObject._history.init({
         onListItemClicked: function (sender, e) {
-          var pointType = thisObject.pointType;
-          var command = {
+          const pointType = thisObject.pointType;
+          const command = {;
             retVal: "OK",
             method: "startEndPointChanged",
             data: {
@@ -156,8 +156,8 @@
       thisObject._resulView = new daxiapp["DXSelectPoiListComponent"](app, thisObject._disWrapper);
       thisObject._resulView.init({
         onListItemClicked: function (sender, e) {
-          var pointType = thisObject.pointType;
-          var command = {
+          const pointType = thisObject.pointType;
+          const command = {;
             retVal: "OK",
             data: {
               pointType: pointType,
@@ -172,15 +172,15 @@
           // var hisData = {"token":thisObject.token,"bdid":e["bdid"],"poiId":e["poiId"],"text":e["text"],"type":e["type"],"viewType":e["viewType"]};
           // thisObject.addHistory(hisData);
           // 传搜索数据还是keyword 进去的问题 changeStartEndPointCallback
-          var historyData = thisObject.getHistoryData()["historyList"];
+          const historyData = thisObject.getHistoryData()["historyList"];
           thisObject._history.updateData(historyData);
           thisObject._resulView.hide();
           // 传搜索数据还是keyword 进去的问题 changeStartEndPointCallback
           app._stateManager.invokeCallback("selectPointCallback", command);
         },
         onTakeToThere: function (sender, e) {
-          var pointType = thisObject.pointType;
-          var command = {
+          const pointType = thisObject.pointType;
+          const command = {;
             retVal: "OK",
             method: "startEndPointChanged",
             data: {
@@ -205,14 +205,14 @@
       this.show(false);
     },
     getHotWrordView: function () {
-      var thisObject = this;
+      const thisObject = this;
       if (thisObject._comboxListPanel) {
-        var mapSDK = thisObject._app._mapView._mapSDK;
-        var token = thisObject.token;
-        var url = thisObject._app._config["hotWordUrl"];
-        var bdid = mapSDK["getCurrentBDID"]();
-        var flid = mapSDK["getCurrentFloorId"]();
-        var bdInfo = thisObject._app._mapView.getCurrIndoorBuilding()["bdInfo"];
+        const mapSDK = thisObject._app._mapView._mapSDK;
+        const token = thisObject.token;
+        const url = thisObject._app._config["hotWordUrl"];
+        const bdid = mapSDK["getCurrentBDID"]();
+        const flid = mapSDK["getCurrentFloorId"]();
+        const bdInfo = thisObject._app._mapView.getCurrIndoorBuilding()["bdInfo"];
         bdid = bdInfo["bdid"];
         floorId = floorId || bdInfo["groundFloorId"];
         if (mapSDK["getCurrentBDID"]() != bdid) {
@@ -268,7 +268,7 @@
       }
     },
     changeStateChange: function (state) {
-      var thisObject = this;
+      const thisObject = this;
       switch (state) {
         case "loading":
           thisObject._loadingWidget.show();
@@ -288,24 +288,24 @@
     },
 
     searchPoi: function (keyword, callback) {
-      var thisObject = this;
-      var token = thisObject.token;
+      const thisObject = this;
+      const token = thisObject.token;
 
-      var params = thisObject.params;
-      var bdid = params["bdid"];
-      var floorId = params["floorId"];
-      var lon = params["position"][0];
-      var lat = params["position"][1];
+      const params = thisObject.params;
+      const bdid = params["bdid"];
+      const floorId = params["floorId"];
+      const lon = params["position"][0];
+      const lat = params["position"][1];
 
       thisObject.searchConf = thisObject._app._config["search"];
-      var url = thisObject.searchConf["url"];
-      var params = { token: token, bdid: bdid, floorId: floorId, keyword: keyword, url: url };
+      const url = thisObject.searchConf["url"];
+      const params = { token: token, bdid: bdid, floorId: floorId, keyword: keyword, url: url };
       if (lon && lat) {
         params["lon"] = lon;
         params["lat"] = lat;
       } else {
         // 洗手间
-        var center = thisObject._app._config["center"];
+        const center = thisObject._app._config["center"];
         params["lon"] = center["lon"];
         params["lat"] = center["lat"];
       }
@@ -314,19 +314,19 @@
       } else {
         params["type"] = 21;
       }
-      var search = thisObject._app._mapView._search;
+      const search = thisObject._app._mapView._search;
       search["cancel"]();
       if (keyword == "") {
         thisObject.changeStateChange("default");
         return;
       }
-      var searchUrl = thisObject._app._config["searchUrl"];
+      const searchUrl = thisObject._app._config["searchUrl"];
       if (searchUrl) {
         params["url"] = searchUrl;
       }
 
       thisObject.changeStateChange("loading");
-      var count = thisObject._app._config["searchCount"];
+      const count = thisObject._app._config["searchCount"];
       count && (params["count"] = count);
       params["myPositionInfo"] = thisObject._app._mapView._locationManager.getMyPositionInfo();
       search["query"](
@@ -337,7 +337,7 @@
               delete item["distance"];
             });
           }
-          var hideSearchDis = thisObject._app._config["hideSearchDis"];
+          const hideSearchDis = thisObject._app._config["hideSearchDis"];
           thisObject._resulView.updateData(data, { hideDis: hideSearchDis });
           thisObject.changeStateChange("compeleted");
         },
@@ -353,21 +353,21 @@
       if (!args) return;
       this.params = args["data"];
       this.pointType = args["data"]["pointType"];
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.setTopViewHeight(66);
       mapView.setBottomViewHeight(60);
-      var thisObject = this;
-      var bdid = args["bdid"];
+      const thisObject = this;
+      const bdid = args["bdid"];
       if (thisObject._bdid != bdid) {
         thisObject._bdid = bdid;
         // thisObject.updateHotKeyWordResult();
       }
-      var text = (this.params && this.params["keyword"]) || "";
+      const text = (this.params && this.params["keyword"]) || "";
       this._headerView.updateData(text);
       if (this._comboxListPanel) {
         this.getHotWrordView();
       }
-      var historyData = this.getHistoryData()["historyList"];
+      const historyData = this.getHistoryData()["historyList"];
       this._history.updateData(historyData);
       this.changeStateChange("default");
     },
@@ -378,10 +378,10 @@
 
     onShowByPopStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.setTopViewHeight(66);
       mapView.setBottomViewHeight(60);
-      var text = (args && args["keyword"]) || "";
+      const text = (args && args["keyword"]) || "";
       this._headerView.updateData(text);
       this.changeStateChange("default");
     },
@@ -392,11 +392,11 @@
 
     // Run Command
     getHistoryData: function () {
-      var token = this.token;
-      var bdid = this._bdid;
-      var _tempData = { historyList: [] };
+      const token = this.token;
+      const bdid = this._bdid;
+      const _tempData = { historyList: [] };
 
-      var data = daxiapp["cache"].history.getAll(token + "_" + bdid + "SearchSelect");
+      const data = daxiapp["cache"].history.getAll(token + `_${bdid}SearchSelect`);
       data.forEach(function (a) {
         a["name"] = a["keyword"] || a["text"];
         a["name"] += "";
@@ -405,14 +405,14 @@
       return _tempData;
     },
     addHistory: function (_data) {
-      var token = this.token;
-      var bdid = this._bdid;
-      daxiapp["cache"].history.add(_data, token + "_" + bdid + "SearchSelect");
+      const token = this.token;
+      const bdid = this._bdid;
+      daxiapp["cache"].history.add(_data, token + `_${bdid}SearchSelect`);
     },
     clearHistory: function () {
       var token = this.token;
       var bdid = this._bdid;
-      daxiapp["cache"].history.clear(token + "_" + bdid + "SearchSelect");
+      daxiapp["cache"].history.clear(token + `_${bdid}SearchSelect`);
       this._history.updateData([]);
     },
   });

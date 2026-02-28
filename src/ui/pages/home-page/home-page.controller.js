@@ -2,7 +2,7 @@
  * 首页控制器
  * 应用的主入口页面
  */
-import { BasePageController } from '../../controllers/base-page-controller.js';
+import { BasePageController } from "../../controllers/base-page-controller.js";
 
 /**
  * @class HomePageController
@@ -15,11 +15,11 @@ export class HomePageController extends BasePageController {
    */
   constructor(options) {
     super(options);
-    this.pageName = 'HomePage';
-    
+    this.pageName = "HomePage";
+
     /** @type {Array} 轮播图数据 */
     this.bannerData = [];
-    
+
     /** @type {Array} 推荐 POI 数据 */
     this.recommendedPOIs = [];
   }
@@ -30,11 +30,11 @@ export class HomePageController extends BasePageController {
    */
   async onCreate(params) {
     await super.onCreate(params);
-    console.log('[HomePage] Creating with params:', params);
-    
+    console.log("[HomePage] Creating with params:", params);
+
     // 加载首页数据
     await this.loadHomeData();
-    
+
     // 渲染页面
     this.render();
   }
@@ -44,11 +44,11 @@ export class HomePageController extends BasePageController {
    */
   async onShow() {
     await super.onShow();
-    console.log('[HomePage] Showing');
-    
+    console.log("[HomePage] Showing");
+
     // 绑定事件
     this.bindEvents();
-    
+
     // 刷新数据
     this.refreshData();
   }
@@ -58,8 +58,8 @@ export class HomePageController extends BasePageController {
    */
   async onHide() {
     await super.onHide();
-    console.log('[HomePage] Hiding');
-    
+    console.log("[HomePage] Hiding");
+
     // 解绑事件
     this.unbindEvents();
   }
@@ -69,8 +69,8 @@ export class HomePageController extends BasePageController {
    */
   async onDestroy() {
     await super.onDestroy();
-    console.log('[HomePage] Destroying');
-    
+    console.log("[HomePage] Destroying");
+
     // 清理数据
     this.bannerData = [];
     this.recommendedPOIs = [];
@@ -85,10 +85,10 @@ export class HomePageController extends BasePageController {
       // const response = await fetch('/api/home');
       // this.bannerData = response.banners;
       // this.recommendedPOIs = response.recommendedPOIs;
-      
-      console.log('[HomePage] Data loaded');
+
+      console.log("[HomePage] Data loaded");
     } catch (error) {
-      console.error('[HomePage] Load data error:', error);
+      console.error("[HomePage] Load data error:", error);
     }
   }
 
@@ -98,7 +98,7 @@ export class HomePageController extends BasePageController {
   refreshData() {
     // 刷新轮播图
     this.updateBanner();
-    
+
     // 刷新推荐 POI
     this.updateRecommendedPOIs();
   }
@@ -107,10 +107,10 @@ export class HomePageController extends BasePageController {
    * 更新轮播图
    */
   updateBanner() {
-    const bannerContainer = this.$('.home-banner');
+    const bannerContainer = this.$(".home-banner");
     if (bannerContainer && this.bannerData.length > 0) {
       // TODO: 渲染轮播图
-      console.log('[HomePage] Banner updated');
+      console.log("[HomePage] Banner updated");
     }
   }
 
@@ -118,10 +118,10 @@ export class HomePageController extends BasePageController {
    * 更新推荐 POI
    */
   updateRecommendedPOIs() {
-    const poiContainer = this.$('.recommended-pois');
+    const poiContainer = this.$(".recommended-pois");
     if (poiContainer && this.recommendedPOIs.length > 0) {
       // TODO: 渲染推荐 POI
-      console.log('[HomePage] POIs updated');
+      console.log("[HomePage] POIs updated");
     }
   }
 
@@ -181,19 +181,19 @@ export class HomePageController extends BasePageController {
    */
   bindEvents() {
     // 快捷操作点击事件
-    const actionItems = this.$$('.quick-actions .action-item');
-    actionItems.forEach(item => {
-      this.addEventListener(item, 'click', (e) => {
+    const actionItems = this.$$(".quick-actions .action-item");
+    actionItems.forEach((item) => {
+      this.addEventListener(item, "click", (e) => {
         const action = e.currentTarget.dataset.action;
         this.handleQuickAction(action);
       });
     });
 
     // 搜索栏点击事件
-    const searchBar = this.$('.search-bar');
+    const searchBar = this.$(".search-bar");
     if (searchBar) {
-      this.addEventListener(searchBar, 'click', () => {
-        this.navigateTo('SearchPage');
+      this.addEventListener(searchBar, "click", () => {
+        this.navigateTo("SearchPage");
       });
     }
   }
@@ -211,10 +211,10 @@ export class HomePageController extends BasePageController {
    */
   handleQuickAction(action) {
     const pageMap = {
-      'map': 'MapStateBrowse',
-      'route': 'MapStateRoute',
-      'service': 'ServicePage',
-      'profile': 'ProfilePage'
+      map: "MapStateBrowse",
+      route: "MapStateRoute",
+      service: "ServicePage",
+      profile: "ProfilePage",
     };
 
     const targetPage = pageMap[action];
@@ -230,7 +230,7 @@ export class HomePageController extends BasePageController {
     return {
       ...super.toJSON(),
       bannerCount: this.bannerData.length,
-      poiCount: this.recommendedPOIs.length
+      poiCount: this.recommendedPOIs.length,
     };
   }
 }
@@ -248,7 +248,7 @@ export function createHomePage(options = {}) {
  * 注册首页控制器到全局
  * @param {Object} options - 配置选项
  */
-export function registerHomePage(options = {}) {
-  const { registerPage } = await import('../../controllers/page-controller-registry.js');
-  registerPage('HomePage', HomePageController);
+export async function registerHomePage(options = {}) {
+  const { registerPage } = await import("../../controllers/page-controller-registry.js");
+  registerPage("HomePage", HomePageController);
 }

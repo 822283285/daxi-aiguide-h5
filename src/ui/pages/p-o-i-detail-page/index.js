@@ -1,1 +1,5 @@
-export{POIDetailPageController,createPOIDetail,registerPOIDetail}from"./p-o-i-detail-page.controller.js"
+export {
+  POIDetailPageController,
+  createPOIDetail,
+  registerPOIDetail,
+} from "./p-o-i-detail-page.controller.js";

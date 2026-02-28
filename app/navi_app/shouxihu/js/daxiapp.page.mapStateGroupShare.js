@@ -1,11 +1,11 @@
 (function (global) {
   "use strict";
-  var daxiapp = global["DaxiApp"] || {};
-  var daximap = window["DaxiMap"] || {};
-  var domUtils = daxiapp["dom"];
-  var DXUtils = daxiapp["utils"];
-  var MapStateClass = daxiapp["MapStateClass"];
-  var MapStateShareGroup = MapStateClass.extend({
+  const daxiapp = global["DaxiApp"] || {};
+  const daximap = window["DaxiMap"] || {};
+  const domUtils = daxiapp["dom"];
+  const DXUtils = daxiapp["utils"];
+  const MapStateClass = daxiapp["MapStateClass"];
+  const MapStateShareGroup = MapStateClass.extend({;
     __init__: function () {
       this._super();
       this._rtti = "MapStateShareGroup";
@@ -14,10 +14,10 @@
 
     initialize: function (app, container) {
       this._super(app, container);
-      var thisObject = this;
+      const thisObject = this;
       thisObject.pageName = "share_group_page";
       //<li class="copy_btn" style="margin-right: 10px;line-height: 30px;padding: 0px 10px;border: 1px solid #787879;border-radius: 4px;font-size: 1.1rem;color: #787879;">复制口令</li>
-      var basicMap_html = `<div id="share_group_page" class="dx_widget_base_container">
+      const basicMap_html = `<div id="share_group_page" class="dx_widget_base_container">;
         <input id="groupid" value="" readonly style="position: absolute; z-index: -1" />
             <div class="dx_header_wrapper_with_text" style="height: auto">
                 <ul class="dx_header">
@@ -40,7 +40,7 @@
       domUtils.append(thisObject._container, basicMap_html);
       thisObject._dom = domUtils.find(thisObject._container, "#" + thisObject.pageName);
       thisObject._bdid = "";
-      var sharePosServer = thisObject._app._config["user"] && thisObject._app._config["user"]["sharePosServer"];
+      const sharePosServer = thisObject._app._config["user"] && thisObject._app._config["user"]["sharePosServer"];
 
       thisObject._dom.on("click", ".goback", function () {
         daxiapp["domUtil"].dialogWithModal({
@@ -51,8 +51,8 @@
             clearInterval(thisObject.timer);
             app._stateManager.goBack();
             app._stateManager.invokeCallback("shareGroupCallback");
-            var url = sharePosServer[sharePosServer.length - 1] == "/" ? sharePosServer + "quitFromGroup" : sharePosServer + "/quitFromGroup";
-            var userInfo = thisObject.params["data"];
+            const url = sharePosServer[sharePosServer.length - 1] == "/" ? sharePosServer + "quitFromGroup" : sharePosServer + "/quitFromGroup";
+            const userInfo = thisObject.params["data"];
             DXUtils.getDataBySecurityRequest(
               url,
               "post",
@@ -74,11 +74,11 @@
 
       // });
       thisObject._dom.on("click", ".invite_btn", function () {
-        var params = thisObject.params;
-        var token = thisObject._app._params["token"];
-        var groupId = params["groupId"];
-        var title = "";
-        var userInfo = thisObject._app._params["userInfo"];
+        const params = thisObject.params;
+        const token = thisObject._app._params["token"];
+        const groupId = params["groupId"];
+        const title = "";
+        const userInfo = thisObject._app._params["userInfo"];
         if (userInfo["userName"]) {
           title = userInfo["userName"] + "共享的位置";
         }
@@ -88,13 +88,13 @@
       thisObject._poiResultView = new daxiapp["DXPoiResultView2"](app, thisObject._dom);
       thisObject._poiResultView.init({
         onSelectItemAtIndexPath: function (sender, e) {
-          var mapSDK = app._mapView._mapSDK;
+          const mapSDK = app._mapView._mapSDK;
           mapSDK["easeTo"](e);
           thisObject.activeMemberId = e["poiId"];
           thisObject._app._mapView._locationBtnCtrl.setUserTrackingMode(DaxiMap.UserTrackingMode.None);
         },
         onTakeToThere: function (sender, e) {
-          var args = {
+          const args = {;
             method: "takeToThere",
             endPoint: e,
           };
@@ -107,9 +107,9 @@
 
     setUserTrackingModeToNone: function () {
       // this._app._mapView._locationBtnCtrl.setUserTrackingMode(DaxiMap["UserTrackingMode"]["None"])
-      var mapView = this._app._mapView;
-      var locationManager = mapView._locationManager;
-      var locState = locationManager["getLocationState"]();
+      const mapView = this._app._mapView;
+      const locationManager = mapView._locationManager;
+      const locState = locationManager["getLocationState"]();
       if (locState == DaxiMap["LocationState"]["LOCATED"]) {
         mapView._locationBtnCtrl.setUserTrackingMode(DaxiMap["UserTrackingMode"]["None"]);
       } else {
@@ -119,17 +119,17 @@
     onStateBeginWithParam: function (args) {
       this._super(args);
       this.activeMemberId = "";
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       this.isNotActive = false;
       mapView.setTopViewHeight(60);
       mapView.setBottomViewHeight(284);
       this.params = args;
-      var token = this._app._params["token"];
-      var groupId = args["groupId"];
-      var userInfo = args["data"],
+      const token = this._app._params["token"];
+      const groupId = args["groupId"];
+      const userInfo = args["data"],;
         members = args["members"];
-      var count = members.length + 1;
-      var dom = this._dom;
+      const count = members.length + 1;
+      const dom = this._dom;
       dom.find(".members_count")["text"](count);
       dom.find(".group_id")["text"]("群组口令 " + groupId);
       dom.find("#groupId").val(groupId);
@@ -137,7 +137,7 @@
         if (!userInfo["userName"]) {
           daxiapp["domUtil"].tipMessage("点击右下角我的菜单可以设置头像用户名", 4000);
         }
-        var isFirst = true;
+        const isFirst = true;
         this.refreshMembers(userInfo, token, groupId, this, isFirst);
         clearInterval(this.timer);
         this.timer = setInterval(this.refreshMembers, 2000, userInfo, token, groupId, this);
@@ -148,7 +148,7 @@
 
     onHideByPushStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.pushState(true);
       this.isNotActive = true;
       this.clearMapAllObject();
@@ -156,7 +156,7 @@
 
     onShowByPopStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.popState();
       this.isNotActive = false;
     },
@@ -174,16 +174,16 @@
     },
 
     showMarkers: function (data, isFirst) {
-      var thisObject = this;
-      var mapSDK = thisObject._app._mapView._mapSDK;
-      var onMarkerClick = function (marker) {
+      const thisObject = this;
+      const mapSDK = thisObject._app._mapView._mapSDK;
+      const onMarkerClick = function (marker) {;
         thisObject._app._mapView._locationBtnCtrl.setUserTrackingMode(DaxiMap.UserTrackingMode.None);
         thisObject._poiResultView.setActiveById(marker.id || marker._options["featureId"]);
       };
-      var markers = [];
-      var bdid = thisObject._app._mapView._mapSDK["getCurrentBDID"]();
+      const markers = [];
+      const bdid = thisObject._app._mapView._mapSDK["getCurrentBDID"]();
       for (var poiIndex in data) {
-        var poiInfo = data[poiIndex];
+        const poiInfo = data[poiIndex];
         bdid = poiInfo["bdid"] || "";
         poiInfo["width"] = 48;
         poiInfo["height"] = 48;
@@ -194,14 +194,14 @@
       if (thisObject.markerLayer) {
         thisObject.markerLayer.setData(markers);
         if (isFirst && thisObject.activeMemberId != "") {
-          var poiData = thisObject._poiResultView.onlySetItemActiveById(thisObject.activeMemberId);
+          const poiData = thisObject._poiResultView.onlySetItemActiveById(thisObject.activeMemberId);
           if (poiData) {
             mapSDK["easeTo"](poiData);
           }
         }
         return;
       }
-      var markerLayer = new daximap["DXSceneMarkerLayer"]();
+      const markerLayer = new daximap["DXSceneMarkerLayer"]();
       markerLayer.initialize(mapSDK, { markers: markers, bdid: bdid, "icon-allow-overlap": true, onClick: onMarkerClick });
       markerLayer.id = "marker" + daxiapp["utils"].createUUID();
       markerLayer.addToMap();
@@ -214,11 +214,11 @@
 
     // 显示Pois
     refreshMembers: function (params, token, groupId, thisObject, isFirst) {
-      var sharePosServer = thisObject._app._config["user"] && thisObject._app._config["user"]["sharePosServer"];
-      var url = sharePosServer[sharePosServer.length - 1] == "/" ? sharePosServer + "postPosition" : sharePosServer + "/postPosition";
-      var userId = params["userId"];
-      var location = thisObject._app._mapView._locationManager["getMyPositionInfo"]();
-      var data = {
+      const sharePosServer = thisObject._app._config["user"] && thisObject._app._config["user"]["sharePosServer"];
+      const url = sharePosServer[sharePosServer.length - 1] == "/" ? sharePosServer + "postPosition" : sharePosServer + "/postPosition";
+      const userId = params["userId"];
+      const location = thisObject._app._mapView._locationManager["getMyPositionInfo"]();
+      const data = {;
         userId: userId,
         groupId: groupId,
         token: token,
@@ -239,11 +239,11 @@
             return;
           }
           if (result["ret"] == "OK") {
-            var members = result["members"];
-            var count = members.length + 1;
-            var dom = thisObject._dom;
+            const members = result["members"];
+            const count = members.length + 1;
+            const dom = thisObject._dom;
             dom.find(".members_count")["text"](count);
-            var selfInfo = {
+            const selfInfo = {;
               noRoute: true,
               id: userId,
               poiId: userId,
@@ -258,10 +258,10 @@
               selfInfo["scale"] = 0.5;
               selfInfo["iconOffset"] = [0, -25];
             }
-            var list = [];
+            const list = [];
             members.forEach(function (member) {
-              var avatarUrl = member["avatarUrl"];
-              var item = {
+              const avatarUrl = member["avatarUrl"];
+              const item = {;
                 id: member["userId"],
                 poiId: member["userId"],
                 text: member["userName"],

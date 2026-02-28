@@ -1,1 +1,5 @@
-export{PayResultPageController,createPayResult,registerPayResult}from"./pay-result-page.controller.js"
+export {
+  PayResultPageController,
+  createPayResult,
+  registerPayResult,
+} from "./pay-result-page.controller.js";

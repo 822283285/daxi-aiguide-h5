@@ -1,7 +1,7 @@
 /**
  * 页面控制器基类
  * 所有页面控制器都应继承此类
- * 
+ *
  * @class BasePageController
  */
 export class BasePageController {

@@ -3,6 +3,7 @@
 ## 概述
 
 本项目使用 axios 进行 HTTP 请求封装，提供：
+
 - ✅ **自动初始化**：从 URL 和远程配置自动获取参数
 - ✅ **统一拦截**：请求/响应拦截、签名验证、错误处理
 - ✅ **模块化设计**：按功能分类的 API 模块
@@ -12,6 +13,7 @@
 ## 自动初始化
 
 ### 特性
+
 - 无需手动调用 `initApi()`
 - 自动从 URL 获取：`token`、`bdid`、`userId`、`appId`
 - 自动从远程配置获取：`baseUrl`、`scenicApiUrl`、`userApiUrl`
@@ -19,18 +21,19 @@
 
 ### 参数来源
 
-| 参数 | 来源 | 说明 |
-|------|------|------|
-| `token` | URL 参数 (`?token=xxx`) | 用户 token |
-| `bdid` | URL 参数 (`?bdid=xxx` 或 `?poiid=xxx`) | 建筑 ID |
-| `userId` | URL 参数 (`?userId=xxx`) | 用户 ID |
-| `appId` | URL 参数 (`?appId=xxx`) | 应用 ID |
-| `baseUrl` | 远程配置 `scenic.static_url` | 基础 URL |
-| `scenicApiUrl` | 远程配置 `scenic.api_url` | 景区 API URL |
-| `userApiUrl` | 远程配置 `user.userServerUrl` | 用户 API URL |
-| `secret` | 远程配置 `secret` | 签名密钥 |
+| 参数           | 来源                                   | 说明         |
+| -------------- | -------------------------------------- | ------------ |
+| `token`        | URL 参数 (`?token=xxx`)                | 用户 token   |
+| `bdid`         | URL 参数 (`?bdid=xxx` 或 `?poiid=xxx`) | 建筑 ID      |
+| `userId`       | URL 参数 (`?userId=xxx`)               | 用户 ID      |
+| `appId`        | URL 参数 (`?appId=xxx`)                | 应用 ID      |
+| `baseUrl`      | 远程配置 `scenic.static_url`           | 基础 URL     |
+| `scenicApiUrl` | 远程配置 `scenic.api_url`              | 景区 API URL |
+| `userApiUrl`   | 远程配置 `user.userServerUrl`          | 用户 API URL |
+| `secret`       | 远程配置 `secret`                      | 签名密钥     |
 
 ### 远程配置 URL
+
 ```
 https://cloud.daxicn.com/publicData/806bc162812065750b3d3958f9056008/appConfig/app.json
 ```
@@ -47,7 +50,7 @@ https://cloud.daxicn.com/publicData/806bc162812065750b3d3958f9056008/appConfig/a
 
 ```javascript
 // ES6 模块
-import { api } from './src/api/index.js';
+import { api } from "./src/api/index.js";
 
 // 或直接使用全局对象
 // window.DaxiApp.api
@@ -81,15 +84,15 @@ API 会自动从 URL 中提取这些参数。
 ```javascript
 // 获取用户信息
 const userInfo = await api.user.getUserInfo({
-  openid: 'user123', // 可选，默认使用 URL 中的 userId
-  showLog: true,     // 是否显示日志
+  openid: "user123", // 可选，默认使用 URL 中的 userId
+  showLog: true, // 是否显示日志
 });
 
 // 更新用户信息
 const result = await api.user.updateUserInfo({
-  username: '张三',
-  avatarUrl: 'https://example.com/avatar.jpg',
-  openid: 'user123',
+  username: "张三",
+  avatarUrl: "https://example.com/avatar.jpg",
+  openid: "user123",
 });
 
 // 缓存用户信息
@@ -126,9 +129,9 @@ const explains = await api.exhibit.getExhibitExplainAll({});
 
 // 根据展品编号获取详情
 const exhibit = await api.exhibit.getExhibitByNum({
-  exhibitNum: 'E12345',
+  exhibitNum: "E12345",
   // 或
-  code: 'E12345',
+  code: "E12345",
 });
 ```
 
@@ -151,8 +154,8 @@ const footprints = await api.footprint.getFootprints({});
 ```javascript
 // 缓存 token 和 BDID
 const result = await api.payment.cacheTokenAndBDID({
-  token: 'xxx',
-  bdid: 'B000A11DAN',
+  token: "xxx",
+  bdid: "B000A11DAN",
 });
 ```
 
@@ -182,13 +185,13 @@ const config = await api.service.getPageConfig({});
 如果需要手动覆盖配置：
 
 ```javascript
-import { initApi } from './src/api/index.js';
+import { initApi } from "./src/api/index.js";
 
 await initApi({
-  baseUrl: 'https://custom-url.com',
+  baseUrl: "https://custom-url.com",
   appParams: {
-    token: 'custom-token',
-    bdid: 'B000A11DAN',
+    token: "custom-token",
+    bdid: "B000A11DAN",
   },
 });
 ```
@@ -198,23 +201,23 @@ await initApi({
 ```javascript
 try {
   const userInfo = await api.user.getUserInfo({});
-  console.log('成功:', userInfo);
+  console.log("成功:", userInfo);
 } catch (error) {
-  console.error('失败:', error);
-  console.error('错误码:', error.code);
-  console.error('HTTP 状态码:', error.status);
+  console.error("失败:", error);
+  console.error("错误码:", error.code);
+  console.error("HTTP 状态码:", error.status);
 }
 ```
 
 ### 常见错误码
 
-| 错误码 | 说明 |
-|--------|------|
-| `UNAUTHORIZED` | 未授权 |
-| `FORBIDDEN` | 拒绝访问 |
-| `NOT_FOUND` | 资源不存在 |
-| `SERVER_ERROR` | 服务器错误 |
-| `NETWORK_TIMEOUT` | 网络超时 |
+| 错误码            | 说明       |
+| ----------------- | ---------- |
+| `UNAUTHORIZED`    | 未授权     |
+| `FORBIDDEN`       | 拒绝访问   |
+| `NOT_FOUND`       | 资源不存在 |
+| `SERVER_ERROR`    | 服务器错误 |
+| `NETWORK_TIMEOUT` | 网络超时   |
 
 ## 日志控制
 
@@ -241,30 +244,30 @@ const config = await api.scenic.getScenicConfig({
 
 ```javascript
 // 旧方式（不推荐）
-daxiapp.api.getUserInfo({ openid: 'user123' }, successCB, errorCB);
+daxiapp.api.getUserInfo({ openid: "user123" }, successCB, errorCB);
 
 // 新方式（推荐）
-const userInfo = await daxiapp.api.user.getUserInfo({ openid: 'user123' });
+const userInfo = await daxiapp.api.user.getUserInfo({ openid: "user123" });
 ```
 
 ## 更新应用参数
 
 ```javascript
-import { updateAppParams } from './src/api/request.js';
+import { updateAppParams } from "./src/api/request.js";
 
 updateAppParams({
-  token: 'new-token',
-  bdid: 'B000A11DNEW',
+  token: "new-token",
+  bdid: "B000A11DNEW",
 });
 ```
 
 ## 获取远程配置
 
 ```javascript
-import { getRemoteConfig } from './src/api/request.js';
+import { getRemoteConfig } from "./src/api/request.js";
 
 const config = await getRemoteConfig();
-console.log('远程配置:', config);
+console.log("远程配置:", config);
 ```
 
 ## 注意事项
@@ -278,7 +281,7 @@ console.log('远程配置:', config);
 ## 示例代码
 
 ```javascript
-import { api } from './src/api/index.js';
+import { api } from "./src/api/index.js";
 
 async function loadData() {
   try {
@@ -288,12 +291,12 @@ async function loadData() {
       api.scenic.getScenicConfig({}),
       api.exhibit.getExhibitAll({}),
     ]);
-    
-    console.log('用户信息:', userInfo);
-    console.log('景区配置:', config);
-    console.log('展品列表:', exhibits);
+
+    console.log("用户信息:", userInfo);
+    console.log("景区配置:", config);
+    console.log("展品列表:", exhibits);
   } catch (error) {
-    console.error('加载失败:', error);
+    console.error("加载失败:", error);
   }
 }
 
@@ -315,7 +318,7 @@ loadData();
 
 ```javascript
 // ES6 模块
-import signMd5Utils from './src/utils/signMd5Utils.js';
+import signMd5Utils from "./src/utils/signMd5Utils.js";
 
 // 或浏览器全局对象
 const sign = window.signMd5Utils.getSign(url, params);
@@ -340,19 +343,13 @@ const timestamp = window.signMd5Utils.getTimestamp();
 
 ```javascript
 // GET 请求
-const sign = signMd5Utils.getSign(
-  'https://api.example.com/path?param1=value1',
-  { param2: 'value2' }
-);
+const sign = signMd5Utils.getSign("https://api.example.com/path?param1=value1", { param2: "value2" });
 
 // POST 请求
-const sign = signMd5Utils.getSign(
-  'https://api.example.com/path',
-  { key: 'value' }
-);
+const sign = signMd5Utils.getSign("https://api.example.com/path", { key: "value" });
 
 // 使用自定义密钥
-const sign = signMd5Utils.getSign(url, params, 'your-secret-key');
+const sign = signMd5Utils.getSign(url, params, "your-secret-key");
 ```
 
 #### `getTimestamp()`
@@ -376,7 +373,7 @@ const headers = signMd5Utils.buildSignHeaders(url, data);
 //   'X-TIMESTAMP': 1234567890123,
 //   'Content-Type': 'application/json'
 // }
-````
+```
 
 ### 在 API 中使用
 

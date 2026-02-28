@@ -1,1 +1,1 @@
-export{AboutPageController,createAbout,registerAbout}from"./about-page.controller.js"
+export { AboutPageController, createAbout, registerAbout } from "./about-page.controller.js";

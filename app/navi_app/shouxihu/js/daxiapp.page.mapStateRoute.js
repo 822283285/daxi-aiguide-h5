@@ -1,13 +1,13 @@
 (function (global) {
   "use strict";
-  var daxiapp = global["DaxiApp"] || {};
-  var daximap = global["DaxiMap"] || {};
-  var domUtils = daxiapp["dom"];
-  var dxUtils = daxiapp["utils"];
+  const daxiapp = global["DaxiApp"] || {};
+  const daximap = global["DaxiMap"] || {};
+  const domUtils = daxiapp["dom"];
+  const dxUtils = daxiapp["utils"];
 
-  var naviMath = daxiapp["naviMath"];
-  var MapStateClass = daxiapp["MapStateClass"];
-  var MapStateRoute = MapStateClass.extend({
+  const naviMath = daxiapp["naviMath"];
+  const MapStateClass = daxiapp["MapStateClass"];
+  const MapStateRoute = MapStateClass.extend({;
     __init__: function () {
       this._super();
       this._rtti = "MapStateRoute";
@@ -15,9 +15,9 @@
 
     initialize: function (app, container) {
       this._super(app, container);
-      var thisObject = this;
+      const thisObject = this;
       thisObject.name = thisObject.pageName = "route_view_page";
-      var basicMap_html = '<div id="' + thisObject.pageName + '" class="route_page_container"></div>';
+      const basicMap_html = '<div id="' + thisObject.pageName + '" class="route_page_container"></div>';
       domUtils.append(thisObject._container, basicMap_html);
       thisObject._dom = domUtils.find(thisObject._container, "#" + thisObject.pageName);
       thisObject._bdid = "";
@@ -50,8 +50,8 @@
         OnRouteTransitSelectChanged: function (sender, e) {},
         OnStartNavigationClicked: function (sender, e) {
           //开始导航
-          var currentRouteSegments = thisObject._currentRouteSegments;
-          var segments = currentRouteSegments["segments"];
+          const currentRouteSegments = thisObject._currentRouteSegments;
+          const segments = currentRouteSegments["segments"];
           // var data = segments[thisObject.routeIndex];
           if (thisObject.routeIndex < segments.length) {
             thisObject.startNavigation();
@@ -59,11 +59,11 @@
         },
         OnStartSimulateClicked: function (sender, e) {
           //startSimulate
-          var currentRouteSegments = thisObject._currentRouteSegments;
-          var segments = currentRouteSegments["segments"];
-          var data = segments[thisObject.routeIndex];
+          const currentRouteSegments = thisObject._currentRouteSegments;
+          const segments = currentRouteSegments["segments"];
+          const data = segments[thisObject.routeIndex];
           if (thisObject.routeIndex == segments.length - 1 && data["routetype"] != 3) {
-            var params = {
+            const params = {;
               text: "暂不支持室外模拟导航",
               confirmCB: function () {
                 // nextToRouteSegment();
@@ -79,9 +79,9 @@
         onRouteErrorClicked: function (sender, state) {
           if (state) {
             if (state == "noStartPoint") {
-              var data = thisObject._routeheaderView.getStartPoint();
+              const data = thisObject._routeheaderView.getStartPoint();
             } else {
-              var data = thisObject._routeheaderView.getEndPoint();
+              const data = thisObject._routeheaderView.getEndPoint();
             }
             thisObject.openSelectStartEndPage(data);
             return;
@@ -90,8 +90,8 @@
         },
       });
       thisObject._routeTransitListView.setRealNaviBtn("语音导航");
-      var mapView = app._mapView;
-      var mapSDK = mapView._mapSDK;
+      const mapView = app._mapView;
+      const mapSDK = mapView._mapSDK;
       mapSDK["on"]("changeFloor", function (sender, floorId) {
         if (thisObject.visible) {
           thisObject.boundBoxByRoute();
@@ -107,7 +107,7 @@
           return;
         }
         if (val) {
-          var routeData = mapView._naviManager.getSelectedRouteData();
+          const routeData = mapView._naviManager.getSelectedRouteData();
           routeData && (thisObject.explodedRouteLayer = DaxiMapControl["createIndoorRoute"](mapView._mapSDK, { route: routeData["segments"] }));
           thisObject.dxRouteManager.visible = false;
         }
@@ -119,9 +119,9 @@
     onStateBeginWithParam: function (args) {
       this._super(args);
       if (!args) return;
-      var thisObject = this;
+      const thisObject = this;
       thisObject.params = dxUtils.copyData(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.setTopViewHeight(94);
       mapView.setBottomViewHeight(66);
       mapView._mapSDK.setPadding({
@@ -131,7 +131,7 @@
       if (!thisObject.params["startPoint"] || !thisObject.params["startPoint"]["lon"] || !thisObject.params["startPoint"]["lat"]) {
         //没有起点定位成功的时候用定位点即我的位置 posMode myPosition
         thisObject.params["startPoint"] = {};
-        var posInfo = mapView._locationManager["getMyPositionInfo"]();
+        const posInfo = mapView._locationManager["getMyPositionInfo"]();
         if (posInfo["position"][0] && posInfo["position"][1]) {
           thisObject.params["startPoint"]["lon"] = posInfo["position"][0];
           thisObject.params["startPoint"]["lat"] = posInfo["position"][1];
@@ -142,8 +142,8 @@
         }
       }
       if (thisObject.params["startPoint"]) {
-        var target = thisObject._startPoint;
-        var pointInfo = thisObject.params["startPoint"];
+        const target = thisObject._startPoint;
+        const pointInfo = thisObject.params["startPoint"];
         target["lon"] = pointInfo["lon"] || 0;
         target["lat"] = pointInfo["lat"] || 0;
         target["bdid"] = pointInfo["bdid"] || "";
@@ -155,8 +155,8 @@
       }
       // if(thisObject.params["endPoint"] && thisObject.params["endPoint"]["lon"]){
       if (thisObject.params["endPoint"]) {
-        var target = thisObject._endPoint;
-        var pointInfo2 = thisObject.params["endPoint"];
+        const target = thisObject._endPoint;
+        const pointInfo2 = thisObject.params["endPoint"];
         target["poiId"] = pointInfo2["poiId"] || pointInfo2["id"];
         target["lon"] = pointInfo2["lon"];
         target["lat"] = pointInfo2["lat"];
@@ -176,7 +176,7 @@
     onHideByPushStack: function (args) {
       this.removeExplodedRoute();
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.pushState(true);
       mapView._mapSDK.setPadding({
         bottom: 44,
@@ -184,7 +184,7 @@
       });
     },
     removeExplodedRoute: function () {
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView._mulityFloorCtrl &&
         (mapView._mulityFloorCtrl["setVisible"](false), mapView._mapSDK["getExplodedView"]() ? mapView._mapSDK["setExplodedView"](false) : "");
       if (this.explodedRouteLayer) {
@@ -193,7 +193,7 @@
       }
     },
     showExplodedView: function () {
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       if (mapView._mulityFloorCtrl) {
         if (
           this._currentRouteSegments &&
@@ -208,7 +208,7 @@
 
     onShowByPopStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.popState();
       mapView.setTopViewHeight(94);
       mapView.setBottomViewHeight(66);
@@ -236,14 +236,14 @@
 
     // Run Command
     runCommond: function (command) {
-      var thisObject = this;
+      const thisObject = this;
     },
 
     ///////////////////////////////////////////////
     // Other Method
     ///////////////////////////////////////////////
     startNavigation: function () {
-      var data = {
+      const data = {;
         method: "startNavigation",
         startPoint: this._startPoint,
         endPoint: this._endPoint,
@@ -253,7 +253,7 @@
     },
 
     startSimulate: function () {
-      var data = {
+      const data = {;
         method: "startSimulate",
         startPoint: this._startPoint,
         endPoint: this._endPoint,
@@ -263,30 +263,30 @@
     },
 
     openSelectStartEndPage: function (data) {
-      var thisObject = this;
-      var pointType = data["pointType"];
+      const thisObject = this;
+      const pointType = data["pointType"];
       if (pointType == "startPoint") {
         data["endPoint"] = dxUtils.copyData(thisObject._endPoint);
       } else {
         data["startPoint"] = dxUtils.copyData(thisObject._startPoint);
       }
-      var mapSDK = thisObject._app._mapView._mapSDK;
+      const mapSDK = thisObject._app._mapView._mapSDK;
       // 当前地图点位
-      var token = thisObject._app._params.token;
-      var bdid = mapSDK["getCurrentBDID"]();
-      var floorId = mapSDK["getCurrentFloorId"]();
-      var pos = mapSDK["getPosition"]();
+      const token = thisObject._app._params.token;
+      const bdid = mapSDK["getCurrentBDID"]();
+      const floorId = mapSDK["getCurrentFloorId"]();
+      const pos = mapSDK["getPosition"]();
       data["token"] = token;
       data["bdid"] = bdid;
       data["floorId"] = floorId;
       data["position"] = [pos["lon"], pos["lat"]];
 
-      var command = {
+      const command = {;
         method: "openChangeStartEndPointPage",
         data: data,
       };
 
-      var page = thisObject._app._stateManager.pushState("MapStateChangeStartEndPoint", command);
+      const page = thisObject._app._stateManager.pushState("MapStateChangeStartEndPoint", command);
       page._once("selectPointCallback", function (sender, selectPointResult) {
         if (selectPointResult.retVal == "OK") {
           thisObject.onStartEndPointChanged(selectPointResult["data"]);
@@ -297,10 +297,10 @@
     },
 
     onStartEndPointChanged: function (params) {
-      var thisObject = this;
-      var pointType = params["pointType"];
-      var pointInfo = params[params["pointType"]];
-      var target;
+      const thisObject = this;
+      const pointType = params["pointType"];
+      const pointInfo = params[params["pointType"]];
+      const target;
       if (pointType == "startPoint") {
         target = thisObject._startPoint = pointInfo;
         thisObject._routeheaderView.setStartPoint(pointInfo);
@@ -325,16 +325,16 @@
     },
 
     startEndPosSwitch: function (data) {
-      var thisObject = this;
+      const thisObject = this;
       thisObject._startPoint = data["startPoint"];
       thisObject._endPoint = data["endPoint"];
       thisObject.searchRoute();
     },
 
     searchRoute: function () {
-      var thisObject = this;
-      var startPoint = thisObject._startPoint;
-      var endPoint = thisObject._endPoint;
+      const thisObject = this;
+      const startPoint = thisObject._startPoint;
+      const endPoint = thisObject._endPoint;
       thisObject.clearAllRenderObject();
       thisObject.removeExplodedRoute();
       if (startPoint.floorId == endPoint.floorId) {
@@ -346,7 +346,7 @@
           return;
         }
       }
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView._naviManager.registerCallback({
         onCalculateRouteSuccess: function (data) {
           if (!thisObject.visible) {
@@ -397,11 +397,11 @@
         thisObject._routeTransitListView.showSimulateBtn();
       }
       // 请求路线
-      var naviManager = this._app._mapView._naviManager;
+      const naviManager = this._app._mapView._naviManager;
       thisObject._routeTransitListView.showLoading();
 
       if (naviManager) {
-        var transittype = thisObject._app._config.transittype;
+        const transittype = thisObject._app._config.transittype;
         transittype = transittype == undefined ? 0 : transittype;
         if (startPoint["floorId"] && startPoint["bdid"]) {
           startPoint["idtype"] = 3;
@@ -413,24 +413,24 @@
         } else {
           endPoint["idtype"] = transittype;
         }
-        var bdid = startPoint["bdid"] || endPoint["bdid"] || "";
-        var params = { startPoint: startPoint, endPoint: endPoint, token: thisObject._token, bdid: bdid, includeStartEnd: "false", transittype: transittype };
+        const bdid = startPoint["bdid"] || endPoint["bdid"] || "";
+        const params = { startPoint: startPoint, endPoint: endPoint, token: thisObject._token, bdid: bdid, includeStartEnd: "false", transittype: transittype };
 
         naviManager["queryRoutePath"](params); //,thisObject.onRouteReviced,thisObject.onRouteSearchError);
       }
     },
 
     onRouteReviced: function (data) {
-      var thisObject = this;
+      const thisObject = this;
       thisObject.routeData = data;
 
       thisObject.routeIndex = 0;
-      var mapView = this._app._mapView;
-      var naviManager = mapView._naviManager;
+      const mapView = this._app._mapView;
+      const naviManager = mapView._naviManager;
       naviManager.selectRouteId(0);
-      var mapSDK = mapView._mapSDK;
+      const mapSDK = mapView._mapSDK;
 
-      var dxRouteManager = new daximap["DXRouteManager"]();
+      const dxRouteManager = new daximap["DXRouteManager"]();
       dxRouteManager["initialize"](mapSDK);
       if (data["route"]) {
         thisObject._currentRouteSegments = { segments: data.route };
@@ -441,9 +441,9 @@
       }
       thisObject.dxRouteManager = dxRouteManager;
       thisObject._renderObjects.push(dxRouteManager);
-      var startPoint = this._startPoint,
+      const startPoint = this._startPoint,;
         endPoint = this._endPoint;
-      var isFullRouteView = true;
+      const isFullRouteView = true;
       if (startPoint["bdid"] && startPoint["bdid"] == endPoint["bdid"]) {
         isFullRouteView = false;
       }
@@ -453,20 +453,20 @@
       // }
     },
     boundBoxByRoute: function (isFullView) {
-      var mapSDK = this._app._mapView._mapSDK;
+      const mapSDK = this._app._mapView._mapSDK;
       if (isFullView) {
-        var bdid = "",
+        const bdid = "",;
           floorId = "";
       } else {
-        var bdid = mapSDK["getCurrentBDID"](),
+        const bdid = mapSDK["getCurrentBDID"](),;
           floorId = mapSDK["getCurrentFloorId"]();
       }
-      var ret = DXGetPolyLineBoundaryRecursiveVisitor(mapSDK["getRootScene"](), bdid, floorId).visit();
+      const ret = DXGetPolyLineBoundaryRecursiveVisitor(mapSDK["getRootScene"](), bdid, floorId).visit();
       var diffLon = 0; //e["lon"] - (bbox._min[0] + bbox._max[0]) * 0.5;
       var diffLat = 0; //e["lat"] - (bbox._min[1] + bbox._max[1]) * 0.5;
       if (ret.isSuccess) {
-        var bbox = ret.aabb;
-        var bounds = [bbox._min[0] + diffLon, bbox._min[1] + diffLat, bbox._max[0] + diffLon, bbox._max[1] + diffLat];
+        const bbox = ret.aabb;
+        const bounds = [bbox._min[0] + diffLon, bbox._min[1] + diffLat, bbox._max[0] + diffLon, bbox._max[1] + diffLat];
         mapSDK["fitBounds"]({
           bounds: bounds,
           duration: 300,

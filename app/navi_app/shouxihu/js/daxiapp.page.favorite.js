@@ -1,10 +1,10 @@
 (function (global) {
     'use strict';
-    var daxiapp = global["DaxiApp"] || {};
-    var domUtils = daxiapp["dom"];
-    var dxUtil = daxiapp["utils"];
-    var MapStateClass = daxiapp["MapStateClass"];
-    var MapStateFavoritePage = MapStateClass.extend({
+    const daxiapp = global["DaxiApp"] || {};
+    const domUtils = daxiapp["dom"];
+    const dxUtil = daxiapp["utils"];
+    const MapStateClass = daxiapp["MapStateClass"];
+    const MapStateFavoritePage = MapStateClass.extend({;
         __init__ : function () {
             this._super();
             this._rtti = "MapStateFavoritePage";
@@ -12,11 +12,11 @@
 
         initialize: function(app, container) {
             this._super(app, container);
-            var thisObject = this;
+            const thisObject = this;
             thisObject.bdid = "unknown";
             thisObject._app = app;
-            var mapView = app._mapView;
-            var basicMap_html = '<div id="favorite_page" class="dx_full_frame_container">'
+            const mapView = app._mapView;
+            const basicMap_html = '<div id="favorite_page" class="dx_full_frame_container">';
                 + '<div class="favorite_page_header"><i class="goback icon-fanhui"></i><span class="pageTitle">我的收藏</span></div>'
                 +'<div class="wrapper" style="width: 100%;height: 100%;display: flex;flex-direction: column;">'
                 +'</div></div>';
@@ -26,7 +26,7 @@
             thisObject._wrapper = domUtils.find(thisObject._dom, ".wrapper");
             thisObject._loadingDom =  domUtils.find(thisObject._dom, "#loading");
 
-            var mainContainerHtml = '<div class="favorite-main"></div>';
+            const mainContainerHtml = '<div class="favorite-main"></div>';
             domUtils.append(thisObject._wrapper, mainContainerHtml);
             thisObject._mainContainerDom = domUtils.find(thisObject._wrapper, ".favorite-main");
             thisObject._favoriteView = new daxiapp["DXFavoriteViewComponent"](app, thisObject._mainContainerDom);
@@ -34,9 +34,9 @@
                 onShareBtnClicked:function(sender,poiInfo){
                     poiInfo["method"]="showPoiDetail";
                     poiInfo["shareType"] = "poi";
-                    var locationManager = mapView._locationManager;
+                    const locationManager = mapView._locationManager;
                     poiInfo["buildingId"] = poiInfo["bdid"]||'';
-                    var mapConfig = thisObject._app._config;
+                    const mapConfig = thisObject._app._config;
                     poiInfo["token"] = mapConfig["token"];
                     delete poiInfo["bdid"];
                     if(mapConfig["platform"] && mapConfig["wbrs"]){
@@ -46,11 +46,11 @@
                     locationManager.shareToFriend(poiInfo);
                 },
                 onTakeToThere: function(sender, e){
-                    var locationManager = mapView._locationManager;
-                    var startPoint = {};
-                    var defStartPoint = thisObject.params.defStartPoint;
+                    const locationManager = mapView._locationManager;
+                    const startPoint = {};
+                    const defStartPoint = thisObject.params.defStartPoint;
                     if(locationManager){
-                        var myPositionInfo = locationManager.getMyPositionInfo();
+                        const myPositionInfo = locationManager.getMyPositionInfo();
                         if(defStartPoint && (myPositionInfo["bdid"] != defStartPoint.bdid || !myPositionInfo["floorId"])){
                             startPoint = defStartPoint;
                             startPoint["name"] = defStartPoint["name"]||"站内起点";
@@ -63,18 +63,18 @@
                             startPoint["posMode"] = "myPosition";
                         }
                     }
-                    var args = {
+                    const args = {;
                         method:"takeToThere",
                         endPoint:e,
                         startPoint:startPoint//定位起点信息
                     };
-                    var params =  thisObject.params;
+                    const params =  thisObject.params;
                     if(params["defStartPoint"]){
                         args["defStartPoint"] = params["defStartPoint"];
                     }
                     if(app._config["openThirdApp_amap"]){
 
-                        var urlParams = 'sid=&did=&dlat='+e["lat"]+"&dlon="+e["lon"]+'&dname='+encodeURIComponent(e["name"])+'&t=0';
+                        const urlParams = 'sid=&did=&dlat='+e["lat"]+"&dlon="+e["lon"]+'&dname='+encodeURIComponent(e["name"])+'&t=0';
                         if(startPoint["lon"] && startPoint["lat"]){
                             urlParams +='&slat='+startPoint["lat"]+"&slon="+startPoint["lon"]+'&sname='+encodeURIComponent(startPoint["name"]);
                         }
@@ -114,7 +114,7 @@
         onStateBeginWithParam : function(args){
             this._super(args);
             if(!args) return;
-            var thisObject = this;
+            const thisObject = this;
             this.configData = {};
             this.params = args["data"];
             thisObject.updateData();
@@ -122,26 +122,26 @@
         },
         runCommand:function(cmd){
             this.params = cmd;
-            var bdid = this.params["bdid"];
+            const bdid = this.params["bdid"];
             if(this.bdid != bdid){
                 this.bdid = bdid;
                 this.updateData(bdid);
             }
         },
         updateData: function(bdid){
-            var thisObject = this;
-            var bdid = thisObject._app._mapView._mapSDK.getCurrentBDID();
-            var command = thisObject._app._params;
-            var userId = command.userId;
-            var time = new Date().getTime();
-            var favoriteUrl = thisObject._app._config["favoriteUrl"] + "/favorites?appid="+ command["token"]+"&secret=" + thisObject._app._params["appKey"] + "&bdid=" + bdid + "&t=" + time;
-            var url = favoriteUrl + "&userId=" + userId;
+            const thisObject = this;
+            const bdid = thisObject._app._mapView._mapSDK.getCurrentBDID();
+            const command = thisObject._app._params;
+            const userId = command.userId;
+            const time = new Date().getTime();
+            const favoriteUrl = thisObject._app._config["favoriteUrl"] + "/favorites?appid="+ command["token"]+"&secret=" + thisObject._app._params["appKey"] + `&bdid=${bdid}&t=` + time;
+            const url = favoriteUrl + "&userId=" + userId;
             dxUtil.getData(url,{},"json",function(data){
                 if(data.success){
-                    var res = data.result;
+                    const res = data.result;
                     res.forEach(function (list){
                         if(list["floorId"]){
-                            var floorInfo = thisObject._app._mapView.currBuilding.getFloorInfo(list["floorId"]);
+                            const floorInfo = thisObject._app._mapView.currBuilding.getFloorInfo(list["floorId"]);
                             list["flname"] = floorInfo["flname"];
                             list["floorCnName"] = floorInfo["cname"];
                         }
@@ -153,12 +153,12 @@
             })
         },
         addFavorite:function (poiInfo){
-            var thisObject = this;
-            var bdid = thisObject._app._mapView._mapSDK.getCurrentBDID();
-            var command = thisObject._app._params;
-            var userId = command.userId;
-            var time = new Date().getTime();
-            var data = {
+            const thisObject = this;
+            const bdid = thisObject._app._mapView._mapSDK.getCurrentBDID();
+            const command = thisObject._app._params;
+            const userId = command.userId;
+            const time = new Date().getTime();
+            const data = {;
                 "userId": userId,
                 "ftId": poiInfo["poiId"],
                 "name": poiInfo["name"],
@@ -167,7 +167,7 @@
                 "longitude":parseFloat(poiInfo["lon"]),
                 "latitude": parseFloat(poiInfo["lat"])
             }
-            var favoriteUrl = thisObject._app._config["favoriteUrl"] + "/favorites?appid="+ command["token"] +"&secret=" + thisObject._app._params["appKey"] + "&bdid=" + bdid + "&t=" + time;
+            const favoriteUrl = thisObject._app._config["favoriteUrl"] + "/favorites?appid="+ command["token"] +"&secret=" + thisObject._app._params["appKey"] + `&bdid=${bdid}&t=` + time;
             dxUtil.getDataByPostRaw(favoriteUrl,data,function(data){
                 if(data.success){
                     domUtils.showInfo(data.message);
@@ -181,12 +181,12 @@
             })
         },
         removeFavorite:function (poiInfo){
-            var thisObject = this;
-            var bdid = thisObject._app._mapView._mapSDK.getCurrentBDID();
-            var command = thisObject._app._params;
-            var userId = command.userId;
-            var time = new Date().getTime();
-            var favoriteUrl = thisObject._app._config["favoriteUrl"] + "/removeFavorites?appid="+ command["token"]+"&secret=" + thisObject._app._params["appKey"] + "&bdid=" + bdid + "&userId=" + userId + "&id=" + poiInfo["id"] + "&t=" + time;
+            const thisObject = this;
+            const bdid = thisObject._app._mapView._mapSDK.getCurrentBDID();
+            const command = thisObject._app._params;
+            const userId = command.userId;
+            const time = new Date().getTime();
+            const favoriteUrl = thisObject._app._config["favoriteUrl"] + "/removeFavorites?appid="+ command["token"]+"&secret=" + thisObject._app._params["appKey"] + `&bdid=${bdid}&userId=` + userId + "&id=" + poiInfo["id"] + "&t=" + time;
             dxUtil.getDataByPostRaw(favoriteUrl,{},function(data){
                 if(data.success){
                     domUtils.showInfo(data.message);
@@ -203,7 +203,7 @@
 
         onShowByPopStack : function(args){
             this._super(args);
-            var mapView = this._app._mapView;
+            const mapView = this._app._mapView;
         },
 
         onStateEnd : function(args){

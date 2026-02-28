@@ -4,14 +4,14 @@
  * @author daxi
  * @created 2026-02-26
  * @version 1.0
- * 
+ *
  * @example
  * // 使用示例
  * import signMd5Utils from './src/utils/signMd5Utils.js';
- * 
+ *
  * const sign = signMd5Utils.getSign('https://api.example.com/path', { key: 'value' });
  * const timestamp = signMd5Utils.getTimestamp();
- * 
+ *
  * // 或者使用全局对象（浏览器环境）
  * const sign = window.signMd5Utils.getSign(url, params);
  */
@@ -20,7 +20,7 @@
 let MD5Lib = null;
 
 // 尝试从不同来源获取 MD5 实现
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   // 浏览器环境
   if (window.CryptoJS && window.CryptoJS.MD5) {
     MD5Lib = (str) => CryptoJS.MD5(str).toString();
@@ -31,16 +31,16 @@ if (typeof window !== 'undefined') {
 
 // 如果没有找到 MD5 库，提供简单实现（仅用于开发环境）
 if (!MD5Lib) {
-  console.warn('[signMd5Utils] 未找到 MD5 库，使用简单实现（生产环境请引入 crypto-js）');
+  console.warn("[signMd5Utils] 未找到 MD5 库，使用简单实现（生产环境请引入 crypto-js）");
   MD5Lib = function simpleMD5(string) {
     // 简单的占位实现，不等同于标准 MD5
     let hash = 0;
     for (let i = 0; i < string.length; i++) {
       const char = string.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash;
     }
-    return Math.abs(hash).toString(16).padStart(32, '0');
+    return Math.abs(hash).toString(16).padStart(32, "0");
   };
 }
 
@@ -48,7 +48,7 @@ if (!MD5Lib) {
  * 签名密钥串（前后端需保持一致）
  * 可以从配置中获取，或使用默认值
  */
-const DEFAULT_SECRET = 'dd05f1c54d63749eda95f9fa6d49v442a';
+const DEFAULT_SECRET = "dd05f1c54d63749eda95f9fa6d49v442a";
 
 /**
  * 签名工具类
@@ -60,7 +60,7 @@ class SignMd5Utils {
    * @returns {boolean} 是否为数值
    */
   static isNumeric(value) {
-    return typeof value === 'number' && !isNaN(value);
+    return typeof value === "number" && !isNaN(value);
   }
 
   /**
@@ -98,12 +98,12 @@ class SignMd5Utils {
     const result = {};
 
     // 处理 URL 末段包含逗号的路径变量
-    let lastPathVar = url.substring(url.lastIndexOf('/') + 1);
-    if (lastPathVar.includes(',')) {
-      if (lastPathVar.includes('?')) {
-        lastPathVar = lastPathVar.substring(0, lastPathVar.indexOf('?'));
+    let lastPathVar = url.substring(url.lastIndexOf("/") + 1);
+    if (lastPathVar.includes(",")) {
+      if (lastPathVar.includes("?")) {
+        lastPathVar = lastPathVar.substring(0, lastPathVar.indexOf("?"));
       }
-      result['x-path-variable'] = decodeURIComponent(lastPathVar);
+      result["x-path-variable"] = decodeURIComponent(lastPathVar);
     }
 
     if (urlArray?.[1]) {
@@ -139,11 +139,11 @@ class SignMd5Utils {
    * @param {Object} requestParams - 请求参数（POST 的请求体参数或 GET 的查询参数）
    * @param {string} [secret] - 签名字符串（可选，默认使用内置密钥）
    * @returns {string} 签名值（32 位大写）
-   * 
+   *
    * @example
    * // GET 请求
    * const sign = signMd5Utils.getSign('https://api.example.com/path?param1=value1', { param2: 'value2' });
-   * 
+   *
    * @example
    * // POST 请求
    * const sign = signMd5Utils.getSign('https://api.example.com/path', { key: 'value' });
@@ -153,7 +153,7 @@ class SignMd5Utils {
     const jsonObj = this.mergeObject(urlParams, requestParams);
     const requestBody = this.sortAsc(jsonObj);
     const secretKey = secret || DEFAULT_SECRET;
-    
+
     const signStr = JSON.stringify(requestBody) + secretKey;
     return MD5Lib(signStr).toUpperCase();
   }
@@ -172,7 +172,7 @@ class SignMd5Utils {
    * @param {Object} data - 请求数据
    * @param {Object} [customHeaders] - 自定义请求头（可选）
    * @returns {Object} 包含签名的请求头对象
-   * 
+   *
    * @example
    * const headers = signMd5Utils.buildSignHeaders(url, data);
    * // 返回：
@@ -184,9 +184,9 @@ class SignMd5Utils {
    */
   static buildSignHeaders(url, data, customHeaders) {
     return {
-      'X-Sign': this.getSign(url, data),
-      'X-TIMESTAMP': this.getTimestamp(),
-      'Content-Type': 'application/json',
+      "X-Sign": this.getSign(url, data),
+      "X-TIMESTAMP": this.getTimestamp(),
+      "Content-Type": "application/json",
       ...customHeaders,
     };
   }
@@ -196,12 +196,12 @@ class SignMd5Utils {
 export default SignMd5Utils;
 
 // 浏览器全局导出
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   window.signMd5Utils = SignMd5Utils;
-  console.log('[signMd5Utils] 已挂载到 window.signMd5Utils');
+  console.log("[signMd5Utils] 已挂载到 window.signMd5Utils");
 }
 
 // CommonJS 导出
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
   module.exports = SignMd5Utils;
 }

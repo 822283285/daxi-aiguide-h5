@@ -1,12 +1,12 @@
 (function (global) {
     'use strict';
-    var daxiapp = global["DaxiApp"] || {};
-    var DXUtils = daxiapp["utils"];
-    var domUtils = daxiapp["dom"];
-    var domUtil = daxiapp["domUtil"];
+    const daxiapp = global["DaxiApp"] || {};
+    const DXUtils = daxiapp["utils"];
+    const domUtils = daxiapp["dom"];
+    const domUtil = daxiapp["domUtil"];
 
-    var MapStateClass = daxiapp["MapStateClass"];
-    var MapStateCreateGroup = MapStateClass.extend({
+    const MapStateClass = daxiapp["MapStateClass"];
+    const MapStateCreateGroup = MapStateClass.extend({;
         __init__ : function () {
             this._super();
             this._rtti = "MapStateCreateGroup";
@@ -14,9 +14,9 @@
 
         initialize: function(app, container) {
             this._super(app, container);
-            var thisObject = this;
+            const thisObject = this;
             this._app = app;
-            var basicMap_html = '<div id="group_share_page" class="dx_full_frame_container"></div>';
+            const basicMap_html = '<div id="group_share_page" class="dx_full_frame_container"></div>';
             domUtils.append(thisObject._container, basicMap_html);
             thisObject._dom = domUtils.find(thisObject._container, "#group_share_page");
             thisObject._bdid = "";
@@ -30,7 +30,7 @@
             });
             thisObject._headerView.updateTitle('组队出行');
 
-            var containerWraperhtml = '<div class="main_content create_group_container" id="sharegroup"><div class="sharegroup_container">'+
+            const containerWraperhtml = '<div class="main_content create_group_container" id="sharegroup"><div class="sharegroup_container">'+;
             '<p class="description">实时分享位置</p>'+
             '<span class="create_group" id="createGroup">创建队伍</span>'+
             '<p class="add_group">'+
@@ -39,13 +39,13 @@
             '</p></div><div class="msg_dialog" id="tipMsgBox"><p class="content"></p></div></div>';
            //'<div class="main_content" style="position: relative;flex-grow: 1;"></div>';
             domUtils.append(thisObject._dom, containerWraperhtml);
-            var userInfo = app._params["userInfo"];
+            const userInfo = app._params["userInfo"];
            
             thisObject._dom.on("click","#createGroup",function(){
-                var sharePosServer = thisObject.sharePosServer;
-                var url = sharePosServer[sharePosServer.length-1] == "/"? (sharePosServer+ "createGroup") : (sharePosServer+ "/createGroup");
-                var locPosition = thisObject.params.locPosition;
-                var data = {
+                const sharePosServer = thisObject.sharePosServer;
+                const url = sharePosServer[sharePosServer.length-1] == "/"? (sharePosServer+ "createGroup") : (sharePosServer+ "/createGroup");
+                const locPosition = thisObject.params.locPosition;
+                const data = {;
                     "userId":userInfo["userId"]||"",
                     "userName":userInfo["userName"]||"",
                     "avatarUrl":userInfo["avatarUrl"]||'',
@@ -58,7 +58,7 @@
                 DXUtils.getDataBySecurityRequest(url,'post',data,function(result){
            
                     if(result["ret"] == "OK"){
-                        var page = app._stateManager.pushState("MapStateShareGroup",{"data":userInfo,"members":result["members"],"groupId":result["groupId"]});
+                        const page = app._stateManager.pushState("MapStateShareGroup",{"data":userInfo,"members":result["members"],"groupId":result["groupId"]});
                         page._once("shareGroupCallback", function(sender, searchResult){
                             app._stateManager.goBack();
                         });
@@ -75,10 +75,10 @@
                 });
             });
             thisObject._dom.on("click","#addAction",function(){
-                var sharePosServer = thisObject.sharePosServer;
-                var url = sharePosServer[sharePosServer.length-1] == "/"? (sharePosServer+ "postPosition") : (sharePosServer+ "/postPosition");
-                var locPosition = thisObject.params.locPosition;
-                var data = {
+                const sharePosServer = thisObject.sharePosServer;
+                const url = sharePosServer[sharePosServer.length-1] == "/"? (sharePosServer+ "postPosition") : (sharePosServer+ "/postPosition");
+                const locPosition = thisObject.params.locPosition;
+                const data = {;
                     "userId":userInfo["userId"]||"",
                     "userName":userInfo["userName"]||"",
                     "avatarUrl":userInfo["avatarUrl"]||'',
@@ -88,7 +88,7 @@
                     "lng":locPosition["position"][0]||"",
                     "lat":locPosition["position"][1]||""
                 };
-                var groupId = thisObject._dom.find(".groupid").val();
+                const groupId = thisObject._dom.find(".groupid").val();
                 if(groupId.length !=6){
                     domUtil.tipMessage("请输入正确口令",3000);
                     return;
@@ -99,7 +99,7 @@
                     if(result["ret"] == "OK"){
                         result["userId"] = data["userId"];
                         // userInfo["groupId"] = groupId;
-                        var page = app._stateManager.pushState("MapStateShareGroup",{"data":userInfo,"members":result["members"],"groupId":groupId});
+                        const page = app._stateManager.pushState("MapStateShareGroup",{"data":userInfo,"members":result["members"],"groupId":groupId});
                         page._once("shareGroupCallback", function(sender, searchResult){
                             app._stateManager.goBack();
                         });

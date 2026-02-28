@@ -1,12 +1,12 @@
 (function (global) {
   "use strict";
-  var daxiapp = global["DaxiApp"] || {};
-  var daximap = window["DaxiMap"] || {};
-  var DXMapUtils = daximap["DXMapUtils"];
-  var domUtils = daxiapp["dom"];
+  const daxiapp = global["DaxiApp"] || {};
+  const daximap = window["DaxiMap"] || {};
+  const DXMapUtils = daximap["DXMapUtils"];
+  const domUtils = daxiapp["dom"];
 
-  var MapStateClass = daxiapp["MapStateClass"];
-  var MapStatePoiDetail = MapStateClass.extend({
+  const MapStateClass = daxiapp["MapStateClass"];
+  const MapStatePoiDetail = MapStateClass.extend({;
     __init__: function () {
       this._super();
       this._rtti = "MapStatePoiDetail";
@@ -14,13 +14,13 @@
 
     initialize: function (app, container) {
       this._super(app, container);
-      var thisObject = this;
+      const thisObject = this;
       // var app  = thisObject._app;
-      var basicMap_html = '<div id="poi_detail_page" class=""></div>';
+      const basicMap_html = '<div id="poi_detail_page" class=""></div>';
       domUtils.append(thisObject._container, basicMap_html);
       thisObject._dom = domUtils.find(thisObject._container, "#poi_detail_page");
       thisObject._bdid = "";
-      var mapView = app._mapView;
+      const mapView = app._mapView;
       thisObject.bottomViewHeight = 70;
       thisObject._searchView = new daxiapp["DXSearchViewComponent"](app, thisObject._dom);
       thisObject._searchView.init({
@@ -28,13 +28,13 @@
           app._stateManager.goBack();
         },
         onSearchViewSearchBtnClicked: function (sender, e) {
-          var bdid = thisObject._app._mapView._mapSDK["getCurrentBDID"]();
-          var token = thisObject._app._params.token;
-          var arealType = "outdoor";
+          const bdid = thisObject._app._mapView._mapSDK["getCurrentBDID"]();
+          const token = thisObject._app._params.token;
+          const arealType = "outdoor";
           if (bdid) {
             arealType = "indoor";
           }
-          var args = {
+          const args = {;
             method: "openSearchPage",
             data: {
               bdid: bdid,
@@ -43,16 +43,16 @@
               keyword: e["keyword"],
             },
           };
-          var params = thisObject.params;
+          const params = thisObject.params;
           if (params["defStartPoint"]) {
             args["data"]["defStartPoint"] = params["defStartPoint"];
           }
 
-          var page = thisObject._app._stateManager.pushState("MapStateSearchPage", args);
+          const page = thisObject._app._stateManager.pushState("MapStateSearchPage", args);
           page._once("searchPageCallback", function (sender, searchResult) {
             if (searchResult.retVal == "OK") {
               //poiDetailPageCallback
-              var params = thisObject.params;
+              const params = thisObject.params;
               if (params["defStartPoint"]) {
                 searchResult["data"]["defStartPoint"] = params["defStartPoint"];
               }
@@ -62,13 +62,13 @@
           });
         },
         onSearchViewMicBtnClicked: function (sender, e) {
-          var bdid = thisObject._app._mapView._mapSDK["getCurrentBDID"]();
-          var token = thisObject._app._params.token;
-          var arealType = "outdoor";
+          const bdid = thisObject._app._mapView._mapSDK["getCurrentBDID"]();
+          const token = thisObject._app._params.token;
+          const arealType = "outdoor";
           if (bdid) {
             arealType = "indoor";
           }
-          var args = {
+          const args = {;
             method: "openSearchPage",
             data: {
               bdid: bdid,
@@ -77,14 +77,14 @@
               keyword: e["keyword"],
             },
           };
-          var params = thisObject.params;
+          const params = thisObject.params;
           if (params["defStartPoint"]) {
             args["data"]["defStartPoint"] = params["defStartPoint"];
           }
-          var page = thisObject._app._stateManager.pushState("MapStateSearchPage", args);
+          const page = thisObject._app._stateManager.pushState("MapStateSearchPage", args);
           page._once("searchCallback", function (sender, searchResult) {
             if (searchResult.retVal == "OK") {
-              var params = thisObject.params;
+              const params = thisObject.params;
               if (params["defStartPoint"]) {
                 searchResult["data"]["defStartPoint"] = params["defStartPoint"];
               }
@@ -93,7 +93,7 @@
           });
         },
       });
-      var showShare = app._config["showSahre"] == false ? false : true;
+      const showShare = app._config["showSahre"] == false ? false : true;
       thisObject._poiDetailView = new daxiapp["DXPoiDetialView"](app, thisObject._dom, showShare);
       thisObject._poiDetailView.init({
         viewStateChanged: function (sender, e) {
@@ -101,11 +101,11 @@
           mapView.setBottomViewHeight(thisObject.bottomViewHeight);
         },
         onTakeToThere: function (sender, e) {
-          var locationManager = mapView._locationManager;
-          var startPoint = {};
-          var defStartPoint = thisObject.params.defStartPoint;
+          const locationManager = mapView._locationManager;
+          const startPoint = {};
+          const defStartPoint = thisObject.params.defStartPoint;
           if (locationManager) {
-            var myPositionInfo = locationManager["getMyPositionInfo"]();
+            const myPositionInfo = locationManager["getMyPositionInfo"]();
             if (defStartPoint && (myPositionInfo["bdid"] != defStartPoint.bdid || !myPositionInfo["floorId"])) {
               startPoint = defStartPoint;
               startPoint["name"] = defStartPoint["name"] || "站内起点";
@@ -118,17 +118,17 @@
               startPoint["posMode"] = "myPosition";
             }
           }
-          var args = {
+          const args = {;
             method: "takeToThere",
             endPoint: e,
             startPoint: startPoint, //定位起点信息
           };
-          var params = thisObject.params;
+          const params = thisObject.params;
           if (params["defStartPoint"]) {
             args["defStartPoint"] = params["defStartPoint"];
           }
           if (app._config["openThirdApp_amap"]) {
-            var urlParams = "sid=&did=&dlat=" + e["lat"] + "&dlon=" + e["lon"] + "&dname=" + encodeURIComponent(e["name"]) + "&t=0";
+            const urlParams = "sid=&did=&dlat=" + e["lat"] + "&dlon=" + e["lon"] + "&dname=" + encodeURIComponent(e["name"]) + "&t=0";
             if (startPoint["lon"] && startPoint["lat"]) {
               urlParams += "&slat=" + startPoint["lat"] + "&slon=" + startPoint["lon"] + "&sname=" + encodeURIComponent(startPoint["name"]);
             }
@@ -152,9 +152,9 @@
         onShareBtnClicked: function (sender, poiInfo) {
           poiInfo["method"] = "showPoiDetail";
           poiInfo["shareType"] = "poi";
-          var locationManager = mapView._locationManager;
+          const locationManager = mapView._locationManager;
           poiInfo["buildingId"] = poiInfo["bdid"] || "";
-          var mapConfig = thisObject._app._config;
+          const mapConfig = thisObject._app._config;
           poiInfo["token"] = thisObject._app._params["token"] || mapConfig["token"];
           delete poiInfo["bdid"];
           if (mapConfig["platform"] && mapConfig["wbrs"]) {
@@ -171,7 +171,7 @@
     onStateBeginWithParam: function (args) {
       this._super(args);
       if (!args) return;
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.setTopViewHeight(66);
       mapView.setBottomViewHeight(this.bottomViewHeight);
       this.params = args["data"];
@@ -184,7 +184,7 @@
 
     onHideByPushStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.pushState(true);
       mapView._mapSDK["off"]("poiClick", this.onPoiClick, this);
     },
@@ -210,22 +210,22 @@
 
     // open PoiDetail
     openPoiDetailPage: function (poiInfo) {
-      var thisObject = this;
-      var bdid = thisObject._app._mapView._mapSDK["getCurrentBDID"]() || "";
-      var token = thisObject._app._params.token;
-      var arealType = "outdoor";
+      const thisObject = this;
+      const bdid = thisObject._app._mapView._mapSDK["getCurrentBDID"]() || "";
+      const token = thisObject._app._params.token;
+      const arealType = "outdoor";
       if (bdid) {
         arealType = "indoor";
       }
-      var floorId = poiInfo["floorId"];
-      var floorName = "",
+      const floorId = poiInfo["floorId"];
+      const floorName = "",;
         floorCnName = "";
       if (floorId && thisObject._app._mapView.currBuilding) {
-        var floorInfo = thisObject._app._mapView.currBuilding["getFloorInfo"](floorId);
+        const floorInfo = thisObject._app._mapView.currBuilding["getFloorInfo"](floorId);
         floorName = floorInfo["flname"];
         floorCnName = floorInfo["flcnname"];
       }
-      var args = {
+      const args = {;
         method: "openPoiDetailPage",
         data: {
           bdid: bdid,
@@ -245,7 +245,7 @@
         },
       };
 
-      var mapView = thisObject._app._mapView;
+      const mapView = thisObject._app._mapView;
       if (poiInfo["bdid"] && poiInfo["floorId"]) {
         mapView._mapSDK["changeFloor"](poiInfo["bdid"], poiInfo["floorId"]);
       }
@@ -256,9 +256,9 @@
     },
 
     showMarker: function (poiInfo) {
-      var thisObject = this;
+      const thisObject = this;
       thisObject.clearAllRenderObject();
-      var markerOption = {
+      const markerOption = {;
         featureId: poiInfo["featureId"],
         lon: poiInfo["lon"],
         lat: poiInfo["lat"],
@@ -272,8 +272,8 @@
         scale: 0.5,
         showText: true,
       };
-      var mapSDK = thisObject._app._mapView._mapSDK;
-      var marker = new daximap["DXSceneMarker"]();
+      const mapSDK = thisObject._app._mapView._mapSDK;
+      const marker = new daximap["DXSceneMarker"]();
       marker["initialize"](mapSDK, markerOption);
       marker.id = daxiapp["utils"].createUUID();
       marker["addToMap"]();

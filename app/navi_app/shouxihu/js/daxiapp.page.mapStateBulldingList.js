@@ -1,9 +1,9 @@
 (function (global) {
   "use strict";
-  var daxiapp = global["DaxiApp"] || {};
-  var domUtils = daxiapp["dom"];
-  var MapStateClass = daxiapp["MapStateClass"];
-  var MapStateBuildingList = MapStateClass.extend({
+  const daxiapp = global["DaxiApp"] || {};
+  const domUtils = daxiapp["dom"];
+  const MapStateClass = daxiapp["MapStateClass"];
+  const MapStateBuildingList = MapStateClass.extend({;
     __init__: function () {
       this._super();
       this._rtti = "MapStateBuildingList";
@@ -11,9 +11,9 @@
 
     initialize: function (app, container) {
       this._super(app, container);
-      var thisObject = this;
+      const thisObject = this;
       // var app  = thisObject._app;
-      var basicMap_html = '<div id="stations_page" class="dx_full_frame_container stations_page"></div>';
+      const basicMap_html = '<div id="stations_page" class="dx_full_frame_container stations_page"></div>';
       domUtils.append(thisObject._container, basicMap_html);
       thisObject._dom = domUtils.find(thisObject._container, "#stations_page");
       thisObject._bdid = "";
@@ -21,7 +21,7 @@
       thisObject._headerView = new daxiapp["DXHeaderComponent"](app, thisObject._dom);
       thisObject._headerView.init({
         onBackBtnClicked: function (sender, e) {
-          var command = {
+          const command = {;
             ret: "Cancel",
           };
           app._stateManager.invokeCallback("openBuildingCallback", command);
@@ -45,7 +45,7 @@
       thisObject._buildingListView = new daxiapp["DXBuildingListComponent"](app, thisObject._disWrapper);
       thisObject._buildingListView.init({
         onStationClicked: function (sender, e) {
-          var command = {
+          const command = {;
             retVal: "OK",
             method: "changeBuilding",
           };
@@ -62,7 +62,7 @@
       });
       if (app._mapView) {
         app._mapView._mapSDK["on"]("loadComplete", function (sender, data) {
-          var title = data["bdListDesc"] || "建筑列表";
+          const title = data["bdListDesc"] || "建筑列表";
           thisObject._headerView.updateTitle(title);
           thisObject._buildingListView.updateData(data, "", app._params.token);
         });
@@ -74,13 +74,13 @@
       this.show(false);
     },
     setData: function (data, bdid, token) {
-      var title = data["title"] || "建筑列表";
+      const title = data["title"] || "建筑列表";
       // data buildingsData
       this._headerView.updateTitle(title);
       this._buildingListView.updateData(data, bdid, token);
     },
     changeStateChange: function (state) {
-      var thisObject = this;
+      const thisObject = this;
       switch (state) {
         case "loading":
           thisObject._loadingWidget.show();
@@ -110,14 +110,14 @@
     },
 
     onShowByPopStack: function (args) {
-      var text = (args && args["keyword"]) || "";
+      const text = (args && args["keyword"]) || "";
       this._super(args);
       this.changeStateChange("default");
     },
 
     onStateEnd: function (args) {
       this._super(args);
-      var _search = this._app._mapView._search;
+      const _search = this._app._mapView._search;
       _search["cancel"]();
     },
     // Run Command

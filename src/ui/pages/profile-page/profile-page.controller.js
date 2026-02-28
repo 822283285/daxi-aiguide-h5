@@ -1,1 +1,37 @@
-import{BasePageController}from"../../controllers/base-page-controller.js";export classProfilePageControllerextends BasePageController{constructor(o){super(o);this.pageName="ProfilePage"}async onCreate(p){await super.onCreate(p);this.render()}async onShow(){await super.onShow();this.bindEvents()}render(){const c=this.getContainer();if(!c)return;this.setHtml(c,"<div><h1>+p.t+</h1></div>")}bindEvents(){}};export function createProfile(o={}){return new ProfilePageController(o)};export async function registerProfile(o){const{registerPage}=await import("../../controllers/page-controller-registry.js");registerPage("ProfilePage",ProfilePageController)}
+import { BasePageController } from "../../controllers/base-page-controller.js";
+
+export class ProfilePageController extends BasePageController {
+  constructor(options) {
+    super(options);
+    this.pageName = "ProfilePage";
+  }
+
+  async onCreate(params) {
+    await super.onCreate(params);
+    this.render();
+  }
+
+  async onShow() {
+    await super.onShow();
+    this.bindEvents();
+  }
+
+  render() {
+    const container = this.getContainer();
+    if (!container) return;
+    this.setHtml(container, "<div><h1>Profile</h1></div>");
+  }
+
+  bindEvents() {
+    // Event bindings
+  }
+}
+
+export function createProfile(options = {}) {
+  return new ProfilePageController(options);
+}
+
+export async function registerProfile(options) {
+  const { registerPage } = await import("../../controllers/page-controller-registry.js");
+  registerPage("ProfilePage", ProfilePageController);
+}

@@ -33,9 +33,7 @@ export class PageControllerRegistry {
 
     // 验证是否继承自 BasePageController
     if (!(ControllerClass.prototype instanceof BasePageController)) {
-      console.warn(
-        `[Registry] ${pageName} does not extend BasePageController`
-      );
+      console.warn(`[Registry] ${pageName} does not extend BasePageController`);
     }
 
     this.registry.set(pageName, ControllerClass);
@@ -106,9 +104,7 @@ export class PageControllerRegistry {
     });
 
     this.isInitialized = true;
-    console.log(
-      `[Registry] Auto-registered ${this.registry.size} pages, synced to router`
-    );
+    console.log(`[Registry] Auto-registered ${this.registry.size} pages, synced to router`);
   }
 
   /**

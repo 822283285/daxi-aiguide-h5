@@ -34,4 +34,3 @@ export function createElement(html) {
   div.innerHTML = html.trim();
   return div.firstElementChild;
 }
-

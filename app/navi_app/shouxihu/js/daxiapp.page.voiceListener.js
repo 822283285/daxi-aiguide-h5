@@ -1,10 +1,10 @@
 (function (global) {
     'use strict';
-    var daxiapp = global["DaxiApp"] || {};
-    var domUtils = daxiapp["dom"];
-    var dxUtil = daxiapp["utils"];
-    var MapStateClass = daxiapp["MapStateClass"];
-    var VoiceListenerPage = MapStateClass.extend({
+    const daxiapp = global["DaxiApp"] || {};
+    const domUtils = daxiapp["dom"];
+    const dxUtil = daxiapp["utils"];
+    const MapStateClass = daxiapp["MapStateClass"];
+    const VoiceListenerPage = MapStateClass.extend({;
         __init__ : function () {
             this._super();
             this._rtti = "voiceListenerPage";
@@ -12,11 +12,11 @@
 
         initialize: function(app, container) {
             this._super(app, container);
-            var thisObject = this;
+            const thisObject = this;
             thisObject.bdid = "unknown";
             thisObject._app = app;
-            var mapView = app._mapView;
-            var basicMap_html = '<div id="voice_page" class="dx_full_frame_container">'
+            const mapView = app._mapView;
+            const basicMap_html = '<div id="voice_page" class="dx_full_frame_container">';
                 +'<div class="wrapper" style="width: 100%;height: 100%;display: flex;flex-direction: column;">'
                 +'</div></div>';
             domUtils.append(thisObject._container, basicMap_html);
@@ -24,7 +24,7 @@
             thisObject._bdid = "";
             thisObject._wrapper = domUtils.find(thisObject._dom, ".wrapper");
             thisObject._loadingDom =  domUtils.find(thisObject._dom, "#loading");
-            var backBtn = thisObject._dom.find(".hospital-back");
+            const backBtn = thisObject._dom.find(".hospital-back");
             if(backBtn.length == 0){
                 backBtn = "<div class='hospital-back'></div>";
                 thisObject._dom.append(backBtn)
@@ -33,7 +33,7 @@
             thisObject._backBtn.on("click",function (){
                 thisObject._app._stateManager.goBack();
             })
-            var mainContainerHtml = '<div class="voice-main '+ app._params.bdid +'"></div>';
+            const mainContainerHtml = '<div class="voice-main '+ app._params.bdid +'"></div>';
             domUtils.append(thisObject._wrapper, mainContainerHtml);
             thisObject._mainContainerDom = domUtils.find(thisObject._wrapper, ".voice-main");
             thisObject._voiceView = new daxiapp["DXVoiceViewComponent"](app, thisObject._mainContainerDom);
@@ -42,8 +42,8 @@
                     if(app._stateManager._curPage != thisObject){
                         return;
                     }
-                    var keyword = args["keyword"];
-                    var data = {
+                    const keyword = args["keyword"];
+                    const data = {;
                         "method" :"showPois",
                         "keyword":keyword
                     };
@@ -80,7 +80,7 @@
         onStateBeginWithParam : function(args){
             this._super(args);
             if(!args) return;
-            var thisObject = this;
+            const thisObject = this;
             this.configData = {};
             this.params = args["data"];
             thisObject.updateData();
@@ -88,14 +88,14 @@
         },
         runCommand:function(cmd){
             this.params = cmd;
-            var bdid = this.params["bdid"];
+            const bdid = this.params["bdid"];
             if(this.bdid != bdid){
                 this.bdid = bdid;
                 this.updateData(bdid);
             }
         },
         updateData: function(bdid){
-            var thisObject = this;
+            const thisObject = this;
             thisObject._voiceView.updateData("",thisObject._app._config["showShare"]);
         },
 
@@ -105,7 +105,7 @@
 
         onShowByPopStack : function(args){
             this._super(args);
-            var mapView = this._app._mapView;
+            const mapView = this._app._mapView;
         },
 
         onStateEnd : function(args){
@@ -119,14 +119,14 @@
         },
         // 显示Pois
         showPois : function(args){
-            var params = this.getParams();
+            const params = this.getParams();
             if(params["bdid"]){
-                var arealType = "indoor";
+                const arealType = "indoor";
                 args["arealType"] = arealType;
                 args["type"] == undefined? (args["type"] = 1):'' ;
 
             }else{
-                var arealType = "outdoor";
+                const arealType = "outdoor";
                 args["arealType"] = arealType;
                 args["type"] == undefined? (args["type"] = 11):'' ;
             }
@@ -141,26 +141,26 @@
             this._app.pageCommand.openPoiState(args);
         },
         getParams:function(){
-            var thisObject = this;
-            var token = this._app._params["token"];
-            var mapView = this._app._mapView;
-            var mapSDK = mapView._mapSDK;
-            var bdid = mapSDK["getCurrentBDID"]()||'';
-            var floorId = mapSDK["getCurrentFloorId"]()||'';
-            var bdInfo = mapView.getCurrIndoorBuilding()["bdInfo"];
+            const thisObject = this;
+            const token = this._app._params["token"];
+            const mapView = this._app._mapView;
+            const mapSDK = mapView._mapSDK;
+            const bdid = mapSDK["getCurrentBDID"]()||'';
+            const floorId = mapSDK["getCurrentFloorId"]()||'';
+            const bdInfo = mapView.getCurrIndoorBuilding()["bdInfo"];
             bdid = bdInfo["bdid"];
             floorId = floorId||bdInfo["groundFloorId"];
             if(mapSDK["getCurrentBDID"]() != bdid){
                 lon = bdInfo["center"][0];
                 lat = bdInfo["center"][1];
             }
-            var pos = mapSDK["getPosition"]();
-            var lon = pos["lon"],lat=pos["lat"];
+            const pos = mapSDK["getPosition"]();
+            const lon = pos["lon"],lat=pos["lat"];
             // 定位点
-            var locationManager = mapView._locationManager;
-            var myPositionInfo = locationManager["getMyPositionInfo"]();
+            const locationManager = mapView._locationManager;
+            const myPositionInfo = locationManager["getMyPositionInfo"]();
 
-            var defStartPoint;
+            const defStartPoint;
             if(bdid){
                 if(thisObject.buildingInfo  && thisObject.buildingInfo["defStartPoint"]){
                     thisObject.buildingInfo["defStartPoint"]["bdid"] = thisObject.buildingInfo["bdid"];
@@ -176,7 +176,7 @@
                 }
             }
             // 室外的搜索都已当前地图位置搜索，如果想按照的
-            var data = {
+            const data = {;
                 "bdid":bdid,
                 "token":token,
                 "floorId":floorId,

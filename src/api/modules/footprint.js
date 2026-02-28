@@ -5,7 +5,7 @@
  * @created 2026-02-26
  */
 
-import { get, getAppParams } from '../request.js';
+import { get, getAppParams } from "../request.js";
 
 /**
  * 获取当前用户参数
@@ -32,7 +32,7 @@ async function getCurrentUserParams() {
  * @param {string} [options.footprintsUrl] - API URL（可选）
  * @param {boolean} [options.showLog=true] - 是否显示日志
  * @returns {Promise<Object>} 足迹数据
- * 
+ *
  * @example
  * // 获取用户足迹
  * const footprints = await footprintApi.getFootprints({});
@@ -40,24 +40,26 @@ async function getCurrentUserParams() {
 export async function getFootprints(options = {}) {
   const { token, bdid, openid, secret, footprintsUrl, showLog = true } = options;
   const params = await getCurrentUserParams();
-  
+
   const requestToken = token || params.token;
   const requestBdid = bdid || params.bdid;
   const requestOpenid = openid || params.userId;
   const requestAppId = params.appId || requestToken;
-  const requestSecret = secret || '1CFE42085637416ADAF6AEF60A832342';
-  
+  const requestSecret = secret || "1CFE42085637416ADAF6AEF60A832342";
+
   if (!requestToken || !requestBdid) {
-    console.warn('[FootprintAPI] getFootprints: token 或 bdid 为空');
-    throw new Error('token 和 bdid 不能为空');
+    console.warn("[FootprintAPI] getFootprints: token 或 bdid 为空");
+    throw new Error("token 和 bdid 不能为空");
   }
-  
+
   // 从 appConfig 获取 URL 或使用默认值
   const appParamsObj = getAppParams();
   const appConfig = appParamsObj.appConfig || {};
-  const defaultUrl = appConfig.footprintsUrl || 'https://map1a.daxicn.com/server39/daxi-manager/api/museum/footprints';
+  const defaultUrl =
+    appConfig.footprintsUrl ||
+    "https://map1a.daxicn.com/server39/daxi-manager/api/museum/footprints";
   const requestUrl = footprintsUrl || defaultUrl;
-  
+
   const requestParams = {
     appid: requestAppId,
     token: requestToken,
@@ -66,13 +68,13 @@ export async function getFootprints(options = {}) {
     openid: requestOpenid,
     secret: requestSecret,
   };
-  
+
   try {
     const result = await get(requestUrl, requestParams, { showLog });
-    console.log('[FootprintAPI] 获取用户足迹成功', result);
+    console.log("[FootprintAPI] 获取用户足迹成功", result);
     return result;
   } catch (error) {
-    console.error('[FootprintAPI] 获取用户足迹失败:', error);
+    console.error("[FootprintAPI] 获取用户足迹失败:", error);
     throw error;
   }
 }

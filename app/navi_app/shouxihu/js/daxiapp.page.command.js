@@ -1,22 +1,22 @@
 (function (global) {
   function initDaxiCommand(api, options) {
-    var daxiapp = global["DaxiApp"] || {};
-    var domUtils = daxiapp["domUtil"];
-    var dxUtils = daxiapp["utils"];
-    var dxDom = daxiapp["dom"];
-    var getFloatVal = dxUtils["getFloatVal"];
-    var downloader = api.downloader;
-    var stateManager = api._stateManager;
-    var thisObject = {};
-    var mapSDK = api._mapView._mapSDK;
-    var token = api._params["token"];
-    var command = api._params;
+    const daxiapp = global["DaxiApp"] || {};
+    const domUtils = daxiapp["domUtil"];
+    const dxUtils = daxiapp["utils"];
+    const dxDom = daxiapp["dom"];
+    const getFloatVal = dxUtils["getFloatVal"];
+    const downloader = api.downloader;
+    const stateManager = api._stateManager;
+    const thisObject = {};
+    const mapSDK = api._mapView._mapSDK;
+    const token = api._params["token"];
+    const command = api._params;
     thisObject._dom = $("#app");
     if (options["pages"]) {
       options["pages"].forEach(function (pageOptions) {
-        var stateName = pageOptions["stateName"];
-        var stateClassName = pageOptions["stateClassName"];
-        var stateIns = new daxiapp[stateClassName]();
+        const stateName = pageOptions["stateName"];
+        const stateClassName = pageOptions["stateClassName"];
+        const stateIns = new daxiapp[stateClassName]();
         stateIns.initialize(api, api._dom);
         stateManager.registState(stateName, stateIns);
       });
@@ -28,7 +28,7 @@
       for (var key in obj) {
         command[key] = obj[key];
       }
-      var stateName = api._stateManager.getCurrentStateName();
+      const stateName = api._stateManager.getCurrentStateName();
       if (command["method"] == "showExhibit") {
         if (stateName == "MapStatePoiDetail" || stateName == "MapStateBrowse") {
           if (command.id) {
@@ -44,8 +44,8 @@
           api._stateManager.getCurrentState().runCommand(command, obj["id"]);
         }
       } else if (command["method"] == "showAreaInTip") {
-        var bdid = mapSDK.getCurrentBDID();
-        var areaIn = api._dom.find(".areaIn");
+        const bdid = mapSDK.getCurrentBDID();
+        const areaIn = api._dom.find(".areaIn");
         function hideAreaInTip() {
           thisObject.areaInBtn.removeClass("slideUpTip").addClass("slideUpTipOut");
           setTimeout(function () {
@@ -53,7 +53,7 @@
           }, 1000);
         }
         if (areaIn.length == 0) {
-          var text = `欢迎进入${command["scenicName"]}景点，畅享智慧语音讲解。点击“购买”，解锁景区全域畅听。`;
+          const text = `欢迎进入${command["scenicName"]}景点，畅享智慧语音讲解。点击“购买”，解锁景区全域畅听。`;
           areaIn = `<div class='areaIn'> <div class='areaInText'>${text}</div><div class='button_tipBuy'>购买</div></div>`;
           api._dom.append(areaIn);
           thisObject.areaInBtn = dxDom.find(api._dom, ".areaIn");
@@ -63,7 +63,7 @@
           thisObject.areaInText = dxDom.find(api._dom, ".areaInText");
           thisObject.areaInBtn.removeClass("slideUpTip").addClass("slideUpTipOut");
           setTimeout(function () {
-            var text = `欢迎进入${command["scenicName"]}景点，畅享智慧语音讲解。点击“购买”，解锁景区全域畅听。`;
+            const text = `欢迎进入${command["scenicName"]}景点，畅享智慧语音讲解。点击“购买”，解锁景区全域畅听。`;
             thisObject.areaInText.text(text);
             thisObject.areaInBtn.addClass("slideUpTip");
           }, 1000);
@@ -86,7 +86,7 @@
         api._stateManager.getCurrentState().runCommand(command);
       } else if (command["method"] == "audioStatus") {
         if (command["status"] == "onStop") {
-          var audioPlayBtn = api._dom.find(".audioPlay");
+          const audioPlayBtn = api._dom.find(".audioPlay");
           if (audioPlayBtn.length == 0) {
             audioPlayBtn = `<div class='audioPlay'><i class='btn_playAudio shouxihu_playbtn'></i><i class='btn_closeAudio icon-guanbi'></i></div>`;
             api._dom.append(audioPlayBtn);
@@ -95,7 +95,7 @@
           thisObject.btn_playAudio = dxDom.find(api._dom, ".btn_playAudio");
           thisObject.btn_closeAudio = dxDom.find(api._dom, ".btn_closeAudio");
           thisObject.btn_playAudio.on("click", function () {
-            var data = {
+            const data = {;
               type: "postEventToMiniProgram",
               id: api._params["userId"],
               methodToMiniProgram: `method=resumePlay&bdid=${api._params.bdid}&token=${api._params.token}`,
@@ -133,17 +133,17 @@
       stateManager.pushState("MapStateBrowse", command);
     };
     thisObject.openPoiState = function (command) {
-      var currbdid = mapSDK["getCurrentBDID"]();
-      var currflid = mapSDK["getCurrentFloorId"]();
-      var position = mapSDK["getPosition"]();
-      var keyword = command["keyword"];
-      var bdid = command["bdid"] || command["buildingId"] || currbdid || "";
-      var floorId = command["floorId"] || currflid || "";
-      var lon = getFloatVal(command["lon"]);
-      var lat = getFloatVal(command["lat"]);
-      var bdInfo = null;
+      const currbdid = mapSDK["getCurrentBDID"]();
+      const currflid = mapSDK["getCurrentFloorId"]();
+      const position = mapSDK["getPosition"]();
+      const keyword = command["keyword"];
+      const bdid = command["bdid"] || command["buildingId"] || currbdid || "";
+      const floorId = command["floorId"] || currflid || "";
+      const lon = getFloatVal(command["lon"]);
+      const lat = getFloatVal(command["lat"]);
+      const bdInfo = null;
       if (!bdid) {
-        var bdInfoData = api._mapView.getCurrIndoorBuilding();
+        const bdInfoData = api._mapView.getCurrIndoorBuilding();
         if (bdInfoData && bdInfoData["bdInfo"]) {
           bdInfo = bdInfoData["bdInfo"];
           bdid = bdInfo["bdid"];
@@ -151,20 +151,20 @@
       }
 
       floorId = floorId || (bdInfo && bdInfo["groundFloorId"]);
-      var poiId = command["poiId"];
-      var poiIds = command["poiIds"];
-      var deptids = command["deptids"] || command["targetID"];
-      var text = command["text"] || command["name"] || "";
-      var data;
-      var arealType = "indoor";
+      const poiId = command["poiId"];
+      const poiIds = command["poiIds"];
+      const deptids = command["deptids"] || command["targetID"];
+      const text = command["text"] || command["name"] || "";
+      const data;
+      const arealType = "indoor";
       if (poiIds && poiIds.indexOf(",") == -1) {
         poiId = poiIds;
       }
-      var thisObject = this;
+      const thisObject = this;
       if (deptids) {
         // 搜索诊间数据
-        var url = api._config["clinicServer"] || "https://map1a.daxicn.com/wx3dmap/getPoiInfo";
-        var data = { type: 1, deptids: deptids, token: token, bdid: bdid };
+        const url = api._config["clinicServer"] || "https://map1a.daxicn.com/wx3dmap/getPoiInfo";
+        const data = { type: 1, deptids: deptids, token: token, bdid: bdid };
         downloader.getServiceData(
           url,
           "get",
@@ -172,7 +172,7 @@
           data,
           function (data) {
             if (data["code"] == 1 && data["result"].length) {
-              var param = {
+              const param = {;
                 method: "showPois",
                 arealType: "indoor",
                 results: data["result"],
@@ -240,7 +240,7 @@
       }
     };
     thisObject.openPoiDetailState = function (command) {
-      var currbdid = mapSDK["getCurrentBDID"]();
+      const currbdid = mapSDK["getCurrentBDID"]();
       var poiInfo = command; //daxiapp.utils.copyData(command);
       poiInfo["arealType"] = command["arealType"] || "indoor";
       poiInfo["text"] = command["text"] || command["name"] || "";
@@ -248,7 +248,7 @@
       poiInfo["id"] = command["poiId"] = command["poiId"] || command["id"] || "";
       poiInfo["floorId"] = command["floorId"] || "";
       poiInfo["floorName"] = command["floorName"] || "";
-      var lon = command["lon"],
+      const lon = command["lon"],;
         lat = command["lat"];
       poiInfo["lon"] = lon && getFloatVal(lon);
       poiInfo["lat"] = lat && getFloatVal(lat);
@@ -259,7 +259,7 @@
         lat = command["position"][1];
       }
       if (lon && lat) {
-        var data = {
+        const data = {;
           method: "openPoiDetailPage",
           data: {
             bdid: poiInfo["bdid"],
@@ -270,14 +270,14 @@
         this.setIndoorVisible(poiInfo);
         stateManager.pushState("MapStatePoiDetail", data);
       } else if (poiInfo["id"]) {
-        var searchUrl = api._config["search"]["url"];
+        const searchUrl = api._config["search"]["url"];
         api.downloader.getServiceData(
           searchUrl,
           "post",
           "json",
           { token: api._params["token"], bdid: poiInfo["bdid"], ids: [poiInfo["id"]], type: poiInfo["type"] },
           function (data) {
-            var params = data.length > 0 ? data[0] : null;
+            const params = data.length > 0 ? data[0] : null;
             if (params) {
               stateManager.pushState("MapStatePoiDetail", { data: { poiInfo: params } });
             } else {
@@ -295,11 +295,11 @@
       }
     };
     thisObject.openExhibitionHall = function (command) {
-      var exhibitionId = command["id"] || command["poiId"];
-      var exhibitionUrl = api._config["exhibitionDetailUrl"];
+      const exhibitionId = command["id"] || command["poiId"];
+      const exhibitionUrl = api._config["exhibitionDetailUrl"];
       if (exhibitionUrl) {
         api.downloader.getServiceData(exhibitionUrl + "/" + exhibitionId, "get", "json", { token: api._params["token"] }, function (data) {
-          var params = data["result"];
+          const params = data["result"];
           if (params) {
             stateManager.pushState("MapStatePoiDetail", { data: { poiInfo: params } });
           } else {
@@ -309,11 +309,11 @@
       }
     };
     thisObject.openExhibit = function (command) {
-      var exhibitId = command?.id || command?.poiId || command?.poiIds;
+      const exhibitId = command?.id || command?.poiId || command?.poiIds;
       this.setIndoorVisible(command);
 
-      var exhibitions = (stateManager.getMapState("MapStateBrowse") || {}).exhibitions || [];
-      var exhibition = exhibitions.find(function (item) {
+      const exhibitions = (stateManager.getMapState("MapStateBrowse") || {}).exhibitions || [];
+      const exhibition = exhibitions.find(function (item) {;
         return item.id2 == exhibitId;
       });
 
@@ -322,14 +322,14 @@
       }
     };
     thisObject.openRouteState = function (command) {
-      var startbdid = command["startbdid"] || command["bdid"];
-      var startFloorId = command["startFloorId"] || "";
-      var startLon = getFloatVal(command["startLon"]);
-      var startLat = getFloatVal(command["startLat"]);
-      var startName = command["startName"] || "起点";
-      var startAddress = command["startAddress"] || "";
-      var startPoseMode = command["startPosMode"] || "";
-      var startPoint = {
+      const startbdid = command["startbdid"] || command["bdid"];
+      const startFloorId = command["startFloorId"] || "";
+      const startLon = getFloatVal(command["startLon"]);
+      const startLat = getFloatVal(command["startLat"]);
+      const startName = command["startName"] || "起点";
+      const startAddress = command["startAddress"] || "";
+      const startPoseMode = command["startPosMode"] || "";
+      const startPoint = {;
         bdid: startbdid,
         floorId: startFloorId,
         lon: startLon,
@@ -339,16 +339,16 @@
         posMode: startPoseMode,
       };
 
-      var targetbdid = command["targetbdid"] || command["bdid"];
-      var targetFloorId = command["targetFloorId"] || "";
-      var targetLon = getFloatVal(command["targetLon"]);
-      var targetLat = getFloatVal(command["targetLat"]);
-      var targetName = command["targetName"] || "终点";
-      var targetFloorName = command["targetFloorName"] || "";
-      var targetAddress = command["targetAddress"] || "";
-      var targetPoseMode = command["targetPosMode"] || "";
-      var deptids = command["deptids"] || command["targetID"];
-      var targetPoint = {
+      const targetbdid = command["targetbdid"] || command["bdid"];
+      const targetFloorId = command["targetFloorId"] || "";
+      const targetLon = getFloatVal(command["targetLon"]);
+      const targetLat = getFloatVal(command["targetLat"]);
+      const targetName = command["targetName"] || "终点";
+      const targetFloorName = command["targetFloorName"] || "";
+      const targetAddress = command["targetAddress"] || "";
+      const targetPoseMode = command["targetPosMode"] || "";
+      const deptids = command["deptids"] || command["targetID"];
+      const targetPoint = {;
         bdid: targetbdid,
         floorId: targetFloorId,
         lon: targetLon,
@@ -358,14 +358,14 @@
         posMode: targetPoseMode,
         floorName: targetFloorName,
       };
-      var param = {
+      const param = {;
         method: "takeToThere",
         endPoint: targetPoint,
         startPoint: startPoint, //定位起点信息
       };
-      var loadingMask = domUtils.createLoading();
-      var startPosReady = startLon && startLat ? true : false;
-      var targetPosReady = false;
+      const loadingMask = domUtils.createLoading();
+      const startPosReady = startLon && startLat ? true : false;
+      const targetPosReady = false;
       if (targetLon && targetLat) {
         targetPosReady = true;
         if (startPoint["posMode"] == "myPosition" && !startPosReady) {
@@ -379,8 +379,8 @@
           thisObject.getMyPosition(startbdid, waitPosShowRoute);
         }
         // 搜索诊间数据
-        var url = api._config["clinicServer"] || "https://map1a.daxicn.com/wx3dmap/getPoiInfo";
-        var data = { type: 1, deptids: deptids, token: token, bdid: targetPoint["bdid"] };
+        const url = api._config["clinicServer"] || "https://map1a.daxicn.com/wx3dmap/getPoiInfo";
+        const data = { type: 1, deptids: deptids, token: token, bdid: targetPoint["bdid"] };
         DXMapUtils.getData(
           url,
           data,
@@ -388,7 +388,7 @@
           function (data) {
             if (data["code"] == 1 && data["result"].length) {
               targetPosReady = true;
-              var poiInfo = data["result"][0];
+              const poiInfo = data["result"][0];
               targetPoint["lon"] = poiInfo["lon"];
               targetPoint["lat"] = poiInfo["lat"];
               targetPoint["floorId"] = poiInfo["floorId"];
@@ -417,7 +417,7 @@
       }
       function waitPosShowRoute(posInfo, locSuccess) {
         startPosReady = true;
-        var pos = posInfo["position"];
+        const pos = posInfo["position"];
         if (locSuccess) {
           startPoint["lon"] = pos[0];
           startPoint["lat"] = pos[1];
@@ -427,9 +427,9 @@
         } else {
           loadingMask && (loadingMask.remove(), (loadingMask = null));
           if (pos[0]) {
-            var text = "未定位到建筑位置,请自行选择起点";
+            const text = "未定位到建筑位置,请自行选择起点";
           } else {
-            var text = "定位信号弱,请自行选择起点";
+            const text = "定位信号弱,请自行选择起点";
           }
           domUtils.tipNotice(text, 3000, null, { subStyle: { color: "#1f97ef" }, bottom: "30%" });
         }
@@ -443,7 +443,7 @@
       stateManager.pushState("MapStatePoiExtend", command);
     };
     thisObject.openPoiPageState = function (command) {
-      var bdid = command["buildingId"] || "";
+      const bdid = command["buildingId"] || "";
       this.setIndoorVisible(command);
       stateManager.pushState("MapStateMainPoiPage", { data: { bdid: bdid } });
     };
@@ -453,7 +453,7 @@
     };
     thisObject.openTeamSharePosState = function (command) {
       if (api._config["user"]["sharePosServer"]) {
-        var MapStateBrowse = stateManager.getMapState("MapStateBrowse");
+        const MapStateBrowse = stateManager.getMapState("MapStateBrowse");
         MapStateBrowse._sharePosCtrl.triggerEvent("click");
       } else {
         domUtils.tipMessage("没有配置共享", 3000);
@@ -467,8 +467,8 @@
     };
     thisObject.getMyPosition = function (bdid, callback) {};
     thisObject.addPosShareGroup = function (command) {
-      var params = api._params;
-      var userInfo = params["userInfo"];
+      const params = api._params;
+      const userInfo = params["userInfo"];
       if (!userInfo["userId"]) {
         domUtils.showInfo("缺少用户参数");
         return;
@@ -493,11 +493,11 @@
       }
     };
     thisObject.openPosShareState = function (userInfo, groupId, token) {
-      var sharePosServer = api._config["user"]["sharePosServer"];
-      var url = sharePosServer[sharePosServer.length - 1] == "/" ? sharePosServer + "postPosition" : sharePosServer + "/postPosition";
+      const sharePosServer = api._config["user"]["sharePosServer"];
+      const url = sharePosServer[sharePosServer.length - 1] == "/" ? sharePosServer + "postPosition" : sharePosServer + "/postPosition";
 
-      var locPosition = api._mapView._locationManager.getMyPositionInfo();
-      var data = {
+      const locPosition = api._mapView._locationManager.getMyPositionInfo();
+      const data = {;
         userId: userInfo["userId"] || "",
         userName: userInfo["userName"] || "",
         avatarUrl: userInfo["avatarUrl"] || "",
@@ -534,7 +534,7 @@
     };
     thisObject.exitMapModal = null;
     thisObject.runCommand = function (command) {
-      var viewState = command["method"] || command["viewState"] || "init";
+      const viewState = command["method"] || command["viewState"] || "init";
       switch (viewState) {
         case "init":
         case "initPage":
@@ -576,7 +576,7 @@
           if (stateManager.getPageCount() == 1) {
             if (api.jsBridge && api.jsBridge["realGoBack"]) {
               if (!thisObject.exitMapModal) {
-                var params = {
+                const params = {;
                   text: "您确定退出地图",
                   btn1: "取消",
                   confirmCB: function () {
@@ -593,16 +593,16 @@
             }
             return { pageCount: 1 };
           }
-          var currentState = stateManager.getCurrentState();
+          const currentState = stateManager.getCurrentState();
           if (currentState.runCommand) {
-            var result = currentState.runCommand(command);
+            const result = currentState.runCommand(command);
           } else {
             stateManager.goBack();
           }
           return result;
           break;
         case "setSensorStatus":
-          var data = command["data"];
+          const data = command["data"];
           if (typeof data == "string") {
             data = JSON.parse(data);
           }
@@ -610,9 +610,9 @@
           break;
         case "sensorDataUpdate":
           if (typeof command["data"] == "string") {
-            var data = JSON.parse(command["data"]);
+            const data = JSON.parse(command["data"]);
           } else {
-            var data = command["data"];
+            const data = command["data"];
           }
 
           data.forEach(function (item) {
@@ -624,10 +624,10 @@
             } else if (item["type"] == "gps") {
               api._mapView._locationManager["sendGPSData"](item["data"]);
             } else if (item["type"] == "heading") {
-              var heading = item["data"]["heading"] != undefined ? item["data"]["heading"] : item["data"];
+              const heading = item["data"]["heading"] != undefined ? item["data"]["heading"] : item["data"];
               api._mapView._locationManager["sendHeadingData"](heading);
             } else if (item["type"] == "ped") {
-              var step = item["data"]["step"];
+              const step = item["data"]["step"];
               if (step) {
                 if (thisObject.stepCount == undefined) {
                   api._mapView._locationManager["sendStep"](item["data"]);
@@ -660,7 +660,7 @@
       thisObject.setIndoorVisible(command);
     };
     thisObject.setIndoorVisible = function (command) {
-      var bdid = command["buildingId"] || command["bdid"];
+      const bdid = command["buildingId"] || command["bdid"];
       if (bdid && api._params["buildingId"] && api._params["token"] == "806bc162812065750b3d3958f9056008") {
         api._mapView._mapSDK.setIndoorSceneVisible(true, bdid, true);
       }
@@ -676,7 +676,7 @@
           thisObject.selectProjectId = id;
           thisObject._payAlertComponent.hide();
           wx.miniProgram.navigateTo({
-            url: "/pages/pay/pay?token=" + api._params.token + "&bdid=" + api._params.bdid + "&projectId=" + id + "&fromPage=mapView",
+            url: "/pages/pay/pay?token=" + api._params.token + "&bdid=" + api._params.bdid + `&projectId=${id}&fromPage=mapView`,
           });
         },
       },
@@ -704,10 +704,10 @@
     });
     thisObject._DXPayTypeComponent.hide();
     thisObject.getProduct = function (callback) {
-      var thisObject = this;
-      var app = thisObject._app;
-      var url = "https://map1a.daxicn.com/payApi/merchantApi/api/projectProduct/list";
-      var link = api._config["projectProductList"] || url;
+      const thisObject = this;
+      const app = thisObject._app;
+      const url = "https://map1a.daxicn.com/payApi/merchantApi/api/projectProduct/list";
+      const link = api._config["projectProductList"] || url;
       api.downloader.getServiceData(
         link,
         "GET",
@@ -724,9 +724,9 @@
       );
     };
     thisObject.wxAppPay = function () {
-      var thisObject = this;
-      var url = "https://map1a.daxicn.com/payApi/merchantApi/api/pay/wxAppPay";
-      var link = api._config["wxAppPay"] || url;
+      const thisObject = this;
+      const url = "https://map1a.daxicn.com/payApi/merchantApi/api/pay/wxAppPay";
+      const link = api._config["wxAppPay"] || url;
       api.downloader.getServiceData(
         link,
         "GET",
@@ -742,14 +742,14 @@
       );
     };
     thisObject.payOrders = function (data, success, error) {
-      var thisObject = this;
-      var token = api._params["token"];
-      var bdid = api._params["bdid"];
-      var command = api._params;
-      var userId = command.userId;
-      var url = "https://map1a.daxicn.com/payApi/merchantApi/api/pay/payOrders?token=" + token + "&bdid=" + bdid;
-      var link = api._config["payOrdersURL"] || url;
-      var sign = signMd5Utils.getSign(link, data);
+      const thisObject = this;
+      const token = api._params["token"];
+      const bdid = api._params["bdid"];
+      const command = api._params;
+      const userId = command.userId;
+      const url = `https://map1a.daxicn.com/payApi/merchantApi/api/pay/payOrders?token=${token}&bdid=` + bdid;
+      const link = api._config["payOrdersURL"] || url;
+      const sign = signMd5Utils.getSign(link, data);
       $.ajax({
         url: url,
         type: "POST",
@@ -772,11 +772,11 @@
       });
     };
     thisObject.getPayInfo = function (id, successCB, failedCB) {
-      var thisObject = this;
-      var openid = api._params.userId || api._params.userid;
-      var merchantCode = api._params.merchantCode || "";
-      var nickname = "微信用户";
-      var data = {
+      const thisObject = this;
+      const openid = api._params.userId || api._params.userid;
+      const merchantCode = api._params.merchantCode || "";
+      const nickname = "微信用户";
+      const data = {;
         openid: AES.encrypt(openid),
         nickname: AES.encrypt(nickname),
         mchNo: merchantCode,
@@ -833,12 +833,12 @@
         }
       );
     };
-    var getParam = function (url) {
-      var theRequest = {};
+    const getParam = function (url) {;
+      const theRequest = {};
       if (url.indexOf("#") != -1 || url.indexOf("?") != -1) {
         url = url.substr(1);
       }
-      var strs = url.split("&");
+      const strs = url.split("&");
       for (var i = 0; i < strs.length; i++) {
         theRequest[strs[i].split("=")[0]] = strs[i].split("=")[1];
       }
@@ -846,7 +846,7 @@
     };
     window.addEventListener("hashchange", function (e) {
       if (e["newURL"].indexOf("#") != -1) {
-        var params = getParam(e["newURL"].split("#")[1]);
+        const params = getParam(e["newURL"].split("#")[1]);
         if (params["method"] == "showExhibit" && params["id"]) {
           thisObject.openExhibit(params);
         }

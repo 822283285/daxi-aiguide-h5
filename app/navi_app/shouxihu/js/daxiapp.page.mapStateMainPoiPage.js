@@ -2,7 +2,7 @@
   "use strict";
 
   function resolveDeps(options) {
-    var daxiapp = options.daxiapp || global["DaxiApp"] || {};
+    const daxiapp = options.daxiapp || global["DaxiApp"] || {};
 
     return {
       globalRef: options.globalRef || global,
@@ -16,13 +16,13 @@
   }
 
   function createMapStateMainPoiPageController(options) {
-    var deps = resolveDeps(options || {});
-    var globalRef = deps.globalRef;
-    var domUtils = deps.domUtils;
-    var MapStateClass = deps.MapStateClass;
-    var SearchViewCtor = deps.SearchViewCtor;
-    var CommonPoiViewCtor = deps.CommonPoiViewCtor;
-    var PoiTypeListViewCtor = deps.PoiTypeListViewCtor;
+    const deps = resolveDeps(options || {});
+    const globalRef = deps.globalRef;
+    const domUtils = deps.domUtils;
+    const MapStateClass = deps.MapStateClass;
+    const SearchViewCtor = deps.SearchViewCtor;
+    const CommonPoiViewCtor = deps.CommonPoiViewCtor;
+    const PoiTypeListViewCtor = deps.PoiTypeListViewCtor;
 
     if (!MapStateClass || typeof MapStateClass.extend !== "function") {
       return null;
@@ -36,11 +36,11 @@
 
       initialize: function (app, container) {
         this._super(app, container);
-        var thisObject = this;
+        const thisObject = this;
         thisObject.bdid = "unknown";
         thisObject._app = app;
 
-        var basicMapHtml =
+        const basicMapHtml =;
           '<div id="main_poi_page" class="mainpoi_page_container">' +
           '<div class="wrapper" style="width: 100%;height: 100%;display: flex;flex-direction: column;">' +
           "</div>" +
@@ -53,17 +53,17 @@
         thisObject._searchView = new SearchViewCtor(app, thisObject._wrapper);
         thisObject._searchView.init({
           onSearchViewBackBtnClicked: function () {
-            var command = {
+            const command = {;
               ret: "Cancel",
             };
             app._stateManager.invokeCallback("selectPoiCallback", command);
           },
           onSearchViewSearchBtnClicked: function () {
-            var searchResultArgs = {
+            const searchResultArgs = {;
               method: "openSearchPage",
               data: thisObject.params,
             };
-            var page = thisObject._app._stateManager.pushState("MapStateSearchPage", searchResultArgs);
+            const page = thisObject._app._stateManager.pushState("MapStateSearchPage", searchResultArgs);
             page._once("searchPageCallback", function (_sender, searchResult) {
               if (searchResult.retVal == "OK") {
                 if (thisObject.params.defStartPoint) {
@@ -75,14 +75,14 @@
           },
         });
 
-        var mainContainerHtml = '<div class="home-main"></div>';
+        const mainContainerHtml = '<div class="home-main"></div>';
         domUtils.append(thisObject._wrapper, mainContainerHtml);
         thisObject._mainContainerDom = domUtils.find(thisObject._wrapper, ".home-main");
 
         thisObject._commonPoiView = new CommonPoiViewCtor(app, thisObject._mainContainerDom);
         thisObject._commonPoiView.init({
           onItemBtnClicked: function (_sender, data) {
-            var args = {
+            const args = {;
               method: "openSearchPage",
               retVal: "OK",
               data: data,
@@ -98,7 +98,7 @@
         thisObject._poiTypeListView = new PoiTypeListViewCtor(app, thisObject._mainContainerDom);
         thisObject._poiTypeListView.init({
           onItemBtnClicked: function (_sender, data) {
-            var args = {
+            const args = {;
               retVal: "OK",
               data: data,
             };
@@ -122,9 +122,9 @@
       onStateBeginWithParam: function (args) {
         this._super(args);
         if (!args) return;
-        var thisObject = this;
+        const thisObject = this;
         this.params = args["data"];
-        var bdid = this.params["bdid"];
+        const bdid = this.params["bdid"];
         if (thisObject.bdid != bdid) {
           thisObject.bdid = bdid;
           thisObject.updateData(bdid);
@@ -134,17 +134,17 @@
         this._app._stateManager.goBack();
       },
       updateData: function (bdid) {
-        var thisObject = this;
-        var params = thisObject._app._params;
-        var projDataPath = params.dataRootPath || "../projdata/" + params["token"] + "/{{bdid}}/{{filename}}";
-        var url = projDataPath;
+        const thisObject = this;
+        const params = thisObject._app._params;
+        const projDataPath = params.dataRootPath || "../projdata/" + params["token"] + "/{{bdid}}/{{filename}}";
+        const url = projDataPath;
 
-        var data = {};
-        var key = "bdid_" + bdid;
+        const data = {};
+        const key = "bdid_" + bdid;
         if (thisObject.configData[key]) {
-          var mainPageData = thisObject.configData[key]["mainPoiPage"];
-          var commonPois = mainPageData["commonPois"];
-          var poiTypeList = mainPageData["poiTypeList"];
+          const mainPageData = thisObject.configData[key]["mainPoiPage"];
+          const commonPois = mainPageData["commonPois"];
+          const poiTypeList = mainPageData["poiTypeList"];
           thisObject._commonPoiView.updateData(commonPois);
           thisObject._poiTypeListView.updateData(poiTypeList);
         } else {
@@ -157,9 +157,9 @@
           }
           thisObject._app.downloader.getServiceData(url, "get", "json", data, function (responseData) {
             thisObject.configData[key] = responseData;
-            var mainPageData = responseData["mainPoiPage"];
-            var commonPois = mainPageData["commonPois"];
-            var poiTypeList = mainPageData["poiTypeList"];
+            const mainPageData = responseData["mainPoiPage"];
+            const commonPois = mainPageData["commonPois"];
+            const poiTypeList = mainPageData["poiTypeList"];
             thisObject._commonPoiView.updateData(commonPois);
             thisObject._poiTypeListView.updateData(poiTypeList);
           });
@@ -176,7 +176,7 @@
 
       onShowByPopStack: function (args) {
         this._super(args);
-        var mapView = this._app._mapView;
+        const mapView = this._app._mapView;
         mapView.setTopViewHeight(66);
         mapView.setBottomViewHeight(60);
       },
@@ -186,7 +186,7 @@
       },
 
       runCommond: function (command) {
-        var thisObject = this;
+        const thisObject = this;
         if (command.method == "showPois") {
           thisObject.showPois(command);
         } else if (command.method == "openSearchPage") {
@@ -194,7 +194,7 @@
         }
       },
       openSearchPage: function () {
-        var args = {
+        const args = {;
           method: "openSearchPage",
           data: this.params,
         };
@@ -204,8 +204,8 @@
   }
 
   function registerMapStateMainPoiPageController(options) {
-    var deps = resolveDeps(options || {});
-    var controller =
+    const deps = resolveDeps(options || {});
+    const controller =;
       (options && options.controller) ||
       createMapStateMainPoiPageController({
         globalRef: deps.globalRef,

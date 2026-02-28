@@ -1,1 +1,37 @@
-import{BasePageController}from"../../controllers/base-page-controller.js";export classMapStatePOIControllerextends BasePageController{constructor(o){super(o);this.pageName="MapStatePOI"}async onCreate(p){await super.onCreate(p);this.render()}async onShow(){await super.onShow();this.bindEvents()}render(){const c=this.getContainer();if(!c)return;this.setHtml(c,"<div><h1>+p.t+</h1></div>")}bindEvents(){}};export function createMapStatePOI(o={}){return new MapStatePOIController(o)};export async function registerMapStatePOI(o){const{registerPage}=await import("../../controllers/page-controller-registry.js");registerPage("MapStatePOI",MapStatePOIController)}
+import { BasePageController } from "../../controllers/base-page-controller.js";
+
+export class MapStatePOIController extends BasePageController {
+  constructor(options) {
+    super(options);
+    this.pageName = "MapStatePOI";
+  }
+
+  async onCreate(params) {
+    await super.onCreate(params);
+    this.render();
+  }
+
+  async onShow() {
+    await super.onShow();
+    this.bindEvents();
+  }
+
+  render() {
+    const container = this.getContainer();
+    if (!container) return;
+    this.setHtml(container, "<div><h1>POI Map</h1></div>");
+  }
+
+  bindEvents() {
+    // Event bindings
+  }
+}
+
+export function createMapStatePOI(options = {}) {
+  return new MapStatePOIController(options);
+}
+
+export async function registerMapStatePOI(options) {
+  const { registerPage } = await import("../../controllers/page-controller-registry.js");
+  registerPage("MapStatePOI", MapStatePOIController);
+}

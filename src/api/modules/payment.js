@@ -5,7 +5,7 @@
  * @created 2026-02-26
  */
 
-import { post, getAppParams } from '../request.js';
+import { post, getAppParams } from "../request.js";
 
 /**
  * 获取当前用户参数
@@ -30,7 +30,7 @@ async function getCurrentUserParams() {
  * @param {string} [options.cacheUrl] - API URL（可选）
  * @param {boolean} [options.showLog=true] - 是否显示日志
  * @returns {Promise<Object>} 缓存结果
- * 
+ *
  * @example
  * // 缓存 token 和 BDID
  * const result = await paymentApi.cacheTokenAndBDID({
@@ -41,34 +41,36 @@ async function getCurrentUserParams() {
 export async function cacheTokenAndBDID(options = {}) {
   const { token, bdid, openid, cacheUrl, showLog = true } = options;
   const params = await getCurrentUserParams();
-  
+
   const requestToken = token || params.token;
   const requestBdid = bdid || params.bdid;
   const requestOpenid = openid || params.userId;
-  
+
   if (!requestToken || !requestBdid) {
-    console.warn('[PaymentAPI] cacheTokenAndBDID: token 或 bdid 为空');
-    throw new Error('token 和 bdid 不能为空');
+    console.warn("[PaymentAPI] cacheTokenAndBDID: token 或 bdid 为空");
+    throw new Error("token 和 bdid 不能为空");
   }
-  
+
   // 从 appConfig 获取 URL 或使用默认值
   const appParamsObj = getAppParams();
   const appConfig = appParamsObj.appConfig || {};
-  const defaultUrl = appConfig.payApi?.cacheTokenAndBDIDUrl || 'https://map1a.daxicn.com/payApi/merchantApi/api/pay/cacheTokenAndBDID';
+  const defaultUrl =
+    appConfig.payApi?.cacheTokenAndBDIDUrl ||
+    "https://map1a.daxicn.com/payApi/merchantApi/api/pay/cacheTokenAndBDID";
   const requestUrl = cacheUrl || defaultUrl;
-  
+
   const data = {
     token: requestToken,
     bdid: requestBdid,
     openid: requestOpenid,
   };
-  
+
   try {
     const result = await post(requestUrl, data, { showLog });
-    console.log('[PaymentAPI] 缓存 token 和 BDID 成功', result);
+    console.log("[PaymentAPI] 缓存 token 和 BDID 成功", result);
     return result;
   } catch (error) {
-    console.error('[PaymentAPI] 缓存 token 和 BDID 失败:', error);
+    console.error("[PaymentAPI] 缓存 token 和 BDID 失败:", error);
     throw error;
   }
 }
@@ -78,23 +80,23 @@ export async function cacheTokenAndBDID(options = {}) {
  * @param {Object} options - 请求参数
  * @param {string} [options.orderId] - 订单 ID
  * @returns {Promise<Object>} 支付状态
- * 
+ *
  * @example
  * // 获取支付状态
  * const status = await paymentApi.getPayStatus({ orderId: 'order123' });
  */
 export async function getPayStatus(options = {}) {
   const { orderId } = options;
-  
+
   if (!orderId) {
-    console.warn('[PaymentAPI] getPayStatus: orderId 为空');
-    throw new Error('订单 ID 不能为空');
+    console.warn("[PaymentAPI] getPayStatus: orderId 为空");
+    throw new Error("订单 ID 不能为空");
   }
-  
+
   // TODO: 实现支付状态查询 API
-  console.warn('[PaymentAPI] getPayStatus 方法待实现');
-  
-  return Promise.resolve({ status: 'pending' });
+  console.warn("[PaymentAPI] getPayStatus 方法待实现");
+
+  return Promise.resolve({ status: "pending" });
 }
 
 // 导出所有方法

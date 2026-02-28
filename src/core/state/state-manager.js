@@ -1,7 +1,7 @@
 /**
  * 轻量级状态管理器
  * 无依赖，基于观察者模式
- * 
+ *
  * @class StateManager
  */
 export class StateManager {

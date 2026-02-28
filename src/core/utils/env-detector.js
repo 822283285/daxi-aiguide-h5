@@ -1,7 +1,7 @@
 /**
  * 环境检测工具 - 使用 WindowAdapter
  */
-import { windowAdapter } from '../legacy/window-adapter.js';
+import { windowAdapter } from "../../legacy/window-adapter.js";
 
 /**
  * 检测当前运行环境
@@ -11,19 +11,19 @@ import { windowAdapter } from '../legacy/window-adapter.js';
 export function detectEnvironment(globalRef = null) {
   // 如果传入了 globalRef，使用旧的逻辑（兼容）
   if (globalRef) {
-    const ua = globalRef.navigator?.userAgent || '';
-    
+    const ua = globalRef.navigator?.userAgent || "";
+
     if (/Android/i.test(ua)) {
       return "android";
     }
-    
+
     if (/iPhone|iPad|iPod/i.test(ua)) {
       return "ios";
     }
-    
+
     return "web";
   }
-  
+
   // 否则使用 WindowAdapter
   return windowAdapter.deviceType;
 }

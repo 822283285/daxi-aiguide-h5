@@ -1,14 +1,14 @@
 (function (global) {
   "use strict";
-  var daxiapp = global["DaxiApp"] || {};
-  var daximap = window["DaxiMap"] || {};
-  var DXMapUtils = daxiapp["utils"];
+  const daxiapp = global["DaxiApp"] || {};
+  const daximap = window["DaxiMap"] || {};
+  const DXMapUtils = daxiapp["utils"];
 
-  var DxDomUtil = daxiapp["domUtil"];
+  const DxDomUtil = daxiapp["domUtil"];
 
-  var domUtils = daxiapp["dom"];
-  var MapStateClass = daxiapp["MapStateClass"];
-  var MapStateSharePos = MapStateClass.extend({
+  const domUtils = daxiapp["dom"];
+  const MapStateClass = daxiapp["MapStateClass"];
+  const MapStateSharePos = MapStateClass.extend({;
     __init__: function () {
       this._super();
       this._rtti = "MapStateSharePos";
@@ -22,12 +22,12 @@
     },
     initialize: function (app, container) {
       this._super(app, container);
-      var thisObject = this;
+      const thisObject = this;
       this._app = app;
-      var mapView = app._mapView;
-      var mapSDK = mapView._mapSDK;
+      const mapView = app._mapView;
+      const mapSDK = mapView._mapSDK;
       thisObject.pageName = "sharepos_page";
-      var basicMap_html =
+      const basicMap_html =;
         '<div id="' +
         thisObject.pageName +
         '" class="sharepos_page" style="font-size:1.2rem">' +
@@ -45,7 +45,7 @@
       thisObject._sharePageContainer = domUtils.find(thisObject._dom, ".sharePage_container");
       thisObject._resultContainer = domUtils.find(thisObject._dom, ".result_container");
       thisObject._poiAroundResultView = new daxiapp["DXListBase"](thisObject._resultContainer);
-      var renderTml =
+      const renderTml =;
         "{{#eq list.length 0}}" +
         '<div class="empty-state">{{#if errMsg}}{{errMsg}}{{else}}没有搜到相关结果{{/if}}</div>' +
         "{{/eq}}" +
@@ -127,14 +127,14 @@
       });
       thisObject.searchInput["on"]("input", function (e) {
         thisObject.setState("searchByKeyWord");
-        var text = e.target.value.trim(" ");
+        const text = e.target.value.trim(" ");
         if (text) {
           thisObject.showPoisByKeyword({ keyword: text });
         }
       });
       thisObject.searchInput["on"]("keyup", function (event) {
         event.stopPropagation();
-        var keyword = this.value.replace(/ /g, "");
+        const keyword = this.value.replace(/ /g, "");
         keyword.trim();
         if (event.keyCode == 13 && keyword) {
           thisObject.setState("searchByAround");
@@ -170,9 +170,9 @@
       this.show(false);
     },
     setUserTrackingModeToNone: function () {
-      var mapView = this._app._mapView;
-      var locationManager = mapView._locationManager;
-      var locState = locationManager.getLocationState();
+      const mapView = this._app._mapView;
+      const locationManager = mapView._locationManager;
+      const locState = locationManager.getLocationState();
       if (locState == DaxiMap["LocationState"]["LOCATED"]) {
         mapView._locationBtnCtrl.setUserTrackingMode(DaxiMap["UserTrackingMode"]["None"]);
       } else {
@@ -183,9 +183,9 @@
     onStateBeginWithParam: function (args) {
       this._super(args);
       if (!args) return;
-      var thisObject = this;
+      const thisObject = this;
       this.sendData = null;
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView._dom.height(mapView._dom.height() - 260);
       mapView._mapSDK.resize();
       if (this.isFirstVisited) {
@@ -198,7 +198,7 @@
       }
       mapView.setBottomViewHeight(0);
       this.params = DXMapUtils.copyData(args);
-      var markers = [
+      const markers = [;
         {
           featureId: "selectPoint",
           id: "selectPoint",
@@ -213,7 +213,7 @@
           scale: 0.2,
         },
       ];
-      var markerLayer = (this._selectedMarker = new daximap.DXSceneMarkerLayer());
+      const markerLayer = (this._selectedMarker = new daximap.DXSceneMarkerLayer());
       markerLayer.initialize(mapView._mapSDK, { markers: markers, bdid: "", onClick: function () {} });
       markerLayer.id = "marker" + DXMapUtils.createUUID();
       markerLayer.addToMap();
@@ -228,13 +228,13 @@
 
     onHideByPushStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.pushState(true);
     },
 
     onShowByPopStack: function (args) {
       this._super(args);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       mapView.popState();
     },
 
@@ -246,13 +246,13 @@
       this._searchAroundMarkerLayer = null;
       mapView._dom.height(mapView._dom.height() + 260);
       mapView._mapSDK.resize();
-      var _search = mapView._search;
+      const _search = mapView._search;
       _search["cancel"]();
     },
     sharePos: function () {
       //var data = {"method":"showPoiDetail"};
-      var data = { viewState: "showPoiDetail" };
-      var sendData = this.sendData;
+      const data = { viewState: "showPoiDetail" };
+      const sendData = this.sendData;
       for (var key in sendData) {
         if (key == "bdid") {
           data["buildingId"] = sendData["bdid"];
@@ -266,12 +266,12 @@
           data[key] = sendData[key];
         }
       }
-      var userInfo = this._app._params["userInfo"];
+      const userInfo = this._app._params["userInfo"];
       data["address"] = data["address"] || data["text"];
       if (userInfo["userName"]) {
         data["title"] = userInfo["userName"];
       }
-      var locationManager = this._app._mapView._locationManager;
+      const locationManager = this._app._mapView._locationManager;
       console.log("分享的数据为：", data);
       window.parent.navigateToUni("navigateTo", "/pages/share/share", { shareData: data });
       return;
@@ -286,12 +286,12 @@
     runCommond: function (command) {},
 
     startQuery: function (data, callback) {
-      var _search = this._app._mapView._search;
-      var searchUrl = thisObject._app._config["searchUrl"];
+      const _search = this._app._mapView._search;
+      const searchUrl = thisObject._app._config["searchUrl"];
       if (searchUrl) {
         data["params"]["url"] = searchUrl;
       }
-      var count = thisObject._app._config["searchCount"];
+      const count = thisObject._app._config["searchCount"];
       count && (data["params"]["count"] = count);
       _search["query"](
         data["params"],
@@ -306,23 +306,23 @@
 
     showMarkers: function (data) {
       // aroundMarker
-      var thisObject = this;
-      var mapSDK = thisObject._app._mapView._mapSDK;
+      const thisObject = this;
+      const mapSDK = thisObject._app._mapView._mapSDK;
       if (!thisObject.visible) {
         return;
       }
-      var onMarkerClick = function (marker) {
+      const onMarkerClick = function (marker) {;
         // console.log(marker);
-        var id = marker["featureId"];
+        const id = marker["featureId"];
         thisObject._poiAroundResultView.triggerActiveByKey("poiid", id);
       };
-      var markers = [];
-      var bdid = "";
+      const markers = [];
+      const bdid = "";
       for (var poiIndex in data) {
-        var poiInfo = data[poiIndex];
+        const poiInfo = data[poiIndex];
         bdid = poiInfo["bdid"] || "";
         poiInfo["poiId"] = poiInfo["poiId"] || poiInfo["poiid"];
-        var markerOption = {
+        const markerOption = {;
           featureId: poiInfo["poiId"],
           id: poiInfo["poiId"],
           bdid: poiInfo["bdid"],
@@ -341,7 +341,7 @@
         thisObject._searchAroundMarkerLayer.setVisible(true);
         thisObject._searchAroundMarkerLayer.setData(markers);
       } else {
-        var markerLayer = new daximap.DXSceneMarkerLayer();
+        const markerLayer = new daximap.DXSceneMarkerLayer();
         markerLayer.initialize(mapSDK, { markers: markers, bdid: bdid, "icon-allow-overlap": true, priority: 3, onClick: onMarkerClick });
         markerLayer.id = "marker" + DXMapUtils.createUUID();
         markerLayer.addToMap();
@@ -380,9 +380,9 @@
     },
     // 显示Pois
     showPoisByMapCenter: function (params) {
-      var thisObject = this;
+      const thisObject = this;
       thisObject.enableSendBtn(false);
-      var mapView = this._app._mapView;
+      const mapView = this._app._mapView;
       thisObject._searchAroundMarkerLayer && thisObject._searchAroundMarkerLayer.setVisible(false, true);
       params["token"] = this._app._params["token"] || this._app._config["token"];
       this._selectedMarker && this._selectedMarker.setVisible(false, true);
@@ -399,14 +399,14 @@
         params["radius"] = 4000;
       }
       this._poiAroundResultView.showLoading();
-      var position = params["position"];
+      const position = params["position"];
       if (position) {
         params["lon"] = position[0];
         params["lat"] = position[1];
       }
-      var mapView = this._app._mapView;
-      var _search = mapView._search;
-      var searchUrl = thisObject._app._config["search"]["url"];
+      const mapView = this._app._mapView;
+      const _search = mapView._search;
+      const searchUrl = thisObject._app._config["search"]["url"];
       if (searchUrl) {
         params["url"] = searchUrl;
       }
@@ -420,10 +420,10 @@
         //     params["bdid"] = posInfo.bdid||'';
         //     params["floorId"] = posInfo.floorId||'';
         // }else{
-        var pos = mapView._mapSDK.getPosition();
+        const pos = mapView._mapSDK.getPosition();
         params["lon"] = pos["lon"];
         params["lat"] = pos["lat"];
-        var currBuilding = mapView.currBuilding;
+        const currBuilding = mapView.currBuilding;
         if (currBuilding) {
           params["bdid"] = currBuilding.bdid;
           params["floorId"] = currBuilding.getCurrentFloorId();
@@ -431,16 +431,16 @@
 
         // }
       }
-      var locationManager = mapView._locationManager;
-      var posInfo = locationManager.getMyPositionInfo();
-      var locPosition = posInfo["position"];
-      var disNeedReCompute = false;
+      const locationManager = mapView._locationManager;
+      const posInfo = locationManager.getMyPositionInfo();
+      const locPosition = posInfo["position"];
+      const disNeedReCompute = false;
       if ((locPosition[0] && Math.abs(locPosition[0] - params["lon"]) > 0.00001) || Math.abs(locPosition[1] - params["lat"]) > 0.00001) {
         disNeedReCompute = true;
       }
 
-      var mapStateManager = thisObject._app._stateManager;
-      var count = thisObject._app._config["searchCount"] || 60;
+      const mapStateManager = thisObject._app._stateManager;
+      const count = thisObject._app._config["searchCount"] || 60;
       count && (params["count"] = count);
       _search["query"](
         params,
@@ -461,7 +461,7 @@
 
             if (!params["keyword"]) {
               //地图选点位置
-              var selcPosInfo = {
+              const selcPosInfo = {;
                 poiId: DXMapUtils.createUUID(),
                 bdid: params["bdid"],
                 floorId: params["floorId"],
@@ -474,9 +474,9 @@
               //定位点位置
 
               //地图选点位置
-              var position = posInfo["position"];
+              const position = posInfo["position"];
               if (position[0]) {
-                var myPosInfo = {
+                const myPosInfo = {;
                   poiId: DXMapUtils.createUUID(),
                   bdid: posInfo["bdid"],
                   floorId: posInfo["floorId"],
@@ -491,7 +491,7 @@
               if (disNeedReCompute && locPosition[0]) {
                 data.forEach(function (item) {
                   delete item["distance"];
-                  var dis = ~~daxiapp["naviMath"].getGeodeticCircleDistance({ x: item["lon"], y: item["lat"] }, { x: locPosition[0], y: locPosition[1] });
+                  const dis = ~~daxiapp["naviMath"].getGeodeticCircleDistance({ x: item["lon"], y: item["lat"] }, { x: locPosition[0], y: locPosition[1] });
                   item["distance"] = dis > 1000 ? (dis * 0.001).toFixed(1) + "公里" : dis + "米";
                 });
               }
@@ -516,44 +516,44 @@
     },
 
     showPoisByKeyword: function (params) {
-      var thisObject = this;
-      var mapView = this._app._mapView;
+      const thisObject = this;
+      const mapView = this._app._mapView;
       thisObject.enableSendBtn(false);
       thisObject._markerComponent.hide();
       thisObject._selectedMarker.setVisible(false, true);
       this._poiKeywordResultView.showLoading();
-      var position = params["position"];
+      const position = params["position"];
       if (position) {
         params["lon"] = position[0];
         params["lat"] = position[1];
       }
-      var mapView = this._app._mapView;
-      var _search = mapView._search;
-      var searchUrl = thisObject._app._config["searchUrl"];
+      const mapView = this._app._mapView;
+      const _search = mapView._search;
+      const searchUrl = thisObject._app._config["searchUrl"];
       if (searchUrl) {
         params["url"] = searchUrl;
       }
       params["token"] = thisObject._app._params["token"] || thisObject._app._config["token"];
       //按照地图当前位置搜索
       if (!params["lon"]) {
-        var pos = mapView._mapSDK.getPosition();
+        const pos = mapView._mapSDK.getPosition();
         params["lon"] = pos["lon"];
         params["lat"] = pos["lat"];
-        var currBuilding = mapView.currBuilding;
+        const currBuilding = mapView.currBuilding;
         if (currBuilding) {
           params["bdid"] = currBuilding.bdid;
           params["floorId"] = currBuilding.getCurrentFloorId();
         }
       }
-      var locationManager = mapView._locationManager;
-      var posInfo = locationManager.getMyPositionInfo();
-      var locPosition = posInfo["position"];
-      var disNeedReCompute = false;
+      const locationManager = mapView._locationManager;
+      const posInfo = locationManager.getMyPositionInfo();
+      const locPosition = posInfo["position"];
+      const disNeedReCompute = false;
       if ((locPosition[0] && Math.abs(locPosition[0] - params["lon"]) > 0.00001) || Math.abs(locPosition[1] - params["lat"]) > 0.00001) {
         disNeedReCompute = true;
       }
-      var mapStateManager = thisObject._app._stateManager;
-      var count = thisObject._app._config["searchCount"] || 60;
+      const mapStateManager = thisObject._app._stateManager;
+      const count = thisObject._app._config["searchCount"] || 60;
       count && (params["count"] = count);
       _search["query"](
         params,
@@ -570,7 +570,7 @@
               data.forEach(function (item) {
                 if (disNeedReCompute && locPosition[0]) {
                   delete item["distance"];
-                  var dis = ~~daxiapp["naviMath"].getGeodeticCircleDistance({ x: item["lon"], y: item["lat"] }, { x: locPosition[0], y: locPosition[1] });
+                  const dis = ~~daxiapp["naviMath"].getGeodeticCircleDistance({ x: item["lon"], y: item["lat"] }, { x: locPosition[0], y: locPosition[1] });
                   item["distance"] = dis > 1000 ? (dis * 0.001).toFixed(1) + "公里" : dis + "米";
                 }
               });

@@ -2,7 +2,7 @@
  * 参数解析工具 - 使用 WindowAdapter
  * 从 URL 解析查询参数
  */
-import { windowAdapter } from '../legacy/window-adapter.js';
+import { windowAdapter } from "../legacy/window-adapter.js";
 
 /**
  * 解析 URL 参数
@@ -13,11 +13,11 @@ export function parseParams(url = windowAdapter.currentUrl) {
   try {
     const urlObj = new URL(url);
     const params = {};
-    
+
     for (const [key, value] of urlObj.searchParams.entries()) {
       params[key] = value;
     }
-    
+
     return params;
   } catch (error) {
     console.error("[parseParams] Error parsing URL:", error);
@@ -41,7 +41,7 @@ export function getParam(key, url = null) {
       return null;
     }
   }
-  
+
   // 否则使用 WindowAdapter
   return windowAdapter.getParam(key);
 }

@@ -1,7 +1,7 @@
-(function (global) {
-  var daxiapp = (global["DaxiApp"] = global["DaxiApp"] || {});
-  var domUtils = daxiapp["dom"];
-  var dxUtils = daxiapp["utils"];
+// ES6 Module - DaxiApp Base Components
+  const daxiapp = (window.DaxiApp = window.DaxiApp || {});
+  const domUtils = daxiapp["dom"];
+  const dxUtils = daxiapp["utils"];
 
   /**
    * 将 style 参数转换为 HTML style 属性字符串
@@ -25,14 +25,14 @@
    * 大希组件基础类
    * 所有组件的基类，提供通用的初始化、事件绑定、样式设置、显示隐藏等功能
    */
-  var DXBaseComponent = (function (Class) {
+  const DXBaseComponent = (function (Class) {
     "use strict";
 
     /**
      * @class DXBaseComponent
      * @desc 大希组件基类 - 提供组件的通用能力
      */
-    var DXBaseComponent = Class.extend(
+    const DXBaseComponent = Class.extend(
       /** @lends DXBaseComponent.prototype */
       {
         __init__: function () {
@@ -222,8 +222,8 @@
   daxiapp["DXBaseComponent"] = DXBaseComponent;
 
   /** 按钮组件 - 可设置文本和自定义数据 */
-  var DXBtnComponent = (function (DXBaseComponent) {
-    var DXBtnComponent = DXBaseComponent.extend({
+  const DXBtnComponent = (function (DXBaseComponent) {
+    const DXBtnComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXBtnComponent";
       },
@@ -253,8 +253,8 @@
   daxiapp["DXBtnComponent"] = DXBtnComponent;
 
   /** 图标组件 - 支持动态切换图标 */
-  var DXBaseIconComponent = (function (DXBaseComponent) {
-    var DXBaseIconComponent = DXBaseComponent.extend({
+  const DXBaseIconComponent = (function (DXBaseComponent) {
+    const DXBaseIconComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXBaseIconComponent";
       },
@@ -279,8 +279,8 @@
   daxiapp["DXBaseIconComponent"] = DXBaseIconComponent;
 
   /** 图片组件 - 支持动态更新图片地址 */
-  var DXBaseImageComponent = (function (DXBaseComponent) {
-    var DXBaseImageComponent = DXBaseComponent.extend({
+  const DXBaseImageComponent = (function (DXBaseComponent) {
+    const DXBaseImageComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXBaseImageComponent";
       },
@@ -311,8 +311,8 @@
   daxiapp["DXBaseImageComponent"] = DXBaseImageComponent;
 
   /** 组合按钮组件 - 包含图标和文本，支持状态切换 */
-  var DXComboxBtnComponent = (function (DXBaseComponent) {
-    var DXComboxBtnComponent = DXBaseComponent.extend({
+  const DXComboxBtnComponent = (function (DXBaseComponent) {
+    const DXComboxBtnComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXComboxBtnComponent";
       },
@@ -360,8 +360,8 @@
   daxiapp["DXComboxBtnComponent"] = DXComboxBtnComponent;
 
   /** 输入框组件 - 支持输入事件和回车提交 */
-  var DXInputComponent = (function (DXBaseComponent) {
-    var DXInputComponent = DXBaseComponent.extend({
+  const DXInputComponent = (function (DXBaseComponent) {
+    const DXInputComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXInputComponent";
       },
@@ -410,8 +410,8 @@
   daxiapp["DXInputComponent"] = DXInputComponent;
 
   /** 搜索组件 - 带搜索图标的容器 */
-  var DXBaseSearchComponent = (function (DXBaseComponent) {
-    var DXBaseSearchComponent = DXBaseComponent.extend({
+  const DXBaseSearchComponent = (function (DXBaseComponent) {
+    const DXBaseSearchComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXBaseSearchComponent";
       },
@@ -436,8 +436,8 @@
   daxiapp["DXBaseSearchComponent"] = DXBaseSearchComponent;
 
   /** 信息卡片组件 - 用于展示 POI 详情 */
-  var DXInfoCardComponent = (function (DXBaseComponent) {
-    var DXInfoCardComponent = DXBaseComponent.extend({
+  const DXInfoCardComponent = (function (DXBaseComponent) {
+    const DXInfoCardComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXInfoCardComponent";
         this._audioEndHandler = null; // 保存音频结束事件处理器引用，避免重复绑定
@@ -456,7 +456,7 @@
 
       injectComponentEvents: function () {
         this._super();
-        var that = this;
+        let that = this;
 
         // 路线按钮点击
         domUtils.on(that._dom, "click", ".go-route", function () {
@@ -470,7 +470,7 @@
 
         // 右上角按钮点击
         domUtils.on(that._dom, "click", ".float-right", function () {
-          var isActive = !$(this).hasClass("disabled");
+          let isActive = !$(this).hasClass("disabled");
           that.listener?.rightTopBtnCLicked?.(that, { isActive: isActive });
         });
 
@@ -485,8 +485,8 @@
 
       /** 绑定音频结束事件（避免重复绑定） */
       _bindAudioEndEvent: function () {
-        var that = this;
-        var audioDom = domUtils.find(this._dom, "audio")[0];
+        let that = this;
+        let audioDom = domUtils.find(this._dom, "audio")[0];
         if (!audioDom) return;
 
         // 移除旧的监听器
@@ -503,12 +503,12 @@
 
       updateData: function (data, detailData) {
         this._data = data;
-        var imageUrl = data.thumbnail || data.imageUrl;
-        var text = data.name || data.text || data.title || "";
-        var langData = window.langData || {};
+        let imageUrl = data.thumbnail || data.imageUrl;
+        let text = data.name || data.text || data.title || "";
+        let langData = window.langData || {};
 
         // 构建 HTML
-        var str = "";
+        let str = "";
 
         // 关闭按钮
         if (data.iconClose) {
@@ -600,7 +600,7 @@
 
         // 图片加载完成回调
         if (imageUrl && this.listener?.onImgLoaded) {
-          var img = domUtils.find(this._dom, ".info-image")[0];
+          let img = domUtils.find(this._dom, ".info-image")[0];
           if (img) {
             img.onload = () => this.listener.onImgLoaded();
           }
@@ -608,17 +608,17 @@
       },
 
       setRightTopBtnState: function (isActive) {
-        var dom = domUtils.find(this._dom, ".float-right");
+        let dom = domUtils.find(this._dom, ".float-right");
         dom?.[isActive ? "removeClass" : "addClass"]("disabled");
       },
 
       startPlay: function () {
-        var dxaudio = domUtils.find(this._dom, ".audio");
+        let dxaudio = domUtils.find(this._dom, ".audio");
         dxaudio?.[0]?.play?.();
       },
 
       pausePlay: function () {
-        var dxaudio = domUtils.find(this._dom, ".audio");
+        let dxaudio = domUtils.find(this._dom, ".audio");
         dxaudio?.[0]?.pause?.();
       },
     });
@@ -627,8 +627,8 @@
   daxiapp["DXInfoCardComponent"] = DXInfoCardComponent;
 
   /** 瘦西湖路书组件 - 展示路线信息、支持拖拽展开/收起 */
-  var DXInfoCardComponent2 = (function (DXBaseComponent) {
-    var DXInfoCardComponent2 = DXBaseComponent.extend({
+  const DXInfoCardComponent2 = (function (DXBaseComponent) {
+    const DXInfoCardComponent2 = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXInfoCardComponent2";
       },
@@ -921,8 +921,8 @@
   daxiapp["DXInfoCardComponent2"] = DXInfoCardComponent2;
 
   /** 樱花节活动卡片组件 - 支持打卡、分享、去那里功能 */
-  var DXCherryCardComponent = (function (DXBaseComponent) {
-    var DXCherryCardComponent = DXBaseComponent.extend({
+  const DXCherryCardComponent = (function (DXBaseComponent) {
+    const DXCherryCardComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXCherryCardComponent";
       },
@@ -1051,8 +1051,8 @@
   daxiapp["DXCherryCardComponent"] = DXCherryCardComponent;
 
   /** 卡片容器组件 - 支持音频播放控制 */
-  var DXCardsComponent = (function (DXBaseComponent) {
-    var DXCardsComponent = DXBaseComponent.extend({
+  const DXCardsComponent = (function (DXBaseComponent) {
+    const DXCardsComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXCardsComponent";
       },
@@ -1094,8 +1094,8 @@
   daxiapp["DXCardsComponent"] = DXCardsComponent;
 
   /** Swiper 轮播组件 - 封装 Swiper 库，支持滑动、自动播放等功能 */
-  var DXSwiperComponent = (function (DXBaseComponent) {
-    var DXSwiperComponent = DXBaseComponent.extend({
+  const DXSwiperComponent = (function (DXBaseComponent) {
+    const DXSwiperComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXSwiperComponent";
       },
@@ -1247,8 +1247,8 @@
   daxiapp["DXSwiperComponent"] = DXSwiperComponent;
 
   /** 确认弹窗组件 - 支持多按钮回调 */
-  var DXShowConfirmComponent = (function (DXBaseComponent) {
-    var DXShowConfirmComponent = DXBaseComponent.extend({
+  const DXShowConfirmComponent = (function (DXBaseComponent) {
+    const DXShowConfirmComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXShowConfirmComponent";
       },
@@ -1313,8 +1313,8 @@
   daxiapp["DXShowConfirmComponent"] = DXShowConfirmComponent;
 
   /** 景区列表弹窗组件 - 支持多级景区展示和切换 */
-  var DXShowSceneListComponent = (function (DXBaseComponent) {
-    var DXShowSceneListComponent = DXBaseComponent.extend({
+  const DXShowSceneListComponent = (function (DXBaseComponent) {
+    const DXShowSceneListComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXShowSceneListComponent";
       },
@@ -1473,8 +1473,8 @@
   daxiapp["DXShowSceneListComponent"] = DXShowSceneListComponent;
 
   /** 城市列表弹窗组件 - 左侧显示城市，右侧显示该城市下的景区 */
-  var DXShowCityListComponent = (function (DXBaseComponent) {
-    var DXShowCityListComponent = DXBaseComponent.extend({
+  const DXShowCityListComponent = (function (DXBaseComponent) {
+    const DXShowCityListComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXShowCityListComponent";
       },
@@ -1587,8 +1587,8 @@
   daxiapp["DXShowCityListComponent"] = DXShowCityListComponent;
 
   /** 支付弹窗组件 - 支持多按钮回调 */
-  var DXShowPayComponent = (function (DXBaseComponent) {
-    var DXShowPayComponent = DXBaseComponent.extend({
+  const DXShowPayComponent = (function (DXBaseComponent) {
+    const DXShowPayComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXShowPayComponent";
       },
@@ -1656,8 +1656,8 @@
   daxiapp["DXShowPayComponent"] = DXShowPayComponent;
 
   /** 二维码弹窗组件 - 动态生成二维码 */
-  var DXShowQRCodeComponent = (function (DXBaseComponent) {
-    var DXShowQRCodeComponent = DXBaseComponent.extend({
+  const DXShowQRCodeComponent = (function (DXBaseComponent) {
+    const DXShowQRCodeComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXShowQRCodeComponent";
       },
@@ -1726,8 +1726,8 @@
   daxiapp["DXShowQRCodeComponent"] = DXShowQRCodeComponent;
 
   /** 底部确认弹窗组件 - 从底部滑出的确认框 */
-  var DXShowConfirmBottomComponent = (function (DXBaseComponent) {
-    var DXShowConfirmBottomComponent = DXBaseComponent.extend({
+  const DXShowConfirmBottomComponent = (function (DXBaseComponent) {
+    const DXShowConfirmBottomComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXShowConfirmBottomComponent";
       },
@@ -1786,8 +1786,8 @@
   daxiapp["DXShowConfirmBottomComponent"] = DXShowConfirmBottomComponent;
 
   /** 提示弹窗组件 - 带图片的提示框 */
-  var DXShowTipsComponent = (function (DXBaseComponent) {
-    var DXShowTipsComponent = DXBaseComponent.extend({
+  const DXShowTipsComponent = (function (DXBaseComponent) {
+    const DXShowTipsComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXShowTipsComponent";
       },
@@ -1842,8 +1842,8 @@
   daxiapp["DXShowTipsComponent"] = DXShowTipsComponent;
 
   /** 全屏提示弹窗组件 - 带跳过按钮的全屏提示 */
-  var DXShowFullViewTipsComponent = (function (DXBaseComponent) {
-    var DXShowFullViewTipsComponent = DXBaseComponent.extend({
+  const DXShowFullViewTipsComponent = (function (DXBaseComponent) {
+    const DXShowFullViewTipsComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXShowFullViewTipsComponent";
       },
@@ -1905,8 +1905,8 @@
   daxiapp["DXShowFullViewTipsComponent"] = DXShowFullViewTipsComponent;
 
   /** 蓝牙开启提示组件 - 引导用户开启蓝牙和位置权限 */
-  var DXTipBLEOpenComponent = (function (DXBaseComponent) {
-    var DXTipBLEOpenComponent = DXBaseComponent.extend({
+  const DXTipBLEOpenComponent = (function (DXBaseComponent) {
+    const DXTipBLEOpenComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXTipBLEOpenComponent";
       },
@@ -2033,8 +2033,8 @@
   daxiapp["DXTipBLEOpenComponent"] = DXTipBLEOpenComponent;
 
   /** 蓝牙和GPS开启提示组件 - 简洁版引导 */
-  var DXTipBLEGPSOpenComponent = (function (DXBaseComponent) {
-    var DXTipBLEGPSOpenComponent = DXBaseComponent.extend({
+  const DXTipBLEGPSOpenComponent = (function (DXBaseComponent) {
+    const DXTipBLEGPSOpenComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXTipBLEGPSOpenComponent";
       },
@@ -2115,8 +2115,8 @@
   daxiapp["DXTipBLEGPSOpenComponent"] = DXTipBLEGPSOpenComponent;
 
   /** 详情信息组件2 - 带音频播放功能的POI详情卡片 */
-  var DXDetailInfoComponent2 = (function (DXBaseComponent) {
-    var DXDetailInfoComponent2 = DXBaseComponent.extend({
+  const DXDetailInfoComponent2 = (function (DXBaseComponent) {
+    const DXDetailInfoComponent2 = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXDetailInfoComponent2";
         const that = this;
@@ -2468,8 +2468,8 @@
   daxiapp["DXDetailInfoComponent2"] = DXDetailInfoComponent2;
 
   /** DXSpotPopupComponent - 现代化景点详情弹窗组件 */
-  var DXSpotPopupComponent = (function (DXBaseComponent) {
-    var DXSpotPopupComponent = DXBaseComponent.extend({
+  const DXSpotPopupComponent = (function (DXBaseComponent) {
+    const DXSpotPopupComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXSpotPopupComponent";
       },
@@ -2652,8 +2652,8 @@
   daxiapp["DXSpotPopupComponent"] = DXSpotPopupComponent;
 
   /** 详情信息组件3 - 带缩略图播放按钮的POI详情卡片 */
-  var DXDetailInfoComponent3 = (function (DXBaseComponent) {
-    var DXDetailInfoComponent3 = DXBaseComponent.extend({
+  const DXDetailInfoComponent3 = (function (DXBaseComponent) {
+    const DXDetailInfoComponent3 = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXDetailInfoComponent3";
         const that = this;
@@ -2902,8 +2902,8 @@
   daxiapp["DXDetailInfoComponent3"] = DXDetailInfoComponent3;
 
   /** 支付组件 - 产品购买列表 */
-  var DXPayComponent = (function (DXBaseComponent) {
-    var DXPayComponent = DXBaseComponent.extend({
+  const DXPayComponent = (function (DXBaseComponent) {
+    const DXPayComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXPayComponent";
       },
@@ -3003,8 +3003,8 @@
   daxiapp["DXPayComponent"] = DXPayComponent;
 
   /** 支付方式选择组件 */
-  var DXPayTypeComponent = (function (DXBaseComponent) {
-    var DXPayTypeComponent = DXBaseComponent.extend({
+  const DXPayTypeComponent = (function (DXBaseComponent) {
+    const DXPayTypeComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXPayTypeComponent";
       },
@@ -3071,8 +3071,8 @@
   daxiapp["DXPayTypeComponent"] = DXPayTypeComponent;
 
   /** 支付成功提示组件 */
-  var DXPaysuccessComponent = (function (DXBaseComponent) {
-    var DXPaysuccessComponent = DXBaseComponent.extend({
+  const DXPaysuccessComponent = (function (DXBaseComponent) {
+    const DXPaysuccessComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXPaysuccessComponent";
       },
@@ -3125,8 +3125,8 @@
   daxiapp["DXPaysuccessComponent"] = DXPaysuccessComponent;
 
   /** 详情信息组件 - 带音频播放功能的POI详情卡片 */
-  var DXDetailInfoComponent = (function (DXBaseComponent) {
-    var DXDetailInfoComponent = DXBaseComponent.extend({
+  const DXDetailInfoComponent = (function (DXBaseComponent) {
+    const DXDetailInfoComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXDetailInfoComponent";
         const that = this;
@@ -3441,8 +3441,8 @@
   };
 
   /** 编码输入组件 - 4位数字验证码输入 */
-  var DXInputCodeComponent = (function (DXBaseComponent) {
-    var DXInputCodeComponent = DXBaseComponent.extend({
+  const DXInputCodeComponent = (function (DXBaseComponent) {
+    const DXInputCodeComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXInputCodeComponent";
       },
@@ -3539,8 +3539,8 @@
   daxiapp["DXInputCodeComponent"] = DXInputCodeComponent;
 
   /** 教程引导组件 - 新手引导步骤页面 */
-  var DXCourseComponent = (function (DXBaseComponent) {
-    var DXCourseComponent = DXBaseComponent.extend({
+  const DXCourseComponent = (function (DXBaseComponent) {
+    const DXCourseComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXCourseComponent";
       },
@@ -3666,8 +3666,8 @@
   daxiapp["DXCourseComponent"] = DXCourseComponent;
 
   /** 教程引导组件2 - 带建筑ID的新手引导页面 */
-  var DXCourseComponent2 = (function (DXBaseComponent) {
-    var DXCourseComponent2 = DXBaseComponent.extend({
+  const DXCourseComponent2 = (function (DXBaseComponent) {
+    const DXCourseComponent2 = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXCourseComponent2";
       },
@@ -3777,8 +3777,8 @@
   daxiapp["DXCourseComponent2"] = DXCourseComponent2;
 
   /** 教程引导组件3 - 6步新手引导页面 */
-  var DXCourseComponent3 = (function (DXBaseComponent) {
-    var DXCourseComponent3 = DXBaseComponent.extend({
+  const DXCourseComponent3 = (function (DXBaseComponent) {
+    const DXCourseComponent3 = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXCourseComponent3";
       },
@@ -3924,8 +3924,8 @@
   daxiapp["DXCourseComponent3"] = DXCourseComponent3;
 
   /** 样式化教程引导组件 - 带提示气泡的6步引导 */
-  var DXStyleCourseComponent = (function (DXBaseComponent) {
-    var DXStyleCourseComponent = DXBaseComponent.extend({
+  const DXStyleCourseComponent = (function (DXBaseComponent) {
+    const DXStyleCourseComponent = DXBaseComponent.extend({
       __init__: function () {
         this._rtti = "DXStyleCourseComponent";
       },
@@ -4144,33 +4144,33 @@
   daxiapp["DXStyleCourseComponent"] = DXStyleCourseComponent;
 
   daxiapp["RoadCrossPlugin"] = function () {
-    var thisObject = this;
+    let thisObject = this;
     thisObject.timeoutId = null;
-    var Matrix = dxUtils["Matrix"],
+    let Matrix = dxUtils["Matrix"],
       Vector3 = dxUtils["Vector3"],
       Plane = dxUtils["Plane"];
 
     /** 3D 渲染器，用于将路口指示转换到屏幕坐标 */
-    var CrossRender = function () {
-      var thisObject = {};
-      var canvasWidth, canvasHeight, offsetX, offsetY;
-      var _context;
-      var viewProjectMat = Matrix.create();
-      var cameraMat = Matrix.create();
-      var viewMat = Matrix.create();
-      var projMat = Matrix.create();
-      var cameraPosition = Vector3.make(0, -900, 270);
-      var cameraTarget = Vector3.make(0, 0, 0);
-      var cameraUp = [0, 0, 1];
-      var right = Vector3.create();
-      var up = Vector3.create();
-      var dir = Vector3.create();
-      var outputVec = [0, 0, 0];
-      var fovy = Math.PI / 5;
-      var aspect = 1;
-      var near = 0.001;
-      var far = 1000;
-      var groundPlane = Plane.create();
+    let CrossRender = function () {
+      let thisObject = {};
+      let canvasWidth, canvasHeight, offsetX, offsetY;
+      let _context;
+      let viewProjectMat = Matrix.create();
+      let cameraMat = Matrix.create();
+      let viewMat = Matrix.create();
+      let projMat = Matrix.create();
+      let cameraPosition = Vector3.make(0, -900, 270);
+      let cameraTarget = Vector3.make(0, 0, 0);
+      let cameraUp = [0, 0, 1];
+      let right = Vector3.create();
+      let up = Vector3.create();
+      let dir = Vector3.create();
+      let outputVec = [0, 0, 0];
+      let fovy = Math.PI / 5;
+      let aspect = 1;
+      let near = 0.001;
+      let far = 1000;
+      let groundPlane = Plane.create();
 
       function screenPixel(pixel) {
         return pixel * window.devicePixelRatio;
@@ -4219,7 +4219,7 @@
         outVec[1] = (1 - outVec[1]) * 0.5 * canvasHeight - canvasHeight / 2 + offsetY;
         return outVec;
       };
-      var pickRay = { _orig: [0, 0, 0], _dir: [0, 0, 1] };
+      let pickRay = { _orig: [0, 0, 0], _dir: [0, 0, 1] };
       thisObject.unprojectScreenToWorldPlane = function (outVec, inVec) {
         thisObject.getPickRay([inVec.x, inVec.y, 0], pickRay);
         Plane.intersectRay(outVec, pickRay, groundPlane);
@@ -4233,18 +4233,18 @@
         return outVec;
       };
 
-      var nearCenter = Vector3.create();
-      var xDir = Vector3.create();
-      var yDir = Vector3.create();
+      let nearCenter = Vector3.create();
+      let xDir = Vector3.create();
+      let yDir = Vector3.create();
       thisObject.getPickRay = function (windowPosition, result) {
-        var width = canvasWidth;
-        var height = canvasHeight;
+        let width = canvasWidth;
+        let height = canvasHeight;
 
-        var tanPhi = Math.tan(fovy * 0.5);
-        var tanTheta = aspect * tanPhi;
+        let tanPhi = Math.tan(fovy * 0.5);
+        let tanTheta = aspect * tanPhi;
 
-        var x = (2.0 / width) * windowPosition[0] - 1.0;
-        var y = (2.0 / height) * (height - windowPosition[1]) - 1.0;
+        let x = (2.0 / width) * windowPosition[0] - 1.0;
+        let y = (2.0 / height) * (height - windowPosition[1]) - 1.0;
 
         Vector3.clone(result._orig, cameraPosition);
         Vector3.scale(nearCenter, dir, near);
@@ -4268,7 +4268,7 @@
         _context.strokeStyle = strokeStyle;
         _context.lineWidth = 5;
 
-        var [startX, startY] = arrows[0];
+        let [startX, startY] = arrows[0];
         thisObject.moveTo3D(startX, startY);
         arrows.forEach(function (arrow) {
           thisObject.lineTo3D(arrow[0], arrow[1]);
@@ -4295,20 +4295,20 @@
     };
 
     /** 路口视图管理器 */
-    var RoadCrossView = function () {
-      var _canvas = null;
-      var _context;
-      var origin = { x: 0, y: 0, w: 0, h: 0 };
-      var stageW = 0;
-      var stageH = 0;
-      var sourceImg = { width: 0, height: 0 };
-      var roadCrossData = {};
-      var preLoadImages = {};
+    let RoadCrossView = function () {
+      let _canvas = null;
+      let _context;
+      let origin = { x: 0, y: 0, w: 0, h: 0 };
+      let stageW = 0;
+      let stageH = 0;
+      let sourceImg = { width: 0, height: 0 };
+      let roadCrossData = {};
+      let preLoadImages = {};
 
       /** 根据背景图计算显示区域尺寸 */
       function setImageStyle(bgImage) {
-        var h = parseInt(stageH);
-        var w = parseInt(bgImage.width * (h / bgImage.height));
+        let h = parseInt(stageH);
+        let w = parseInt(bgImage.width * (h / bgImage.height));
         origin.x = parseInt(-(w - stageW) / 2);
         origin.w = w;
         origin.h = h;
@@ -4316,15 +4316,15 @@
       /** 绘制路口图像及叠加层 */
       function drawCrossImage() {
         if (!_context) throw "没有设置canvas";
-        var image = thisObject.image;
-        var strokeStyle = thisObject.strokeStyle[thisObject.strokeStyleIndex++ % 2];
+        let image = thisObject.image;
+        let strokeStyle = thisObject.strokeStyle[thisObject.strokeStyleIndex++ % 2];
 
         _context.clearRect(0, 0, _canvas.width, _canvas.height);
         _context.fillStyle = "black";
         _context.fillRect(0, 0, stageW, stageH);
         _context.drawImage(image, 0, 0, image.width, image.height, origin.x, 0, origin.w, origin.h);
 
-        var overlayFillStyle = "rgba(255,255,255,0.5)";
+        let overlayFillStyle = "rgba(255,255,255,0.5)";
         drawDoorLine(roadCrossData, strokeStyle, overlayFillStyle);
         drawArrowLine(roadCrossData, strokeStyle, overlayFillStyle);
       }
@@ -4346,11 +4346,11 @@
         _context.lineWidth = 3;
         _context.beginPath();
 
-        var points = obj.doorPath;
-        var startPt = imageCoordsToScreenCoords(points[0]);
+        let points = obj.doorPath;
+        let startPt = imageCoordsToScreenCoords(points[0]);
         _context.moveTo(startPt.x, startPt.y);
-        for (var i = 1; i < points.length; i++) {
-          var pt = imageCoordsToScreenCoords(points[i]);
+        for (let i = 1; i < points.length; i++) {
+          let pt = imageCoordsToScreenCoords(points[i]);
           _context.lineTo(pt.x, pt.y);
         }
         _context.fill();
@@ -4360,28 +4360,28 @@
 
       /** 将顶点添加到缓冲区 */
       function pushToBuffer(buffer, v, direction, lineWidth, scale) {
-        var temp = [0, 0, 0];
+        let temp = [0, 0, 0];
         Vector3.mad(temp, v, direction, scale * lineWidth);
         buffer.push(temp);
       }
 
-      var lineDirection = [0, 0, 0];
-      var direction = [0, 0, 0];
-      var direction1 = [0, 0, 0];
-      var direction2 = [0, 0, 0];
-      var v_temp_normal = [0, 0, 0];
+      let lineDirection = [0, 0, 0];
+      let direction = [0, 0, 0];
+      let direction1 = [0, 0, 0];
+      let direction2 = [0, 0, 0];
+      let v_temp_normal = [0, 0, 0];
       /** 构建箭头多边形缓冲区 */
       function createArrowBuffer(line) {
-        var pointCount = line.length;
+        let pointCount = line.length;
         if (pointCount < 2) return [];
 
-        var outBufferLeft = [];
-        var outBufferRight = [];
-        var outBufferHead = [];
-        var DEGREE_TO_RADIAN = Math.PI / 180;
-        var lineWidth = 7.5;
+        let outBufferLeft = [];
+        let outBufferRight = [];
+        let outBufferHead = [];
+        let DEGREE_TO_RADIAN = Math.PI / 180;
+        let lineWidth = 7.5;
 
-        var A, B, C;
+        let A, B, C;
         if (pointCount == 2) {
           A = line[0];
           B = line[1];
@@ -4409,7 +4409,7 @@
             pushToBuffer(outBufferLeft, A, direction, lineWidth, -1);
             pushToBuffer(outBufferRight, A, direction, lineWidth, 1);
           }
-          for (var j = 1; j < pointCount - 1; j++) {
+          for (let j = 1; j < pointCount - 1; j++) {
             A = line[j - 1];
             B = line[j];
             C = line[j + 1];
@@ -4430,9 +4430,9 @@
 
             Vector3.sub(v_temp_normal, A, B);
             Vector3.normalize(v_temp_normal, v_temp_normal);
-            var dot_val = Math.abs(Vector3.dot(v_temp_normal, direction));
-            var angle = Math.acos(dot_val);
-            var scale = angle < 25 * DEGREE_TO_RADIAN ? 1.0 : 1.0 / Math.sin(angle);
+            let dot_val = Math.abs(Vector3.dot(v_temp_normal, direction));
+            let angle = Math.acos(dot_val);
+            let scale = angle < 25 * DEGREE_TO_RADIAN ? 1.0 : 1.0 / Math.sin(angle);
 
             pushToBuffer(outBufferLeft, B, direction, lineWidth, -scale);
             pushToBuffer(outBufferRight, B, direction, lineWidth, scale);
@@ -4451,7 +4451,7 @@
         }
 
         // Arrow Head
-        var HeadPos = [0, 0, 0];
+        let HeadPos = [0, 0, 0];
         Vector3.mad(HeadPos, B, lineDirection, lineWidth * 3);
         pushToBuffer(outBufferHead, B, direction, lineWidth * 2, -1);
         pushToBuffer(outBufferHead, HeadPos, direction, 0, 0);
@@ -4463,19 +4463,19 @@
       /** 绘制箭头导航路径 */
       function drawArrowLine(obj, strokeStyle) {
         if (!obj?.arrowPath?.length) return;
-        var crossRender = thisObject.crossRender;
+        let crossRender = thisObject.crossRender;
         crossRender.setViewport(_canvas.width * 0.5, _canvas.height * 0.5, _canvas.width, _canvas.height);
 
         // 将图像坐标转换为3D世界坐标
-        var worldCoords = obj.arrowPath.map(function (point) {
-          var pt = [0, 0, 0];
+        let worldCoords = obj.arrowPath.map(function (point) {
+          let pt = [0, 0, 0];
           crossRender.unprojectScreenToWorldPlane(pt, imageCoordsToScreenCoords(point));
           return pt;
         });
 
         // 构建箭头缓冲区并转换为屏幕坐标
-        var arrowBuffer = createArrowBuffer(worldCoords).map(function (pt) {
-          var screenPt = [0, 0, 0];
+        let arrowBuffer = createArrowBuffer(worldCoords).map(function (pt) {
+          let screenPt = [0, 0, 0];
           crossRender.projectWorldToScreen(screenPt, pt);
           return screenPt;
         });
@@ -4516,16 +4516,16 @@
         /** 预加载路口图片 */
         preLoad: function (json, floorName) {
           if (!json) return;
-          var obj = json["CrossImageResult"];
-          for (var i = 0; i < obj.length; i++) {
+          let obj = json["CrossImageResult"];
+          for (let i = 0; i < obj.length; i++) {
             if (obj?.[i]?.["Result"]) {
-              var ids = obj[i]["Result"];
-              var floorid = obj[i]["floor"];
-              for (var j = 0; j < ids.length; j++) {
-                var id = ids[j]["Connectionid"];
+              let ids = obj[i]["Result"];
+              let floorid = obj[i]["floor"];
+              for (let j = 0; j < ids.length; j++) {
+                let id = ids[j]["Connectionid"];
                 if (typeof preLoadImages[id] == "string") continue;
-                var url = `${json["baseUrl"]}${floorid}/${ids[j]["imagePath"]}`;
-                var img = new Image();
+                let url = `${json["baseUrl"]}${floorid}/${ids[j]["imagePath"]}`;
+                let img = new Image();
                 img.src = url;
                 img.onerror = function () {};
                 preLoadImages[id] = url;
@@ -4539,9 +4539,9 @@
           thisObject.show = true;
           window.clearTimeout(thisObject.timeoutId);
           if (!json?.["ArrowGroup"]?.length) return;
-          var arrowGroup = json["ArrowGroup"][0];
-          var doorGroups = json["DoorGroup"] || [];
-          var doorGroup =
+          let arrowGroup = json["ArrowGroup"][0];
+          let doorGroups = json["DoorGroup"] || [];
+          let doorGroup =
             doorGroups.find(function (g) {
               return g["doorID"] == arrowGroup["doorId"];
             }) || {};
@@ -4550,8 +4550,8 @@
           roadCrossData.arrowPath = arrowGroup["arrowPath"];
           sourceImg.width = json["ImgWidth"];
           sourceImg.height = json["ImgHeight"];
-          var url = json.url;
-          var image = new Image();
+          let url = json.url;
+          let image = new Image();
           thisObject.image = image;
           thisObject.strokeStyle = ["rgba(255,255,255,0)", "rgba(244,161,0,0.7)"];
           thisObject.strokeStyleIndex = 0;
@@ -4561,7 +4561,7 @@
             setImageStyle(image);
             drawCrossImage();
             // 启动闪烁动画定时器
-            var animateGlitter = function () {
+            let animateGlitter = function () {
               if (!thisObject.show) return;
               drawCrossImage();
               thisObject.timeoutId = setTimeout(animateGlitter, 500);
@@ -4582,30 +4582,30 @@
 
   /** 初始化路口放大图视图 */
   daxiapp["initCrossRodeView"] = function (parentObj, naviManager) {
-    var wrapperDom = `
+    let wrapperDom = `
       <div class="roadcross_container" id="roadcross_container">
         <div id="roadcross" class="roadcross">
           <div style="position:relative;" id="roadcross_content"></div>
         </div>
       </div>`;
     parentObj["append"](wrapperDom);
-    var roadCrossContainer = parentObj["find"](".roadcross_container");
+    let roadCrossContainer = parentObj["find"](".roadcross_container");
 
     // 创建 Canvas 元素
-    var canvas = document.createElement("canvas");
+    let canvas = document.createElement("canvas");
     canvas.id = "roadcross_canvas";
     canvas.width = window.innerWidth;
     canvas.height = Math.min(window.innerWidth, window.innerHeight * 0.5);
     roadCrossContainer.find("#roadcross_content")["append"](canvas);
 
     // 初始化路口插件
-    var roadCrossPlugin = new daxiapp["RoadCrossPlugin"]();
+    let roadCrossPlugin = new daxiapp["RoadCrossPlugin"]();
     roadCrossPlugin.roadCrossView.init(canvas);
 
-    var indoorNaviEventAPI = naviManager?.naviCoreEvents;
+    let indoorNaviEventAPI = naviManager?.naviCoreEvents;
     if (!indoorNaviEventAPI) return { roadCrossPlugin: roadCrossPlugin, destory: function () {} };
 
-    var crossRoadEnabled = false;
+    let crossRoadEnabled = false;
 
     function preLoadRoadCross(sender, data) {
       roadCrossPlugin.roadCrossView.preLoad(data);
@@ -6187,4 +6187,54 @@
     return DXScenicCardView;
   })(DXBaseComponent);
   daxiapp.DXScenicCardView = DXScenicCardView;
-})(window);
+
+// ES6 Module Exports
+export {
+  DXBaseComponent,
+  DXBtnComponent,
+  DXBaseIconComponent,
+  DXBaseImageComponent,
+  DXComboxBtnComponent,
+  DXInputComponent,
+  DXBaseSearchComponent,
+  DXInfoCardComponent,
+  DXInfoCardComponent2,
+  DXCherryCardComponent,
+  DXCardsComponent,
+  DXSwiperComponent,
+  DXShowConfirmComponent,
+  DXShowSceneListComponent,
+  DXShowCityListComponent,
+  DXShowPayComponent,
+  DXShowQRCodeComponent,
+  DXShowConfirmBottomComponent,
+  DXShowTipsComponent,
+  DXShowFullViewTipsComponent,
+  DXTipBLEOpenComponent,
+  DXTipBLEGPSOpenComponent,
+  DXDetailInfoComponent2,
+  DXSpotPopupComponent,
+  DXDetailInfoComponent3,
+  DXPayComponent,
+  DXPayTypeComponent,
+  DXPaysuccessComponent,
+  DXDetailInfoComponent,
+  DXInputCodeComponent,
+  DXCourseComponent,
+  DXCourseComponent2,
+  DXCourseComponent3,
+  DXStyleCourseComponent,
+  DXMapInfoComponent,
+  DXMapListComponent,
+  DXRouteTransitListView2,
+  DXRouteTransitListView3,
+  DXDriverRouteDetailView,
+  DXBusRouteDetailView,
+  DXWalkRouteDetailView,
+  DXNaviInfoView,
+  DXNaviInfoView2,
+  WidgetBtn,
+  WidgetList,
+  WidgetToolMask,
+  DXScenicCardView,
+};

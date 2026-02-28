@@ -2,7 +2,7 @@
  * 服务页面控制器
  * 客服、帮助、反馈等服务功能
  */
-import { BasePageController } from '../../controllers/base-page-controller.js';
+import { BasePageController } from "../../controllers/base-page-controller.js";
 
 /**
  * @class ServicePageController
@@ -15,16 +15,16 @@ export class ServicePageController extends BasePageController {
    */
   constructor(options) {
     super(options);
-    this.pageName = 'ServicePage';
-    
+    this.pageName = "ServicePage";
+
     /** @type {Array} 服务项目列表 */
     this.serviceItems = [
-      { id: 1, name: '在线客服', icon: '💬', action: 'chat' },
-      { id: 2, name: '电话咨询', icon: '📞', action: 'call' },
-      { id: 3, name: '常见问题', icon: '❓', action: 'faq' },
-      { id: 4, name: '意见反馈', icon: '📝', action: 'feedback' },
-      { id: 5, name: '投诉建议', icon: '⚠️', action: 'complaint' },
-      { id: 6, name: '关于我们', icon: 'ℹ️', action: 'about' }
+      { id: 1, name: "在线客服", icon: "💬", action: "chat" },
+      { id: 2, name: "电话咨询", icon: "📞", action: "call" },
+      { id: 3, name: "常见问题", icon: "❓", action: "faq" },
+      { id: 4, name: "意见反馈", icon: "📝", action: "feedback" },
+      { id: 5, name: "投诉建议", icon: "⚠️", action: "complaint" },
+      { id: 6, name: "关于我们", icon: "ℹ️", action: "about" },
     ];
   }
 
@@ -34,11 +34,11 @@ export class ServicePageController extends BasePageController {
    */
   async onCreate(params) {
     await super.onCreate(params);
-    console.log('[ServicePage] Creating with params:', params);
-    
+    console.log("[ServicePage] Creating with params:", params);
+
     // 加载服务数据
     await this.loadServiceData();
-    
+
     // 渲染页面
     this.render();
   }
@@ -48,8 +48,8 @@ export class ServicePageController extends BasePageController {
    */
   async onShow() {
     await super.onShow();
-    console.log('[ServicePage] Showing');
-    
+    console.log("[ServicePage] Showing");
+
     // 绑定事件
     this.bindEvents();
   }
@@ -59,8 +59,8 @@ export class ServicePageController extends BasePageController {
    */
   async onHide() {
     await super.onHide();
-    console.log('[ServicePage] Hiding');
-    
+    console.log("[ServicePage] Hiding");
+
     // 解绑事件
     this.unbindEvents();
   }
@@ -70,8 +70,8 @@ export class ServicePageController extends BasePageController {
    */
   async onDestroy() {
     await super.onDestroy();
-    console.log('[ServicePage] Destroying');
-    
+    console.log("[ServicePage] Destroying");
+
     // 清理数据
     this.serviceItems = [];
   }
@@ -82,9 +82,9 @@ export class ServicePageController extends BasePageController {
   async loadServiceData() {
     try {
       // TODO: 调用 API 加载服务数据
-      console.log('[ServicePage] Data loaded');
+      console.log("[ServicePage] Data loaded");
     } catch (error) {
-      console.error('[ServicePage] Load data error:', error);
+      console.error("[ServicePage] Load data error:", error);
     }
   }
 
@@ -114,13 +114,17 @@ export class ServicePageController extends BasePageController {
           </div>
           
           <div class="service-list">
-            ${this.serviceItems.map(item => `
+            ${this.serviceItems
+    .map(
+      (item) => `
               <div class="service-item" data-action="${item.action}">
                 <div class="service-icon">${item.icon}</div>
                 <div class="service-name">${item.name}</div>
                 <div class="service-arrow">›</div>
               </div>
-            `).join('')}
+            `
+    )
+    .join("")}
           </div>
           
           <div class="service-hotlines">
@@ -140,18 +144,18 @@ export class ServicePageController extends BasePageController {
    */
   bindEvents() {
     // 服务项目点击事件
-    const serviceItems = this.$$('.service-item');
-    serviceItems.forEach(item => {
-      this.addEventListener(item, 'click', (e) => {
+    const serviceItems = this.$$(".service-item");
+    serviceItems.forEach((item) => {
+      this.addEventListener(item, "click", (e) => {
         const action = e.currentTarget.dataset.action;
         this.handleServiceAction(action);
       });
     });
 
     // 返回按钮
-    const backBtn = this.$('.header-back');
+    const backBtn = this.$(".header-back");
     if (backBtn) {
-      this.addEventListener(backBtn, 'click', () => {
+      this.addEventListener(backBtn, "click", () => {
         this.back();
       });
     }
@@ -170,24 +174,24 @@ export class ServicePageController extends BasePageController {
    */
   handleServiceAction(action) {
     switch (action) {
-      case 'chat':
-        this.openChat();
-        break;
-      case 'call':
-        this.makeCall();
-        break;
-      case 'faq':
-        this.navigateTo('FAQPage');
-        break;
-      case 'feedback':
-        this.navigateTo('FeedbackPage');
-        break;
-      case 'complaint':
-        this.navigateTo('ComplaintPage');
-        break;
-      case 'about':
-        this.navigateTo('AboutPage');
-        break;
+    case "chat":
+      this.openChat();
+      break;
+    case "call":
+      this.makeCall();
+      break;
+    case "faq":
+      this.navigateTo("FAQPage");
+      break;
+    case "feedback":
+      this.navigateTo("FeedbackPage");
+      break;
+    case "complaint":
+      this.navigateTo("ComplaintPage");
+      break;
+    case "about":
+      this.navigateTo("AboutPage");
+      break;
     }
   }
 
@@ -195,18 +199,18 @@ export class ServicePageController extends BasePageController {
    * 打开在线客服
    */
   openChat() {
-    console.log('[ServicePage] Opening chat...');
+    console.log("[ServicePage] Opening chat...");
     // TODO: 实现客服聊天功能
-    alert('在线客服功能开发中...');
+    alert("在线客服功能开发中...");
   }
 
   /**
    * 拨打电话
    */
   makeCall() {
-    console.log('[ServicePage] Making call...');
+    console.log("[ServicePage] Making call...");
     // TODO: 实现电话拨打功能
-    window.location.href = 'tel:400-XXX-XXXX';
+    window.location.href = "tel:400-XXX-XXXX";
   }
 
   /**
@@ -215,7 +219,7 @@ export class ServicePageController extends BasePageController {
   toJSON() {
     return {
       ...super.toJSON(),
-      serviceCount: this.serviceItems.length
+      serviceCount: this.serviceItems.length,
     };
   }
 }
@@ -234,6 +238,6 @@ export function createServicePage(options = {}) {
  * @param {Object} options - 配置选项
  */
 export async function registerServicePage(options = {}) {
-  const { registerPage } = await import('../../controllers/page-controller-registry.js');
-  registerPage('ServicePage', ServicePageController);
+  const { registerPage } = await import("../../controllers/page-controller-registry.js");
+  registerPage("ServicePage", ServicePageController);
 }

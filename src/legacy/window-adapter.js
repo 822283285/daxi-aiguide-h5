@@ -1,17 +1,17 @@
 /**
  * Window Adapter
  * 封装所有对 window 的直接访问，逐步消除全局依赖
- * 
+ *
  * 使用方式:
  * import { WindowAdapter } from '@/legacy/window-adapter.js';
  * const adapter = new WindowAdapter();
- * 
+ *
  * // 替代 window.DaxiApp
  * adapter.daxiApp
- * 
+ *
  * // 替代 window.location
  * adapter.location.href
- * 
+ *
  * // 替代 window.getParam()
  * adapter.getParam('key')
  */
@@ -26,8 +26,8 @@ export class WindowAdapter {
    */
   constructor(globalRef = null) {
     /** @type {Object} */
-    this.globalRef = globalRef || (typeof window !== 'undefined' ? window : globalThis);
-    
+    this.globalRef = globalRef || (typeof window !== "undefined" ? window : globalThis);
+
     /** @type {Object} 缓存的 DaxiApp 引用 */
     this._daxiApp = null;
   }
@@ -73,7 +73,7 @@ export class WindowAdapter {
    * @returns {string} 当前 URL
    */
   get currentUrl() {
-    return this.globalRef.location?.href || '';
+    return this.globalRef.location?.href || "";
   }
 
   /**
@@ -82,10 +82,10 @@ export class WindowAdapter {
    * @returns {string|null} 参数值
    */
   getParam(key) {
-    if (typeof this.globalRef.getParam === 'function') {
+    if (typeof this.globalRef.getParam === "function") {
       return this.globalRef.getParam(key);
     }
-    
+
     // 备用方案：使用 URLSearchParams
     try {
       const url = this.currentUrl;
@@ -101,10 +101,10 @@ export class WindowAdapter {
    * @returns {Object} 参数对象
    */
   getAllParams() {
-    if (typeof this.globalRef.getAllParams === 'function') {
+    if (typeof this.globalRef.getAllParams === "function") {
       return this.globalRef.getAllParams();
     }
-    
+
     // 备用方案
     try {
       const url = this.currentUrl;
@@ -231,7 +231,7 @@ export class WindowAdapter {
    * @returns {string} User Agent
    */
   get userAgent() {
-    return this.globalRef.navigator?.userAgent || '';
+    return this.globalRef.navigator?.userAgent || "";
   }
 
   /**
@@ -274,10 +274,10 @@ export class WindowAdapter {
    * @returns {string} 设备类型 (ios/android/wechat/web)
    */
   get deviceType() {
-    if (this.isWeChat) return 'wechat';
-    if (this.isIOS) return 'ios';
-    if (this.isAndroid) return 'android';
-    return 'web';
+    if (this.isWeChat) return "wechat";
+    if (this.isIOS) return "ios";
+    if (this.isAndroid) return "android";
+    return "web";
   }
 
   /**
@@ -357,10 +357,10 @@ export class WindowAdapter {
    */
   setLocalStorage(key, value) {
     try {
-      const str = typeof value === 'string' ? value : JSON.stringify(value);
+      const str = typeof value === "string" ? value : JSON.stringify(value);
       this.globalRef.localStorage?.setItem(key, str);
     } catch (e) {
-      console.warn('[WindowAdapter] localStorage setItem failed:', e);
+      console.warn("[WindowAdapter] localStorage setItem failed:", e);
     }
   }
 
@@ -379,7 +379,7 @@ export class WindowAdapter {
         return str;
       }
     } catch (e) {
-      console.warn('[WindowAdapter] localStorage getItem failed:', e);
+      console.warn("[WindowAdapter] localStorage getItem failed:", e);
       return null;
     }
   }
@@ -392,7 +392,7 @@ export class WindowAdapter {
     try {
       this.globalRef.localStorage?.removeItem(key);
     } catch (e) {
-      console.warn('[WindowAdapter] localStorage removeItem failed:', e);
+      console.warn("[WindowAdapter] localStorage removeItem failed:", e);
     }
   }
 
@@ -403,7 +403,7 @@ export class WindowAdapter {
     try {
       this.globalRef.localStorage?.clear();
     } catch (e) {
-      console.warn('[WindowAdapter] localStorage clear failed:', e);
+      console.warn("[WindowAdapter] localStorage clear failed:", e);
     }
   }
 
@@ -414,10 +414,10 @@ export class WindowAdapter {
    */
   setSessionStorage(key, value) {
     try {
-      const str = typeof value === 'string' ? value : JSON.stringify(value);
+      const str = typeof value === "string" ? value : JSON.stringify(value);
       this.globalRef.sessionStorage?.setItem(key, str);
     } catch (e) {
-      console.warn('[WindowAdapter] sessionStorage setItem failed:', e);
+      console.warn("[WindowAdapter] sessionStorage setItem failed:", e);
     }
   }
 
@@ -436,7 +436,7 @@ export class WindowAdapter {
         return str;
       }
     } catch (e) {
-      console.warn('[WindowAdapter] sessionStorage getItem failed:', e);
+      console.warn("[WindowAdapter] sessionStorage getItem failed:", e);
       return null;
     }
   }
@@ -452,12 +452,12 @@ export class WindowAdapter {
       isWeChat: this.isWeChat,
       isIOS: this.isIOS,
       isAndroid: this.isAndroid,
-      hasCryptoJS: !!this.cryptoJS,
-      hasMD5: !!this.md5,
-      hasSignMd5Utils: !!this.signMd5Utils,
-      hasAxios: !!this.axios,
-      hasZepto: !!this.zepto,
-      hasDaxiApp: !!this.globalRef.DaxiApp,
+      hasCryptoJS: Boolean(this.cryptoJS),
+      hasMD5: Boolean(this.md5),
+      hasSignMd5Utils: Boolean(this.signMd5Utils),
+      hasAxios: Boolean(this.axios),
+      hasZepto: Boolean(this.zepto),
+      hasDaxiApp: Boolean(this.globalRef.DaxiApp),
       currentUrl: this.currentUrl,
     };
   }
@@ -475,7 +475,9 @@ export const windowAdapter = new WindowAdapter();
 
 // DaxiApp 访问
 export const getDaxiApp = () => windowAdapter.daxiApp;
-export const setDaxiApp = (value) => { windowAdapter.daxiApp = value; };
+export const setDaxiApp = (value) => {
+  windowAdapter.daxiApp = value;
+};
 export const getDaxiAppProp = (key) => windowAdapter.getDaxiAppProp(key);
 export const setDaxiAppProp = (key, value) => windowAdapter.setDaxiAppProp(key, value);
 

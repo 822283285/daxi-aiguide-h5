@@ -6,55 +6,73 @@
  * @version 2.1
  */
 
-const isBrowser = typeof window !== 'undefined';
+const isBrowser = typeof window !== "undefined";
 let axiosInstance = null;
 
 if (isBrowser) {
   if (window.axios) {
     axiosInstance = window.axios.create();
   } else {
-    console.error('[Request] 未找到 axios，请确保已引入 axios 库');
+    console.error("[Request] 未找到 axios，请确保已引入 axios 库");
   }
 } else {
   try {
-    const axios = require('axios');
+    const axios = require("axios");
     axiosInstance = axios.create();
   } catch (e) {
-    console.error('[Request] 未找到 axios 模块:', e.message);
+    console.error("[Request] 未找到 axios 模块:", e.message);
   }
 }
 
-const REMOTE_CONFIG_URL = 'https://cloud.daxicn.com/publicData/806bc162812065750b3d3958f9056008/appConfig/app.json';
-const DEFAULT_CONFIG = { timeout: 15000, needSign: true, showLog: true, headers: { 'Content-Type': 'application/json' } };
+const REMOTE_CONFIG_URL =
+  "https://cloud.daxicn.com/publicData/806bc162812065750b3d3958f9056008/appConfig/app.json";
+const DEFAULT_CONFIG = {
+  timeout: 15000,
+  needSign: true,
+  showLog: true,
+  headers: { "Content-Type": "application/json" },
+};
 
-let appConfig = { baseUrl: '', scenicApiUrl: '', userApiUrl: '', secret: '1CFE42085637416ADAF6AEF60A832342' };
-let appParams = { token: '', bdid: '', userId: '', appId: '' };
+const appConfig = {
+  baseUrl: "",
+  scenicApiUrl: "",
+  userApiUrl: "",
+  secret: "1CFE42085637416ADAF6AEF60A832342",
+};
+let appParams = { token: "", bdid: "", userId: "", appId: "" };
 let isInitialized = false;
 let initPromise = null;
 let signMd5Utils = null;
 
 function getUrlParam(name) {
   if (!isBrowser) return null;
-  const url = window.location.href.split('#')[0];
-  const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
-  const query = url.split('?')[1] || '';
+  const url = window.location.href.split("#")[0];
+  const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`);
+  const query = url.split("?")[1] || "";
   const result = query.match(reg);
   return result != null ? decodeURIComponent(result[2]) : null;
 }
 
 function getAppParamsFromUrl() {
   return {
-    token: getUrlParam('token') || window.getParam?.('token') || '',
-    bdid: getUrlParam('bdid') || window.getParam?.('bdid') || getUrlParam('buildingId') || window.getParam?.('buildingId') || getUrlParam('poiid') || window.getParam?.('poiid') || '',
-    userId: getUrlParam('userId') || window.getParam?.('userId') || '',
-    appId: getUrlParam('appId') || window.getParam?.('appId') || '',
+    token: getUrlParam("token") || window.getParam?.("token") || "",
+    bdid:
+      getUrlParam("bdid") ||
+      window.getParam?.("bdid") ||
+      getUrlParam("buildingId") ||
+      window.getParam?.("buildingId") ||
+      getUrlParam("poiid") ||
+      window.getParam?.("poiid") ||
+      "",
+    userId: getUrlParam("userId") || window.getParam?.("userId") || "",
+    appId: getUrlParam("appId") || window.getParam?.("appId") || "",
   };
 }
 
 function getSign(url, data) {
   if (!signMd5Utils) {
-    console.warn('[Request] 签名工具未加载，跳过签名');
-    return '';
+    console.warn("[Request] 签名工具未加载，跳过签名");
+    return "";
   }
   return signMd5Utils.getSign(url, data);
 }
@@ -64,18 +82,22 @@ function getTimestamp() {
 }
 
 function buildSignHeaders(url, data) {
-  return { 'X-Sign': getSign(url, data), 'X-TIMESTAMP': getTimestamp(), 'Content-Type': 'application/json' };
+  return {
+    "X-Sign": getSign(url, data),
+    "X-TIMESTAMP": getTimestamp(),
+    "Content-Type": "application/json",
+  };
 }
 
 function requestLog(type, options) {
   if (!options.showLog) return;
   const { url, method, params, data, response, error, duration } = options;
   const timestamp = new Date().toISOString();
-  if (type === 'request') {
+  if (type === "request") {
     console.log(`[Request] ${timestamp} 发送`, url, method, params, data);
-  } else if (type === 'response') {
+  } else if (type === "response") {
     console.log(`[Request] ${timestamp} 响应`, url, method, `${duration}ms`, response);
-  } else if (type === 'error') {
+  } else if (type === "error") {
     console.error(`[Request] ${timestamp} 失败`, url, method, `${duration}ms`, error);
   }
 }
@@ -84,13 +106,19 @@ async function requestInterceptor(config) {
   config.startTime = Date.now();
   config.headers = { ...DEFAULT_CONFIG.headers, ...(config.headers || {}) };
   if (config.needSign !== false && signMd5Utils) {
-    const signTarget = config.method?.toUpperCase() === 'POST' ? config.data : config.params;
+    const signTarget = config.method?.toUpperCase() === "POST" ? config.data : config.params;
     config.headers = { ...config.headers, ...buildSignHeaders(config.url, signTarget || {}) };
   }
   if (appParams.token) config.params = { ...config.params, token: appParams.token };
   if (appParams.bdid) config.params = { ...config.params, bdid: appParams.bdid };
   if (config.showLog !== false) {
-    requestLog('request', { url: config.url, method: config.method, params: config.params, data: config.data, showLog: config.showLog });
+    requestLog("request", {
+      url: config.url,
+      method: config.method,
+      params: config.params,
+      data: config.data,
+      showLog: config.showLog,
+    });
   }
   return config;
 }
@@ -99,15 +127,22 @@ async function responseInterceptor(response) {
   const config = response.config;
   const duration = Date.now() - config.startTime;
   if (config.showLog !== false) {
-    requestLog('response', { url: config.url, method: config.method, response: response.data, duration, showLog: config.showLog });
+    requestLog("response", {
+      url: config.url,
+      method: config.method,
+      response: response.data,
+      duration,
+      showLog: config.showLog,
+    });
   }
   const responseData = response.data;
-  if (!responseData.hasOwnProperty('code') && !responseData.hasOwnProperty('status')) return responseData;
-  const successCodes = [200, 0, '200', '0'];
+  if (!responseData.hasOwnProperty("code") && !responseData.hasOwnProperty("status"))
+    return responseData;
+  const successCodes = [200, 0, "200", "0"];
   if (successCodes.includes(responseData.code) || successCodes.includes(responseData.status)) {
     return responseData.data || responseData;
   }
-  const error = new Error(responseData.message || '请求失败');
+  const error = new Error(responseData.message || "请求失败");
   error.code = responseData.code || responseData.status;
   error.data = responseData.data;
   throw error;
@@ -117,16 +152,32 @@ async function errorInterceptor(error) {
   const config = error.config;
   const duration = Date.now() - (config.startTime || Date.now());
   if (config?.showLog !== false) {
-    requestLog('error', { url: config.url, method: config.method, error: error.message || error, duration, showLog: config.showLog });
+    requestLog("error", {
+      url: config.url,
+      method: config.method,
+      error: error.message || error,
+      duration,
+      showLog: config.showLog,
+    });
   }
-  let errorMessage = '网络请求失败', errorCode = 'NETWORK_ERROR';
+  let errorMessage = "网络请求失败",
+    errorCode = "NETWORK_ERROR";
   if (error.response) {
     const status = error.response.status;
-    const errorMap = { 400: ['请求参数错误', 'BAD_REQUEST'], 401: ['未授权', 'UNAUTHORIZED'], 403: ['拒绝访问', 'FORBIDDEN'], 404: ['资源不存在', 'NOT_FOUND'], 500: ['服务器错误', 'SERVER_ERROR'] };
-    [errorMessage, errorCode] = errorMap[status] || [error.response.data?.message || `HTTP ${status}`, `HTTP_${status}`];
+    const errorMap = {
+      400: ["请求参数错误", "BAD_REQUEST"],
+      401: ["未授权", "UNAUTHORIZED"],
+      403: ["拒绝访问", "FORBIDDEN"],
+      404: ["资源不存在", "NOT_FOUND"],
+      500: ["服务器错误", "SERVER_ERROR"],
+    };
+    [errorMessage, errorCode] = errorMap[status] || [
+      error.response.data?.message || `HTTP ${status}`,
+      `HTTP_${status}`,
+    ];
   } else if (error.request) {
-    errorMessage = '网络超时';
-    errorCode = 'NETWORK_TIMEOUT';
+    errorMessage = "网络超时";
+    errorCode = "NETWORK_TIMEOUT";
   }
   const customError = new Error(errorMessage);
   customError.code = errorCode;
@@ -136,39 +187,48 @@ async function errorInterceptor(error) {
 }
 
 async function initFromRemoteConfig() {
-  if (!axiosInstance) throw new Error('[Request] axios 未初始化');
+  if (!axiosInstance) throw new Error("[Request] axios 未初始化");
   try {
-    console.log('[Request] 加载远程配置...', REMOTE_CONFIG_URL);
+    console.log("[Request] 加载远程配置...", REMOTE_CONFIG_URL);
     const response = await axiosInstance.get(REMOTE_CONFIG_URL, { timeout: 10000, showLog: false });
     const config = response.data;
     const result = {
-      baseUrl: config.scenic?.static_url || '',
-      scenicApiUrl: config.scenic?.api_url || '',
-      userApiUrl: config.user?.userServerUrl || '',
-      secret: config.secret || '1CFE42085637416ADAF6AEF60A832342',
+      baseUrl: config.scenic?.static_url || "",
+      scenicApiUrl: config.scenic?.api_url || "",
+      userApiUrl: config.user?.userServerUrl || "",
+      secret: config.secret || "1CFE42085637416ADAF6AEF60A832342",
       rawConfig: config,
     };
-    console.log('[Request] 远程配置加载成功', result);
+    console.log("[Request] 远程配置加载成功", result);
     return result;
   } catch (error) {
-    console.error('[Request] 远程配置加载失败:', error);
-    return { baseUrl: '', scenicApiUrl: '', userApiUrl: '', secret: '1CFE42085637416ADAF6AEF60A832342', rawConfig: {} };
+    console.error("[Request] 远程配置加载失败:", error);
+    return {
+      baseUrl: "",
+      scenicApiUrl: "",
+      userApiUrl: "",
+      secret: "1CFE42085637416ADAF6AEF60A832342",
+      rawConfig: {},
+    };
   }
 }
 
 async function init(config) {
-  if (!axiosInstance) throw new Error('[Request] axios 未初始化');
-  if (isInitialized) { console.log('[Request] 已初始化，跳过'); return; }
+  if (!axiosInstance) throw new Error("[Request] axios 未初始化");
+  if (isInitialized) {
+    console.log("[Request] 已初始化，跳过");
+    return;
+  }
 
   try {
     if (!config) {
-      console.log('[Request] 自动初始化...');
-      console.log('[Request] 检查依赖:', {
-        'window.axios': typeof window.axios !== 'undefined' ? '✓' : '✗',
-        'window.CryptoJS': typeof window.CryptoJS !== 'undefined' ? '✓' : '✗',
-        'window.signMd5Utils': typeof window.signMd5Utils !== 'undefined' ? '✓' : '✗',
+      console.log("[Request] 自动初始化...");
+      console.log("[Request] 检查依赖:", {
+        "window.axios": typeof window.axios !== "undefined" ? "✓" : "✗",
+        "window.CryptoJS": typeof window.CryptoJS !== "undefined" ? "✓" : "✗",
+        "window.signMd5Utils": typeof window.signMd5Utils !== "undefined" ? "✓" : "✗",
       });
-      
+
       const remoteConfig = await initFromRemoteConfig();
       const urlParams = getAppParamsFromUrl();
       config = {
@@ -179,16 +239,16 @@ async function init(config) {
         secret: remoteConfig.secret,
         signUtils: window.signMd5Utils || null,
       };
-      
+
       if (!config.signUtils) {
-        console.warn('[Request] ⚠️ 签名工具未加载，请求将不签名！');
-        console.warn('[Request] 请确保在 HTML 中按顺序引入：');
-        console.warn('  1. crypto-js.js');
-        console.warn('  2. signMd5Utils.js');
-        console.warn('  3. API 模块');
+        console.warn("[Request] ⚠️ 签名工具未加载，请求将不签名！");
+        console.warn("[Request] 请确保在 HTML 中按顺序引入：");
+        console.warn("  1. crypto-js.js");
+        console.warn("  2. signMd5Utils.js");
+        console.warn("  3. API 模块");
       }
-      
-      console.log('[Request] 配置:', config);
+
+      console.log("[Request] 配置:", config);
     }
 
     if (config.baseUrl) appConfig.baseUrl = config.baseUrl;
@@ -198,18 +258,24 @@ async function init(config) {
     if (config.appParams) appParams = { ...appParams, ...config.appParams };
     if (config.signUtils) {
       signMd5Utils = config.signUtils;
-      console.log('[Request] ✓ 签名工具已加载');
+      console.log("[Request] ✓ 签名工具已加载");
     }
 
     axiosInstance.defaults.timeout = DEFAULT_CONFIG.timeout;
     if (appConfig.baseUrl) axiosInstance.defaults.baseURL = appConfig.baseUrl;
-    axiosInstance.interceptors.request.use((config) => requestInterceptor(config), (error) => Promise.reject(error));
-    axiosInstance.interceptors.response.use((response) => responseInterceptor(response), (error) => errorInterceptor(error));
+    axiosInstance.interceptors.request.use(
+      (config) => requestInterceptor(config),
+      (error) => Promise.reject(error)
+    );
+    axiosInstance.interceptors.response.use(
+      (response) => responseInterceptor(response),
+      (error) => errorInterceptor(error)
+    );
 
     isInitialized = true;
-    console.log('[Request] ✓ 初始化成功', { baseUrl: appConfig.baseUrl, params: appParams });
+    console.log("[Request] ✓ 初始化成功", { baseUrl: appConfig.baseUrl, params: appParams });
   } catch (error) {
-    console.error('[Request] ✗ 初始化失败:', error);
+    console.error("[Request] ✗ 初始化失败:", error);
     throw error;
   }
 }
@@ -223,30 +289,73 @@ async function ensureInitialized() {
 
 async function request(options) {
   await ensureInitialized();
-  if (!axiosInstance) throw new Error('[Request] axios 未初始化');
+  if (!axiosInstance) throw new Error("[Request] axios 未初始化");
   const config = { ...DEFAULT_CONFIG, ...options };
   try {
     return await axiosInstance.request(config);
   } catch (error) {
-    console.error('[Request] 请求失败:', error);
+    console.error("[Request] 请求失败:", error);
     throw error;
   }
 }
 
-async function get(url, params = {}, config = {}) { return request({ ...config, url, method: 'GET', params }); }
-async function post(url, data = {}, config = {}) { return request({ ...config, url, method: 'POST', data }); }
-
-function updateAppParams(params) { appParams = { ...appParams, ...params }; console.log('[Request] 参数已更新', appParams); }
-function getAppParams() { return { ...appParams }; }
-function getAppConfig() { return { ...appConfig }; }
-async function getRemoteConfig() { return await initFromRemoteConfig(); }
-
-export { init, request, get, post, updateAppParams, getAppParams, getAppConfig, getRemoteConfig, ensureInitialized, axiosInstance };
-
-if (isBrowser && window) {
-  window.DaxiRequest = { init, request, get, post, updateAppParams, getAppParams, getAppConfig, getRemoteConfig };
+async function get(url, params = {}, config = {}) {
+  return request({ ...config, url, method: "GET", params });
+}
+async function post(url, data = {}, config = {}) {
+  return request({ ...config, url, method: "POST", data });
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { init, request, get, post, updateAppParams, getAppParams, getAppConfig, getRemoteConfig, axiosInstance };
+function updateAppParams(params) {
+  appParams = { ...appParams, ...params };
+  console.log("[Request] 参数已更新", appParams);
+}
+function getAppParams() {
+  return { ...appParams };
+}
+function getAppConfig() {
+  return { ...appConfig };
+}
+async function getRemoteConfig() {
+  return await initFromRemoteConfig();
+}
+
+export {
+  init,
+  request,
+  get,
+  post,
+  updateAppParams,
+  getAppParams,
+  getAppConfig,
+  getRemoteConfig,
+  ensureInitialized,
+  axiosInstance,
+};
+
+if (isBrowser && window) {
+  window.DaxiRequest = {
+    init,
+    request,
+    get,
+    post,
+    updateAppParams,
+    getAppParams,
+    getAppConfig,
+    getRemoteConfig,
+  };
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    init,
+    request,
+    get,
+    post,
+    updateAppParams,
+    getAppParams,
+    getAppConfig,
+    getRemoteConfig,
+    axiosInstance,
+  };
 }
