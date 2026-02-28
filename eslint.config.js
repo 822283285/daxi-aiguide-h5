@@ -68,8 +68,8 @@ export default [
       // ES6+ 规则
       "prefer-const": "error",
       "no-var": "error",
-      "prefer-template": "warn",
-      "prefer-arrow-callback": "warn",
+      "prefer-template": "error",
+      "prefer-arrow-callback": "error",
       "arrow-spacing": "error",
       "arrow-parens": ["error", "always"],
 
