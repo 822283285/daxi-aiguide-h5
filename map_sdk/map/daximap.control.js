@@ -1,5 +1,5 @@
 (function (global) {
-  const daximap = (global.DaxiMap = global.DaxiMap || {});
+  const daximap = (window.DaxiMap = window.DaxiMap || {});
   const DXMapUtils = daximap.DXMapUtils;
   const EventHandlerManager = daximap.EventHandlerManager;
 
@@ -537,7 +537,7 @@
     return that;
   }
 
-  const dxMapControl = (global.DaxiMapControl = global.DaxiMapControl || {});
+  const dxMapControl = (window.DaxiMapControl = window.DaxiMapControl || {});
   dxMapControl.createSearchView = createSearchView;
   dxMapControl.createPano = createPano;
   dxMapControl.domUtil = DXMapUtils.domUtil;

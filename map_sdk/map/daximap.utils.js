@@ -306,8 +306,8 @@
   };
 
   // 暴露到全局作用域和 daximap 命名空间
-  global["EventHandler"] = EventHandler;
-  global["EventHandlerManager"] = EventHandlerManager;
+  window["EventHandler"] = EventHandler;
+  window["EventHandlerManager"] = EventHandlerManager;
   daximap["EventHandler"] = EventHandler;
   daximap["EventHandlerManager"] = EventHandlerManager;
 
@@ -435,7 +435,7 @@
   })();
 
   // 暴露到全局作用域和 daximap 命名空间
-  global["Cross"] = Cross;
+  window["Cross"] = Cross;
   daximap["Cross"] = Cross;
 
   //////////////////////////////////////////////////////////////

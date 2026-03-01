@@ -9388,7 +9388,7 @@
       }
       config.absAssetsPath = absAssetsPath;
       window["mapsdkPath"] = absAssetsPath.replace("assets/", "");
-      mapboxgl["accessToken"] = global.mapboxToken;
+      mapboxgl["accessToken"] = window.mapboxToken;
 
       let spriteUrl = config["spriteUrl"];
       if (!config["spriteUrl"] && (location.protocol == "https:" || location.protocol == "http:")) {
