@@ -3,6 +3,27 @@
     margin:0px;
     padding: 0px;
 }
+
+/* 懒加载图片样式 */
+img.lazy {
+    background: #f0f0f0;
+    transition: opacity 0.3s;
+    opacity: 0.8;
+}
+
+img.lazy.loaded {
+    opacity: 1;
+}
+
+/* 懒加载背景占位符 */
+[data-bg] {
+    background-color: #f5f5f5;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: background-image 0.3s ease-in-out;
+}
+
 :root{
     --bgColor:#fcf9f2;
     --whiteColor:#fff;

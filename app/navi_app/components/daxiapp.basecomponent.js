@@ -836,7 +836,7 @@
         const str = `
           <div class="routeHeader">
             <div class="routeImg">
-              ${imageUrl ? `<img src="${imageUrl}" alt="">` : ""}
+              ${imageUrl ? `<img data-src="${imageUrl}" alt="" class="lazy">` : ""}
             </div>
             <div class="routeInfo">
               <div class="routeTitle">${activeData?.name || ""}${routeSwitchHtml}</div>
@@ -1018,7 +1018,7 @@
 
         const str = `
           <div class="activeBox allowSign${data.allowSign}">
-            <div class="activeImg"><img src="${imgSrc}" alt=""></div>
+            <div class="activeImg"><img data-src="${imgSrc}" alt="" class="lazy"></div>
             <div class="activeCon">
               <div class="activeTitle">${data.name}</div>
               <div class="activeDes">${data.content || data.description}</div>
@@ -1814,7 +1814,7 @@
         const str = `
           <div class="TipsBoxTitle">${params.title}</div>
           <div class="TipsBoxContent">${params.content}</div>
-          <div class="TipsBoxBtns"><img src="${params.img}"></div>
+          <div class="TipsBoxBtns"><img data-src="${params.img}" class="lazy"></div>
           <div class="TipsBoxClose"><i class="icon_gb-delete2"></i></div>`;
 
         this._dom.html(str);

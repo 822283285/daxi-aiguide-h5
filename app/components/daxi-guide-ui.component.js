@@ -346,7 +346,7 @@
         .map(
           (item, idx) => `
         <div class="xi-carousel-slide ${idx === this._currentIndex ? "active" : ""}" data-index="${idx}">
-          <img src="${item.imgurl || item.imageUrl || ""}" alt="${item.title || ""}" data-id="${item.id || ""}">
+          <img data-src="${item.imgurl || item.imageUrl || ""}" alt="${item.title || ""}" data-id="${item.id || ""}" class="lazy">
         </div>
       `,
         )
@@ -477,7 +477,7 @@
           return `
           <div class="xi-kingkong-item" data-name="${item.name || ""}" data-command='${JSON.stringify(item)}'>
             <div class="xi-kingkong-icon" style="background: ${themeColor.bg}; color: ${themeColor.color};">
-              ${iconUrl ? `<img src="${iconUrl}" alt="${item.name || ""}">` : `<i class="iconfont ${item.iconClass || ""}"></i>`}
+              ${iconUrl ? `<img data-src="${iconUrl}" alt="${item.name || ""}" class="lazy">` : `<i class="iconfont ${item.iconClass || ""}"></i>`}
             </div>
             <span class="xi-kingkong-text">${item.name || ""}</span>
           </div>
@@ -572,7 +572,7 @@
           const imgUrl = this._buildImageUrl(spot.imgurl || spot.imageUrl || "");
           return `
           <div class="xi-spot-item" data-id="${spot.id || ""}" data-exhibitid="${spot.exhibitId || ""}">
-            <img src="${imgUrl}" alt="${spot.name || ""}">
+            <img data-src="${imgUrl}" alt="${spot.name || ""}" class="lazy">
             <div class="xi-spot-overlay"></div>
             <div class="xi-spot-content">
               <div>

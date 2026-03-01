@@ -13,13 +13,19 @@ import { ConfigService } from "./core/config/config-service.js";
 import { appState } from "./core/state/state-manager.js";
 import { router } from "./core/router/state-router.js";
 import { detectEnvironment } from "./core/utils/env-detector.js";
+import { routes } from "./core/router/routes.js";
+import {
+  setupLazyLoad,
+  setupBackgroundLazyLoad,
+  autoObserveDOMChanges,
+} from "./utils/lazy-load.js";
 
 console.log("[App] 大希智能导游 v1.0.0");
 
 /**
  * 应用启动函数
  */
-function bootstrap() {
+async function bootstrap() {
   console.log("[App] Bootstrap started");
 
   try {
@@ -32,9 +38,9 @@ function bootstrap() {
     const platform = detectEnvironment(globalThis);
     console.log("[App] Platform:", platform);
 
-    // 3. 注册所有页面控制器
-    // await registerAllPageControllers();
-    console.log("[App] Page controllers registered");
+    // 3. 注册所有页面控制器（懒加载）
+    await registerAllPageControllersLazy();
+    console.log("[App] Page controllers registered (lazy loading enabled)");
 
     // 4. 初始化路由
     router.init("container", appState);
@@ -50,7 +56,14 @@ function bootstrap() {
       initialParams: params,
     });
 
+    // 初始化懒加载
+    setupLazyLoad();
+    setupBackgroundLazyLoad();
+    autoObserveDOMChanges(); // 自动观察 DOM 变化，支持动态内容
+    console.log("[App] Image lazy loading initialized");
+
     console.log("[App] Bootstrap completed successfully");
+    console.log(`[App] Lazy loading enabled for ${Object.keys(routes).length} pages`);
   } catch (error) {
     console.error("[App] Bootstrap failed:", error);
     throw error;
@@ -58,13 +71,13 @@ function bootstrap() {
 }
 
 /**
- * 注册所有页面控制器
- * TODO: 实现控制器自动注册
+ * 注册所有页面控制器（懒加载版本）
+ * 使用动态导入实现代码分割
  */
-async function registerAllPageControllers() {
-  // 动态导入所有页面控制器
-  // const controllers = await import('./ui/controllers/index.js');
-  // return controllers;
+function registerAllPageControllersLazy() {
+  // 注册所有懒加载路由
+  router.registerAllLazy(routes);
+  console.log(`[App] Registered ${Object.keys(routes).length} lazy routes`);
 }
 
 // 启动应用
