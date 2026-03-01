@@ -54,7 +54,9 @@
     return SubClass;
   };
 
-  export { Class };
+  // 导出 Class 到全局（保持向后兼容）
+  window.DaxiMap = window.DaxiMap || {};
+  window.DaxiMap.Class = Class;
 
   const daximap = window.DaxiMap || {};
 

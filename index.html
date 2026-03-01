@@ -19,16 +19,20 @@
     <!-- 运行时配置 (必须在其他脚本之前加载) -->
     <script src="./runtime-config.js"></script>
 
-    <!-- Map SDK (必须在应用初始化前加载) -->
+    <!-- Map SDK (按旧版顺序加载，确保依赖正确) -->
     <script src="./map_sdk/map/daximap.utils.js"></script>
-    <script src="./map_sdk/map/daximap-core.js"></script>
-    <script src="./map_sdk/map/daximap.api.js"></script>
+    <script src="./map_sdk/map/scene/daximap.visitor.js"></script>
+    <script src="./map_sdk/map/scene/daximap.core.js"></script>
+    <script src="./map_sdk/map/scene/daximap.indoor.js"></script>
+    <script src="./map_sdk/map/scene/daximap.outdoor.js"></script>
+    <script src="./map_sdk/map/scene/daximap.layers.js"></script>
     <script src="./map_sdk/map/daximap.scene.js"></script>
+    <script src="./map_sdk/map/daximap.api.js"></script>
     <script src="./map_sdk/map/daximap.control.js"></script>
     <script src="./map_sdk/map/daximap.location.js"></script>
+    <script src="./map_sdk/map/daximap.speak.js"></script>
     <script src="./map_sdk/map/daximap.navi.js"></script>
     <script src="./map_sdk/map/daximap.routes.js"></script>
-    <script src="./map_sdk/map/daximap.speak.js"></script>
     <script src="./map_sdk/map/daximap.downloader.js"></script>
     <script src="./map_sdk/map/daximap.naviManager.js"></script>
     <script src="./map_sdk/map/daximap.pluginManager.js"></script>

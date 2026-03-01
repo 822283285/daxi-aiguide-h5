@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-03-01T07-25-14-003Z",
+  "url": "https://html.qkbyte.cn/daxi/?token=806bc162812065750b3d3958f9056008&buildingId=S10000008&userId=ot5qm6-uO9a_wfMf_fkRab5q3pgw&testLocWs=true&appId=wxd006a15115585c6&device=SW_android_HUAWEI_NAM-AL00&disabledH5Location=true&wsIndex=0&sendLocType=hash",
+  "title": "大希智能导游",
+  "htmlLength": 5104,
+  "elements": {
+    "app": true,
+    "container": true,
+    "firstPage": true,
+    "firstPageVisible": false,
+    "firstPageVisibleAfter3s": false
+  },
+  "javascript": {
+    "hasRuntimeConfig": true,
+    "hasDaxiApp": false
+  },
+  "screenshots": [
+    "/home/ubuntu/.openclaw/workspace/code/daxi-aiguide-h5/test-screenshots/screenshot-2026-03-01T07-25-14-003Z.png",
+    "/home/ubuntu/.openclaw/workspace/code/daxi-aiguide-h5/test-screenshots/screenshot-2026-03-01T07-25-14-003Z-3s.png"
+  ]
+}

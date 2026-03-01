@@ -7,7 +7,7 @@ const scriptPath = document.currentScript.src;
 window.daxiMapSDKProjPath = scriptPath.slice(0, scriptPath.lastIndexOf("/") + 1);
 window.langData = {};
 
-  const daximap = (global.DaxiMap = global.DaxiMap || {});
+  const daximap = (window.DaxiMap = window.DaxiMap || {});
 
   function getScriptPath() {
     const scripts = document.getElementsByTagName("script");
