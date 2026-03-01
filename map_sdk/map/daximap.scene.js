@@ -3,7 +3,7 @@
   let EventHandlerManager = daximap["EventHandlerManager"];
   let EventHandler = daximap["EventHandler"];
   let navi_utils = DXMapUtils["naviMath"];
-  let Class = global["Class"];
+  let Class = window["Class"];
   const DXSceneNode = daximap["DXSceneNode"];
   const DXSceneObject = daximap["DXSceneObject"];
   const DXIndoorMapScene = daximap["DXIndoorMapScene"];

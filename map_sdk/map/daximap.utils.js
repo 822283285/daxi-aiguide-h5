@@ -4818,7 +4818,7 @@
           } else {
             let params = protocol["data"]["data"];
             let method = protocol["data"]["method"];
-            global[method] && global[method](params);
+            window[method] && window[method](params);
           }
         } catch (e) {
           console.log(e);
