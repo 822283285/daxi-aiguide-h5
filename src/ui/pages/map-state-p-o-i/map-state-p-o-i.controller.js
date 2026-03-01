@@ -1,4 +1,4 @@
-import { BasePageController } from "../../controllers/base-page-controller.js";
+import { BasePageController } from "@ui/controllers/base-page-controller.js";
 
 export class MapStatePOIController extends BasePageController {
   constructor(options) {
@@ -27,11 +27,11 @@ export class MapStatePOIController extends BasePageController {
   }
 }
 
-export function createMapStatePOI(options = {}) {
-  return new MapStatePOIController(options);
+export function createMapStatePOI(_options = {}) {
+  return new MapStatePOIController(_options);
 }
 
-export async function registerMapStatePOI(options) {
+export async function registerMapStatePOI(_options) {
   const { registerPage } = await import("../../controllers/page-controller-registry.js");
   registerPage("MapStatePOI", MapStatePOIController);
 }

@@ -37,7 +37,7 @@ export function getParam(key, url = null) {
     try {
       const urlObj = new URL(url);
       return urlObj.searchParams.get(key);
-    } catch (e) {
+    } catch {
       return null;
     }
   }

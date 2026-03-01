@@ -4,7 +4,6 @@
  */
 
 /** @type {Object} DaxiMap 全局命名空间对象 */
-export const DaxiMap = {};
 
 /**
  * 同时挂载到 window 以保持向后兼容

@@ -5176,7 +5176,6 @@ let RawRouteController = function (language) {
 };
 
 // ES6 模块导出
-export {
   STATE_NAVIGATE,
   STATE_FULLVIEW,
   STATE_SHOWPOI,

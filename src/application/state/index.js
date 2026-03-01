@@ -1,2 +1,3 @@
 // Application State 入口
-export * from "./app-state.js";
+// 导出状态管理类
+export { AppState, appState } from "./app-state.js";

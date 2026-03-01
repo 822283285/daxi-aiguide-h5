@@ -10909,5 +10909,3 @@
   daximap.DXUserLocationMarker = DXUserLocationMarker;
 
 // ES6 模块导出
-export { daximap as default };
-export const DaxiMap = daximap;

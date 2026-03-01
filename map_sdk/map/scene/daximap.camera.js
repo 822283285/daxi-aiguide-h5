@@ -108,7 +108,6 @@ class DXCameraController {
 }
 
 // 导出相机控制器类
-export { DXCameraController };
 
 // 同时挂载到 window.DaxiMap 以保持向后兼容
 if (typeof window !== "undefined") {

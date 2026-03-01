@@ -171,7 +171,7 @@ export class StateManager {
   subscribeAtPath(path, listener) {
     let lastValue = this.getStateAtPath(path);
 
-    const pathListener = (nextState, prevState) => {
+    const pathListener = (nextState, _prevState) => {
       const currentValue = nextState[path];
       if (currentValue !== lastValue) {
         listener(currentValue, lastValue);

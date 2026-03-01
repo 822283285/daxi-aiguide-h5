@@ -91,7 +91,7 @@ export class WindowAdapter {
       const url = this.currentUrl;
       const urlObj = new URL(url);
       return urlObj.searchParams.get(key);
-    } catch (e) {
+    } catch {
       return null;
     }
   }
@@ -114,7 +114,7 @@ export class WindowAdapter {
         params[key] = value;
       });
       return params;
-    } catch (e) {
+    } catch {
       return {};
     }
   }

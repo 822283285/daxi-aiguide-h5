@@ -72,7 +72,6 @@ proto.clearAll = function () {
 };
 
 // 导出场景管理器类
-export { DXSceneManager };
 
 // 同时挂载到 window.DaxiMap 以保持向后兼容
 if (typeof window !== "undefined") {

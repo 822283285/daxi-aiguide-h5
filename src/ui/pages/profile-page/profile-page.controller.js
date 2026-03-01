@@ -1,4 +1,4 @@
-import { BasePageController } from "../../controllers/base-page-controller.js";
+import { BasePageController } from "@ui/controllers/base-page-controller.js";
 
 export class ProfilePageController extends BasePageController {
   constructor(options) {
@@ -27,11 +27,11 @@ export class ProfilePageController extends BasePageController {
   }
 }
 
-export function createProfile(options = {}) {
-  return new ProfilePageController(options);
+export function createProfile(_options = {}) {
+  return new ProfilePageController(_options);
 }
 
-export async function registerProfile(options) {
+export async function registerProfile(_options) {
   const { registerPage } = await import("../../controllers/page-controller-registry.js");
   registerPage("ProfilePage", ProfilePageController);
 }

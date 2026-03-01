@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-03-01T06-26-26-480Z",
+  "url": "https://html.qkbyte.cn/daxi/",
+  "title": "大希智能导游",
+  "htmlLength": 4316,
+  "elements": {
+    "app": true,
+    "container": true,
+    "firstPage": true,
+    "firstPageAfter3s": true
+  },
+  "screenshots": [
+    "/home/ubuntu/.openclaw/workspace/code/daxi-aiguide-h5/test-screenshots/screenshot-2026-03-01T06-26-26-480Z.png",
+    "/home/ubuntu/.openclaw/workspace/code/daxi-aiguide-h5/test-screenshots/screenshot-2026-03-01T06-26-26-480Z-3s.png"
+  ]
+}

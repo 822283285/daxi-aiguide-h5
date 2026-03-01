@@ -453,7 +453,6 @@ const DXLayerUtils = {
   createDefaultMarkerOptions,
 };
 
-export { DXLayerConstants, DXLayerUtils };
 
 // 同时挂载到 window.DaxiMap 以保持向后兼容
 if (typeof window !== "undefined") {

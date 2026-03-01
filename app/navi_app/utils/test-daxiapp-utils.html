@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>daxiapp.utils.js 功能测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .test-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        .test-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        .test-item.pass {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        .test-item.fail {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        .test-name {
+            font-family: 'Courier New', monospace;
+            color: #333;
+        }
+        .test-status {
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+        .status-pass {
+            background: #28a745;
+            color: white;
+        }
+        .status-fail {
+            background: #dc3545;
+            color: white;
+        }
+        .status-pending {
+            background: #ffc107;
+            color: #333;
+        }
+        .summary {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .summary-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 3em;
+            font-weight: bold;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        .stat-pass .stat-value { color: #28a745; }
+        .stat-fail .stat-value { color: #dc3545; }
+        .stat-total .stat-value { color: #667eea; }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85em;
+            margin-top: 5px;
+            font-family: 'Courier New', monospace;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s ease;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .info-box {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .info-box code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 daxiapp.utils.js 功能测试</h1>
+        
+        <div class="info-box">
+            <strong>ℹ️ 测试说明：</strong> 本页面测试 daxiapp.utils.js 导出的 API 功能，包括 DXUtils 工具库、Vector3 向量运算、Matrix 矩阵运算和 navi_utils 导航工具等。
+        </div>
+
+        <div class="summary" id="summary">
+            <h2>测试概览</h2>
+            <div class="summary-stats">
+                <div class="stat-item stat-pass">
+                    <div class="stat-value" id="pass-count">0</div>
+                    <div class="stat-label">通过</div>
+                </div>
+                <div class="stat-item stat-fail">
+                    <div class="stat-value" id="fail-count">0</div>
+                    <div class="stat-label">失败</div>
+                </div>
+                <div class="stat-item stat-total">
+                    <div class="stat-value" id="total-count">0</div>
+                    <div class="stat-label">总计</div>
+                </div>
+            </div>
+            <button onclick="runAllTests()">🔄 重新运行测试</button>
+        </div>
+
+        <div id="test-results"></div>
+    </div>
+
+    <script type="module">
+        // 导入模块
+        import { DaxiApp, DXUtils } from './daxiapp.utils.js';
+        
+        let passed = 0;
+        let failed = 0;
+        const testResults = [];
+
+        function test(name, fn) {
+            try {
+                fn();
+                passed++;
+                testResults.push({ name, status: 'pass', error: null });
+            } catch (e) {
+                failed++;
+                testResults.push({ name, status: 'fail', error: e.message });
+            }
+        }
+
+        // DXUtils 测试
+        function runDXUtilsTests() {
+            test('DXUtils.getStringVal', () => {
+                const result = DXUtils.getStringVal('%E6%B5%8B%E8%AF%95', 'default');
+                if (result !== '测试') throw new Error('期望 "测试", 得到 "' + result + '"');
+            });
+
+            test('DXUtils.getIntVal', () => {
+                if (DXUtils.getIntVal('42', 0) !== 42) throw new Error('整数解析失败');
+                if (DXUtils.getIntVal('invalid', 10) !== 10) throw new Error('默认值失败');
+            });
+
+            test('DXUtils.getFloatVal', () => {
+                if (Math.abs(DXUtils.getFloatVal('3.14', 0) - 3.14) > 0.001) throw new Error('浮点解析失败');
+            });
+
+            test('DXUtils.getBooleanVal', () => {
+                if (DXUtils.getBooleanVal('true') !== true) throw new Error('true 转换失败');
+                if (DXUtils.getBooleanVal('false') !== false) throw new Error('false 转换失败');
+                if (DXUtils.getBooleanVal('1') !== true) throw new Error('1 转换失败');
+                if (DXUtils.getBooleanVal('0') !== false) throw new Error('0 转换失败');
+            });
+
+            test('DXUtils.parseLancherParam', () => {
+                const result = DXUtils.parseLancherParam('?a=1&b=2&c=test');
+                if (result.a !== '1') throw new Error('参数 a 解析失败');
+                if (result.b !== '2') throw new Error('参数 b 解析失败');
+                if (result.c !== 'test') throw new Error('参数 c 解析失败');
+            });
+
+            test('DXUtils.isValidPhoneNumber', () => {
+                if (!DXUtils.isValidPhoneNumber('13800138000')) throw new Error('有效手机号验证失败');
+                if (DXUtils.isValidPhoneNumber('12345678901')) throw new Error('无效手机号验证失败');
+            });
+
+            test('DXUtils.formatSecondsToTime', () => {
+                const result = DXUtils.formatSecondsToTime(125);
+                if (result !== '02:05') throw new Error('期望 "02:05", 得到 "' + result + '"');
+            });
+
+            test('DXUtils.createUUID', () => {
+                const uuid = DXUtils.createUUID();
+                const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+                if (!uuidRegex.test(uuid)) throw new Error('UUID 格式错误：' + uuid);
+            });
+
+            test('DXUtils.distanceToText', () => {
+                const result1 = DXUtils.distanceToText(500);
+                if (!result1.includes('米')) throw new Error('距离单位错误');
+                const result2 = DXUtils.distanceToText(1500);
+                if (!result2.includes('公里')) throw new Error('距离单位错误');
+            });
+
+            test('DXUtils.copyData', () => {
+                const original = { a: 1, b: { c: 2 } };
+                const copy = DXUtils.copyData(original);
+                copy.b.c = 3;
+                if (original.b.c === 3) throw new Error('深拷贝失败');
+            });
+
+            test('DXUtils.compareObj', () => {
+                if (!DXUtils.compareObj({a: 1}, {a: 1})) throw new Error('相同对象比较失败');
+                if (DXUtils.compareObj({a: 1}, {a: 2})) throw new Error('不同对象比较失败');
+            });
+
+            test('DXUtils.isObject', () => {
+                if (!DXUtils.isObject({})) throw new Error('对象检查失败');
+                if (DXUtils.isObject([])) throw new Error('数组不应被识别为对象');
+            });
+
+            test('DXUtils.isArray', () => {
+                if (!DXUtils.isArray([])) throw new Error('数组检查失败');
+                if (DXUtils.isArray({})) throw new Error('对象不应被识别为数组');
+            });
+
+            test('DXUtils.isFunction', () => {
+                if (!DXUtils.isFunction(() => {})) throw new Error('函数检查失败');
+                if (DXUtils.isFunction(123)) throw new Error('数字不应被识别为函数');
+            });
+        }
+
+        // Vector3 测试
+        function runVector3Tests() {
+            const Vector3 = DXUtils.Vector3;
+
+            test('Vector3.create', () => {
+                const v = Vector3.create();
+                if (v.length !== 3) throw new Error('向量长度错误');
+                if (v[0] !== 0 || v[1] !== 0 || v[2] !== 0) throw new Error('零向量创建失败');
+            });
+
+            test('Vector3.make', () => {
+                const v = Vector3.make(1, 2, 3);
+                if (v[0] !== 1 || v[1] !== 2 || v[2] !== 3) throw new Error('向量创建失败');
+            });
+
+            test('Vector3.add', () => {
+                const result = Vector3.add([], [1, 2, 3], [4, 5, 6]);
+                if (result[0] !== 5 || result[1] !== 7 || result[2] !== 9) throw new Error('向量加法失败');
+            });
+
+            test('Vector3.sub', () => {
+                const result = Vector3.sub([], [4, 5, 6], [1, 2, 3]);
+                if (result[0] !== 3 || result[1] !== 3 || result[2] !== 3) throw new Error('向量减法失败');
+            });
+
+            test('Vector3.scale', () => {
+                const result = Vector3.scale([], [1, 2, 3], 2);
+                if (result[0] !== 2 || result[1] !== 4 || result[2] !== 6) throw new Error('向量缩放失败');
+            });
+
+            test('Vector3.dot', () => {
+                const result = Vector3.dot([1, 2, 3], [4, 5, 6]);
+                if (result !== 32) throw new Error('点积错误：期望 32, 得到 ' + result);
+            });
+
+            test('Vector3.cross', () => {
+                const result = Vector3.cross([], [1, 0, 0], [0, 1, 0]);
+                if (result[0] !== 0 || result[1] !== 0 || result[2] !== 1) throw new Error('叉积失败');
+            });
+
+            test('Vector3.length', () => {
+                const result = Vector3.length([3, 4, 0]);
+                if (Math.abs(result - 5) > 0.001) throw new Error('向量长度错误：期望 5, 得到 ' + result);
+            });
+
+            test('Vector3.normalize', () => {
+                const result = Vector3.normalize([], [3, 4, 0]);
+                const actualLength = Vector3.length(result);
+                if (Math.abs(actualLength - 1) > 0.001) throw new Error('归一化失败');
+            });
+
+            test('Vector3.distance', () => {
+                const result = Vector3.distance([0, 0, 0], [3, 4, 0]);
+                if (Math.abs(result - 5) > 0.001) throw new Error('距离计算错误：期望 5, 得到 ' + result);
+            });
+        }
+
+        // Matrix 测试
+        function runMatrixTests() {
+            const Matrix = DXUtils.Matrix;
+
+            test('Matrix.create', () => {
+                const m = Matrix.create();
+                if (m.length !== 16) throw new Error('矩阵长度错误');
+                if (m[0] !== 1 || m[5] !== 1 || m[10] !== 1 || m[15] !== 1) throw new Error('单位矩阵创建失败');
+            });
+
+            test('Matrix.makeIdentity', () => {
+                const m = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                Matrix.makeIdentity(m);
+                if (m[0] !== 1 || m[5] !== 1 || m[10] !== 1 || m[15] !== 1) throw new Error('单位矩阵设置失败');
+            });
+
+            test('Matrix.scale', () => {
+                const m = Matrix.scale([], 2, 3, 4);
+                if (m[0] !== 2 || m[5] !== 3 || m[10] !== 4) throw new Error('缩放矩阵失败');
+            });
+
+            test('Matrix.translate', () => {
+                const m = Matrix.translate([], 1, 2, 3);
+                if (m[12] !== 1 || m[13] !== 2 || m[14] !== 3) throw new Error('平移矩阵失败');
+            });
+        }
+
+        // navi_utils 测试
+        function runNaviUtilsTests() {
+            const navi_utils = DaxiApp.naviMath;
+
+            test('navi_utils.earth_radius', () => {
+                if (navi_utils.earth_radius !== 6378137.0) throw new Error('地球半径常量错误');
+            });
+
+            test('navi_utils.DEGREE_TO_RADIAN', () => {
+                const expected = Math.PI / 180;
+                if (Math.abs(navi_utils.DEGREE_TO_RADIAN - expected) > 0.0000001) throw new Error('角度转弧度常量错误');
+            });
+
+            test('navi_utils.getGeodeticCircleDistance', () => {
+                const p1 = { x: 116.4, y: 39.9 }; // 北京
+                const p2 = { x: 121.4, y: 31.2 }; // 上海
+                const distance = navi_utils.getGeodeticCircleDistance(p1, p2);
+                if (distance < 1000000 || distance > 1200000) throw new Error('距离计算错误：' + distance + ' 米');
+            });
+
+            test('navi_utils.lonLatToMectro', () => {
+                const result = navi_utils.lonLatToMectro({ lon: 0, lat: 0 });
+                if (Math.abs(result.x) > 0.1 || Math.abs(result.y) > 0.1) throw new Error('墨卡托转换失败');
+            });
+
+            test('navi_utils.mectroTolLonLat', () => {
+                const mectro = { x: 0, y: 0 };
+                const result = navi_utils.mectroTolLonLat(mectro);
+                if (Math.abs(result.lon) > 0.1 || Math.abs(result.lat) > 0.1) throw new Error('墨卡托逆转换失败');
+            });
+
+            test('navi_utils.copyData', () => {
+                const original = { a: 1, b: { c: 2 } };
+                const copy = navi_utils.copyData(original);
+                copy.b.c = 3;
+                if (original.b.c === 3) throw new Error('深拷贝失败');
+            });
+        }
+
+        // 其他功能测试
+        function runOtherTests() {
+            test('DaxiApp.defined', () => {
+                if (DaxiApp.defined(undefined)) throw new Error('undefined 检查失败');
+                if (DaxiApp.defined(null)) throw new Error('null 检查失败');
+                if (!DaxiApp.defined(0)) throw new Error('0 应该被定义为已定义');
+                if (!DaxiApp.defined('')) throw new Error('空字符串应该被定义为已定义');
+            });
+
+            test('DaxiApp.defaultValue', () => {
+                if (DaxiApp.defaultValue(undefined, 'default') !== 'default') throw new Error('默认值失败');
+                if (DaxiApp.defaultValue(null, 'default') !== 'default') throw new Error('null 默认值失败');
+                if (DaxiApp.defaultValue('value', 'default') !== 'value') throw new Error('非默认值失败');
+            });
+
+            test('DaxiApp.GCJ2WGSUtils', () => {
+                const utils = DaxiApp.GCJ2WGSUtils;
+                if (!utils.wgs84_To_Gcj02) throw new Error('wgs84_To_Gcj02 不存在');
+                if (!utils.gcj02_To_Wgs84) throw new Error('gcj02_To_Wgs84 不存在');
+                if (!utils.bd09_To_Gcj02) throw new Error('bd09_To_Gcj02 不存在');
+                if (!utils.gcj02_To_Bd09) throw new Error('gcj02_To_Bd09 不存在');
+                const result = utils.wgs84_To_Gcj02(39.9, 116.4);
+                if (!result.lon || !result.lat) throw new Error('坐标转换失败');
+            });
+
+            test('DaxiApp.createCrossDomainBridge', () => {
+                const bridge = DaxiApp.createCrossDomainBridge(window);
+                if (!bridge.init) throw new Error('init 方法不存在');
+                if (!bridge.on) throw new Error('on 方法不存在');
+                if (!bridge.call) throw new Error('call 方法不存在');
+            });
+        }
+
+        function renderResults() {
+            document.getElementById('pass-count').textContent = passed;
+            document.getElementById('fail-count').textContent = failed;
+            document.getElementById('total-count').textContent = passed + failed;
+
+            const resultsDiv = document.getElementById('test-results');
+            
+            const sections = {
+                'DXUtils 工具函数': testResults.slice(0, 14),
+                'Vector3 向量运算': testResults.slice(14, 24),
+                'Matrix 矩阵运算': testResults.slice(24, 28),
+                'navi_utils 导航工具': testResults.slice(28, 34),
+                '其他功能': testResults.slice(34)
+            };
+
+            let html = '';
+            for (const [sectionName, tests] of Object.entries(sections)) {
+                html += '<div class="test-section">';
+                html += '<h2>' + sectionName + '</h2>';
+                tests.forEach(t => {
+                    html += '<div class="test-item ' + t.status + '">';
+                    html += '<span class="test-name">' + t.name + '</span>';
+                    html += '<span class="test-status status-' + t.status + '">' + 
+                            (t.status === 'pass' ? '✓ 通过' : '✗ 失败') + '</span>';
+                    html += '</div>';
+                    if (t.error) {
+                        html += '<div class="error-message">' + t.error + '</div>';
+                    }
+                });
+                html += '</div>';
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        function runAllTests() {
+            passed = 0;
+            failed = 0;
+            testResults.length = 0;
+
+            runDXUtilsTests();
+            runVector3Tests();
+            runMatrixTests();
+            runNaviUtilsTests();
+            runOtherTests();
+
+            renderResults();
+        }
+
+        // 页面加载后自动运行测试
+        window.runAllTests = runAllTests;
+        runAllTests();
+    </script>
+</body>
+</html>

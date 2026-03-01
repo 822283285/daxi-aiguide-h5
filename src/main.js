@@ -21,6 +21,18 @@ import {
 } from "./utils/lazy-load.js";
 
 console.log("[App] 大希智能导游 v1.0.0");
+console.log("[Main] 应用开始初始化");
+
+/**
+ * 隐藏加载页面
+ */
+function hideFirstPage() {
+  const firstPage = document.getElementById('first_page');
+  if (firstPage) {
+    firstPage.style.display = 'none';
+    console.log('[Main] 隐藏加载页面');
+  }
+}
 
 /**
  * 应用启动函数
@@ -64,6 +76,12 @@ async function bootstrap() {
 
     console.log("[App] Bootstrap completed successfully");
     console.log(`[App] Lazy loading enabled for ${Object.keys(routes).length} pages`);
+    console.log('[Main] 应用初始化完成');
+
+    // 确保隐藏加载页面
+    setTimeout(() => {
+      hideFirstPage();
+    }, 100);
   } catch (error) {
     console.error("[App] Bootstrap failed:", error);
     throw error;
@@ -82,5 +100,7 @@ function registerAllPageControllersLazy() {
 
 // 启动应用
 bootstrap().catch((error) => {
-  console.error("[App] Fatal error:", error);
+  console.error("[Main] 应用初始化失败:", error);
+  // 即使失败也要隐藏加载页面
+  hideFirstPage();
 });

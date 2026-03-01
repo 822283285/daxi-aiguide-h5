@@ -500,7 +500,6 @@ const DXGetPolyLineBoundaryRecursiveVisitor = (scene, bdid, floorId) => {
 };
 
 // 导出所有 Visitor 类
-export {
   DXChangeFloorVisitor,
   DXMapBoxPoiVisitor,
   DXUpdateHeightOffsetVisitor,

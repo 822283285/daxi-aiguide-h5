@@ -1,4 +1,4 @@
-import { BasePageController } from "../../controllers/base-page-controller.js";
+import { BasePageController } from "@ui/controllers/base-page-controller.js";
 
 export class POIDetailPageController extends BasePageController {
   constructor(options) {
@@ -27,11 +27,11 @@ export class POIDetailPageController extends BasePageController {
   }
 }
 
-export function createPOIDetail(options = {}) {
-  return new POIDetailPageController(options);
+export function createPOIDetail(_options = {}) {
+  return new POIDetailPageController(_options);
 }
 
-export async function registerPOIDetail(options) {
+export async function registerPOIDetail(_options) {
   const { registerPage } = await import("../../controllers/page-controller-registry.js");
   registerPage("POIDetailPage", POIDetailPageController);
 }

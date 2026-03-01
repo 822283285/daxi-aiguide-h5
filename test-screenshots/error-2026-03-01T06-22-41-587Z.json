@@ -1,0 +1,5 @@
+{
+  "timestamp": "2026-03-01T06-22-41-587Z",
+  "error": "Failed to launch the browser process:  Code: 127\n\nstderr:\n/home/ubuntu/.cache/puppeteer/chrome/linux-145.0.7632.77/chrome-linux64/chrome: error while loading shared libraries: libatk-1.0.so.0: cannot open shared object file: No such file or directory\n\nTROUBLESHOOTING: https://pptr.dev/troubleshooting\n",
+  "stack": "Error: Failed to launch the browser process:  Code: 127\n\nstderr:\n/home/ubuntu/.cache/puppeteer/chrome/linux-145.0.7632.77/chrome-linux64/chrome: error while loading shared libraries: libatk-1.0.so.0: cannot open shared object file: No such file or directory\n\nTROUBLESHOOTING: https://pptr.dev/troubleshooting\n\n    at ChildProcess.onClose (file:///home/ubuntu/.openclaw/workspace/code/daxi-aiguide-h5/node_modules/.pnpm/@puppeteer+browsers@2.13.0/node_modules/@puppeteer/browsers/lib/esm/launch.js:339:24)\n    at ChildProcess.emit (node:events:531:35)\n    at ChildProcess._handle.onexit (node:internal/child_process:293:12)"
+}

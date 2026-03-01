@@ -799,7 +799,6 @@ Object.assign(proto, {
 });
 
 // 导出室内场景类
-export { DXIndoorMapScene };
 
 // 同时挂载到 window.DaxiMap 以保持向后兼容
 if (typeof window !== "undefined") {

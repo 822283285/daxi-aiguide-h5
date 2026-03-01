@@ -2,8 +2,7 @@
  * 服务页面控制器
  * 客服、帮助、反馈等服务功能
  */
-import { BasePageController } from "../../controllers/base-page-controller.js";
-import { windowAdapter } from "@/legacy/window-adapter.js";
+import { BasePageController } from "@ui/controllers/base-page-controller.js";
 
 /**
  * @class ServicePageController
@@ -20,13 +19,20 @@ export class ServicePageController extends BasePageController {
 
     /** @type {Array} 服务项目列表 */
     this.serviceItems = [
-      { id: 1, name: "在线客服", icon: "💬", action: "chat" },
-      { id: 2, name: "电话咨询", icon: "📞", action: "call" },
-      { id: 3, name: "常见问题", icon: "❓", action: "faq" },
-      { id: 4, name: "意见反馈", icon: "📝", action: "feedback" },
-      { id: 5, name: "投诉建议", icon: "⚠️", action: "complaint" },
-      { id: 6, name: "关于我们", icon: "ℹ️", action: "about" },
+      { id: 1, name: "在线客服", icon: "💬", action: "chat", desc: "实时在线咨询服务" },
+      { id: 2, name: "电话咨询", icon: "📞", action: "call", desc: "拨打客服热线" },
+      { id: 3, name: "常见问题", icon: "❓", action: "faq", desc: "查看常见问题解答" },
+      { id: 4, name: "意见反馈", icon: "📝", action: "feedback", desc: "提交您的宝贵意见" },
+      { id: 5, name: "投诉建议", icon: "⚠️", action: "complaint", desc: "投诉与建议" },
+      { id: 6, name: "关于我们", icon: "ℹ️", action: "about", desc: "了解我们" },
     ];
+
+    /** @type {Object} 客服热线信息 */
+    this.hotlineInfo = {
+      number: "400-888-8888",
+      time: "9:00-21:00",
+      description: "全天候为您服务",
+    };
   }
 
   /**
@@ -80,7 +86,7 @@ export class ServicePageController extends BasePageController {
   /**
    * 加载服务数据
    */
-  loadServiceData() {
+  async loadServiceData() {
     try {
       // TODO: 调用 API 加载服务数据
       console.log("[ServicePage] Data loaded");
@@ -99,7 +105,7 @@ export class ServicePageController extends BasePageController {
     const html = `
       <div class="service-page">
         <header class="service-header">
-          <div class="header-back" onclick="app.router.back()">
+          <div class="header-back" id="serviceBackBtn">
             <span class="back-icon">←</span>
             <span class="back-text">返回</span>
           </div>
@@ -111,16 +117,19 @@ export class ServicePageController extends BasePageController {
           <div class="service-banner">
             <div class="service-icon">🎧</div>
             <h2>7×24 小时服务</h2>
-            <p>全天候为您服务</p>
+            <p>${this.hotlineInfo.description}</p>
           </div>
           
           <div class="service-list">
             ${this.serviceItems
               .map(
                 (item) => `
-              <div class="service-item" data-action="${item.action}">
+              <div class="service-item" data-action="${item.action}" data-id="${item.id}">
                 <div class="service-icon">${item.icon}</div>
-                <div class="service-name">${item.name}</div>
+                <div class="service-info">
+                  <div class="service-name">${item.name}</div>
+                  <div class="service-desc">${item.desc}</div>
+                </div>
                 <div class="service-arrow">›</div>
               </div>
             `
@@ -130,8 +139,9 @@ export class ServicePageController extends BasePageController {
           
           <div class="service-hotlines">
             <h3>客服热线</h3>
-            <div class="hotline-number">400-XXX-XXXX</div>
-            <p class="hotline-time">服务时间：9:00-21:00</p>
+            <div class="hotline-number" id="hotlineNumber">${this.hotlineInfo.number}</div>
+            <p class="hotline-time">服务时间：${this.hotlineInfo.time}</p>
+            <button class="hotline-call-btn" id="hotlineCallBtn">立即拨打</button>
           </div>
         </div>
       </div>
@@ -154,10 +164,26 @@ export class ServicePageController extends BasePageController {
     });
 
     // 返回按钮
-    const backBtn = this.$(".header-back");
+    const backBtn = this.$("#serviceBackBtn");
     if (backBtn) {
       this.addEventListener(backBtn, "click", () => {
         this.back();
+      });
+    }
+
+    // 拨打热线按钮
+    const callBtn = this.$("#hotlineCallBtn");
+    if (callBtn) {
+      this.addEventListener(callBtn, "click", () => {
+        this.makeCall();
+      });
+    }
+
+    // 热线号码点击
+    const hotlineNumber = this.$("#hotlineNumber");
+    if (hotlineNumber) {
+      this.addEventListener(hotlineNumber, "click", () => {
+        this.makeCall();
       });
     }
   }
@@ -175,24 +201,24 @@ export class ServicePageController extends BasePageController {
    */
   handleServiceAction(action) {
     switch (action) {
-      case "chat":
-        this.openChat();
-        break;
-      case "call":
-        this.makeCall();
-        break;
-      case "faq":
-        this.navigateTo("FAQPage");
-        break;
-      case "feedback":
-        this.navigateTo("FeedbackPage");
-        break;
-      case "complaint":
-        this.navigateTo("ComplaintPage");
-        break;
-      case "about":
-        this.navigateTo("AboutPage");
-        break;
+    case "chat":
+      this.openChat();
+      break;
+    case "call":
+      this.makeCall();
+      break;
+    case "faq":
+      this.navigateTo("FAQPage");
+      break;
+    case "feedback":
+      this.navigateTo("FeedbackPage");
+      break;
+    case "complaint":
+      this.navigateTo("ComplaintPage");
+      break;
+    case "about":
+      this.navigateTo("AboutPage");
+      break;
     }
   }
 
@@ -202,16 +228,16 @@ export class ServicePageController extends BasePageController {
   openChat() {
     console.log("[ServicePage] Opening chat...");
     // TODO: 实现客服聊天功能
-    console.warn("在线客服功能开发中...");
+    alert("在线客服功能开发中...");
   }
 
   /**
    * 拨打电话
    */
   makeCall() {
-    console.log("[ServicePage] Making call...");
-    // TODO: 实现电话拨打功能
-    windowAdapter.location.href = "tel:400-XXX-XXXX";
+    console.log("[ServicePage] Making call to:", this.hotlineInfo.number);
+    // 使用 tel 协议拨打电话
+    window.location.href = `tel:${this.hotlineInfo.number}`;
   }
 
   /**
@@ -230,15 +256,15 @@ export class ServicePageController extends BasePageController {
  * @param {Object} options - 配置选项
  * @returns {ServicePageController}
  */
-export function createServicePage(options = {}) {
-  return new ServicePageController(options);
+export function createServicePage(_options = {}) {
+  return new ServicePageController(_options);
 }
 
 /**
  * 注册服务页面控制器到全局
  * @param {Object} options - 配置选项
  */
-export async function registerServicePage(options = {}) {
+export async function registerServicePage(_options = {}) {
   const { registerPage } = await import("../../controllers/page-controller-registry.js");
   registerPage("ServicePage", ServicePageController);
 }

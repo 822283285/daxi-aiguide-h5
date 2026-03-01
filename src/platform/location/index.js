@@ -1,2 +1,3 @@
 // Location 模块入口
-export * from "./location-service.js";
+// 导出定位服务
+export { LocationService, locationService } from "./location-service.js";

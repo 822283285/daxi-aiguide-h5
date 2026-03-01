@@ -1,6 +1,7 @@
 /**
  * 基于状态的路由管理器
  * 通过监听 appState.currentPage 变化来切换页面
+ * 支持同步和异步（懒加载）控制器
  *
  * @class StateRouter
  */
@@ -18,8 +19,11 @@ export class StateRouter {
     /** @type {Object} */
     this.appState = null;
 
-    /** @type {Map} 控制器注册表 */
+    /** @type {Map} 控制器注册表（同步） */
     this.controllerRegistry = new Map();
+
+    /** @type {Map} 懒加载控制器导入函数 */
+    this.lazyControllerRegistry = new Map();
 
     /** @type {Array} 路由守卫 */
     this.guards = [];
@@ -56,7 +60,7 @@ export class StateRouter {
   }
 
   /**
-   * 注册页面控制器
+   * 注册页面控制器（同步）
    * @param {string} pageName - 页面名称
    * @param {Class} ControllerClass - 控制器类
    */
@@ -68,6 +72,31 @@ export class StateRouter {
 
     this.controllerRegistry.set(pageName, ControllerClass);
     console.log(`[Router] Registered: ${pageName}`);
+  }
+
+  /**
+   * 注册懒加载页面控制器
+   * @param {string} pageName - 页面名称
+   * @param {Function} importFn - 动态导入函数
+   */
+  registerLazy(pageName, importFn) {
+    if (typeof importFn !== "function") {
+      console.error("[Router] importFn must be a function");
+      return;
+    }
+
+    this.lazyControllerRegistry.set(pageName, importFn);
+    console.log(`[Router] Registered lazy: ${pageName}`);
+  }
+
+  /**
+   * 批量注册懒加载页面控制器
+   * @param {Object} lazyRoutes - 懒加载映射表 { pageName: importFn }
+   */
+  registerAllLazy(lazyRoutes) {
+    Object.entries(lazyRoutes).forEach(([pageName, importFn]) => {
+      this.registerLazy(pageName, importFn);
+    });
   }
 
   /**
@@ -127,8 +156,8 @@ export class StateRouter {
         this.destroyCurrentController();
       }
 
-      // 3. 获取页面控制器
-      const ControllerClass = this.getController(pageName);
+      // 3. 获取页面控制器（支持异步加载）
+      const ControllerClass = await this.getController(pageName);
       if (!ControllerClass) {
         console.error(`[Router] Page controller not found: ${pageName}`);
         return false;
@@ -223,13 +252,50 @@ export class StateRouter {
   }
 
   /**
-   * 获取页面控制器类
+   * 获取页面控制器类（同步或异步）
    * @private
    * @param {string} pageName - 页面名称
-   * @returns {Class|null} 控制器类
+   * @returns {Promise<Class|null>} 控制器类
    */
-  getController(pageName) {
-    return this.controllerRegistry.get(pageName) || null;
+  async getController(pageName) {
+    // 先检查同步注册表
+    const syncController = this.controllerRegistry.get(pageName);
+    if (syncController) {
+      return syncController;
+    }
+
+    // 检查懒加载注册表
+    const lazyImportFn = this.lazyControllerRegistry.get(pageName);
+    if (lazyImportFn) {
+      try {
+        const module = await lazyImportFn();
+        // 查找导出的控制器类（通常以 Controller 结尾）
+        const controllerExport = Object.entries(module).find(([key]) =>
+          key.endsWith("Controller")
+        );
+
+        if (controllerExport) {
+          const ControllerClass = controllerExport[1];
+          // 缓存到同步注册表，避免重复加载
+          this.controllerRegistry.set(pageName, ControllerClass);
+          return ControllerClass;
+        }
+
+        // 如果没有找到 Controller，尝试查找默认导出
+        if (module.default) {
+          this.controllerRegistry.set(pageName, module.default);
+          return module.default;
+        }
+
+        console.error(`[Router] No controller found for: ${pageName}`);
+        return null;
+      } catch (error) {
+        console.error(`[Router] Failed to load lazy controller: ${pageName}`, error);
+        return null;
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -352,20 +418,23 @@ export class StateRouter {
   }
 
   /**
-   * 检查页面是否已注册
+   * 检查页面是否已注册（同步或懒加载）
    * @param {string} pageName - 页面名称
    * @returns {boolean} 是否已注册
    */
   isRegistered(pageName) {
-    return this.controllerRegistry.has(pageName);
+    return this.controllerRegistry.has(pageName) || this.lazyControllerRegistry.has(pageName);
   }
 
   /**
-   * 获取所有已注册的页面
+   * 获取所有已注册的页面（包括懒加载）
    * @returns {Array<string>} 页面名称列表
    */
   getRegisteredPages() {
-    return Array.from(this.controllerRegistry.keys());
+    const syncPages = Array.from(this.controllerRegistry.keys());
+    const lazyPages = Array.from(this.lazyControllerRegistry.keys());
+    // 合并并去重
+    return [...new Set([...syncPages, ...lazyPages])];
   }
 
   /**
